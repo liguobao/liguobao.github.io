@@ -1,8 +1,11 @@
 ---
 layout: post
 title: Ubuntu 有线网卡掉线重启备忘
-category: linux
+slug: ubuntu-wifi-loss
+categories: 
+  - linux
 date: 2023-09-22
+image: /img/cover.jpg
 tags:
   - Ubuntu
   - Linux
