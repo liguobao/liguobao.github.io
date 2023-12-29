@@ -1,14 +1,13 @@
 ---
-
 title: 程序员和外卖员，有啥共同点？
 description:
 slug: programmer-and-deliveryman
 date: 2023-12-14 00:00:00+0000
 categories:
- - Zhihu 
- - QA
-tags: - zhihu
-
+  - Zhihu
+  - QA
+tags:
+  - zhihu
 ---
 
 A:
