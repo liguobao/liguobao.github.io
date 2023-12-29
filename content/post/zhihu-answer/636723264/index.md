@@ -9,11 +9,10 @@ categories:
     - QA
 tags:
     - zhihu
-weight: 1       # You can add weight to some posts to override the default sorting (date descending)
+weight: 1
 ---
 
-Q: 是什么提高生产力的功能让你放弃iPhone转投华为？
-
+来源：[Q: 是什么提高生产力的功能让你放弃iPhone转投华为？](https://www.zhihu.com/question/636723264)
 
 
 哈？
@@ -64,15 +63,25 @@ WO
 
 华为或者说鸿蒙，并没有能给我类似的体验。
 
-iOS整个生态，倒是给了我无限的可能性。
+iOS整个生态，倒是足够的舒适和好用。
+
+那大概很长一段时间来说，我应该是没有非用不可的情况的。
+
+如果是说非iOS生态下的话，我可能依旧还是选择Android。
+
+所以我手上是拿着另一台红米K50，价格大概是华为鸿蒙机器的四分之一。
+
+对于我来说，K50上能满足我绝大部分的需求了。
 
 
+## 展望
 
 
+好像并没有展望。
 
+大家都脚踏式，
 
-
-
+好好努力咯。
 
 
 

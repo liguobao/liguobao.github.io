@@ -3,7 +3,7 @@ title: 如何配置Github Page页面
 description: 
 slug: how-to-set-github-page
 date: 2023-12-19 13:34:08+0000
-image: cover.jpg
+image: cover.png
 categories:
     - Gihtub
 tags:
