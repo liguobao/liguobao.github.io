@@ -1,7 +1,8 @@
 ---
 layout: post
 title: 能动手绝不多说：开源评论系统remark42上手指南
-category:
+categories: 
+- remark
 date: 2020-08-06
 tags:
   - 博客
@@ -11,7 +12,6 @@ tags:
   - remark42
 ---
 
-# 能动手绝不多说：开源评论系统 remark42 上手指南
 
 ## 前言
 
@@ -156,7 +156,7 @@ Isso – Ich schrei sonst – is a lightweight commenting server written in Pyth
 
 ### 页面插入 script
 
-```html
+```php
 <script>
   var remark_config = {
     host: "REMARK_URL", // hostname of remark server, same as REMARK_URL in backend config, e.g. "https://demo.remark42.com"
@@ -224,7 +224,7 @@ themes/next/layout 这个文件夹存放了布局文件，其中\_layout.swig �
 
 看了一眼\_layout.swig 的代码, 底部基本是 include 引入同级的 swig 文件。
 
-```
+```js
   {% include '_scripts/boostrap.swig' %}
 
   {% include 'remark42.swig' %}
@@ -237,7 +237,7 @@ themes/next/layout 这个文件夹存放了布局文件，其中\_layout.swig �
 
 ### 新建 remark42.swig，贴入 script 代码
 
-```HTML
+```php
 
 <script>
   var remark_config = {
@@ -288,7 +288,7 @@ themes/next/layout 这个文件夹存放了布局文件，其中\_layout.swig �
 
 ### layout.swig 添加 remark42.swig 引用
 
-```
+```php
   {% include '_scripts/boostrap.swig' %}
 
   {% include 'remark42.swig' %}
