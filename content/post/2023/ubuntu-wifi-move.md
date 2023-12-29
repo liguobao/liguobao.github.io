@@ -5,7 +5,7 @@ slug: ubuntu-wifi-loss
 categories: 
   - linux
 date: 2023-09-22
-image: /img/cover.jpg
+image: ubuntu-xiaohei.png
 tags:
   - Ubuntu
   - Linux
