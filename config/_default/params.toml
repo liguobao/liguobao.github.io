@@ -19,7 +19,7 @@ subtitle = "编程技术靠北，\n 人生删除指南。"
 [sidebar.avatar]
 enabled = true
 local = true
-src = "img/avatar.png"
+src = "img/zhihu-lgb.png"
 
 [article]
 math = false
