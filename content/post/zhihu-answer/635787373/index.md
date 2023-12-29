@@ -1,6 +1,6 @@
 ---
 title: 2023年互联网大厂集体变「瘦」，未来还能「胖」起来吗？
-slug: hello-world
+slug: 2023-big-company-change
 date: 2023-12-29 17:00:00+0000
 categories:
     - zhihu
