@@ -48,6 +48,9 @@ Github 项目中 settings/pages 设置我的 "Your GitHub Pages site"
 
 分支为 gh-pages
 
+![](cover.png)
+
+
 然后。
 
 完事。
