@@ -313,7 +313,9 @@ themes/next/layout 这个文件夹存放了布局文件，其中\_layout.swig �
 
 于是：
 
-```html
+
+```php
+
 <div id="posts" class="posts-expand">
   {{ post_template.render(page) }}
 
