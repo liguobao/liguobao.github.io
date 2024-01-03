@@ -9,7 +9,8 @@ tags:
   - zhihu
 ---
 
-A:
+Q:[程序员和外卖员，有啥共同点？](https://www.zhihu.com/question/636435716)
+
 
 这个问题很有趣的。
 

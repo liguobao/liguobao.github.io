@@ -1,13 +1,14 @@
 ---
 title: 2024 年，我们如何掌握人生的节奏感？
 description:
-slug: can-not-join-computer
+slug: how-to-grasp-your-life
 date: 2024-01-02 16:00:00+0000
 categories:
   - Zhihu
 tags:
   - zhihu
 ---
+
 
 Q: 2024 年，我们如何掌握人生的节奏感？
 
