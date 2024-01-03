@@ -1,6 +1,6 @@
 ---
-title: QA
-description: 一些稿子和备份~
+title: Linux
+description: Linux、Ubuntu操作备忘~
 image:
 
 # Badge style

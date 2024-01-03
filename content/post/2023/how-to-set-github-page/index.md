@@ -5,7 +5,8 @@ slug: how-to-set-github-page
 date: 2023-12-19 13:34:08+0000
 image: cover.png
 categories:
-    - Gihtub
+    - GitHub
+    - TC
 tags:
     - Github
     - Action

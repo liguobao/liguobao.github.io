@@ -5,9 +5,9 @@ slug: 985-huawu-find-job
 date: 2024-01-02 21:44:00+0000
 categories:
   - Zhihu
-  - QA
 tags:
-  - zhihu
+  - QA
+  - 职业发展
 weight: 1
 ---
 

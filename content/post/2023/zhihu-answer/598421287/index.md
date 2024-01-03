@@ -5,7 +5,6 @@ slug: can-not-join-computer
 date: 2024-01-02 16:00:00+0000
 categories:
   - Zhihu
-  - QA
 tags:
   - zhihu
 ---

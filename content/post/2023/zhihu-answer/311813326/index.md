@@ -5,9 +5,9 @@ slug: if-programmer-salary-is-not-high
 date: 2023-12-30 00:00:00+0000
 categories:
   - Zhihu
-  - QA
 tags:
   - zhihu
+  - QA
   - 2023
 ---
 

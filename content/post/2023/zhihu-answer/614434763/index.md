@@ -5,7 +5,6 @@ slug: programmer-smoke-drink-play-cards
 date: 2023-12-15 00:00:00+0000
 categories:
   - Zhihu
-  - QA
 tags:
   - zhihu
 ---

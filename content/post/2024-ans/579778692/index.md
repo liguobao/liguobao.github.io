@@ -1,11 +1,10 @@
 ---
 title: 为什么电脑还没有被手机淘汰掉？
 description:
-slug: why-pc-not-replaced-by-mobile
-date: 2024-01-03 08:00:00+0000
+slug: why-pc-not-replaced-by-mobile-test
+date: 2023-12-31 08:00:00+0000
 categories:
   - Zhihu
-  - QA
 tags:
   - zhihu
   - 2024

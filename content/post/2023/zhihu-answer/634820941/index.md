@@ -5,7 +5,6 @@ slug: programmer-sleep-time
 date: 2023-12-10 00:00:00+0000
 categories:
   - Zhihu
-  - QA
 tags:
   - zhihu
 ---
