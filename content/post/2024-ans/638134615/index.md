@@ -1,7 +1,7 @@
 ---
 title: 我国电视开机率自 2016 年的 70% 跌至 30% ，电视开机率为何会断崖式下跌？
 description:
-slug: 985-huawu-find-job
+slug: our-tv-open-rate-fall
 date: 2024-01-07 21:44:00+0000
 categories:
   - Zhihu
