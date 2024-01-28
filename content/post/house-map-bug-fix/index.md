@@ -1,6 +1,7 @@
 ---
 title: 太久没更新以至于Bug纷飞的地图搜租房~
 description: 修复了地图搜租房的Bug
+slug: house-map-bug-fix
 date: 2024-01-13 23:09
 ---
 
