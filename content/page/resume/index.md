@@ -9,8 +9,6 @@ links:
 menu:
   main:
     weight: 5
-    params:
-      icon: resume
 
 comments: false
 ---
