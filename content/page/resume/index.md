@@ -8,7 +8,9 @@ links:
     image: https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png
 menu:
   main:
-    weight: 5
+    weight: 3
+    params:
+      icon: link
 
 comments: false
 ---
@@ -29,6 +31,16 @@ comments: false
 
 ## 联系我
 
-- [GitHub](https://github.com/liguobao)
-- [知乎](https://www.zhihu.com/people/codelover)
+- [GitHub:liguobao](https://github.com/liguobao)
+- [知乎:李国宝](https://www.zhihu.com/people/codelover)
 - 公众号： 人生删除指南
+
+## 项目
+
+### [地图搜租房](https://house-map.cn/app/house-map/#/)
+
+满大街找租房心力交瘁？试试换个方式直接在地图上搜租房!
+
+多平台房源爬虫 + 高德地图强力驱动,帮助你迅速找到合适房源。
+
+微信小程序"House2048"已上线，欢迎关注【人生删除指南】微信公众号体验反馈。
