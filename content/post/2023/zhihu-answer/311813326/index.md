@@ -7,7 +7,6 @@ categories:
   - Zhihu
 tags:
   - zhihu
-  - QA
   - 2023
 ---
 

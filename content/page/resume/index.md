@@ -1,5 +1,5 @@
 ---
-title: resume
+title: About
 slug: liguobao-resume
 links:
   - title: GitHub

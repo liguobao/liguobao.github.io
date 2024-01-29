@@ -1,28 +1,26 @@
 ---
 title: 是什么提高生产力的功能让你放弃iPhone转投华为？
-description: 
+description:
 slug: why-do-you-mo-to-huawei
 date: 2023-12-19 00:00:00+0000
 image: cover.jpg
 categories:
-    - Zhihu
-    - QA
+  - Zhihu
 tags:
-    - zhihu
+  - zhihu
 weight: 1
 ---
 
-来源：[Q: 是什么提高生产力的功能让你放弃iPhone转投华为？](https://www.zhihu.com/question/636723264)
-
+来源：[Q: 是什么提高生产力的功能让你放弃 iPhone 转投华为？](https://www.zhihu.com/question/636723264)
 
 哈？
 我刚刚从泥坑里面爬出来又让我躺回去吗？
 
 不不不，我不需要。
 
-论手机生产力，我觉得没人比老罗的TNT更懂吧。
+论手机生产力，我觉得没人比老罗的 TNT 更懂吧。
 
-而我，是真的用过TNT的....
+而我，是真的用过 TNT 的....
 
 即使作为一个挺喜欢锤子手机的人，
 
@@ -36,8 +34,8 @@ weight: 1
 
 大佬觉得什么是生产力呢？
 
-
 ---
+
 WO
 
 某个程度上来说。
@@ -58,30 +56,26 @@ WO
 
 那倒也算是能提高生产力~
 
-
 那暂时来说，
 
 华为或者说鸿蒙，并没有能给我类似的体验。
 
-iOS整个生态，倒是足够的舒适和好用。
+iOS 整个生态，倒是足够的舒适和好用。
 
 那大概很长一段时间来说，我应该是没有非用不可的情况的。
 
-如果是说非iOS生态下的话，我可能依旧还是选择Android。
+如果是说非 iOS 生态下的话，我可能依旧还是选择 Android。
 
-所以我手上是拿着另一台红米K50，价格大概是华为鸿蒙机器的四分之一。
+所以我手上是拿着另一台红米 K50，价格大概是华为鸿蒙机器的四分之一。
 
-对于我来说，K50上能满足我绝大部分的需求了。
-
+对于我来说，K50 上能满足我绝大部分的需求了。
 
 ## 展望
-
 
 好像并没有展望。
 
 大家都脚踏式，
 
 好好努力咯。
-
 
 > Photo by [Pawel Czerwinski](https://unsplash.com/@pawel_czerwinski) on [Unsplash](https://unsplash.com/)
