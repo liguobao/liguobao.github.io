@@ -2,6 +2,11 @@
 title: 服务器最短可以买多久，可以只买一周的服务器吗?
 slug: how-long-can-i-buy-a-server
 date: 2024-01-29 01:45
+categories:
+  - Zhihu
+tags:
+  - zhihu
+  - 2024
 ---
 
 来源：[服务器最短可以买多久，可以只买一周的服务器吗?](https://www.zhihu.com/question/639020341)

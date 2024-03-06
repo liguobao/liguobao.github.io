@@ -6,8 +6,8 @@ date: 2024-01-07 21:44:00+0000
 categories:
   - Zhihu
 tags:
-  - 社会
-weight: 1
+  - zhihu
+  - 2024
 ---
 
 来源：[我国电视开机率自 2016 年的 70% 跌至 30% ，电视开机率为何会断崖式下跌？](https://www.zhihu.com/question/638134615/)
