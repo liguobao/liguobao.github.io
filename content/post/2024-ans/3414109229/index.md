@@ -1,6 +1,6 @@
 ---
 title: 为什么程序员下班后只关显示器从不关电脑？
-slug: how-long-can-i-buy-a-server
+slug: why-dont-programmers-turn-off-their-computers-after-work
 date: 2024-02-29 18:45
 ---
 
