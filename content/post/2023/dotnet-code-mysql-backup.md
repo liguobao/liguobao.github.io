@@ -1,13 +1,9 @@
 ---
-layout: post
 title: dotnet core 实现MySQL数据库备份和还原
 slug: dotnet-core-mysql-backup
-category: csharp
-date: 2023-10-26
+date: 2023-10-26 23:09:00+0000
 tags:
   - dotnet core
-  - Linux
-  - mysql
 ---
 
 某个小项目需要支持一下 MySQL 全库备份，

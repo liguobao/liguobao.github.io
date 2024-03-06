@@ -1,6 +1,7 @@
 ---
 title: 如何同时删除知乎上自己的所有回答及想法？
 slug: how-to-delete-all-answers-on-zhihu
+date: 2024-03-01 08:00:00+0000
 categories:
   - Zhihu
 tags:

@@ -1,7 +1,7 @@
 ---
 title: 为什么程序员下班后只关显示器从不关电脑？
 slug: why-dont-programmers-turn-off-their-computers-after-work
-date: 2024-02-29 18:45
+date: 2024-02-29 08:00:00+0000
 categories:
   - Zhihu
 tags:
