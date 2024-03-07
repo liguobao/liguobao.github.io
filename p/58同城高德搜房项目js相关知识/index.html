@@ -1,0 +1,238 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content='58同城高德搜房项目JS相关知识 在线地址：58同城品牌公寓高德搜房
+Github地址：https://github.com/liguobao/58HouseSearch
+知乎专栏(点赞用的)：高德API+Python解决租房问题(.NET版)
+经过了一个星期的修补补，以及小伙伴风险的代码，整个项目基本处于基本稳定运行的状态。
+同时加入了一下新功能：
+IP定位：调用高德地图IP定位功能实现 移动地图中心定位：调用高德地图移动地图定位实现 定位城市名转58同城城市名以获得准确58同城城市域名：抓取58同城城市分类信息 优化数据源、去除广告数据：小伙伴奉献代码 今天主要简单讲解一下其中使用的一些高德地图API接口。
+高德地图JavaScript API 主体为map对象，基本所有的操作都是通过map对象来实现的。 map对象实例化是通过 Amap类来做的。如以下代码：
+1 2 3 4 5 6 map = new AMap.Map(&amp;#34;container&amp;#34;, { resizeEnable: true, zoomEnable: true, center: [121.297428, 31.1345],//经纬度，此处为上海 zoom: 11 }); IP定位 调用Map.CitySearch()获得当前IP所在城市，直接将地图显示成当前城市。代码如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 function showCityInfo(map) { //实例化城市查询类 var citysearch = new AMap.CitySearch(); //自动获取用户IP，返回当前城市 citysearch.'><title>58同城高德搜房项目JS相关知识</title>
+<link rel=canonical href=https://liguobao.github.io/p/58%E5%90%8C%E5%9F%8E%E9%AB%98%E5%BE%B7%E6%90%9C%E6%88%BF%E9%A1%B9%E7%9B%AEjs%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/><link rel=stylesheet href=/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css><meta property='og:title' content='58同城高德搜房项目JS相关知识'><meta property='og:description' content='58同城高德搜房项目JS相关知识 在线地址：58同城品牌公寓高德搜房
+Github地址：https://github.com/liguobao/58HouseSearch
+知乎专栏(点赞用的)：高德API+Python解决租房问题(.NET版)
+经过了一个星期的修补补，以及小伙伴风险的代码，整个项目基本处于基本稳定运行的状态。
+同时加入了一下新功能：
+IP定位：调用高德地图IP定位功能实现 移动地图中心定位：调用高德地图移动地图定位实现 定位城市名转58同城城市名以获得准确58同城城市域名：抓取58同城城市分类信息 优化数据源、去除广告数据：小伙伴奉献代码 今天主要简单讲解一下其中使用的一些高德地图API接口。
+高德地图JavaScript API 主体为map对象，基本所有的操作都是通过map对象来实现的。 map对象实例化是通过 Amap类来做的。如以下代码：
+1 2 3 4 5 6 map = new AMap.Map(&amp;#34;container&amp;#34;, { resizeEnable: true, zoomEnable: true, center: [121.297428, 31.1345],//经纬度，此处为上海 zoom: 11 }); IP定位 调用Map.CitySearch()获得当前IP所在城市，直接将地图显示成当前城市。代码如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 function showCityInfo(map) { //实例化城市查询类 var citysearch = new AMap.CitySearch(); //自动获取用户IP，返回当前城市 citysearch.'><meta property='og:url' content='https://liguobao.github.io/p/58%E5%90%8C%E5%9F%8E%E9%AB%98%E5%BE%B7%E6%90%9C%E6%88%BF%E9%A1%B9%E7%9B%AEjs%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/'><meta property='og:site_name' content='李国宝'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='asp.net core'><meta property='article:tag' content='58City'><meta property='article:published_time' content='2016-10-04T00:00:00+00:00'><meta property='article:modified_time' content='2016-10-04T00:00:00+00:00'><meta name=twitter:title content="58同城高德搜房项目JS相关知识"><meta name=twitter:description content="58同城高德搜房项目JS相关知识 在线地址：58同城品牌公寓高德搜房
+Github地址：https://github.com/liguobao/58HouseSearch
+知乎专栏(点赞用的)：高德API+Python解决租房问题(.NET版)
+经过了一个星期的修补补，以及小伙伴风险的代码，整个项目基本处于基本稳定运行的状态。
+同时加入了一下新功能：
+IP定位：调用高德地图IP定位功能实现 移动地图中心定位：调用高德地图移动地图定位实现 定位城市名转58同城城市名以获得准确58同城城市域名：抓取58同城城市分类信息 优化数据源、去除广告数据：小伙伴奉献代码 今天主要简单讲解一下其中使用的一些高德地图API接口。
+高德地图JavaScript API 主体为map对象，基本所有的操作都是通过map对象来实现的。 map对象实例化是通过 Amap类来做的。如以下代码：
+1 2 3 4 5 6 map = new AMap.Map(&amp;#34;container&amp;#34;, { resizeEnable: true, zoomEnable: true, center: [121.297428, 31.1345],//经纬度，此处为上海 zoom: 11 }); IP定位 调用Map.CitySearch()获得当前IP所在城市，直接将地图显示成当前城市。代码如下：
+1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 function showCityInfo(map) { //实例化城市查询类 var citysearch = new AMap.CitySearch(); //自动获取用户IP，返回当前城市 citysearch."><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/zhihu-lgb_hu43204a3e06905bf6085819abcde4cc95_250380_300x0_resize_box_3.png width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/>李国宝</a></h1><h2 class=site-description>人生删除指南</h2></div></header><ol class=social-menu><li><a href=https://github.com/liguobao target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://www.zhihu.com/people/codelover target=_blank title=知乎 rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>Home</span></a></li><li><a href=/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/liguobao-resume/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>About</span></a></li><li><a href=/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li></ol><div class=menu-bottom-section><ol class=menu><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></div></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#高德地图javascript-api-主体为map对象基本所有的操作都是通过map对象来实现的>高德地图JavaScript API 主体为map对象，基本所有的操作都是通过map对象来实现的。</a></li><li><a href=#ip定位>IP定位</a></li><li><a href=#移动地图自动中心定位>移动地图自动中心定位</a></li><li><a href=#城市名匹配58同城地区域名>城市名匹配58同城地区域名</a></li><li><a href=#高德地图自动补全功能>高德地图自动补全功能</a><ol><li><a href=#北京>北京</a></li><li><a href=#成都>成都</a></li><li><a href=#苏州>苏州</a></li><li><a href=#深圳>深圳</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><div class=article-title-wrapper><h2 class=article-title><a href=/p/58%E5%90%8C%E5%9F%8E%E9%AB%98%E5%BE%B7%E6%90%9C%E6%88%BF%E9%A1%B9%E7%9B%AEjs%E7%9B%B8%E5%85%B3%E7%9F%A5%E8%AF%86/>58同城高德搜房项目JS相关知识</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Oct 04, 2016</time></div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 2 分钟</time></div></footer></div></header><section class=article-content><h1 id=58同城高德搜房项目js相关知识>58同城高德搜房项目JS相关知识</h1><p>在线地址：<a class=link href=http://codelover.link:8080/ target=_blank rel=noopener>58同城品牌公寓高德搜房</a></p><p>Github地址：<a class=link href=https://github.com/liguobao/58HouseSearch target=_blank rel=noopener>https://github.com/liguobao/58HouseSearch</a></p><p>知乎专栏(点赞用的)：<a class=link href=https://zhuanlan.zhihu.com/p/21960329 target=_blank rel=noopener>高德API+Python解决租房问题(.NET版)</a></p><p>经过了一个星期的修补补，以及小伙伴风险的代码，整个项目基本处于基本稳定运行的状态。</p><p>同时加入了一下新功能：</p><ol><li>IP定位：调用高德地图IP定位功能实现</li><li>移动地图中心定位：调用高德地图移动地图定位实现</li><li>定位城市名转58同城城市名以获得准确58同城城市域名：抓取58同城城市分类信息</li><li>优化数据源、去除广告数据：小伙伴奉献代码</li></ol><p>今天主要简单讲解一下其中使用的一些高德地图API接口。</p><h2 id=高德地图javascript-api-主体为map对象基本所有的操作都是通过map对象来实现的>高德地图JavaScript API 主体为map对象，基本所有的操作都是通过map对象来实现的。</h2><p>map对象实例化是通过 Amap类来做的。如以下代码：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=nx>map</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>AMap</span><span class=p>.</span><span class=nx>Map</span><span class=p>(</span><span class=s2>&#34;container&#34;</span><span class=p>,</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>resizeEnable</span><span class=o>:</span> <span class=kc>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>zoomEnable</span><span class=o>:</span> <span class=kc>true</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>center</span><span class=o>:</span> <span class=p>[</span><span class=mf>121.297428</span><span class=p>,</span> <span class=mf>31.1345</span><span class=p>],</span><span class=c1>//经纬度，此处为上海
+</span></span></span><span class=line><span class=cl><span class=c1></span>        <span class=nx>zoom</span><span class=o>:</span> <span class=mi>11</span>
+</span></span><span class=line><span class=cl>    <span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=ip定位>IP定位</h2><p>调用Map.CitySearch()获得当前IP所在城市，直接将地图显示成当前城市。代码如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=kd>function</span> <span class=nx>showCityInfo</span><span class=p>(</span><span class=nx>map</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=c1>//实例化城市查询类
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=kd>var</span> <span class=nx>citysearch</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>AMap</span><span class=p>.</span><span class=nx>CitySearch</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=c1>//自动获取用户IP，返回当前城市
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nx>citysearch</span><span class=p>.</span><span class=nx>getLocalCity</span><span class=p>(</span><span class=kd>function</span> <span class=p>(</span><span class=nx>status</span><span class=p>,</span> <span class=nx>result</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=nx>status</span> <span class=o>===</span> <span class=s1>&#39;complete&#39;</span> <span class=o>&amp;&amp;</span> <span class=nx>result</span><span class=p>.</span><span class=nx>info</span> <span class=o>===</span> <span class=s1>&#39;OK&#39;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=nx>result</span> <span class=o>&amp;&amp;</span> <span class=nx>result</span><span class=p>.</span><span class=nx>city</span> <span class=o>&amp;&amp;</span> <span class=nx>result</span><span class=p>.</span><span class=nx>bounds</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=kd>var</span> <span class=nx>cityinfo</span> <span class=o>=</span> <span class=nx>result</span><span class=p>.</span><span class=nx>city</span><span class=p>;</span><span class=c1>//获得XX市
+</span></span></span><span class=line><span class=cl><span class=c1></span>                <span class=kd>var</span> <span class=nx>citybounds</span> <span class=o>=</span> <span class=nx>result</span><span class=p>.</span><span class=nx>bounds</span><span class=p>;</span><span class=c1>//用于设置地图显示位置的实例
+</span></span></span><span class=line><span class=cl><span class=c1></span>                <span class=nx>cityName</span> <span class=o>=</span> <span class=nx>cityinfo</span><span class=p>.</span><span class=nx>substring</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nx>cityinfo</span><span class=p>.</span><span class=nx>length</span> <span class=o>-</span> <span class=mi>1</span><span class=p>);</span><span class=c1>//去掉市这个字
+</span></span></span><span class=line><span class=cl><span class=c1></span>                <span class=nx>ConvertCityCNNameToShortCut</span><span class=p>();</span><span class=c1>//城市名转换成58同城城市域名字母，如上海-&gt;sh,苏州-&gt;su,
+</span></span></span><span class=line><span class=cl><span class=c1></span>                                              <span class=c1>//下面会有实现代码
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl>                <span class=nb>document</span><span class=p>.</span><span class=nx>getElementById</span><span class=p>(</span><span class=s1>&#39;IPLocation&#39;</span><span class=p>).</span><span class=nx>innerHTML</span> <span class=o>=</span> <span class=s1>&#39;您当前所在城市：&#39;</span> <span class=o>+</span> <span class=nx>cityName</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=c1>//地图显示当前城市
+</span></span></span><span class=line><span class=cl><span class=c1></span>                <span class=nx>map</span><span class=p>.</span><span class=nx>setBounds</span><span class=p>(</span><span class=nx>citybounds</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span> <span class=k>else</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=nb>document</span><span class=p>.</span><span class=nx>getElementById</span><span class=p>(</span><span class=s1>&#39;IPLocation&#39;</span><span class=p>).</span><span class=nx>innerHTML</span> <span class=o>=</span> <span class=nx>result</span><span class=p>.</span><span class=nx>info</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>});</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=移动地图自动中心定位>移动地图自动中心定位</h2><p>之前有一版是让用户输入城市名，然后直接定位到输入的城市的。
+这个功能卡在了设置地图显示位置上，如果是使用高德地图提供的搜索控件的话，又存在输入结果之后搜索结果可能是多个的问题。而且这点我只是要取到用户想要定位的城市而已，感觉没必要做得太复杂。
+昨晚在看高德地图API的时候发现，有一个移动地图获得地图中心所在位置的样例，马上眼前一亮了。这个功能比我想要的还要好&mldr;果断上。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl><span class=kd>function</span> <span class=nx>MapMoveToLocationCity</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>map</span><span class=p>.</span><span class=nx>on</span><span class=p>(</span><span class=s1>&#39;moveend&#39;</span><span class=p>,</span> <span class=nx>getCity</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=kd>function</span> <span class=nx>getCity</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=nx>map</span><span class=p>.</span><span class=nx>getCity</span><span class=p>(</span><span class=kd>function</span> <span class=p>(</span><span class=nx>data</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=nx>data</span><span class=p>[</span><span class=s1>&#39;province&#39;</span><span class=p>]</span> <span class=o>&amp;&amp;</span> <span class=k>typeof</span> <span class=nx>data</span><span class=p>[</span><span class=s1>&#39;province&#39;</span><span class=p>]</span> <span class=o>===</span> <span class=s1>&#39;string&#39;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>                <span class=kd>var</span> <span class=nx>cityinfo</span> <span class=o>=</span> <span class=p>(</span><span class=nx>data</span><span class=p>[</span><span class=s1>&#39;city&#39;</span><span class=p>]</span> <span class=o>||</span> <span class=nx>data</span><span class=p>[</span><span class=s1>&#39;province&#39;</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl>                <span class=nx>cityName</span> <span class=o>=</span> <span class=nx>cityinfo</span><span class=p>.</span><span class=nx>substring</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=nx>cityinfo</span><span class=p>.</span><span class=nx>length</span> <span class=o>-</span> <span class=mi>1</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                <span class=nx>ConvertCityCNNameToShortCut</span><span class=p>();</span><span class=c1>//城市名转58同城地区域名
+</span></span></span><span class=line><span class=cl><span class=c1></span>
+</span></span><span class=line><span class=cl>                <span class=nb>document</span><span class=p>.</span><span class=nx>getElementById</span><span class=p>(</span><span class=s1>&#39;IPLocation&#39;</span><span class=p>).</span><span class=nx>innerHTML</span> <span class=o>=</span> <span class=s1>&#39;地图中心所在城市：&#39;</span> <span class=o>+</span> <span class=nx>cityName</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>});</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>整个代码的意思是，给map绑定一下移动时间，移动完了之后，调用getCity的方法获取当前地图中心所在城市信息。</p><p>这个时候要注意，城市名可能在city对象里面，也可能在province里面。</p><p>原因很简单：普通城市等级就是城市，我国还存在一个和省份一个等级的城市：直辖市。因此直辖市的城市名是在province里面的。</p><h2 id=城市名匹配58同城地区域名>城市名匹配58同城地区域名</h2><p>这个是上个版本(两三天前)的一个bug引出来的新功能。</p><p>上个版本是让用户输入城市名，然后提取城市名的中文拼音首字母作为58同城地区域名。如上海 =sh，广州=gz，北京=bj，成都=cd。</p><p>这个功能使用的是网上别人写的一个JS库，通过汉字匹配实现的。转换出来的数据没什么问题，不过我国汉字实在奥妙。</p><p>广州=gz，赣州=gz；
+遂宁=sn；绥宁=sn；
+惠州=hz，杭州=hz。</p><p>这样一来，上面这个做法就没法玩了。</p><p>想了下怎么解决这个问题，灵机一动。反正是在爬58的数据，这个城市名和城市域名数据58同城肯定有啊，然后找到了这个。
+<a class=link href="http://www.58.com/changecity.aspx?PGTID=0d100000-0007-a77b-4c4b-a28f725b8f5a&amp;ClickID=1" target=_blank rel=noopener>58同城城市分类导航</a></p><p><img src=http://7xread.com1.z0.glb.clouddn.com/c01c293a-d5cc-4f58-80dc-13aa05d47b01 loading=lazy alt=123></p><p>很明显，我要的所有城市名和城市域名都是里面了。</p><p>晚上和衣衣说了下，衣衣一大早就把处理好的json数据给我了。</p><p>于是来了下面一段代码：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>//加载json文件
+</span></span></span><span class=line><span class=cl><span class=c1></span><span class=nx>$</span><span class=p>.</span><span class=nx>getJSON</span><span class=p>(</span><span class=s2>&#34;DomainJS/city.json&#34;</span><span class=p>,</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>data</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=nx>allCityInfo</span> <span class=o>=</span> <span class=nx>data</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>function</span> <span class=nx>ConvertCityCNNameToShortCut</span><span class=p>()</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>var</span> <span class=nx>filterarray</span> <span class=o>=</span> <span class=nx>$</span><span class=p>.</span><span class=nx>grep</span><span class=p>(</span><span class=nx>allCityInfo</span><span class=p>,</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>obj</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=nx>obj</span><span class=p>.</span><span class=nx>cityName</span> <span class=o>==</span> <span class=nx>cityName</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>});</span><span class=c1>//找到当前城市名对应的json对象
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>//获取json对象的地区域名
+</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=nx>cityNameCNPY</span> <span class=o>=</span> <span class=nx>filterarray</span> <span class=k>instanceof</span> <span class=nb>Array</span> <span class=o>?</span> 
+</span></span><span class=line><span class=cl>    <span class=nx>filterarray</span><span class=p>[</span><span class=mi>0</span><span class=p>].</span><span class=nx>shortCut</span> <span class=o>:</span> <span class=nx>filterarray</span> <span class=o>!=</span> <span class=kc>null</span> <span class=o>?</span> <span class=nx>filterarray</span><span class=p>.</span><span class=nx>shortCut</span> <span class=o>:</span> <span class=s2>&#34;&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=高德地图自动补全功能>高德地图自动补全功能</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-html data-lang=html><span class=line><span class=cl>  <span class=p>&lt;</span><span class=nt>div</span> <span class=na>class</span><span class=o>=</span><span class=s>&#34;control-input&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>       <span class=p>&lt;</span><span class=nt>input</span> <span class=na>id</span><span class=o>=</span><span class=s>&#34;work-location&#34;</span> <span class=na>type</span><span class=o>=</span><span class=s>&#34;text&#34;</span> <span class=na>style</span><span class=o>=</span><span class=s>&#34;width:60%&#34;</span><span class=p>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=p>&lt;/</span><span class=nt>div</span><span class=p>&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-JavaScript data-lang=JavaScript><span class=line><span class=cl> <span class=kd>var</span> <span class=nx>auto</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>AMap</span><span class=p>.</span><span class=nx>Autocomplete</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>        <span class=nx>input</span><span class=o>:</span> <span class=s2>&#34;work-location&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=p>});</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nx>AMap</span><span class=p>.</span><span class=nx>event</span><span class=p>.</span><span class=nx>addListener</span><span class=p>(</span><span class=nx>auto</span><span class=p>,</span> <span class=s2>&#34;select&#34;</span><span class=p>,</span> <span class=nx>workLocationSelected</span><span class=p>);</span>
+</span></span></code></pre></td></tr></table></div></div><p>看方法前面也知道，其实这就是把ID为work-location的input初始化为地图插件，然后给Amap增加了一个监听事件。
+当其中选中某一个数据的时候，触发workLocationSelected函数。效果如下：</p><p><img src=http://7xread.com1.z0.glb.clouddn.com/fe425992-e7c4-4cae-800e-319eff3b17e8 loading=lazy alt=2233></p><p>在这里locationSelected是定位到所选位置，代码如下：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-js data-lang=js><span class=line><span class=cl><span class=kd>function</span> <span class=nx>workLocationSelected</span><span class=p>(</span><span class=nx>e</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>workAddress</span> <span class=o>=</span> <span class=nx>e</span><span class=p>.</span><span class=nx>poi</span><span class=p>.</span><span class=nx>name</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=nx>loadWorkLocation</span><span class=p>();</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>function</span> <span class=nx>loadWorkLocation</span><span class=p>()</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nx>delWorkLocation</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>    <span class=kd>var</span> <span class=nx>geocoder</span> <span class=o>=</span> <span class=k>new</span> <span class=nx>AMap</span><span class=p>.</span><span class=nx>Geocoder</span><span class=p>({</span>
+</span></span><span class=line><span class=cl>        <span class=nx>city</span><span class=o>:</span> <span class=nx>cityName</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>        <span class=nx>radius</span><span class=o>:</span> <span class=mi>1000</span>
+</span></span><span class=line><span class=cl>    <span class=p>});</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nx>geocoder</span><span class=p>.</span><span class=nx>getLocation</span><span class=p>(</span><span class=nx>workAddress</span><span class=p>,</span> <span class=kd>function</span> <span class=p>(</span><span class=nx>status</span><span class=p>,</span> <span class=nx>result</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=p>(</span><span class=nx>status</span> <span class=o>===</span> <span class=s2>&#34;complete&#34;</span> <span class=o>&amp;&amp;</span> <span class=nx>result</span><span class=p>.</span><span class=nx>info</span> <span class=o>===</span> <span class=s1>&#39;OK&#39;</span><span class=p>)</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=kd>var</span> <span class=nx>geocode</span> <span class=o>=</span> <span class=nx>result</span><span class=p>.</span><span class=nx>geocodes</span><span class=p>[</span><span class=mi>0</span><span class=p>];</span>
+</span></span><span class=line><span class=cl>            <span class=nx>x</span> <span class=o>=</span> <span class=nx>geocode</span><span class=p>.</span><span class=nx>location</span><span class=p>.</span><span class=nx>getLng</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>            <span class=nx>y</span> <span class=o>=</span> <span class=nx>geocode</span><span class=p>.</span><span class=nx>location</span><span class=p>.</span><span class=nx>getLat</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>            <span class=nx>loadWorkMarker</span><span class=p>(</span><span class=nx>x</span><span class=p>,</span> <span class=nx>y</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=nx>loadWorkRange</span><span class=p>(</span><span class=nx>x</span><span class=p>,</span> <span class=nx>y</span><span class=p>,</span> <span class=mi>60</span><span class=p>,</span> <span class=s2>&#34;#3f67a5&#34;</span><span class=p>,</span> <span class=nx>vehicle</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=nx>map</span><span class=p>.</span><span class=nx>setZoomAndCenter</span><span class=p>(</span><span class=mi>12</span><span class=p>,</span> <span class=p>[</span><span class=nx>x</span><span class=p>,</span> <span class=nx>y</span><span class=p>]);</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>})</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>至于导航功能代码我没怎么动，没去研究就不献丑了&mldr;</p><p>最后来个效果图。</p><h3 id=北京>北京</h3><p><img src=http://7xread.com1.z0.glb.clouddn.com/e7900aba-5a56-417c-9dd9-63527583e84b loading=lazy alt=123></p><h3 id=成都>成都</h3><p><img src=http://7xread.com1.z0.glb.clouddn.com/c9947d97-1b76-42bf-82b3-aca817e84e13 loading=lazy alt=333></p><h3 id=苏州>苏州</h3><p><img src=http://7xread.com1.z0.glb.clouddn.com/941809ae-aa37-4a3b-89c7-10646cc7e3e7 loading=lazy alt=233></p><h3 id=深圳>深圳</h3><p><img src=http://7xread.com1.z0.glb.clouddn.com/86712397-27ec-4b37-bbf8-81191e530ef6 loading=lazy alt=233></p></section><footer class=article-footer><section class=article-tags><a href=/tags/asp.net-core/>ASP.NET Core</a>
+<a href=/tags/58city/>58City</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/p/58housesearch%E9%A1%B9%E7%9B%AE%E8%BF%81%E7%A7%BB%E5%88%B0asp.net-core/><div class=article-details><h2 class=article-title>58HouseSearch项目迁移到asp.net core</h2></div></a></article></div></div></aside><script src=https://utteranc.es/client.js repo=liguobao/liguobao.github.io issue-term=title crossorigin=anonymous async></script><style>.utterances{max-width:unset}</style><script>let utterancesLoaded=!1;function setUtterancesTheme(e){let t=document.querySelector(".utterances iframe");t&&t.contentWindow.postMessage({type:"set-theme",theme:`github-${e}`},"https://utteranc.es")}addEventListener("message",e=>{if(e.origin!=="https://utteranc.es")return;utterancesLoaded=!0,setUtterancesTheme(document.documentElement.dataset.scheme)}),window.addEventListener("onColorSchemeChange",e=>{if(!utterancesLoaded)return;setUtterancesTheme(e.detail)})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2024 李国宝</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.23.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

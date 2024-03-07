@@ -1,0 +1,235 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content='反手来个K8S入门到跑路 前言 放假前一两天发现腾讯云托管K8S集群上线好一阵子了, 还支持把原有主机迁入k8s集群, 索性开始搞事了.
+先简单科普一下, 什么是k8s?
+k8s 科普时间 Kubernetes (K8s) is an open-source system for automating deployment, scaling, and management of containerized applications. It groups containers that make up an application into logical units for easy management and discovery. Kubernetes builds upon 15 years of experience of running production workloads at Google, combined with best-of-breed ideas and practices from the community. 来自:https://kubernetes.io/
+1 2 3 4 5 6 7 8 9 Kubernetes是一个开源的，用于管理云平台中多个主机上的容器化的应用，Kubernetes的目标是让部署容器化的应用简单并且高效（powerful）,Kubernetes提供了应用部署，规划，更新，维护的一种机制。 Kubernetes一个核心的特点就是能够自主的管理容器来保证云平台中的容器按照用户的期望状态运行着（比如用户想让apache一直运行，用户不需要关心怎么去做，Kubernetes会自动去监控，然后去重启，新建.'><title>反手来个K8S入门到跑路</title>
+<link rel=canonical href=https://liguobao.github.io/p/%E5%8F%8D%E6%89%8B%E6%9D%A5%E4%B8%AAk8s%E5%85%A5%E9%97%A8%E5%88%B0%E8%B7%91%E8%B7%AF/><link rel=stylesheet href=/scss/style.min.abbd69b2908fdfcd5179898beaafd374514a86538d81639ddd2c58c06ae54e40.css><meta property='og:title' content='反手来个K8S入门到跑路'><meta property='og:description' content='反手来个K8S入门到跑路 前言 放假前一两天发现腾讯云托管K8S集群上线好一阵子了, 还支持把原有主机迁入k8s集群, 索性开始搞事了.
+先简单科普一下, 什么是k8s?
+k8s 科普时间 Kubernetes (K8s) is an open-source system for automating deployment, scaling, and management of containerized applications. It groups containers that make up an application into logical units for easy management and discovery. Kubernetes builds upon 15 years of experience of running production workloads at Google, combined with best-of-breed ideas and practices from the community. 来自:https://kubernetes.io/
+1 2 3 4 5 6 7 8 9 Kubernetes是一个开源的，用于管理云平台中多个主机上的容器化的应用，Kubernetes的目标是让部署容器化的应用简单并且高效（powerful）,Kubernetes提供了应用部署，规划，更新，维护的一种机制。 Kubernetes一个核心的特点就是能够自主的管理容器来保证云平台中的容器按照用户的期望状态运行着（比如用户想让apache一直运行，用户不需要关心怎么去做，Kubernetes会自动去监控，然后去重启，新建.'><meta property='og:url' content='https://liguobao.github.io/p/%E5%8F%8D%E6%89%8B%E6%9D%A5%E4%B8%AAk8s%E5%85%A5%E9%97%A8%E5%88%B0%E8%B7%91%E8%B7%AF/'><meta property='og:site_name' content='李国宝'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='linux'><meta property='article:tag' content='k8s'><meta property='article:published_time' content='2019-06-09T00:00:00+00:00'><meta property='article:modified_time' content='2019-06-09T00:00:00+00:00'><meta name=twitter:title content="反手来个K8S入门到跑路"><meta name=twitter:description content="反手来个K8S入门到跑路 前言 放假前一两天发现腾讯云托管K8S集群上线好一阵子了, 还支持把原有主机迁入k8s集群, 索性开始搞事了.
+先简单科普一下, 什么是k8s?
+k8s 科普时间 Kubernetes (K8s) is an open-source system for automating deployment, scaling, and management of containerized applications. It groups containers that make up an application into logical units for easy management and discovery. Kubernetes builds upon 15 years of experience of running production workloads at Google, combined with best-of-breed ideas and practices from the community. 来自:https://kubernetes.io/
+1 2 3 4 5 6 7 8 9 Kubernetes是一个开源的，用于管理云平台中多个主机上的容器化的应用，Kubernetes的目标是让部署容器化的应用简单并且高效（powerful）,Kubernetes提供了应用部署，规划，更新，维护的一种机制。 Kubernetes一个核心的特点就是能够自主的管理容器来保证云平台中的容器按照用户的期望状态运行着（比如用户想让apache一直运行，用户不需要关心怎么去做，Kubernetes会自动去监控，然后去重启，新建."><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/zhihu-lgb_hu43204a3e06905bf6085819abcde4cc95_250380_300x0_resize_box_3.png width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/>李国宝</a></h1><h2 class=site-description>人生删除指南</h2></div></header><ol class=social-menu><li><a href=https://github.com/liguobao target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://www.zhihu.com/people/codelover target=_blank title=知乎 rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>Home</span></a></li><li><a href=/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/liguobao-resume/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>About</span></a></li><li><a href=/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li></ol><div class=menu-bottom-section><ol class=menu><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></div></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#前言>前言</a><ol><li><a href=#k8s-科普时间>k8s 科普时间</a></li></ol></li><li><a href=#神说-要有k8s>神说, 要有k8s.</a><ol><li><a href=#简单科普一下k8s里面对于机器的定义>简单科普一下k8s里面对于机器的定义</a></li></ol></li><li><a href=#神说-让我们要开始了>神说, 让我们要开始了</a><ol><li><a href=#又到概念时间-podservice>又到概念时间 Pod/Service</a></li></ol></li><li><a href=#神说-要开始入门了>神说, 要开始入门了!</a></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><div class=article-title-wrapper><h2 class=article-title><a href=/p/%E5%8F%8D%E6%89%8B%E6%9D%A5%E4%B8%AAk8s%E5%85%A5%E9%97%A8%E5%88%B0%E8%B7%91%E8%B7%AF/>反手来个K8S入门到跑路</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Jun 09, 2019</time></div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 3 分钟</time></div></footer></div></header><section class=article-content><h1 id=反手来个k8s入门到跑路>反手来个K8S入门到跑路</h1><h2 id=前言>前言</h2><p>放假前一两天发现腾讯云托管K8S集群上线好一阵子了, 还支持把原有主机迁入k8s集群, 索性开始搞事了.</p><p>先简单科普一下, 什么是k8s?</p><h3 id=k8s-科普时间>k8s 科普时间</h3><blockquote><p>Kubernetes (K8s) is an open-source system for automating deployment, scaling, and management of containerized applications. It groups containers that make up an application into logical units for easy management and discovery. Kubernetes builds upon 15 years of experience of running production workloads at Google, combined with best-of-breed ideas and practices from the community. 来自:<a class=link href=https://kubernetes.io/ target=_blank rel=noopener>https://kubernetes.io/</a></p></blockquote><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Kubernetes是一个开源的，用于管理云平台中多个主机上的容器化的应用，Kubernetes的目标是让部署容器化的应用简单并且高效（powerful）,Kubernetes提供了应用部署，规划，更新，维护的一种机制。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Kubernetes一个核心的特点就是能够自主的管理容器来保证云平台中的容器按照用户的期望状态运行着（比如用户想让apache一直运行，用户不需要关心怎么去做，Kubernetes会自动去监控，然后去重启，新建.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>总之，让apache一直提供服务），管理员可以加载一个微型服务，让规划器来找到合适的位置.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>同时，Kubernetes也系统提升工具以及人性化方面，让用户能够方便的部署自己的应用（就像canary deployments）。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>-- [https://www.kubernetes.org.cn/k8s](https://www.kubernetes.org.cn/k8s)
+</span></span></code></pre></td></tr></table></div></div><p>用人话来说, 首先我们以前已经把所有的服务(server/api)都Docker容器化了,</p><p>k8s就是一套用来做容器服务管理/编排的系统.</p><p>那么我们现在开始吧.</p><h2 id=神说-要有k8s>神说, 要有k8s.</h2><ul><li>初始化自己的腾讯云/阿里云k8s 容器服务</li></ul><p>登录一下自己的某云平台, 找一下"容器服务", 新建集群, 选"托管集群", 点点点之后完成配置.</p><p>然后把自己已有的机器加入到上面的集群里面去, 基本也是在界面上点点点就好.</p><h3 id=简单科普一下k8s里面对于机器的定义>简单科普一下k8s里面对于机器的定义</h3><p>一个机器在k8s是一个节点,节点分成两种类型,</p><ul><li><p>一类是master节点, 跑着一堆k8s核心服务(etcd之类的, 具体的自己去了解吧);</p></li><li><p>一类是worker节点,用于跑我们自己的业务服务(如,某个爬虫)</p></li></ul><p>一般情况下, 我们把服务扔给k8s运行起来的时候, 实际上都是在worker节点上起一个Docker容器实例 + 相关的配置.</p><p>这边云平台的托管集群就是master节点我们不管了, 云平台负责好, 需要的机器和配置都给他们搞;</p><p>我们把自己的已经买过的机器或者新买的机器加入到集群里面, 自己用就完事了.</p><p>所以&mldr;.</p><p>我又来搞事了.</p><h2 id=神说-让我们要开始了>神说, 让我们要开始了</h2><p>等下, 上面点完了, 先把本地的kubectl搞掂.</p><ul><li><p>哈? 什么是kubectl.</p></li><li><p>哦, 管理k8s的命令行工具.</p></li><li><p>没有图形界面吗?</p></li><li><p>有, 不过某云做的很难用, 原生的凑合能看, 便于理解概念的情况下, 还是先用ctl搞起吧.</p></li></ul><p>安装教程: <a class=link href=https://cloud.tencent.com/document/product/457/8438 target=_blank rel=noopener>通过 Kubectl 连接集群</a></p><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><p>假装到这里应该都弄好了.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=c1>## 输入kubectl version 查看客户端和服务端版本信息, 能正常输出信息证明都work了</span>
+</span></span><span class=line><span class=cl>➜  codelover-blog git:<span class=o>(</span>master<span class=o>)</span> ✗ kubectl version
+</span></span><span class=line><span class=cl>Client Version: version.Info<span class=o>{</span>Major:<span class=s2>&#34;1&#34;</span>, Minor:<span class=s2>&#34;11&#34;</span>, GitVersion:<span class=s2>&#34;v1.11.1&#34;</span>, GitCommit:<span class=s2>&#34;b1b29978270dc22fecc592ac55d903350454310a&#34;</span>, GitTreeState:<span class=s2>&#34;clean&#34;</span>, BuildDate:<span class=s2>&#34;2018-07-18T11:37:06Z&#34;</span>, GoVersion:<span class=s2>&#34;go1.10.3&#34;</span>, Compiler:<span class=s2>&#34;gc&#34;</span>, Platform:<span class=s2>&#34;darwin/amd64&#34;</span><span class=o>}</span>
+</span></span><span class=line><span class=cl>Server Version: version.Info<span class=o>{</span>Major:<span class=s2>&#34;1&#34;</span>, Minor:<span class=s2>&#34;12+&#34;</span>, GitVersion:<span class=s2>&#34;v1.12.4-tke.1.1&#34;</span>, GitCommit:<span class=s2>&#34;900490ac7b7ae6a13aa6599d43258f1164e9c458&#34;</span>, GitTreeState:<span class=s2>&#34;clean&#34;</span>, BuildDate:<span class=s2>&#34;2019-01-30T10:22:33Z&#34;</span>, GoVersion:<span class=s2>&#34;go1.10.4&#34;</span>, Compiler:<span class=s2>&#34;gc&#34;</span>, Platform:<span class=s2>&#34;linux/amd64&#34;</span><span class=o>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=又到概念时间-podservice>又到概念时间 Pod/Service</h3><ul><li><p><a class=link href=http://docs.kubernetes.org.cn/312.html target=_blank rel=noopener>Kubernetes Pod概述</a></p></li><li><p><a class=link href=https://www.kubernetes.org.cn/kubernetes-services target=_blank rel=noopener>Kubernetes Services概述</a></p></li></ul><p>用人话来说,</p><p>Pod就是一堆app(一个/多个Docker容器实例)的集合;</p><p>Service就是在k8s内网坏境"对外"提供服务的一个实体;</p><p>我们直接在举个栗子来说明一下.</p><ul><li><p>一个支持水平扩展的Web API服务, 我们为了高可用需要给它部署了三个实例, 这里就是一个Pod, 由三个实例组成</p></li><li><p>&ldquo;对外&rdquo;(其他服务或者app需要访问它)来说, 我们需要直接访问它但是有没必要知道它有几个实例, 这个时候就有一个Service来承载它, Service负责把请求直接转发到Pod中, Pod里面有多少实例对Service和对调用者来说都是透明的.</p></li></ul><p>所以我们来部署我们的第一套服务吧.</p><h2 id=神说-要开始入门了>神说, 要开始入门了!</h2><p>将下面的文件保存成sample.yaml, 然后执行 &ldquo;kubectl apply -f sample.yaml&rdquo;</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nn>---</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>extensions/v1beta1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Deployment</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># 给pod打上标签, 定义service 需要用</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>run</span><span class=p>:</span><span class=w> </span><span class=l>first-web-size</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>first-web-size</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># 实例个数</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>replicas</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>selector</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>matchLabels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>run</span><span class=p>:</span><span class=w> </span><span class=l>first-web-size</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>strategy</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>rollingUpdate</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>maxSurge</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>maxUnavailable</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>RollingUpdate</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>template</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>creationTimestamp</span><span class=p>:</span><span class=w> </span><span class=kc>null</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>run</span><span class=p>:</span><span class=w> </span><span class=l>first-web-size</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># 微软 dotnet core 样例镜像</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>mcr.microsoft.com/dotnet/core/samples:aspnetapp</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>imagePullPolicy</span><span class=p>:</span><span class=w> </span><span class=l>IfNotPresent</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>first-web-size</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>terminationMessagePath</span><span class=p>:</span><span class=w> </span><span class=l>/dev/termination-log</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>livenessProbe</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>httpGet</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>path</span><span class=p>:</span><span class=w> </span><span class=l>/v1/health</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>port</span><span class=p>:</span><span class=w> </span><span class=m>80</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>initialDelaySeconds</span><span class=p>:</span><span class=w> </span><span class=m>120</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>periodSeconds</span><span class=p>:</span><span class=w> </span><span class=m>30</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># CPU + 内存限制</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>resources</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=c># 最高使用500m的CPU, 超过就限制CPU;最高用512M内存, 超过就炸应用</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>limits</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>cpu</span><span class=p>:</span><span class=w> </span><span class=l>500m</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>memory</span><span class=p>:</span><span class=w> </span><span class=l>512Mi</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=c># 要求给50m的CPU调度和128M内存才可以启动</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>requests</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>cpu</span><span class=p>:</span><span class=w> </span><span class=l>50m</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>memory</span><span class=p>:</span><span class=w> </span><span class=l>128Mi</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># 这里是私有镜像仓库需要自己配置的一下秘钥什么之类的, 配置过程见k8s官方文档</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c>#   imagePullSecrets:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c>#     - name: regcred</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>dnsPolicy</span><span class=p>:</span><span class=w> </span><span class=l>ClusterFirst</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>restartPolicy</span><span class=p>:</span><span class=w> </span><span class=l>Always</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>terminationGracePeriodSeconds</span><span class=p>:</span><span class=w> </span><span class=m>30</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nn>---</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Service</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>metadata</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>first-web-size</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>annotations</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># 这里:后面的值填腾讯云的子网id, 这样service就在腾讯云私有网络子网里面有自己的 ip了</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>service.kubernetes.io/qcloud-loadbalancer-internal-subnetid</span><span class=p>:</span><span class=w> </span><span class=l>subnet-xxx</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>selector</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># 过滤标签, 在上面定义pod的时候也写了对应的label</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>run</span><span class=p>:</span><span class=w> </span><span class=l>first-web-size</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>ports</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>protocol</span><span class=p>:</span><span class=w> </span><span class=l>TCP</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># service对外提供访问的端口</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>port</span><span class=p>:</span><span class=w> </span><span class=m>80</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># pod的端口</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>targetPort</span><span class=p>:</span><span class=w> </span><span class=m>80</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>LoadBalancer</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>externalTrafficPolicy</span><span class=p>:</span><span class=w> </span><span class=l>Cluster</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>将上面的文件保存成sample.yaml, 然后执行 &ldquo;kubectl apply -f sample.yaml&rdquo;, 可以看到下面的Log</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>➜  _posts git:<span class=o>(</span>master<span class=o>)</span> ✗ kubectl apply -f sample.yaml
+</span></span><span class=line><span class=cl>deployment.extensions/first-web-size created
+</span></span><span class=line><span class=cl>service/first-web-size created
+</span></span><span class=line><span class=cl>➜  _posts git:<span class=o>(</span>master<span class=o>)</span> ✗ kubectl get pod
+</span></span><span class=line><span class=cl>first-web-size-797fb6f8cc-q79df       1/1       Running     <span class=m>0</span>          68s
+</span></span><span class=line><span class=cl>first-web-size-797fb6f8cc-thwm7       1/1       Running     <span class=m>0</span>          68s
+</span></span><span class=line><span class=cl>➜  _posts git:<span class=o>(</span>master<span class=o>)</span> ✗ kubectl get service
+</span></span><span class=line><span class=cl>NAME             TYPE           CLUSTER-IP     EXTERNAL-IP   PORT<span class=o>(</span>S<span class=o>)</span>        AGE
+</span></span><span class=line><span class=cl>first-web-size   LoadBalancer   10.3.255.248   &lt;pending&gt;     80:31054/TCP   101s
+</span></span></code></pre></td></tr></table></div></div><p>我们在上面可以看到, 有first-web-size这个Pod有两个实例, 有一个Service</p><p>这个时候登录和集群在同一个内网的服务器上面</p><p>执行 curl http://10.3.255.248 能看到对应的访问HTML</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>root@VM-0-6-ubuntu:~# curl http://10.3.255.248
+</span></span><span class=line><span class=cl>&lt;!DOCTYPE html&gt;
+</span></span><span class=line><span class=cl>&lt;html&gt;
+</span></span><span class=line><span class=cl>&lt;head&gt;
+</span></span><span class=line><span class=cl>    &lt;meta <span class=nv>charset</span><span class=o>=</span><span class=s2>&#34;utf-8&#34;</span> /&gt;
+</span></span><span class=line><span class=cl>    &lt;meta <span class=nv>name</span><span class=o>=</span><span class=s2>&#34;viewport&#34;</span> <span class=nv>content</span><span class=o>=</span><span class=s2>&#34;width=device-width, initial-scale=1.0&#34;</span> /&gt;
+</span></span><span class=line><span class=cl>    &lt;title&gt;Home Page - aspnetapp&lt;/title&gt;
+</span></span></code></pre></td></tr></table></div></div><p>怎么对外提供访问等我下次分享了.</p><p>用完了要删掉这些东西请执行 &ldquo;kubectl delete -f sample.yaml&rdquo;</p><p>拜&mldr;</p><p>我去做饭了.</p></section><footer class=article-footer><section class=article-tags><a href=/tags/linux/>Linux</a>
+<a href=/tags/k8s/>K8s</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><script src=https://utteranc.es/client.js repo=liguobao/liguobao.github.io issue-term=title crossorigin=anonymous async></script><style>.utterances{max-width:unset}</style><script>let utterancesLoaded=!1;function setUtterancesTheme(e){let t=document.querySelector(".utterances iframe");t&&t.contentWindow.postMessage({type:"set-theme",theme:`github-${e}`},"https://utteranc.es")}addEventListener("message",e=>{if(e.origin!=="https://utteranc.es")return;utterancesLoaded=!0,setUtterancesTheme(document.documentElement.dataset.scheme)}),window.addEventListener("onColorSchemeChange",e=>{if(!utterancesLoaded)return;setUtterancesTheme(e.detail)})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2024 李国宝</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.23.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

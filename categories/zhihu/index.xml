@@ -1,0 +1,493 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>知乎回答 on 李国宝</title><link>https://liguobao.github.io/categories/zhihu/</link><description>Recent content in 知乎回答 on 李国宝</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 01 Mar 2024 08:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/categories/zhihu/index.xml" rel="self" type="application/rss+xml"/><item><title>如何同时删除知乎上自己的所有回答及想法？</title><link>https://liguobao.github.io/p/how-to-delete-all-answers-on-zhihu/</link><pubDate>Fri, 01 Mar 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/how-to-delete-all-answers-on-zhihu/</guid><description>&lt;p>来源：&lt;a class="link" href="https://www.zhihu.com/question/265203478/answer/3415024932" target="_blank" rel="noopener"
+>如何同时删除知乎上自己的所有回答及想法？&lt;/a>&lt;/p>
+&lt;p>备用。&lt;/p>
+&lt;p>不时之需。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 删除单个回答
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kd">function&lt;/span> &lt;span class="nx">deleteAnswer&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">answerId&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">var&lt;/span> &lt;span class="nx">xhr&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nx">XMLHttpRequest&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">xhr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">withCredentials&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">xhr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">addEventListener&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;readystatechange&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kd">function&lt;/span> &lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">readyState&lt;/span> &lt;span class="o">===&lt;/span> &lt;span class="mi">4&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">responseText&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">xhr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">open&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;DELETE&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;https://www.zhihu.com/api/v4/answers/&amp;#34;&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="nx">answerId&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">xhr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">setRequestHeader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;authority&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;www.zhihu.com&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">xhr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">setRequestHeader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;accept&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;*/*&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">xhr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">setRequestHeader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;accept-language&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">xhr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">send&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;delete answer: &amp;#39;&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="nx">answerId&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="s1">&amp;#39; success&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 清理整页回答（小于100字）
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="kd">function&lt;/span> &lt;span class="nx">clearAllAnswers&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">longer_than&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">100&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">let&lt;/span> &lt;span class="nx">answerItemList&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">document&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">querySelectorAll&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;.AnswerItem&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kd">let&lt;/span> &lt;span class="nx">answerItem&lt;/span> &lt;span class="k">of&lt;/span> &lt;span class="nx">answerItemList&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">let&lt;/span> &lt;span class="nx">answerContentDev&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">answerItem&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">querySelector&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;.RichContent-inner&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="nx">answerContentDev&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">continue&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">let&lt;/span> &lt;span class="nx">ans_id&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">answerItem&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">getAttribute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;name&amp;#39;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">let&lt;/span> &lt;span class="nx">answerContent&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">answerContentDev&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">innerText&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">answerContent&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">length&lt;/span> &lt;span class="o">&amp;gt;=&lt;/span> &lt;span class="nx">longer_than&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`answer:&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">ans_id&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> is too long, skip`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">continue&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`delete answerContent: &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">answerContent&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">deleteAnswer&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">ans_id&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>定位到回答列表页，打开浏览器控制台（F12），&lt;/p>
+&lt;p>&lt;img src="https://pica.zhimg.com/80/v2-075d9dc15606c476335d7777d8febbdc_1440w.webp?source=2c26e567"
+loading="lazy"
+>&lt;/p>
+&lt;p>把上面的代码复制到 Console 输入处，回车。&lt;/p>
+&lt;p>然后输出 clearAllAnswers(50) ，回车。&lt;/p>
+&lt;p>PS: 50代表抄过50字的回答不处理。&lt;/p>
+&lt;p>不断切页，重复输入&lt;/p>
+&lt;p>clearAllAnswers(50)&lt;/p>
+&lt;p>完事。&lt;/p></description></item><item><title>为什么程序员下班后只关显示器从不关电脑？</title><link>https://liguobao.github.io/p/why-dont-programmers-turn-off-their-computers-after-work/</link><pubDate>Thu, 29 Feb 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/why-dont-programmers-turn-off-their-computers-after-work/</guid><description>&lt;p>来源：&lt;a class="link" href="https://www.zhihu.com/question/640589218/answer/3414109229" target="_blank" rel="noopener"
+>为什么程序员下班后只关显示器从不关电脑？&lt;/a>&lt;/p>
+&lt;h2 id="为什么程序员下班后只关显示器从不关电脑">为什么程序员下班后只关显示器从不关电脑？&lt;/h2>
+&lt;p>亲爱的两脚兽，欢迎来到大型打工人公司现场~&lt;/p>
+&lt;p>我们这里有各种类的社畜，社畜们都安分守己兢兢业业，希望新来的两脚兽在公司里面玩的愉快。在公司社畜扮演过程中，请两脚兽务必遵循以下守则，确保自身安全，否则后果自负。&lt;/p>
+&lt;p>1、本公司24小时不间断供电， 外部供电中止情况下会柴油发电机会自动发动，不存在任何的断电风险，请大家安心工作。如果发现供电房间有响亮撞击声，请不用惊慌，请勿靠近房间。如果发现有褐色液体浸出，请通知行政处，会有专人处理。&lt;/p>
+&lt;p>2、所有的电脑主机开机键都在机箱上方，且只有一个按钮。如果您的主机开机键位于正前方，请不要开机，迅速离开办公位，请尽量提前下班。&lt;/p>
+&lt;p>3、公司配备了19寸MacbookPro供部分开发人员使用，如有需要可以向IT申请。请注意MacBookPro颜色只有银色，绝对不可能有黑色。如果拿到了黑色的MacBookPro，请不要开机，直接归还IT部。&lt;/p>
+&lt;p>4、茶水间没有可口可乐售卖，本公司提供百事无糖免费领取。如果在售卖区域看到可口可乐，请不要尝试，直接通知行政人员到场处理。如果不注意喝到了可口可乐，请尽快前往医疗处就诊。&lt;/p>
+&lt;p>5、下班离开公司前请主动关闭显示器电源，节省电源。&lt;/p>
+&lt;p>6、下班离开公司请不要关闭电脑主机电源，提升效率。&lt;/p>
+&lt;p>7、如果到岗上班发现电脑主机自动关机，可以长按电源键开机。如果无法开机，请和IT处联系。请不要私自打开机箱或者断开主机电源。&lt;/p>
+&lt;p>8、如果你早上看到有其他显示器是点亮的，请记住编号尽快远离此区域，必要情况下主动汇报给行政。&lt;/p>
+&lt;p>9、办公区域没有机械狗。如果发现有类似器物，请远离它并且汇报给行政人员。&lt;/p>
+&lt;p>10、公司的程序员大多内向敏感，非必要情况请不要搭讪。如果遇到主动和你搭讪的程序员，请记住他的编号汇报给行政。&lt;/p>
+&lt;p>11、公司的所有门禁和人脸识别系统为了确保绝对安全均为内部开发，只有内部工卡，不存在外部人员可以进入公司。&lt;/p>
+&lt;p>&amp;hellip;..&lt;/p>
+&lt;p>想看再续，欢迎补充。jpg&lt;/p>
+&lt;pre>&lt;code>```javascript&lt;/code>&lt;/pre></description></item><item><title>服务器最短可以买多久，可以只买一周的服务器吗?</title><link>https://liguobao.github.io/p/how-long-can-i-buy-a-server/</link><pubDate>Mon, 29 Jan 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/how-long-can-i-buy-a-server/</guid><description>&lt;p>来源：&lt;a class="link" href="https://www.zhihu.com/question/639020341" target="_blank" rel="noopener"
+>服务器最短可以买多久，可以只买一周的服务器吗?&lt;/a>&lt;/p>
+&lt;h2 id="服务器最短可以买多久可以只买一周的服务器吗">服务器最短可以买多久，可以只买一周的服务器吗?&lt;/h2>
+&lt;p>我想买一台服务器，但是我只想买一周，不想买一年，有这种服务吗？&lt;/p>
+&lt;h2 id="回答">回答&lt;/h2>
+&lt;h3 id="1-有这种服务吗">1. 有这种服务吗？&lt;/h3>
+&lt;p>有。按量付费即可。&lt;/p>
+&lt;p>基本大部分的云产品都有类似的按量付费的服务。&lt;/p>
+&lt;p>大部分云厂商都有类似的产品需求。&lt;/p>
+&lt;p>不过国内的厂商，我记得是要求实名之后，&lt;/p>
+&lt;p>充值大于 100 块才能给你开通按量付费的权限。&lt;/p>
+&lt;p>很鸡贼的操作。&lt;/p>
+&lt;h3 id="2-有没有省钱的方案">2. 有没有”省钱“的方案？&lt;/h3>
+&lt;p>有。&lt;/p>
+&lt;p>Github Page 这种玩意，最简单了。&lt;/p>
+&lt;p>静态页面嘛，扔上去就能玩。&lt;/p>
+&lt;p>我前阵子写过类似的文章，可以参考一下：&lt;/p>
+&lt;p>&lt;a class="link" href="https://liguobao.github.io/p/how-to-set-github-page/" target="_blank" rel="noopener"
+>如何配置 Github Page 页面&lt;/a>&lt;/p>
+&lt;h3 id="我想把本地的网站让公网可访问有什么好的方案吗">我想把本地的网站让公网可访问，有什么好的方案吗？&lt;/h3>
+&lt;p>有。 最简单的是 frp 内网穿透。&lt;/p>
+&lt;p>（ 但是这里需要你有一台公网服务器。哈哈哈&amp;hellip;&lt;/p>
+&lt;p>我前阵子写过类似的文章，&lt;/p>
+&lt;p>可以参考一下：&lt;/p>
+&lt;p>&lt;a class="link" href="https://liguobao.github.io/p/how-to-set-frp/" target="_blank" rel="noopener"
+>如何配置 frp 实现内网穿透&lt;/a>&lt;/p>
+&lt;p>不过，也有其他的服务商提供了类似的功能。&lt;/p>
+&lt;p>我记得我在玩 stable-diffusion-webui 的时候，&lt;/p>
+&lt;p>他们是会直接提供一个公网地址的，&lt;/p>
+&lt;p>查了下应该是用过 ”https://www.gradio.app/“ 来做的，&lt;/p>
+&lt;p>你当然也是可以用类似的服务来实现把本地的一个服务，&lt;/p>
+&lt;p>暴露成一个临时的公网地址~&lt;/p>
+&lt;p>类似的文档在：&lt;/p>
+&lt;p>&lt;a class="link" href="https://www.gradio.app/3.50.2/guides/sharing-your-app" target="_blank" rel="noopener"
+>gradio.app: Sharing Your App&lt;/a>&lt;/p>
+&lt;p>最后。&lt;/p>
+&lt;p>祝玩得开心~&lt;/p></description></item><item><title>二本公办计算机毕业工作一年，如何从小公司跳到大厂？</title><link>https://liguobao.github.io/p/how-to-jump-from-small-company-to-big-company/</link><pubDate>Mon, 08 Jan 2024 15:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/how-to-jump-from-small-company-to-big-company/</guid><description>&lt;p>来源：&lt;a class="link" href="https://www.zhihu.com/question/638539558" target="_blank" rel="noopener"
+>二本公办计算机毕业工作一年，如何从小公司跳到大厂？&lt;/a>&lt;/p>
+&lt;p>首先，先说一下路径。&lt;/p>
+&lt;h2 id="学历情况">学历情况&lt;/h2>
+&lt;p>正儿八经的本科，道理来说至少不会被卡学历。&lt;/p>
+&lt;p>（也不好说，这两年市场有点变态&amp;hellip;&lt;/p>
+&lt;p>( 有些 HR 就是直接卡学历，无解&amp;hellip;&lt;/p>
+&lt;p>这个看人品看脸看运气，只能说试试看，不强求。&lt;/p>
+&lt;h2 id="路径方向">路径方向&lt;/h2>
+&lt;p>从小厂往头部小厂跳。&lt;/p>
+&lt;p>从头部小厂往中厂跳。&lt;/p>
+&lt;p>从中厂往大厂跳。&lt;/p>
+&lt;p>这种操作是比较稳妥的，就是整个经历比较漫长。&lt;/p>
+&lt;p>甚至于可能会错过一些事情，也不一定赶得上“快车”。&lt;/p>
+&lt;h2 id="简历问题">简历问题&lt;/h2>
+&lt;p>好好写简历。&lt;/p>
+&lt;p>写完了让朋友们帮忙看看。虚心接受朋友的意见，对不同的岗位写不同的简历。不然，简历筛选都可能过不去。手上要有点拿得出手侃侃而谈的项目，就是要让别人看起来就觉得很有意思，就是要看起来就很牛逼，聊下来也要给别人点意思。&lt;/p>
+&lt;h2 id="内推背书">内推背书&lt;/h2>
+&lt;p>尽量勾搭人帮你背书。招人的时候，大家并不介意到处捞简历。有朋友推简历过来，是我的话至少会看一眼评估一下合不合适，也会比较诚实回复是不是不匹配。甚至于如果觉得很合适，大多还是会美言几句，尽量给个机会。&lt;/p>
+&lt;p>这种事情嘛，厚着脸在网上多认识点人，总有路子的。&lt;/p>
+&lt;p>这个我倒建议避开一些内推贩子，就当认识多朋友就好。&lt;/p>
+&lt;p>称呼人多，得罪人少，总有人愿意你搭一手的。&lt;/p>
+&lt;p>就如宝哥这里，谁不愿意称呼一声宝哥啊（毕竟平日红包也没少发，对吧。&lt;/p>
+&lt;p>内推贩子这个我可以可以多聊几句：&lt;/p>
+&lt;p>某个程度上你只是一个资源，人家大多很难说给你点什么关照。&lt;/p>
+&lt;p>朋友的话还能上心一点，大概如此。&lt;/p>
+&lt;h2 id="刷题--八股文">刷题 + 八股文&lt;/h2>
+&lt;p>没办法。&lt;/p>
+&lt;p>刷题没办法，某些厂子就是喜欢这玩意。&lt;/p>
+&lt;p>硬着刷就完事了，熟能生巧。&lt;/p>
+&lt;p>（靠，我都快忘光了&amp;hellip;&lt;/p>
+&lt;p>八股文，见仁见智。&lt;/p>
+&lt;p>如果你遇到我，大概是不太会聊得到这种玩意的。&lt;/p>
+&lt;p>如果你去某团，大概率有一半的内容在聊这些东西。&lt;/p>
+&lt;p>多准备，没什么好说的。&lt;/p>
+&lt;p>大概如此。&lt;/p>
+&lt;h2 id="彩蛋">彩蛋&lt;/h2>
+&lt;p>所以，他甚至不愿意称呼我一声宝哥~&lt;/p></description></item><item><title>我国电视开机率自 2016 年的 70% 跌至 30% ，电视开机率为何会断崖式下跌？</title><link>https://liguobao.github.io/p/our-tv-open-rate-fall/</link><pubDate>Sun, 07 Jan 2024 21:44:00 +0000</pubDate><guid>https://liguobao.github.io/p/our-tv-open-rate-fall/</guid><description>&lt;p>来源：&lt;a class="link" href="https://www.zhihu.com/question/638134615/" target="_blank" rel="noopener"
+>我国电视开机率自 2016 年的 70% 跌至 30% ，电视开机率为何会断崖式下跌？&lt;/a>&lt;/p>
+&lt;p>这个事情很有趣，前阵子思考过一些“场景”，想到哪写到哪了。&lt;/p>
+&lt;h2 id="断层效应">“断层”效应&lt;/h2>
+&lt;p>想想，现在在外的打工人有多少，打工人哪里有条件看什么电视。租的房子大部分客厅都没有，有客厅的话可能还没有电视，有电视至少有网才能看一些内容，有网大概率只能看网络电视，有线电视是另外办理的，一层层得&amp;quot;筛选&amp;quot;下来来，庞大的群体就只剩下一点点人了。当然，这个说起来和 16 年之后的断崖下降关联性不大，但是大概也是可以说明点问题的。&lt;/p>
+&lt;h2 id="内容提供">内容提供&lt;/h2>
+&lt;p>总所周知，电视节目在这几年来说，越发的&amp;hellip;.不好看了。如果你们还有机会打开一下以前看的 XX 台，大概会发现确实质量太差了。更有趣的事情在于，在电视上投放的广告，越发同质化了。对比我小时候看到的电视广告，现在的这些玩意真的&amp;hellip;.垃圾中的战斗机。为嘛要扯广告呢？原因很简单，电视节目的收入，基本都来源于这些玩意。没钱 -&amp;gt; 买不到好的作品 -&amp;gt;没人看 -&amp;gt; 没广告收入~恶性循环了。当然，所谓的互联网电视也不是什么好东西。除了阿 B 的 TV 端，其他家的看起来和广告软件没撒区别。云视听小电视也不是什么好东西，但是贵在同行承托。如果朋友们有机会能直接打开奈飞 TV 端，大概能看到一个正儿八经的影视电视端是什么样的。所以我只想说，不是针对谁，在座的各位内容服务商都顶呱呱的。&lt;/p>
+&lt;h2 id="用户习惯">用户习惯&lt;/h2>
+&lt;p>某个程度上，新一代的朋友并没有延续看电视的习惯下来。没有条件是一部分，没有内容也是一部分。甚至于理应有新的场景，但是看起来好像被替代了。就如，本来我们的现代化发展到现在的话，大概游戏产业开始发展起来的了 ，大型游戏是有可能会促进电视的又一次“重启”的。然而，照着国内的情况来说，先是页游，再是网游，然后手游。我们的主机游戏玩家，只有存量很少增量了。那确实很难有人有机会体验到“更好”游戏体验了。（不用杠，你说得都对）。《原神》已经火了很多年了，但是知道能在 PS4、5 上面用手柄玩的人不多吧（手动狗头）。相信我，60 寸大屏用游戏手柄玩游戏，比戳手机屏幕舒服多了。&lt;/p>
+&lt;h2 id="随便扯扯">随便扯扯&lt;/h2>
+&lt;p>有些事物大概率会消亡，大概也就让它消亡吧。人民群众喜欢，就真的是喜欢啊。&lt;/p></description></item><item><title>985本，华五研一，计算机相关专业，但是代码技术能力偏低，研究方向不适合找工作，应该转哪个方向工作？</title><link>https://liguobao.github.io/p/985-huawu-find-job/</link><pubDate>Tue, 02 Jan 2024 21:44:00 +0000</pubDate><guid>https://liguobao.github.io/p/985-huawu-find-job/</guid><description>&lt;p>来源：&lt;a class="link" href="https://www.zhihu.com/question/637524973" target="_blank" rel="noopener"
+>Q: 985 本，华五研一，计算机相关专业，但是代码技术能力偏低，研究方向不适合找工作，应该转哪个方向工作？&lt;/a>&lt;/p>
+&lt;p>A：&lt;/p>
+&lt;p>朋友。&lt;/p>
+&lt;p>如果这个世界上别人指明了好走的路，&lt;/p>
+&lt;p>这个时候是不是要问下自己：&lt;/p>
+&lt;p>配不配得上这条路？&lt;/p>
+&lt;p>对吧。&lt;/p>
+&lt;hr>
+&lt;p>所以先直接告诉你一个答案。&lt;/p>
+&lt;p>如果你自认编码能力偏低，&lt;/p>
+&lt;p>又不打算改变这个事实，&lt;/p>
+&lt;p>那么，绝大多数的方向你都搞不掂。&lt;/p>
+&lt;p>很简单的道理，编码能力就是基础功，&lt;/p>
+&lt;p>基础功不行，别的都是空谈。&lt;/p></description></item><item><title>程序员下班后接私活吗?</title><link>https://liguobao.github.io/p/programmer-do-freelance-after-work/</link><pubDate>Tue, 02 Jan 2024 20:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/programmer-do-freelance-after-work/</guid><description>&lt;p>Q: 程序员下班后接私活吗?&lt;/p>
+&lt;p>身为程序员的你们下班后接私活吗？&lt;/p>
+&lt;p>有没有一起做的呢？平常如果接到一个人做不过来怎么办呢？&lt;/p>
+&lt;p>A:&lt;/p>
+&lt;h2 id="性价比">“性价比”&lt;/h2>
+&lt;p>私活这种玩意，是要看性价比的。&lt;/p>
+&lt;p>我是从来不做毕设相关的那些玩意的。&lt;/p>
+&lt;p>原因很简单，事多钱少，&lt;/p>
+&lt;p>那群穷学生，一分钱都舍不得花，还要求你做的跟百度一样。&lt;/p>
+&lt;p>真的是又菜又爱玩的典型。&lt;/p>
+&lt;p>然而，这可能是市面上能看到最多的一些玩意。&lt;/p>
+&lt;p>我个人的经验是，这种玩意，不要做。&lt;/p>
+&lt;p>作业还是自己完成吧。&lt;/p>
+&lt;h2 id="一起做">一起做？&lt;/h2>
+&lt;p>实话讲，绝大多数的人，&lt;/p>
+&lt;p>并没有能和别人搭手好好干活的能力。&lt;/p>
+&lt;p>也没有规划好一个项目的能力。&lt;/p>
+&lt;p>这个时候，自己顶着上是最好的选择。&lt;/p>
+&lt;p>前端后端运维服务器全是你一个人干，&lt;/p>
+&lt;p>要什么自行车，能跑起来就行。&lt;/p>
+&lt;h2 id="做不过来">做不过来？&lt;/h2>
+&lt;p>一个人吃饱，两个人饿死。&lt;/p>
+&lt;p>大部分的时候，你是是请不起另一个朋友来干活的。&lt;/p>
+&lt;p>所以，你只能自己干。&lt;/p>
+&lt;p>当然如果你觉得都做不过来了，&lt;/p>
+&lt;p>利润这么高了，可以考虑拉人或者直接请人了，&lt;/p>
+&lt;p>可以考虑开始压榨剩余价值了~&lt;/p>
+&lt;p>很难说有什么长期的外包伙伴关系，&lt;/p>
+&lt;p>大家都有自己的事情要做，&lt;/p>
+&lt;p>大家不同时间段的工作强度也不太一样，&lt;/p>
+&lt;p>不可控的因素实在是太多了。&lt;/p>
+&lt;h2 id="最后">最后&lt;/h2>
+&lt;p>记得。&lt;/p>
+&lt;p>先定金。&lt;/p>
+&lt;p>再交付。&lt;/p>
+&lt;p>狗头护体。&lt;/p></description></item><item><title>2024 年，我们如何掌握人生的节奏感？</title><link>https://liguobao.github.io/p/how-to-grasp-your-life/</link><pubDate>Tue, 02 Jan 2024 16:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/how-to-grasp-your-life/</guid><description>&lt;p>Q: 2024 年，我们如何掌握人生的节奏感？&lt;/p>
+&lt;p>现代人常常因为「社会时钟」的逼迫而陷入焦虑。
+如何才能克服过「标配」人生的想法，
+重新拿回人生的主动权？&lt;/p>
+&lt;p>A:&lt;/p>
+&lt;h2 id="标配是一种安稳">标配是一种“安稳”&lt;/h2>
+&lt;p>不管信不信，所谓的「标配」，其实是最安稳的选择。&lt;/p>
+&lt;p>“标配”人生，往往是最低的风险，最容易达成的目标。&lt;/p>
+&lt;p>某个程度上，社会是鼓励你过「标配」人生的。&lt;/p>
+&lt;p>因为这样的人生，是最容易被社会接受的。&lt;/p></description></item><item><title>说真的计算机是不是不能再入行了？</title><link>https://liguobao.github.io/p/can-not-join-computer/</link><pubDate>Tue, 02 Jan 2024 16:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/can-not-join-computer/</guid><description>&lt;p>Q: 说真的计算机是不是不能再入行了？&lt;/p>
+&lt;p>A:&lt;/p>
+&lt;h2 id="我们在谈论什么">我们在谈论什么？&lt;/h2>
+&lt;p>广义上，我们在谈论的是一个行业的未来。&lt;/p>
+&lt;p>狭义上，我们在谈论的是一个职业的未来。&lt;/p>
+&lt;p>那么久行业的未来而言，计算机这个行业，&lt;/p>
+&lt;p>是不是真的已经到了尽头了呢？&lt;/p>
+&lt;p>暂时来说并没有。&lt;/p>
+&lt;p>信息化革命依旧还在继续。&lt;/p>
+&lt;p>信息化依旧还在继续提高效率。&lt;/p>
+&lt;p>那么广义上的计算机行业，&lt;/p>
+&lt;p>依旧还是有未来的。&lt;/p>
+&lt;p>狭义上来说，短时间内日子会趋于平稳。&lt;/p>
+&lt;p>或者某个时间节点来说，可能还是艰难的。&lt;/p>
+&lt;p>没什么办法，发展有时候就是螺旋上升的。&lt;/p>
+&lt;p>以前看到的那种指数爆发，&lt;/p>
+&lt;p>可能有生之年都不会再看到了。&lt;/p>
+&lt;p>所以。&lt;/p>
+&lt;p>这个时候只能耐心，努力，等待。&lt;/p>
+&lt;h2 id="正经答案">“正经答案”&lt;/h2>
+&lt;p>你都这样问了，&lt;/p>
+&lt;p>我觉得你已经不适合的。&lt;/p>
+&lt;p>很简单的道理。&lt;/p>
+&lt;p>你的想法是奔着互联网红利去的。&lt;/p>
+&lt;p>那么在红利消失之后的时间里，&lt;/p>
+&lt;p>你是不太能接受这个行业现状的。&lt;/p>
+&lt;p>所以，你还是去做你喜欢的事情吧。&lt;/p></description></item><item><title>为什么电脑还没有被手机淘汰掉？</title><link>https://liguobao.github.io/p/why-pc-not-replaced-by-mobile-test/</link><pubDate>Sun, 31 Dec 2023 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/why-pc-not-replaced-by-mobile-test/</guid><description>&lt;p>Q: &lt;a class="link" href="https://www.zhihu.com/question/579778692" target="_blank" rel="noopener"
+>为什么电脑还没有被手机淘汰掉？&lt;/a>&lt;/p>
+&lt;p>A:&lt;/p>
+&lt;p>首先，也不能说没有吧。&lt;/p>
+&lt;p>就如融入日常的短视频来说，大部分的内容都在手机上完成了。&lt;/p>
+&lt;p>很多剪辑类型的App连拍带剪都给你实现了，&lt;/p>
+&lt;p>甚至于还能直接发布到人家的平台之上~&lt;/p>
+&lt;p>某个程度上，这个场合之中手机设备已经把电脑淘汰掉了。&lt;/p>
+&lt;p>Apple公司每年都会发布一些用iPhone拍摄的大片，&lt;/p>
+&lt;p>全程iPhone拍摄和剪辑，这个秀肌肉的操作一直都很酷。&lt;/p>
+&lt;p>对吧。这个场合下，电脑还真不如手机。jpg&lt;/p>
+&lt;hr>
+&lt;p>我不是特指谁，我是说在座的各位，&lt;/p>
+&lt;p>都&amp;hellip;算是电脑啊。&lt;/p>
+&lt;p>打不过嘛，就加入对方。jpg&lt;/p>
+&lt;p>所有的手机，在广义上都算是电脑，&lt;/p>
+&lt;p>都属于计算机类别下的设备。&lt;/p>
+&lt;p>这点其实是可以正儿八经承认的。&lt;/p>
+&lt;p>那一个形态取代另一个形态，&lt;/p>
+&lt;p>也是很正常的事情。&lt;/p>
+&lt;hr>
+&lt;p>当然，这个提问下，想问的应该是：&lt;/p>
+&lt;p>为什么个人电脑还没被手机取代掉？&lt;/p>
+&lt;p>那么我正儿八经的想法是：&lt;/p>
+&lt;p>1、 算力不够。&lt;/p>
+&lt;p>2、交互不够。&lt;/p>
+&lt;p>3、生态不够。&lt;/p>
+&lt;p>总体来说，&lt;/p>
+&lt;p>还需要新的一场革命，&lt;/p>
+&lt;p>不过可能革命结果是一起完蛋。&lt;/p>
+&lt;p>手动狗头。&lt;/p></description></item><item><title>如果程序员工资没有那么高（加班等条件不变）你还会去做程序员吗？</title><link>https://liguobao.github.io/p/if-programmer-salary-is-not-high/</link><pubDate>Sat, 30 Dec 2023 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/if-programmer-salary-is-not-high/</guid><description>&lt;p>Q: 如果程序员工资没有那么高（加班等条件不变）你还会去做程序员吗？&lt;/p>
+&lt;p>A:&lt;/p>
+&lt;p>我觉得这个问题有点像是问：&lt;/p>
+&lt;p>你会不会因为爱好而去做一件事情？&lt;/p>
+&lt;p>或者说，你会不会出于爱好去选择一份工作？&lt;/p>
+&lt;p>那答案是肯定的啊。&lt;/p>
+&lt;p>会的啊。&lt;/p>
+&lt;p>写程序，对于我来说真的很快乐。&lt;/p>
+&lt;p>这份快乐，大概是来源于创造事物得到的成就感。&lt;/p>
+&lt;p>同时计算机的世界，0 就是 0，1 就是 1，没有模糊的地方。&lt;/p>
+&lt;p>这种严谨的世界，让我觉得很舒服。&lt;/p>
+&lt;p>一个被数学证明的事物，一个被数学证明的空间，着实让人着迷。&lt;/p>
+&lt;p>我觉得，这就是我喜欢写程序的原因。&lt;/p>
+&lt;p>如果它不能养活我的身体，&lt;/p>
+&lt;p>至少它是激励我的灵魂的。&lt;/p>
+&lt;p>我觉得，这就够了。&lt;/p>
+&lt;p>一个能带来快乐的事情，肯定是值得去做的。&lt;/p>
+&lt;hr></description></item><item><title>2023年互联网大厂集体变「瘦」，未来还能「胖」起来吗？</title><link>https://liguobao.github.io/p/2023-big-company-change/</link><pubDate>Fri, 29 Dec 2023 17:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/2023-big-company-change/</guid><description>&lt;p>Q:&lt;a class="link" href="https://www.zhihu.com/question/635787373" target="_blank" rel="noopener"
+>2023 年互联网大厂集体变「瘦」，未来还能「胖」起来吗？&lt;/a>&lt;/p>
+&lt;p>A: 难说。&lt;/p>
+&lt;h2 id="增长点">增长点&lt;/h2>
+&lt;p>本质上是没有增长点了。&lt;/p>
+&lt;p>大家也不愿意继续投资源的探索。&lt;/p>
+&lt;p>公司倒是有钱，但是不敢花。想想，是不是像极了某些场景~&lt;/p>
+&lt;p>所以要回答这个问题，到底来说还是，看你是不是相信这个行业的未来。&lt;/p>
+&lt;p>或者说，是不是还能看到寒冬的尽头？&lt;/p>
+&lt;p>所以，这样来说能理解为什么 GPT 出来之后，整个互联网都沸腾了吗？&lt;/p>
+&lt;p>因为大家都看到了希望：&lt;/p>
+&lt;p>新的方法论，新的增长点，新的领域。&lt;/p>
+&lt;p>甚至于，新的革命。&lt;/p>
+&lt;p>但是，这个希望是不是真的存在呢？&lt;/p>
+&lt;p>沸腾了一年之后大概也真看到结果了。&lt;/p>
+&lt;p>并没有那么乐观。&lt;/p>
+&lt;h2 id="神奇海螺">神奇海螺&lt;/h2>
+&lt;p>所以，我觉得，这个问题，我们讨论和问神奇海螺一样。&lt;/p>
+&lt;p>你问它，未来还能「胖」起来吗？&lt;/p>
+&lt;p>它回答你：「未来还能「胖」起来.」&lt;/p>
+&lt;p>这个问题并不会有神奇的答案。&lt;/p>
+&lt;p>但是，我觉得，这个问题的背后，&lt;/p>
+&lt;p>其实是有一个更大的问题:&lt;/p>
+&lt;p>贵国的互联网公司，究竟是有多少的部门，是本来就不应该去做的。&lt;/p>
+&lt;p>或者说，究竟这种所谓的胖，是不是本来就是一种错觉。&lt;/p>
+&lt;p>大部分公司其实都是互联网收租,&lt;/p>
+&lt;p>和现在收租的房东没什么区别。&lt;/p>
+&lt;p>那么，那确实就是&amp;hellip;.&lt;/p>
+&lt;p>面临一样的困境和问题。&lt;/p>
+&lt;p>我只能说，&lt;/p>
+&lt;p>祝好运了~&lt;/p>
+&lt;h2 id="还有什么想法">还有什么想法&lt;/h2>
+&lt;p>道理上来说，尽力而为。&lt;/p>
+&lt;p>理智上来说，大浪淘沙。&lt;/p>
+&lt;p>情感上来说，爱咋咋地。&lt;/p></description></item><item><title>是什么提高生产力的功能让你放弃iPhone转投华为？</title><link>https://liguobao.github.io/p/why-do-you-mo-to-huawei/</link><pubDate>Tue, 19 Dec 2023 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/why-do-you-mo-to-huawei/</guid><description>&lt;img src="https://liguobao.github.io/p/why-do-you-mo-to-huawei/cover.jpg" alt="Featured image of post 是什么提高生产力的功能让你放弃iPhone转投华为？" />&lt;p>来源：&lt;a class="link" href="https://www.zhihu.com/question/636723264" target="_blank" rel="noopener"
+>Q: 是什么提高生产力的功能让你放弃 iPhone 转投华为？&lt;/a>&lt;/p>
+&lt;p>哈？
+我刚刚从泥坑里面爬出来又让我躺回去吗？&lt;/p>
+&lt;p>不不不，我不需要。&lt;/p>
+&lt;p>论手机生产力，我觉得没人比老罗的 TNT 更懂吧。&lt;/p>
+&lt;p>而我，是真的用过 TNT 的&amp;hellip;.&lt;/p>
+&lt;p>即使作为一个挺喜欢锤子手机的人，&lt;/p>
+&lt;p>就那玩意我只能说，凑合能用都不算。&lt;/p>
+&lt;p>那其他的呢？&lt;/p>
+&lt;p>我只能说拜托了，手机真的只是手机呀。&lt;/p>
+&lt;p>所以。&lt;/p>
+&lt;p>大佬觉得什么是生产力呢？&lt;/p>
+&lt;hr>
+&lt;p>WO&lt;/p>
+&lt;p>某个程度上来说。&lt;/p>
+&lt;p>所谓的生产力是不是仅仅是一个硬件或者软件系统呢？&lt;/p>
+&lt;p>可能的答案是：不全是。&lt;/p>
+&lt;p>如何有效管理自己的时间和精力，&lt;/p>
+&lt;p>如何找到合适的工作方式，也算是一种答案。&lt;/p>
+&lt;p>所以有时候会发现，有些考研的朋友喜欢把自己的手机换成功能机，&lt;/p>
+&lt;p>直接杜绝了所有的娱乐可能性，直接提高了自己的学习效率。&lt;/p>
+&lt;p>那照着这个想法来说，某个设备满足自己的当前需求，&lt;/p>
+&lt;p>那倒也算是能提高生产力~&lt;/p>
+&lt;p>那暂时来说，&lt;/p>
+&lt;p>华为或者说鸿蒙，并没有能给我类似的体验。&lt;/p>
+&lt;p>iOS 整个生态，倒是足够的舒适和好用。&lt;/p>
+&lt;p>那大概很长一段时间来说，我应该是没有非用不可的情况的。&lt;/p>
+&lt;p>如果是说非 iOS 生态下的话，我可能依旧还是选择 Android。&lt;/p>
+&lt;p>所以我手上是拿着另一台红米 K50，价格大概是华为鸿蒙机器的四分之一。&lt;/p>
+&lt;p>对于我来说，K50 上能满足我绝大部分的需求了。&lt;/p>
+&lt;h2 id="展望">展望&lt;/h2>
+&lt;p>好像并没有展望。&lt;/p>
+&lt;p>大家都脚踏式，&lt;/p>
+&lt;p>好好努力咯。&lt;/p>
+&lt;blockquote>
+&lt;p>Photo by &lt;a class="link" href="https://unsplash.com/@pawel_czerwinski" target="_blank" rel="noopener"
+>Pawel Czerwinski&lt;/a> on &lt;a class="link" href="https://unsplash.com/" target="_blank" rel="noopener"
+>Unsplash&lt;/a>&lt;/p>
+&lt;/blockquote></description></item><item><title>程序员这个群体抽烟、喝酒、打牌几率高吗？</title><link>https://liguobao.github.io/p/programmer-smoke-drink-play-cards/</link><pubDate>Fri, 15 Dec 2023 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/programmer-smoke-drink-play-cards/</guid><description>&lt;p>Q: 程序员这个群体抽烟、喝酒、打牌几率高吗？&lt;/p>
+&lt;p>A:&lt;/p>
+&lt;h1 id="身边情况">身边情况&lt;/h1>
+&lt;p>我先说身边的情况。&lt;/p>
+&lt;p>我身边的程序员朋友，有抽烟情况的，大概是是一个半。&lt;/p>
+&lt;p>一个 + 半个，一个是常年抽烟，半个是偶尔抽烟。&lt;/p>
+&lt;p>喝酒的话，不完全统计，这个数量大概在 20%-30%左右。&lt;/p>
+&lt;p>打牌的话，或者说是热衷于打牌的话，我没什么印象，随便估一下 5%。&lt;/p>
+&lt;p>把打牌换成打游戏的话，这个大概能变成 70%。&lt;/p>
+&lt;p>这个情况有趣的在于。&lt;/p>
+&lt;p>其实把程序员身份去掉的话，&lt;/p>
+&lt;p>上面的比列也没什么大的区别。&lt;/p>
+&lt;p>能理解发生了什么事情吗？&lt;/p>
+&lt;p>本问题最大的问题是：做了无关的预设。&lt;/p>
+&lt;p>或者说，先问是不是再问为什么才对。&lt;/p>
+&lt;p>那么这个问题如果被表达成：&lt;/p>
+&lt;p>在大城市的你，身边抽烟喝酒打牌的几率高吗？&lt;/p>
+&lt;p>那应该是一个比较有意思的问题了。&lt;/p>
+&lt;h2 id="扩展回答">扩展回答&lt;/h2>
+&lt;p>那么，我来回答一下扩展提问。&lt;/p>
+&lt;p>顺便说明上面人群的更多信息。&lt;/p>
+&lt;p>还是刚刚的人群。&lt;/p>
+&lt;p>抽烟的哥们大概高中就有类似的需求，一直到现在。&lt;/p>
+&lt;p>喝酒的朋友呢，就很有地方特色了。&lt;/p>
+&lt;p>基本喝酒的都是家里有那么点习惯的，甚至于是本地就产酒。&lt;/p>
+&lt;p>他们的身体也是能消化酒精的，所以喝酒的几率就高了。&lt;/p>
+&lt;p>（我个人是不喝酒的，家里有过敏基因）&lt;/p>
+&lt;p>至于他们上学、工作之后，和朋友们基本也是能喝就喝。&lt;/p>
+&lt;p>打牌的朋友，这个我很难说，因为我不太了解。&lt;/p>
+&lt;p>看起来是他们的一种社交需求，倒不是为了赌钱。&lt;/p>
+&lt;p>打游戏的朋友，这个就很好理解了。&lt;/p>
+&lt;p>这年头哪有不打游戏的年轻人。jpg&lt;/p>
+&lt;p>大概如此。&lt;/p></description></item><item><title>程序员和外卖员，有啥共同点？</title><link>https://liguobao.github.io/p/programmer-and-deliveryman/</link><pubDate>Thu, 14 Dec 2023 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/programmer-and-deliveryman/</guid><description>&lt;p>Q:&lt;a class="link" href="https://www.zhihu.com/question/636435716" target="_blank" rel="noopener"
+>程序员和外卖员，有啥共同点？&lt;/a>&lt;/p>
+&lt;p>这个问题很有趣的。&lt;/p>
+&lt;p>正经点来说：&lt;/p>
+&lt;p>他们都是劳动者。&lt;/p>
+&lt;p>这个说法谁都挑不出毛病~&lt;/p>
+&lt;p>但是，明显这不是我们想要的答案。&lt;/p>
+&lt;h2 id="风口上的猪">风口上的猪&lt;/h2>
+&lt;p>那么有别的说法吗？&lt;/p>
+&lt;p>我觉得有。&lt;/p>
+&lt;p>首先：&lt;/p>
+&lt;p>他们都曾经是风口中的行业。&lt;/p>
+&lt;p>程序员是互联网风口中上飞的猪，&lt;/p>
+&lt;p>外卖员是餐饮信息化风口中上飞的猪。&lt;/p>
+&lt;p>因此他们都曾今因此拿到过很不错的收入。&lt;/p>
+&lt;p>互联网的风还在吹，虽然已经有点下坡路的样子。&lt;/p>
+&lt;p>信息化的进程还在继续，没有下一场革命之前，估计还能继续苟。&lt;/p>
+&lt;p>外卖的风余温还在，但是已经不是当初的样子了。&lt;/p>
+&lt;p>餐饮行业的“改造”差不多到尽头了，外卖的市场也已经饱和了。&lt;/p>
+&lt;p>那么外卖员确实有点风光不再了。&lt;/p>
+&lt;h2 id="搬运工">搬运工&lt;/h2>
+&lt;p>对吧。&lt;/p>
+&lt;p>程序员大多都只是代码的搬运工，&lt;/p>
+&lt;p>外卖员大多都是餐饮的搬运工。&lt;/p>
+&lt;p>某个程度上，&lt;/p>
+&lt;p>他们都是在做着重复的工作。&lt;/p>
+&lt;p>当然程序员的工作还是比外卖员的工作要好一些的。&lt;/p>
+&lt;p>因为程序员的工作是在电脑前完成的，&lt;/p>
+&lt;p>而外卖员的工作是在户外完成的。&lt;/p>
+&lt;p>至于能创造出新事物的程序员，&lt;/p>
+&lt;p>某个程度上来说也不能纯粹说是程序员了。&lt;/p>
+&lt;h2 id="燃料">燃料&lt;/h2>
+&lt;p>某个程度上来说。&lt;/p>
+&lt;p>他们都是城市的燃料。&lt;/p>
+&lt;p>程序员是城市信息化的燃料，&lt;/p>
+&lt;p>外卖员是城市人口的燃料。&lt;/p>
+&lt;p>很是绝望。&lt;/p></description></item><item><title>作为一个程序员，作息几点睡觉比较合适?</title><link>https://liguobao.github.io/p/programmer-sleep-time/</link><pubDate>Sun, 10 Dec 2023 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/programmer-sleep-time/</guid><description>&lt;p>看了下我的日常作息，iPhone 帮我统计的数据是这样的：&lt;/p>
+&lt;p>基本在十一点到两点之间卧床，&lt;/p>
+&lt;p>然后七点到九点之间起来。&lt;/p>
+&lt;p>睡眠时间平均在七个半小时左右。&lt;/p>
+&lt;p>起床时间取决于上班时间，偶尔拖延。&lt;/p>
+&lt;p>精神状况还算不错，偶尔会有疲劳感。&lt;/p>
+&lt;p>入睡时间就不好说了。&lt;/p>
+&lt;p>大部分时候基本十二点前结束了工作和学习，&lt;/p>
+&lt;p>偶尔会因为看资料或者看书晚一点到一点多，&lt;/p>
+&lt;p>周五周六比较放肆，可能会到两点多或者三点。&lt;/p>
+&lt;p>就如我之前在另一个回答说的：&lt;/p>
+&lt;p>白天永远都是忙忙碌碌，&lt;/p>
+&lt;p>夜晚完全属于自己。&lt;/p>
+&lt;hr>
+&lt;p>并不好说整个习惯是多好。&lt;/p>
+&lt;p>就晚睡来说，基本是从高中开始的作息了。&lt;/p>
+&lt;p>以前说什么勤奋学习，其实晚上效率也不高。&lt;/p>
+&lt;p>最近几年终于能很平静的看书学习，晚上确实就是一个很舒服的时间了。&lt;/p>
+&lt;p>没有打扰，没有消息，没有电话，没有人来找你。&lt;/p>
+&lt;p>只有你自己，你的书，你的电脑，你的代码。&lt;/p>
+&lt;p>一切都属于你自己。&lt;/p>
+&lt;hr>
+&lt;p>还有个有趣的事情。&lt;/p>
+&lt;p>如果你是一个程序员，你会发现你的程序员朋友们，大部分都是晚睡的。&lt;/p>
+&lt;p>然后，你要是能上一个神奇的网站，关注某些正在使用的开源仓库。&lt;/p>
+&lt;p>有机会在上面反馈一些 issue 的话，大概会发现大多数时候，&lt;/p>
+&lt;p>很多 issue 会在凌晨被回复。（ 虽然，有一部分情况是因为时区~&lt;/p>
+&lt;p>大概如此。&lt;/p>
+&lt;p>最后。&lt;/p></description></item></channel></rss>
