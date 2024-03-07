@@ -6,7 +6,6 @@ categories:
   - zhihu
 tags:
   - zhihu
-weight: 1
 ---
 
 Q:[2023 年互联网大厂集体变「瘦」，未来还能「胖」起来吗？](https://www.zhihu.com/question/635787373)

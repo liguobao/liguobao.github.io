@@ -8,7 +8,6 @@ categories:
   - Zhihu
 tags:
   - zhihu
-weight: 1
 ---
 
 来源：[Q: 是什么提高生产力的功能让你放弃 iPhone 转投华为？](https://www.zhihu.com/question/636723264)

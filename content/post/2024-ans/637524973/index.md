@@ -7,7 +7,6 @@ categories:
   - Zhihu
 tags:
   - 职业发展
-weight: 1
 ---
 
 来源：[Q: 985 本，华五研一，计算机相关专业，但是代码技术能力偏低，研究方向不适合找工作，应该转哪个方向工作？](https://www.zhihu.com/question/637524973)
