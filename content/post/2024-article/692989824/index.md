@@ -4,7 +4,7 @@ title: 如何在知乎复制一些不那么好复制的内容~
 description:
 slug: how-to-copy-zhihu-content
 date: 2024-04-27 08:00:00+0000
-image: xiaohei.png
+image: gqj.png
 categories:
   - Zhihu
 tags:
