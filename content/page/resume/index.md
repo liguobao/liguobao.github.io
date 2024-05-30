@@ -39,7 +39,7 @@ comments: false
 
 ## 项目
 
-### [地图搜租房](https://house-map.cn/app/house-map/#/)
+### [地图搜租房](https://house2048.cn/app/house-map/#/)
 
 满大街找租房心力交瘁？试试换个方式直接在地图上搜租房!
 
