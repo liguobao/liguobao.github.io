@@ -32,7 +32,9 @@ comments: false
 ## 联系我
 
 - [GitHub:liguobao](https://github.com/liguobao)
+
 - [知乎:李国宝](https://www.zhihu.com/people/codelover)
+
 - 公众号： 人生删除指南
 
 ## 项目
@@ -41,6 +43,25 @@ comments: false
 
 满大街找租房心力交瘁？试试换个方式直接在地图上搜租房!
 
-多平台房源爬虫 + 高德地图强力驱动,帮助你迅速找到合适房源。
+多平台房源爬虫 + 地图强力驱动,帮助你迅速找到合适房源。
 
-微信小程序"House2048"已上线，欢迎关注【人生删除指南】微信公众号体验反馈。
+微信小程序"地图搜租房"已上线，欢迎关注【人生删除指南】微信公众号体验反馈。
+
+### [GPT2077](https://chat.r2049.cn/user/login)
+
+国内高速，免梯子，安全高效。
+
+支持 GPT3.5、GPT4、论文润色，按量付费。
+
+GPT 2077强力驱动~
+
+```txt
+
+欢迎使用我的邀请码【9NBE3XJ9】注册GPT2077，
+
+立即获得50W Token奖励（GPT4、3.5模型通用）。
+
+点击链接注册：https://chat.r2049.cn/user/login?inviteCode=9NBE3XJ9
+
+```
+
