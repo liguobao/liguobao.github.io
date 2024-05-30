@@ -3,7 +3,7 @@ title: 【k3s】年度最佳边缘计算集群方案
 description: 今年最佳边缘计算集群方案
 slug: k3s-edge-computing-cluster
 date: 2024-05-1 08:00:00+0000
-image: gqj.png
+image: k3s.png
 categories:
   - Zhihu
 tags:

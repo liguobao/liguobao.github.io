@@ -3,7 +3,7 @@ title: Slax Reader：AI驱动的思维导图插件
 description: AI驱动，生成思维导图，提升网页阅读体验
 slug: slax-reader-ai-mind-map
 date: 2024-05-21 08:00:00+0000
-image: gqj.png
+image: ai.png
 categories:
   - Zhihu
 tags:

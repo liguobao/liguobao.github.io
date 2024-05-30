@@ -3,7 +3,7 @@ title: GPT2077 免费GPT4站点~
 description: 
 slug: gpt2077-free-gpt4
 date: 2024-05-29 08:00:00+0000
-image: gqj.png
+image: girl.png
 categories:
   - Zhihu
 tags:
@@ -77,6 +77,8 @@ GPT4 经典问题
 Q：鲁迅打了周树人，这个是正常的吗？
 
 三种不同模型的回答~
+
+![](./luxun.png)
 
 
 ### “每日签到”
