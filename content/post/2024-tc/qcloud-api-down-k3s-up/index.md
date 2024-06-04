@@ -11,7 +11,7 @@ tags:
   - 2024
 ---
 
-![](./api-gateway.png)
+![](./img/api-gateway.png)
 
 ## 背景
 
@@ -57,7 +57,7 @@ tags:
 
 私聊了一下之前熟悉的技术，说项目进入维护状态了。
 
-![](./super-edge-bug-report.png)
+![](/img/super-edge-bug-report.png)
 
 啧啧啧...
 
