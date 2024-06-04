@@ -11,7 +11,7 @@ tags:
   - 2024
 ---
 
-![](./img/api-gateway.png)
+![](./pics/api-gateway.png)
 
 ## 背景
 
@@ -57,7 +57,7 @@ tags:
 
 私聊了一下之前熟悉的技术，说项目进入维护状态了。
 
-![](/img/super-edge-bug-report.png)
+![](/pics/super-edge-bug-report.png)
 
 啧啧啧...
 
@@ -106,6 +106,189 @@ zj-hc1            Ready                      <none>                      33d    
 
 不过，没有了API网关，我们还有 ingress-nginx。
 
-k3s 集群中，有公网IP的master节点，我们可以直接在上面部署 ingress-nginx。
+k3s 集群中，有公网IP的节点，其实都可以直接作为流量入口。
 
-直接作为流量入口。
+然后，我们可以通过 ingress-nginx 的配置，将流量转发到worker节点上。
+
+需要的操作只是在 server or agent 启动的时候，加上 `--node-external-ip` 参数，指定公网IP。
+
+```sh
+# server
+ExecStart=/usr/local/bin/k3s \
+    server \
+	--node-external-ip 公网IP \
+    --flannel-backend wireguard-native \
+	'--tls-san' \
+	'公网IP' \
+	'--node-name' \
+	'vm-16-12-ubuntu' \
+	'--server' \
+	'https://10.0.28.17:6443' \
+
+# agent
+
+ExecStart=/usr/local/bin/k3s \
+    agent --node-name zj-hc1 \
+    --lb-server-port 5443 \
+    --node-ip 10.42.4.1  \
+    -node-external-ip 公网IP \
+    --server https://server:6443 \
+    --token="YOUR_TOKEN" \
+```
+
+此时，这个节点的443端口和80端口就可以直接接受外部流量了。（当然，需要防火墙开放）
+
+然后我们把对应的域名解析到这个节点的公网IP上，就可以直接访问了。
+
+
+
+## 一个完整的部署例子
+
+- 带域名证书自签名
+- 任意有公网IP的节点都可以作为入口
+- 如果需要负载IP负载均衡，可以在DNS解析时使用多个A记录，或者使用DNS负载均衡服务
+
+```yaml
+
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: stirling-pdf
+spec:
+  capacity:
+    storage: 30Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-storage
+  local:
+    path: /mnt/cfs-a4nopkhh/stirling-pdf
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - zj-hc1
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: stirling-pdf
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 30Gi
+  storageClassName: local-storage
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stirling-pdf
+  labels:
+    app: stirling-pdf
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stirling-pdf
+  template:
+    metadata:
+      labels:
+        app: stirling-pdf
+    spec:
+      containers:
+        - name: stirling-pdf
+          image: ccr.ccs.tencentyun.com/liguobao/s-pdf:ustc
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "500m"
+            limits:
+              memory: "2048Mi"
+              cpu: "1000m"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 120
+            periodSeconds: 60
+          env:
+            - name: DOCKER_ENABLE_SECURITY
+              value: "false"
+            - name: INSTALL_BOOK_AND_ADVANCED_HTML_OPS
+              value: "false"
+            - name: UI_APP_NAME
+              value: "R2049 PDF"
+            - name: ALLOW_GOOGLE_VISIBILITY
+              value: "true"
+            - name: LANGS
+              value: "zh_CN"
+            - name: APP_LOCALE
+              value: "zh_CN"
+          volumeMounts:
+            - mountPath: /configs
+              subPath: configs
+              name: data
+            - mountPath: /usr/share/tessdata
+              subPath: tessdata
+              name: data
+            - mountPath: /customFiles/
+              subPath: customFiles
+              name: data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: stirling-pdf
+      imagePullSecrets:
+        - name: regcred
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stirling-pdf-service
+spec:
+  selector:
+    app: stirling-pdf
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    kubernetes.io/tls-acme: "true"
+  generation: 1
+  name: ingress-pdf-house2048
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: pdf.house2048.cn
+      http:
+        paths:
+          - backend:
+              service:
+                name: stirling-pdf-service
+                port:
+                  number: 8080
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - pdf.house2048.cn
+      secretName: pdf-house2048-cn-tls
+
+```
