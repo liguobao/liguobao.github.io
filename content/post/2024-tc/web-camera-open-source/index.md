@@ -1,7 +1,7 @@
 ---
 title: WebCamera 基于WebRTC的点对点网络摄像头
 description: WebRTC,开源项目
-slug: web-camera-open-source
+slug: open-source-web-camera
 date: 2024-06-12 08:00:00+0000
 image: web-c.png
 categories:
@@ -11,7 +11,7 @@ tags:
   - Open Source
 ---
 
-# WebCamera 基于WebRTC的点对点网络摄像头
+## WebCamera 基于WebRTC的点对点网络摄像头
 
 前几天逛推，看到有个大佬开源了个小项目，基于WebRTC的点对点网络摄像头。
 
