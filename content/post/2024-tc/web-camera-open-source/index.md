@@ -14,11 +14,14 @@ tags:
 
 # WebCamera 基于WebRTC的点对点网络摄像头
 
-- [github.com/ShouChenICU/WebCamera](https://github.com/ShouChenICU/WebCamera)
-
 前几天逛推，看到有个大佬开源了个小项目，基于WebRTC的点对点网络摄像头。
 
-顺手看了一眼代码和文档，发现这个项目还是挺有意思的，于是自己部署了一个，分享给大家。
+- [github.com/ShouChenICU/WebCamera](https://github.com/ShouChenICU/WebCamera)
+
+顺手看了一眼代码和文档，发现这个项目还是挺有意思的，
+
+于是自己部署了一个，用下来有点意思，于是写个文章分享一下~
+
 
 ## 项目介绍
 
