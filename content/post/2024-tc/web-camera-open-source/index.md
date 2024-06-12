@@ -1,5 +1,5 @@
 ---
-title: WebCamera: 基于WebRTC的点对点网络摄像头
+title: WebCamera 基于WebRTC的点对点网络摄像头
 description: WebRTC,开源项目
 slug: web-camera-open-source
 date: 2024-06-12 08:00:00+0000
@@ -12,7 +12,7 @@ tags:
   - 2024
 ---
 
-# WebCamera: 基于WebRTC的点对点网络摄像头
+# WebCamera 基于WebRTC的点对点网络摄像头
 
 - [github.com/ShouChenICU/WebCamera](https://github.com/ShouChenICU/WebCamera)
 
