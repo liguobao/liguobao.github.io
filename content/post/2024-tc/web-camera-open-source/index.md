@@ -7,9 +7,8 @@ image: web-c.png
 categories:
   - TC
 tags:
-  - zhihu
-  - open-source
-  - 2024
+  - Github
+  - Open Source
 ---
 
 # WebCamera 基于WebRTC的点对点网络摄像头
