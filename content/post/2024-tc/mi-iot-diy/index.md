@@ -3,7 +3,7 @@ title: 一行代码控制你的米家设备
 description: 米家,智能家居,自动化,HomeAssistant
 slug: one-line-code-control-mi-iot-diy
 date: 2024-06-27 08:00:00+0000
-image: qcloud.png
+image: mi-iot-diy.png
 categories:
   - Zhihu
 tags:
