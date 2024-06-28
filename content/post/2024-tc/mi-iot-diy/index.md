@@ -167,7 +167,7 @@ you can also use miiocli genericmiot for controlling it.
 
 此设备型号特定文件将在您首次使用 genericmiot 集成时下载（并在本地缓存）。
 
-所有支持设备的功能都可以使用常见命令 
+所有支持设备的功能都可以使用常见命令来控制：
 
 status （显示设备状态）、 set （更改设置）、 actions 列出可用操作
 
@@ -177,40 +177,50 @@ status （显示设备状态）、 set （更改设置）、 actions 列出可�
 
 执行 status 将显示当前设备状态，以及设置的可接受值（标有访问 RW ）：
 
+```shell
 miiocli genericmiot --ip 127.0.0.1 --token 00000000000000000000000000000000 status
 
 Service Light (light)
         Switch Status (light:on, access: RW): False (<class 'bool'>, )
         Brightness (light:brightness, access: RW): 60 % (<class 'int'>, min: 1, max: 100, step: 1)
         Power Off Delay Time (light:off-delay-time, access: RW): 1:47:00 (<class 'int'>, min: 0, max: 120, step: 1)
+```
 
 ### 更改设置
 
 要更改设置，您需要提供设置的名称（例如，在上面的示例中 light:brightness ）：
 
+```shell
  miiocli genericmiot --ip 127.0.0.1 --token 00000000000000000000000000000000 set light:brightness 0
 
  [{'did': 'light:brightness', 'siid': 2, 'piid': 3, 'code': 0}]
+
+```
+
  使用动作
 大多数设备还将提供操作：
 
+```sh
 miiocli genericmiot --ip 127.0.0.1 --token 00000000000000000000000000000000 actions
 
 Light (light)
         light:toggle            Toggle
         light:brightness-down   Brightness Down
         light:brightness-up     Brightness Up
+```
+
 这些可以使用 call 命令执行：
 
+```sh
 miiocli genericmiot --ip 127.0.0.1 --token 00000000000000000000000000000000 call light:toggle
 
 {'code': 0, 'out': []}
+```
+
 使用 miiocli genericmiot --help 获取更多可用命令。
 
 详细的文档在这里：
 
 - [](https://github.com/rytilahti/python-miio?tab=readme-ov-file#controlling-modern-miot-devices)
 
-
-### 试试看？
-
+## 一行代码控制你的米家设备
