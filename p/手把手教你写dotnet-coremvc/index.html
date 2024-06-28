@@ -1,0 +1,348 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content='asp.net core篇 上一篇手把手教你写dotnet core(入门篇)我们已经简单在dotnet core里面跑了个"hello world!&ldquo;和累加程序. 今天我们的步子迈大一点,直接上 ASP.NET Core了. ASP.NET Core 是一个新的开源和跨平台的框架，用于构建如 Web 应用、物联网（IoT）应用和移动后端应用等连接到互联网的基于云的现代应用程序。ASP.NET Core 应用可运行于 .NET Core 和完整的 .NET Framework 之上。 构建它的目的是为那些部署在云端或者内部运行（on-premises）的应用提供一个优化的开发框架。它由最小开销的模块化的组件构成，因此在构建你的解决方案的同时可以保持灵活性。你可以在 Windows、Mac 和 Linux 上跨平台的开发和运行你的 ASP.NET Core 应用。 ASP.NET Core 开源在 GitHub 上。 创建ASP.NET Core程序 开发环境: dotnet SDK + VS Code 这里还是直接使用dotnet new命令来创建ASP.NET Core项目, 终端中输入"dotnet new web -n FirsrMVC&rdquo;. 自动创建FirsrMVC文件夹并生成对应的csproj和CS文件,具体操作和输出信息如下: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 ➜ codelover-blog git:(master) ✗ dotnet new web -n FirsrMVC The template "ASP.'><title>手把手教你写dotnet core(MVC)</title>
+<link rel=canonical href=https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-coremvc/><link rel=stylesheet href=/scss/style.min.0304c6baf04e01a8fe70693791cb744d56a3578a3120a8796cefc66825aa39c7.css><meta property='og:title' content="手把手教你写dotnet core(MVC)"><meta property='og:description' content='asp.net core篇 上一篇手把手教你写dotnet core(入门篇)我们已经简单在dotnet core里面跑了个"hello world!&ldquo;和累加程序. 今天我们的步子迈大一点,直接上 ASP.NET Core了. ASP.NET Core 是一个新的开源和跨平台的框架，用于构建如 Web 应用、物联网（IoT）应用和移动后端应用等连接到互联网的基于云的现代应用程序。ASP.NET Core 应用可运行于 .NET Core 和完整的 .NET Framework 之上。 构建它的目的是为那些部署在云端或者内部运行（on-premises）的应用提供一个优化的开发框架。它由最小开销的模块化的组件构成，因此在构建你的解决方案的同时可以保持灵活性。你可以在 Windows、Mac 和 Linux 上跨平台的开发和运行你的 ASP.NET Core 应用。 ASP.NET Core 开源在 GitHub 上。 创建ASP.NET Core程序 开发环境: dotnet SDK + VS Code 这里还是直接使用dotnet new命令来创建ASP.NET Core项目, 终端中输入"dotnet new web -n FirsrMVC&rdquo;. 自动创建FirsrMVC文件夹并生成对应的csproj和CS文件,具体操作和输出信息如下: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 ➜ codelover-blog git:(master) ✗ dotnet new web -n FirsrMVC The template "ASP.'><meta property='og:url' content='https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-coremvc/'><meta property='og:site_name' content='李国宝'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='dotnet core'><meta property='article:tag' content='docker'><meta property='article:tag' content='asp.net core'><meta property='article:published_time' content='2018-05-30T00:00:00+00:00'><meta property='article:modified_time' content='2018-05-30T00:00:00+00:00'><meta name=twitter:title content="手把手教你写dotnet core(MVC)"><meta name=twitter:description content='asp.net core篇 上一篇手把手教你写dotnet core(入门篇)我们已经简单在dotnet core里面跑了个"hello world!&ldquo;和累加程序. 今天我们的步子迈大一点,直接上 ASP.NET Core了. ASP.NET Core 是一个新的开源和跨平台的框架，用于构建如 Web 应用、物联网（IoT）应用和移动后端应用等连接到互联网的基于云的现代应用程序。ASP.NET Core 应用可运行于 .NET Core 和完整的 .NET Framework 之上。 构建它的目的是为那些部署在云端或者内部运行（on-premises）的应用提供一个优化的开发框架。它由最小开销的模块化的组件构成，因此在构建你的解决方案的同时可以保持灵活性。你可以在 Windows、Mac 和 Linux 上跨平台的开发和运行你的 ASP.NET Core 应用。 ASP.NET Core 开源在 GitHub 上。 创建ASP.NET Core程序 开发环境: dotnet SDK + VS Code 这里还是直接使用dotnet new命令来创建ASP.NET Core项目, 终端中输入"dotnet new web -n FirsrMVC&rdquo;. 自动创建FirsrMVC文件夹并生成对应的csproj和CS文件,具体操作和输出信息如下: 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 ➜ codelover-blog git:(master) ✗ dotnet new web -n FirsrMVC The template "ASP.'><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/zhihu-lgb_hu43204a3e06905bf6085819abcde4cc95_250380_300x0_resize_box_3.png width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/>李国宝</a></h1><h2 class=site-description>人生删除指南</h2></div></header><ol class=menu-social><li><a href=https://github.com/liguobao target=_blank title=GitHub rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://www.zhihu.com/people/codelover target=_blank title=知乎 rel=me><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>Home</span></a></li><li><a href=/archives/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/liguobao-resume/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>About</span></a></li><li><a href=/search/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/links/><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li><li class=menu-bottom-section><ol class=menu><li id=dark-mode-toggle><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#创建aspnet-core程序>创建ASP.NET Core程序</a><ol><li><a href=#programcs>Program.cs</a></li><li><a href=#startupcs>Startup.cs</a></li><li><a href=#wwwroot中的静态文件>wwwroot中的静态文件</a></li></ol></li><li><a href=#重头戏mvc>重头戏MVC</a><ol><li><a href=#startup>Startup</a></li><li><a href=#controllers>Controllers</a><ol><li><a href=#httplocalhost5000httplocalhost5000><a href=http://localhost:5000/>http://localhost:5000/</a></a></li><li><a href=#httplocalhost5000homeabouthttplocalhost5000homeabout><a href=http://localhost:5000/Home/About>http://localhost:5000/Home/About</a></a></li></ol></li><li><a href=#views>Views</a></li><li><a href=#models>Models</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><div class=article-title-wrapper><h2 class=article-title><a href=/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-coremvc/>手把手教你写dotnet core(MVC)</a></h2></div><footer class=article-time><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>May 30, 2018</time></div><div><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 4 分钟</time></div></footer></div></header><section class=article-content><h1 id=aspnet-core篇>asp.net core篇</h1><p>上一篇<a class=link href=https://zhuanlan.zhihu.com/p/37460329 target=_blank rel=noopener>手把手教你写dotnet core(入门篇)</a>我们已经简单在dotnet core里面跑了个"hello world!&ldquo;和累加程序.</p><p>今天我们的步子迈大一点,直接上 ASP.NET Core了.</p><ul><li>ASP.NET Core 是一个新的开源和跨平台的框架，用于构建如 Web 应用、物联网（IoT）应用和移动后端应用等连接到互联网的基于云的现代应用程序。ASP.NET Core 应用可运行于 .NET Core 和完整的 .NET Framework 之上。 构建它的目的是为那些部署在云端或者内部运行（on-premises）的应用提供一个优化的开发框架。它由最小开销的模块化的组件构成，因此在构建你的解决方案的同时可以保持灵活性。你可以在 Windows、Mac 和 Linux 上跨平台的开发和运行你的 ASP.NET Core 应用。 ASP.NET Core 开源在 <a class=link href=https://github.com/aspnet/home target=_blank rel=noopener>GitHub</a> 上。</li></ul><h2 id=创建aspnet-core程序>创建ASP.NET Core程序</h2><ul><li>开发环境: dotnet SDK + VS Code</li></ul><p>这里还是直接使用dotnet new命令来创建ASP.NET Core项目, 终端中输入"dotnet new web -n FirsrMVC&rdquo;.</p><p>自动创建FirsrMVC文件夹并生成对应的csproj和CS文件,具体操作和输出信息如下:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>➜  codelover-blog git:(master) ✗ dotnet new web -n FirsrMVC
+</span></span><span class=line><span class=cl>The template &#34;ASP.NET Core Empty&#34; was created successfully.
+</span></span><span class=line><span class=cl>This template contains technologies from parties other than Microsoft, see https://aka.ms/template-3pn for details.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Processing post-creation actions...
+</span></span><span class=line><span class=cl>Running &#39;dotnet restore&#39; on FirsrMVC/FirsrMVC.csproj...
+</span></span><span class=line><span class=cl>  Restoring packages for /Users/liguobao/code/codelover-blog/FirsrMVC/FirsrMVC.csproj...
+</span></span><span class=line><span class=cl>  Generating MSBuild file /Users/liguobao/code/codelover-blog/FirsrMVC/obj/FirsrMVC.csproj.nuget.g.props.
+</span></span><span class=line><span class=cl>  Generating MSBuild file /Users/liguobao/code/codelover-blog/FirsrMVC/obj/FirsrMVC.csproj.nuget.g.targets.
+</span></span><span class=line><span class=cl>  Restore completed in 1.97 sec for /Users/liguobao/code/codelover-blog/FirsrMVC/FirsrMVC.csproj.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Restore succeeded.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>➜  codelover-blog git:(master) ✗ cd FirsrMVC
+</span></span><span class=line><span class=cl>➜  FirsrMVC git:(master) ✗ ls
+</span></span><span class=line><span class=cl>FirsrMVC.csproj  Program.cs  Startup.cs  obj/  wwwroot/
+</span></span></code></pre></td></tr></table></div></div><h3 id=programcs>Program.cs</h3><p>在VS Code中打开FirsrMVC文件夹,简单看一下文件和Program.cs的代码</p><p><img src=http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-30%20%E4%B8%8A%E5%8D%887.42.08.png loading=lazy alt=文件列表></p><p>Program.cs依旧是Main主方法,然后调用了一下BuildWebHost方法,BuildWebHost返回一个IWebHost的实例,接着Run.</p><p>先不管这里具体做了什么事情,我们从语义上理解一下.</p><ol><li><p>BuildWebHost构建一个Web的Host实例,然后把WebHost实例运行起来了</p></li><li><p>创建WebHost使用了一个Startup的类</p></li></ol><p>关于详细WebHost的详细解析见:<a class=link href=http://www.cnblogs.com/RainingNight/p/hosting-in-asp-net-core.html target=_blank rel=noopener>ASP.NET Core 运行原理解剖[1]:Hosting</a></p><h3 id=startupcs>Startup.cs</h3><p>先直接上一波代码</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C# data-lang=C#><span class=line><span class=cl><span class=k>using</span> <span class=nn>System</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>System.Collections.Generic</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>System.Linq</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>System.Threading.Tasks</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>Microsoft.AspNetCore.Builder</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>Microsoft.AspNetCore.Hosting</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>Microsoft.AspNetCore.Http</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>Microsoft.Extensions.DependencyInjection</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>namespace</span> <span class=nn>FirsrMVC</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=k>class</span> <span class=nc>Startup</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// This method gets called by the runtime. Use this method to add services to the container.</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940</span>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=k>void</span> <span class=n>ConfigureServices</span><span class=p>(</span><span class=n>IServiceCollection</span> <span class=n>services</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1>// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</span>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=k>void</span> <span class=n>Configure</span><span class=p>(</span><span class=n>IApplicationBuilder</span> <span class=n>app</span><span class=p>,</span> <span class=n>IHostingEnvironment</span> <span class=n>env</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=n>env</span><span class=p>.</span><span class=n>IsDevelopment</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>app</span><span class=p>.</span><span class=n>UseDeveloperExceptionPage</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>            <span class=c1>//直接往HTTP Response中写入&#34;Hello World!&#34;,即在页面直接显示此字符</span>
+</span></span><span class=line><span class=cl>            <span class=n>app</span><span class=p>.</span><span class=n>Run</span><span class=p>(</span><span class=kd>async</span> <span class=p>(</span><span class=n>context</span><span class=p>)</span> <span class=p>=&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=k>await</span> <span class=n>context</span><span class=p>.</span><span class=n>Response</span><span class=p>.</span><span class=n>WriteAsync</span><span class=p>(</span><span class=s>&#34;Hello World!&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=p>});</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><ol><li><p>ConfigureServices:运行时被调用,将服务(services)添加到容器(container)中</p></li><li><p>Configure:运行时被调用, 配置HTTP request 的pipeline</p></li></ol><p>嗯,看不懂?没关系,待会一个个演示.</p><p>我们这里还是直接先跑一下程序,FirsrMVC文件夹路径下执行:dotnet run
+输出如下:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>➜  FirsrMVC git:(master) ✗ dotnet run
+</span></span><span class=line><span class=cl>Hosting environment: Production
+</span></span><span class=line><span class=cl>Content root path: /Users/liguobao/code/codelover-blog/FirsrMVC
+</span></span><span class=line><span class=cl>Now listening on: http://localhost:5000
+</span></span><span class=line><span class=cl>Application started. Press Ctrl+C to shut down.
+</span></span></code></pre></td></tr></table></div></div><p>然后访问<a class=link href=http://localhost:5000 target=_blank rel=noopener>http://localhost:5000</a>看看.</p><p><img src=http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-30%20%E4%B8%8A%E5%8D%888.00.09.png loading=lazy alt=localhost></p><p>好了,第一个MVC程序已经跑起来了,本文结束.逃&mldr;</p><p>这里应该还有人吧?那我们继续了.</p><h3 id=wwwroot中的静态文件>wwwroot中的静态文件</h3><ol><li><p>在wwwroot文件夹新增first.html,随便写个能看见的HTML标签(我写的是p标签)</p></li><li><p>在 Configure 方法中添加一句 app.UseStaticFiles(); 然后再重新运行一下</p></li><li><p>访问<a class=link href=http://localhost:5000/first.html target=_blank rel=noopener>http://localhost:5000/first.html</a></p></li></ol><p><img src=http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-30%20%E4%B8%8A%E5%8D%888.09.06.png loading=lazy alt=first></p><p>本步骤完成.</p><p>UseStaticFiles()方法:调用一个读取wwwroot文件夹下面的静态文件输出的中间件注册到程序中,从而完成静态文件的输出.</p><p>这里也告诉我们,ASP.NET Core的静态文件(JS+CSS+图片&mldr;)之类的都可以放这边来.</p><p>甚至于如果简单做前后端分离的话,前端的vue/react项目都可以扔这里去.</p><h2 id=重头戏mvc>重头戏MVC</h2><p>终于要讲到MVC了.</p><blockquote><p>MVC模式最早由Trygve Reenskaug在1978年提出[1]，是施乐帕罗奥多研究中心（Xerox PARC）在20世纪80年代为程序语言Smalltalk发明的一种软件架构。MVC模式的目的是实现一种动态的程式设计，使后续对程序的修改和扩展简化，并且使程序某一部分的重复利用成为可能。除此之外，此模式通过对复杂度的简化，使程序结构更加直观。软件系统通过对自身基本部分分离的同时也赋予了各个基本部分应有的功能。专业人员可以通过自身的专长分组：</p></blockquote><ol><li>控制器（Controller）- 负责转发请求，对请求进行处理。</li><li>视图（View） - 界面设计人员进行图形界面设计。</li><li>模型（Model） - 程序员编写程序应有的功能（实现算法等等）、数据库专家进行数据管理和数据库设计(可以实现具体的功能)。</li></ol><p>以上概念来自<a class=link href=https://zh.wikipedia.org/zh-hans/MVC target=_blank rel=noopener>维基百科:MVC</a></p><p>在ASP.NET Core,MVC模型一般就对应着三个文件夹,Models/Views/Controllers.</p><ol><li><p>Models:存放一些业务实体类,如Student,Course等,表现上就是C#的.cs文件</p></li><li><p>Views:存放CSHTML文件,ASP.NET Core的模板文件,类HTML,也可以写C#代码</p></li><li><p>Controllers: cs文件,继承Controller类的XXXController,实现业务逻辑代码</p></li></ol><p>下面一起来写一个简单的MVC玩玩.</p><h3 id=startup>Startup</h3><p>修改 Startup.cs的代码,新增MVC中间件的引用,操作如下:</p><ol><li><p>Startup.cs中的ConfigureServices方法下新增:services.AddMvc();</p></li><li><p>Configure方法下去掉之前的UseMvc,改成</p></li></ol><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C# data-lang=C#><span class=line><span class=cl> <span class=n>app</span><span class=p>.</span><span class=n>UseMvc</span><span class=p>(</span><span class=n>routes</span> <span class=p>=&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>routes</span><span class=p>.</span><span class=n>MapRoute</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>                    <span class=n>name</span><span class=p>:</span> <span class=s>&#34;default&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                    <span class=n>template</span><span class=p>:</span> <span class=s>&#34;{controller=Home}/{action=Index}/{id?}&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>全部代码如下:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C# data-lang=C#><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>System</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>System.Collections.Generic</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>System.Linq</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>System.Threading.Tasks</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>Microsoft.AspNetCore.Builder</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>Microsoft.AspNetCore.Hosting</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>Microsoft.Extensions.Configuration</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>Microsoft.Extensions.DependencyInjection</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>namespace</span> <span class=nn>FirsrMVC</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=k>class</span> <span class=nc>Startup</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=n>Startup</span><span class=p>(</span><span class=n>IConfiguration</span> <span class=n>configuration</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>Configuration</span> <span class=p>=</span> <span class=n>configuration</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=n>IConfiguration</span> <span class=n>Configuration</span> <span class=p>{</span> <span class=k>get</span><span class=p>;</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1>// This method gets called by the runtime. Use this method to add services to the container.</span>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=k>void</span> <span class=n>ConfigureServices</span><span class=p>(</span><span class=n>IServiceCollection</span> <span class=n>services</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>services</span><span class=p>.</span><span class=n>AddMvc</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=c1>// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.</span>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=k>void</span> <span class=n>Configure</span><span class=p>(</span><span class=n>IApplicationBuilder</span> <span class=n>app</span><span class=p>,</span> <span class=n>IHostingEnvironment</span> <span class=n>env</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=n>env</span><span class=p>.</span><span class=n>IsDevelopment</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>app</span><span class=p>.</span><span class=n>UseDeveloperExceptionPage</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>            <span class=k>else</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>app</span><span class=p>.</span><span class=n>UseExceptionHandler</span><span class=p>(</span><span class=s>&#34;/Home/Error&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=n>app</span><span class=p>.</span><span class=n>UseStaticFiles</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=n>app</span><span class=p>.</span><span class=n>UseMvc</span><span class=p>(</span><span class=n>routes</span> <span class=p>=&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>routes</span><span class=p>.</span><span class=n>MapRoute</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>                    <span class=n>name</span><span class=p>:</span> <span class=s>&#34;default&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                    <span class=n>template</span><span class=p>:</span> <span class=s>&#34;{controller=Home}/{action=Index}/{id?}&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=p>});</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=controllers>Controllers</h3><p>新增Controllers文件夹,在此文件下新建HomeController.cs文件,然后填入一下代码:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C# data-lang=C#><span class=line><span class=cl><span class=k>using</span> <span class=nn>System</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>System.Collections.Generic</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>System.Diagnostics</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>System.Linq</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>System.Threading.Tasks</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>Microsoft.AspNetCore.Mvc</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>namespace</span> <span class=nn>FirsrMVC.Controllers</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=k>class</span> <span class=nc>HomeController</span> <span class=p>:</span> <span class=n>Controller</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=n>IActionResult</span> <span class=n>Index</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=n>View</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=n>IActionResult</span> <span class=n>About</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=n>Json</span><span class=p>(</span><span class=k>new</span> <span class=p>{</span> <span class=n>name</span> <span class=p>=</span> <span class=s>&#34;我的名字&#34;</span><span class=p>,</span> <span class=n>success</span> <span class=p>=</span> <span class=kc>true</span> <span class=p>});</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>到这里,我们先运行一下代码.</p><p>如无意外的话,</p><p>访问<a class=link href=http://localhost:5000/ target=_blank rel=noopener>http://localhost:5000/</a> 空白一片,</p><p>访问<a class=link href=http://localhost:5000/Home/About target=_blank rel=noopener>http://localhost:5000/Home/About</a> 会输出</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;name&#34;</span><span class=p>:</span> <span class=s2>&#34;我的名字&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;success&#34;</span><span class=p>:</span> <span class=kc>true</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=httplocalhost5000httplocalhost5000><a class=link href=http://localhost:5000/ target=_blank rel=noopener>http://localhost:5000/</a></h4><p>其实这里访问的是<a class=link href=http://localhost:5000/Home/Index target=_blank rel=noopener>http://localhost:5000/Home/Index</a>,对应方法是HomeController/Index</p><p>我们看一下Log输出会发现这样的一句错误"fail: The view &lsquo;Index&rsquo; was not found. Searched locations: /Views/Home/Index.cshtml, /Views/Shared/Index.cshtml"</p><p>原因是HomeController中的Index返回的是View,</p><p>程序默认就会去/Views/目录下寻找/Home/Index.cshtml文件来渲染然后返回给浏览器,但是这里我们并没有这个文件,所以直接GG.</p><h4 id=httplocalhost5000homeabouthttplocalhost5000homeabout><a class=link href=http://localhost:5000/Home/About target=_blank rel=noopener>http://localhost:5000/Home/About</a></h4><p>对应方法是HomeController/About,返回为Json数据,不需要View.</p><p>所以直接就往浏览器输出了{ name = &ldquo;我的名字&rdquo;, success = true }的Json格式数据</p><h3 id=views>Views</h3><p>上一步我们的的Controller已经建好了,但是缺View文件,我们这里来创建一下View文件</p><p>新建Views/Home文件夹,然后再在此文件夹下新增Index.cshtml文件</p><p>然后在Index.cshtml中输入:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>&lt;p&gt;First View Page&lt;/p&gt;&gt;
+</span></span></code></pre></td></tr></table></div></div><p>刷新一下<a class=link href=http://localhost:5000/ target=_blank rel=noopener>http://localhost:5000/</a>页面.</p><p><img src=http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-30%20%E4%B8%8A%E5%8D%888.51.33.png loading=lazy alt=View></p><p>View文件也建立好了.</p><h3 id=models>Models</h3><p>最后简单讲一下Model.</p><p>同理,新建Models文件夹,在此文件夹下新增Student.cs文件.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C# data-lang=C#><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>namespace</span> <span class=nn>FirsrMVC</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=k>class</span> <span class=nc>Student</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=kt>string</span> <span class=n>Name</span> <span class=p>{</span> <span class=k>get</span><span class=p>;</span> <span class=k>set</span><span class=p>;</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=kt>int</span> <span class=n>Age</span> <span class=p>{</span> <span class=k>get</span><span class=p>;</span> <span class=k>set</span><span class=p>;</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>我们想做的要做的是把Student信息通过Controller返回给View,然后用View渲染出来.</p><p>修改一下HomeController/Index方法:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C# data-lang=C#><span class=line><span class=cl>        <span class=kd>public</span> <span class=n>IActionResult</span> <span class=n>Index</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>Models</span><span class=p>.</span><span class=n>Student</span> <span class=n>student</span> <span class=p>=</span> <span class=k>new</span> <span class=n>Models</span><span class=p>.</span><span class=n>Student</span><span class=p>()</span> <span class=p>{</span> <span class=n>Name</span> <span class=p>=</span> <span class=s>&#34;小明&#34;</span><span class=p>,</span> <span class=n>Age</span> <span class=p>=</span> <span class=m>16</span> <span class=p>};</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=n>View</span><span class=p>(</span><span class=n>student</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>修改一下Views/Home/Index.cshtml</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>@model FirsrMVC.Models.Student
+</span></span><span class=line><span class=cl>@if(Model !=null)
+</span></span><span class=line><span class=cl>{
+</span></span><span class=line><span class=cl>    &lt;p&gt;@Model.Name&lt;span&gt;今年&lt;/span&gt;@Model.Age&lt;span&gt;岁&lt;/span&gt;&lt;/p&gt;
+</span></span><span class=line><span class=cl>}else
+</span></span><span class=line><span class=cl>{
+</span></span><span class=line><span class=cl>     &lt;p&gt;这里什么都没有.&lt;/p&gt;
+</span></span><span class=line><span class=cl>}
+</span></span></code></pre></td></tr></table></div></div><p>重新运行一下程序,访问<a class=link href=http://localhost:5000/ target=_blank rel=noopener>http://localhost:5000/</a></p><p><img src=http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-30%20%E4%B8%8A%E5%8D%889.10.25.png loading=lazy alt=index></p><p>MVC结束.</p><p>本文完.</p><p>下一节配置文件+DI依赖注入.</p></section><footer class=article-footer><section class=article-tags><a href=/tags/dotnet-core/>Dotnet Core</a>
+<a href=/tags/docker/>Docker</a>
+<a href=/tags/asp.net-core/>ASP.NET Core</a></section><section class=article-copyright><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-core%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/><div class=article-details><h2 class=article-title>手把手教你写dotnet core(读取配置文件)</h2></div></a></article><article><a href=/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-core%E5%85%A5%E9%97%A8%E7%AF%87/><div class=article-details><h2 class=article-title>手把手教你写dotnet core(入门篇)</h2></div></a></article><article><a href=/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E7%94%A8jenkins%E8%87%AA%E5%8A%A8%E5%8F%91%E5%B8%83dotnet-core%E7%BD%91%E7%AB%99/><div class=article-details><h2 class=article-title>手把手教你用Jenkins自动发布dotnet core网站</h2></div></a></article></div></div></aside><script src=https://utteranc.es/client.js repo=liguobao/liguobao.github.io issue-term=title crossorigin=anonymous async></script><style>.utterances{max-width:unset}</style><script>let utterancesLoaded=!1;function setUtterancesTheme(e){let t=document.querySelector(".utterances iframe");t&&t.contentWindow.postMessage({type:"set-theme",theme:`github-${e}`},"https://utteranc.es")}addEventListener("message",e=>{if(e.origin!=="https://utteranc.es")return;utterancesLoaded=!0,setUtterancesTheme(document.documentElement.dataset.scheme)}),window.addEventListener("onColorSchemeChange",e=>{if(!utterancesLoaded)return;setUtterancesTheme(e.detail)})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2024 李国宝</section><section class=powerby>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.26.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

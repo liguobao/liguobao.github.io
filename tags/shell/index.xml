@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Shell on 李国宝</title><link>https://liguobao.github.io/tags/shell/</link><description>Recent content in Shell on 李国宝</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 25 Mar 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/shell/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux运维相关软件安装配置备忘</title><link>https://liguobao.github.io/p/linux%E8%BF%90%E7%BB%B4%E7%9B%B8%E5%85%B3%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%87%E5%BF%98/</link><pubDate>Sat, 25 Mar 2017 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/linux%E8%BF%90%E7%BB%B4%E7%9B%B8%E5%85%B3%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85%E9%85%8D%E7%BD%AE%E5%A4%87%E5%BF%98/</guid><description>&lt;h1 id="linux运维相关软件安装配置备忘">Linux运维相关软件安装配置备忘
+&lt;/h1>&lt;h2 id="端口占用相关">端口占用相关
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">//查找端口占用情况
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ netstat -anp &lt;span class="p">|&lt;/span> grep &lt;span class="s2">&amp;#34;5000&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">//干掉某个进程
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ &lt;span class="nb">kill&lt;/span> -9 &lt;span class="m">2553&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">//后台运行
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ nohup &lt;span class="nb">command&lt;/span> &lt;span class="p">&amp;amp;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="安装ss">安装SS
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">$ apt-get update
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">//安装ss
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ apt-get install python-pip
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ pip install shadowsocks
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">//运行ss服务端
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ nohup ssserver -s ip地址 -k 密码 &lt;span class="p">&amp;amp;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="安装mysql57">安装MySQL5.7
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">http://tecadmin.net/install-mysql-5-on-ubuntu/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ sudo apt-get install software-properties-common
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ sudo add-apt-repository -y ppa:ondrej/mysql-5.7
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ sudo apt-get update
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ sudo apt-get install mysql-server
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">//编辑此处，允许远程登录
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">/etc/mysql/my.cnf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">bind-address &lt;span class="o">=&lt;/span> 0.0.0.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">//重启MySQL
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ /etc/init.d/mysql restart
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="mysql添加用户">MySQL添加用户
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">//新增用户
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">grant all privileges on *.* to root@&lt;span class="s1">&amp;#39;%&amp;#39;&lt;/span> identified by &lt;span class="s2">&amp;#34;root&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">//立即生效
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">flush privileges&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">grant &lt;span class="k">select&lt;/span>,insert,update,delete,create,drop on to joe@10.163.225.87 identified by ‘123′&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">grant all on xxxDB.* to xxx@&lt;span class="s1">&amp;#39;%&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="mysql提示checking-for-tables-which-need-an-upgrade-are-corrupt-or-were-not-closed-cleanly">MySQL提示“Checking for tables which need an upgrade, are corrupt or were not closed cleanly”
+&lt;/h2>&lt;p>操作步骤：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">$ sudo service mysql stop
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ sudo /etc/init.d/apparmor reload
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ sudo service mysql start
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">或者：
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">down vote
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">This error occurs due to multiple installations of mysql. Run the command:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ ps -A&lt;span class="p">|&lt;/span>grep mysql
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Kill the process by using:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ sudo pkill mysql
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">and &lt;span class="k">then&lt;/span> run command:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ ps -A&lt;span class="p">|&lt;/span>grep mysqld
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Also Kill this process by running:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ sudo pkill mysqld
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Now you are fully &lt;span class="nb">set&lt;/span> just run the following commands:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ service mysql restart
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mysql -u root -p
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="7z相关操作">7z相关操作
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">//压缩
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ 7z a -t7z -r manager.7z /home/manager/*
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">//解压
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ 7z X xx.zip
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="腾讯云修改密码允许root登录">腾讯云修改密码,允许root登录
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">$ sudo passwd root
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ sudo vi /etc/ssh/sshd_config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ sudo service ssh restart
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="开机启动相关">开机启动相关
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">//查看开机启动相关程序
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ ls /etc/rc*
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">//安装sysv-rc-conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ sudo apt-get install sysv-rc-conf
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">$ sudo sysv-rc-conf
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>自动同步git repository脚本</title><link>https://liguobao.github.io/p/%E8%87%AA%E5%8A%A8%E5%90%8C%E6%AD%A5git-repository%E8%84%9A%E6%9C%AC/</link><pubDate>Fri, 25 Nov 2016 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/%E8%87%AA%E5%8A%A8%E5%90%8C%E6%AD%A5git-repository%E8%84%9A%E6%9C%AC/</guid><description>&lt;h1 id="自动同步git-repository脚本">自动同步git repository脚本
+&lt;/h1>&lt;p>由于平时偶尔需要merge不同分支代码到正式版本用于发布版本，merge前就需要先把各种分支代码更新到最新，接着再去做merge工作。&lt;/p>
+&lt;p>经常使用的分支其实不算太多，不过仓库倒是有好几个。来来去去写命令行或者GUI操作多了觉得有点繁琐，就琢磨来写个脚本做吧。&lt;/p>
+&lt;p>PS：偷懒是人类进步的动力&amp;hellip;&lt;/p>
+&lt;p>找了下资料，无外乎就是bat/sh脚本调用git cmd,之前写过bat命令，所以一开始是走这个思路的。&lt;/p>
+&lt;p>不料在PATH上配置好了git bin的路径之后，使用git命令没问题了，不过pull rebase的时候提示publickey无效。可是我的publickey一直都在.ssh里面,不存在无效的问题&amp;hellip;&lt;/p>
+&lt;p>懒得纠结，换shell吧。&lt;/p>
+&lt;p>参考资料：&lt;/p>
+&lt;p>&lt;a class="link" href="https://www.zhihu.com/question/38962022" target="_blank" rel="noopener"
+>请问如何写一个批处理自动打开 gitbash，然后自动执行一系列git命令（windows平台）？&lt;/a>&lt;/p>
+&lt;h2 id="show-code">Show Code
+&lt;/h2>&lt;p>使用shell就更好玩了，直接把git bash运行的命令扔到.sh文件里面就完事了。所以&amp;hellip;如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">printf&lt;/span> &lt;span class="s2">&amp;#34;Start rebase 58HouseSearch. \r\n&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ./58HouseSearch&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout master&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git pull --rebase origin master&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">printf&lt;/span> &lt;span class="s2">&amp;#34;Finish Pull Rebase 58HouseSearch release and master.\r\n&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">read&lt;/span> -p &lt;span class="s2">&amp;#34;Press any key to continue.&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ..&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">printf&lt;/span> &lt;span class="s2">&amp;#34;Start rebase hexoforblog;\r\n&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ./hexoforblog&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout master&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git pull --rebase origin master&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git checkout master&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">printf&lt;/span> &lt;span class="s2">&amp;#34;Finish Pull Rebase hexoforblog.\r\n&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">read&lt;/span> -p &lt;span class="s2">&amp;#34;Press any key to continue.&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ..&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>说明：&lt;/p>
+&lt;ol>
+&lt;li>printf 为打印函数，就像C语言那样用就好；&lt;/li>
+&lt;li>read -p &amp;ldquo;Press any key to continue.&amp;rdquo;; 这个是接受输入，结合起来可以做更复杂的行为咯。&lt;/li>
+&lt;li>输出内容和我们在git bash里面操作是一致的。&lt;/li>
+&lt;/ol></description></item></channel></rss>

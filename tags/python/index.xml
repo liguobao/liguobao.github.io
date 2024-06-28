@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Python on 李国宝</title><link>https://liguobao.github.io/tags/python/</link><description>Recent content in Python on 李国宝</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 05 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/python/index.xml" rel="self" type="application/rss+xml"/><item><title>Python Flask：一、项目初始化</title><link>https://liguobao.github.io/p/python-flask%E4%B8%80%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/</link><pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/python-flask%E4%B8%80%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/</guid><description>&lt;h1 id="python-flask最佳实践一项目初始化">Python Flask最佳实践：一、项目初始化
+&lt;/h1>&lt;h2 id="前言">前言
+&lt;/h2>&lt;p>Python Flask 是一个很简单方便的Web框架，&lt;/p>
+&lt;p>轻轻松松就可以完成一个Web 或者纯Web API。&lt;/p>
+&lt;p>前阵子需要起一个简单的Web + 脚本项目，折腾flask的时候发现没找到比较顺手的脚手架教程。&lt;/p>
+&lt;p>摸索了好一些知识，踩了一下坑什么的，&lt;/p>
+&lt;p>最后站在巨人肩膀上更新个教程。&lt;/p>
+&lt;h2 id="代码项目结构">代码项目结构
+&lt;/h2>&lt;p>正儿八经一个项目工程，遵循 三层架构 + MVC模型 对项目代码有严格的划分，&lt;/p>
+&lt;p>对这两个概念不太了解的朋友可以自行课后补习一下。&lt;/p>
+&lt;p>说明如下:&lt;/p>
+&lt;ul>
+&lt;li>src 所有的项目代码文件&lt;/li>
+&lt;li>src/service 逻辑层代码&lt;/li>
+&lt;li>src/model 业务实体&lt;/li>
+&lt;li>src/db 数据库相关，包括model定义和dao SQL查询&lt;/li>
+&lt;li>src/sdk 依赖的外部接口&lt;/li>
+&lt;li>src/job 后台进程启动的Job，一般都是通过API启动的后台任务&lt;/li>
+&lt;li>src/utils 工具类，config 配置类也在里面&lt;/li>
+&lt;li>src/app.py flask app 启动项&lt;/li>
+&lt;li>manage.py flask.cli 启动入口 api + job&lt;/li>
+&lt;li>Dockerfile Docker打包流程&lt;/li>
+&lt;li>debug.py 本地debug 启动入口&lt;/li>
+&lt;li>requirements.txt 所有的依赖包&lt;/li>
+&lt;li>.vscode/launch.json vs code debug 配置&lt;/li>
+&lt;/ul>
+&lt;h2 id="开搞">开搞
+&lt;/h2>&lt;p>废话多说两句，我比较喜欢requirements这种包组织方式，其他的就看自己了。&lt;/p>
+&lt;h3 id="requirementstxt">requirements.txt
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-txt" data-lang="txt">&lt;span class="line">&lt;span class="cl">flask
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">flask-swagger
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">flask-swagger-ui
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">flask-bootstrap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SQLAlchemy
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pymysql
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pydantic
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">requests
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">loguru
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gunicorn
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>简单说明&lt;/p>
+&lt;ul>
+&lt;li>flask是核心包，flask-swagger + flask-swagger-ui 是用来做Swagger UI的，flask-bootstrap 用来乱糊 HTML页面的&lt;/li>
+&lt;li>SQLAlchemy + pymysql + 一个是数据库ORM框架，一个是数据库驱动&lt;/li>
+&lt;li>pydantic 用来配合SQLAlchemy完成Model数据转换，解决一些奇怪的序列化反序列化问题&lt;/li>
+&lt;li>requests 用来对接外部HTTP接口或者写爬虫脚本&lt;/li>
+&lt;li>loguru 简易日志框架，from loguru import logger 就完事了&lt;/li>
+&lt;li>gunicorn 多进程部署&lt;/li>
+&lt;/ul></description></item><item><title>后端API入门学习指北</title><link>https://liguobao.github.io/p/%E5%90%8E%E7%AB%AFapi%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8C%97/</link><pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/%E5%90%8E%E7%AB%AFapi%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8C%97/</guid><description>&lt;h1 id="后端api入门学习指北">后端API入门学习指北
+&lt;/h1>&lt;p>了解一下一下概念.&lt;/p>
+&lt;h2 id="restful-api标准">RESTful API标准]
+&lt;/h2>&lt;p>所有的API都遵循[RESTful API标准].&lt;/p>
+&lt;p>建议大家都简单了解一下HTTP协议和RESTful API相关资料.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.ruanyifeng.com/blog/2011/09/restful.html?spm=a2c4e.11153940.blogcont533536.9.8aa6538f8as8Dc" target="_blank" rel="noopener"
+>阮一峰:理解RESTful架构&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.ruanyifeng.com/blog/2014/05/restful_api.html" target="_blank" rel="noopener"
+>阮一峰:RESTful API 设计指南&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/aisuhua/restful-api-design-references" target="_blank" rel="noopener"
+>RESTful API指南&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="依赖注入-di">依赖注入 DI
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.cnblogs.com/yangecnu/p/Introduce-Dependency-Injection.html" target="_blank" rel="noopener"
+>浅谈依赖注入&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.ruanyifeng.com/blog/2016/09/software-architecture.html" target="_blank" rel="noopener"
+>阮一峰:软件架构入门&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="java版">Java版
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>JDK版本:1.8 +&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>集成开发环境: IDEA &lt;a class="link" href="https://www.jetbrains.com/idea/" target="_blank" rel="noopener"
+>https://www.jetbrains.com/idea/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库:MySQL 5.7+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>内存数据库:Redis&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库访问框架: mybatis + groovy脚本(PS:如果自己熟悉JPA也可以用)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>构建工具: maven(自己熟悉gradle的话也可以用)&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>Java框架直接上Spring Boot + Spring MVC.&lt;/p>
+&lt;h3 id="资料链接">资料链接
+&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.ibm.com/developerworks/cn/java/wa-spring1/index.html" target="_blank" rel="noopener"
+>IBM:Spring 框架简介&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.ibm.com/developerworks/cn/java/j-maven/index.html" target="_blank" rel="noopener"
+>IBM:Maven 让事情变得简单&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.tianmaying.com/tutorial/spring-mvc-quickstart" target="_blank" rel="noopener"
+>Spring MVC快速入门教程&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.ibm.com/developerworks/cn/java/j-spring-boot-basics-perry/index.html" target="_blank" rel="noopener"
+>IBM:Spring Boot 基础&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.tianmaying.com/tutorial/spring-boot-overview" target="_blank" rel="noopener"
+>Spring Boot——开发新一代Spring Java应用&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://spring.io/guides/gs/spring-boot/" target="_blank" rel="noopener"
+>Building an Application with Spring Boot&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.tianmaying.com/tutorial/mybatis-spring" target="_blank" rel="noopener"
+>MyBatis入门实例：整合Spring MVC与MyBatis开发问答网站&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.mybatis.org/mybatis-3/zh/index.html" target="_blank" rel="noopener"
+>mybatis 官网&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="java入门目标">Java入门目标
+&lt;/h3>&lt;p>使用Spring boot 搭建Web API,通过Web API对数据增删查改.&lt;/p>
+&lt;h2 id="c版">C#版
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>.NET版本: dotnet core 2.0&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>集成开发环境: Visual Studio Code + dotnet core SDK 或者 Visual Studio 2017(推荐使用 Visual Studio Code)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库:MySQL 5.7+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>内存数据库:Redis&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库访问框架: Dapper&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>dotnet core 直接使用dotnet core mvc框架即可,依赖注入直接使用原生框架.&lt;/p>
+&lt;h3 id="入门资料链接">入门资料链接
+&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://zhuanlan.zhihu.com/p/37460329" target="_blank" rel="noopener"
+>手把手教你写dotnet core(入门篇)&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://zhuanlan.zhihu.com/p/37464924" target="_blank" rel="noopener"
+>手把手教你ASP.NET Core&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://docs.microsoft.com/zh-cn/dotnet/core/tutorials/" target="_blank" rel="noopener"
+>微软:NET Core 教程&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.cnblogs.com/dotNETCoreSG/p/aspnetcore-1-getting_started.html" target="_blank" rel="noopener"
+>ASP.NET Core 中文文档 第一章 入门&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.cnblogs.com/Sinte-Beuve/p/4231053.html" target="_blank" rel="noopener"
+>Dapper 使用教程&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/StackExchange/Dapper" target="_blank" rel="noopener"
+>Dapper Github&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="c入门目标">C#入门目标
+&lt;/h3>&lt;p>使用ASP.NET Core搭建Web API,通过Web API对数据增删查改.&lt;/p>
+&lt;h2 id="python版">Python版
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>Python版本:3.6.5&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>集成开发环境: Visual Studio Code + Python debug插件 或者 pycharm&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库:MySQL 5.7+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>内存数据库:Redis&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库访问框架: sqlalchemy&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>Python使用flask框架搭建Web API&lt;/p>
+&lt;h3 id="入门到放弃资料">入门到放弃资料
+&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://zhuanlan.zhihu.com/flask" target="_blank" rel="noopener"
+>知乎-李辉:Hello, Flask!&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000" target="_blank" rel="noopener"
+>廖雪峰:Python教程&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.runoob.com/python3/python3-tutorial.html" target="_blank" rel="noopener"
+>菜鸟教程:Python3基础&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.jianshu.com/p/0d234e14b5d3" target="_blank" rel="noopener"
+>SQLAlchemy ORM教程&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.shiyanlou.com/courses/724" target="_blank" rel="noopener"
+>实验楼:SQLAlchemy 基础教程&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://zhuanlan.zhihu.com/p/27400862" target="_blank" rel="noopener"
+>知乎-猪了个去:SQLAlchemy入门和进阶&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="python入门目标">Python入门目标
+&lt;/h3>&lt;p>使用Python flask搭建Web API,通过Web API对数据增删查改.&lt;/p>
+&lt;h2 id="php版本">PHP版本
+&lt;/h2>&lt;p>真有人选择这个?拖出去打死算了吧&amp;hellip;&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>PHP版本: 7.1 +&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>集成开发环境: Visual Studio Code + PHP debug插件 + nginx + php-fpm&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库:MySQL 5.7+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>内存数据库:Redis&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库访问框架: 忘了,回头补&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>构建工具:composer&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="入门到拍黄片">入门到拍黄片
+&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://docs.golaravel.com/docs/5.6/installation/" target="_blank" rel="noopener"
+>Laravel-简洁、优雅的PHP开发框架(PHP Web Framework)&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://lvwenhan.com/laravel/432.html" target="_blank" rel="noopener"
+>laravel 中文教程&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="拍黄片入门目标">拍黄片入门目标
+&lt;/h3>&lt;p>使用laravel 搭建Web API,通过Web API对数据增删查改.&lt;/p>
+&lt;h2 id="nodejs-版">node.js 版
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>node.js版本:9.0+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>集成开发环境: Visual Studio Code&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库:MySQL 5.7+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>内存数据库:Redis&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库访问框架: sequelize 或者orm2&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>构建工具:npm&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="nodejs入门资料链接">node.js入门资料链接
+&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.expressjs.com.cn/" target="_blank" rel="noopener"
+>Express:基于 Node.js 平台，快速、开放、极简的 web 开发框架。&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.runoob.com/nodejs/nodejs-express-framework.html" target="_blank" rel="noopener"
+>菜鸟教程:Node.js Express 框架&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://docs.sequelizejs.com/" target="_blank" rel="noopener"
+>sequelizejs&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://haibinpark.gitbooks.io/sequelize-zh-manual/content/" target="_blank" rel="noopener"
+>Sequelize 中文手册&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="nodejs入门目标">node.js入门目标
+&lt;/h3>&lt;p>使用Express 搭建Web API,通过Web API对数据增删查改.&lt;/p>
+&lt;p>没了,纯粹占行用的&amp;hellip;&lt;/p>
+&lt;p>拜.&lt;/p></description></item></channel></rss>

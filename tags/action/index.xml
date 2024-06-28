@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Action on 李国宝</title><link>https://liguobao.github.io/tags/action/</link><description>Recent content in Action on 李国宝</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 19 Dec 2023 13:34:08 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/action/index.xml" rel="self" type="application/rss+xml"/><item><title>如何配置Github Page页面</title><link>https://liguobao.github.io/p/how-to-set-github-page/</link><pubDate>Tue, 19 Dec 2023 13:34:08 +0000</pubDate><guid>https://liguobao.github.io/p/how-to-set-github-page/</guid><description>&lt;img src="https://liguobao.github.io/p/how-to-set-github-page/cover.png" alt="Featured image of post 如何配置Github Page页面" />&lt;p>具体教程：&lt;a class="link" href="https://docs.github.com/zh/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener"
+>配置 GitHub Pages 站点的发布源&lt;/a>&lt;/p>
+&lt;p>重点是：&lt;/p>
+&lt;p>设置对应仓库的分支。&lt;/p>
+&lt;p>一般我们使用Hugo之类的模板，&lt;/p>
+&lt;p>都是生成了一个public 静态文件夹的。&lt;/p>
+&lt;p>然后使用Github Action生成静态文件，&lt;/p>
+&lt;p>一般是发布到当前任务的独立分支。&lt;/p>
+&lt;h2 id="我的例子">我的例子
+&lt;/h2>&lt;p>我的仓库是：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://github.com/liguobao/liguobao.github.io" target="_blank" rel="noopener"
+>iguobao/liguobao.github.io&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>主分支 &lt;a class="link" href="https://github.com/liguobao/liguobao.github.io" target="_blank" rel="noopener"
+>master&lt;/a> 就是我的配置和文章，&lt;/p>
+&lt;p>静态文件分支是：&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/liguobao/liguobao.github.io/tree/gh-pages" target="_blank" rel="noopener"
+>liguobao.github.io/tree/gh-pages&lt;/a>&lt;/p>
+&lt;p>这个时候，就需要在&lt;/p>
+&lt;p>Github 项目中 settings/pages 设置我的 &amp;ldquo;Your GitHub Pages site&amp;rdquo;&lt;/p>
+&lt;p>分支为 gh-pages&lt;/p>
+&lt;p>&lt;img src="https://liguobao.github.io/p/how-to-set-github-page/cover.png"
+width="2402"
+height="1400"
+srcset="https://liguobao.github.io/p/how-to-set-github-page/cover_hubf67ac0d45ffc8fe70dab06ecdc23818_367629_480x0_resize_box_3.png 480w, https://liguobao.github.io/p/how-to-set-github-page/cover_hubf67ac0d45ffc8fe70dab06ecdc23818_367629_1024x0_resize_box_3.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="171"
+data-flex-basis="411px"
+>&lt;/p>
+&lt;p>然后。&lt;/p>
+&lt;p>完事。&lt;/p>
+&lt;blockquote>
+&lt;p>Photo by &lt;a class="link" href="https://unsplash.com/@pawel_czerwinski" target="_blank" rel="noopener"
+>Pawel Czerwinski&lt;/a> on &lt;a class="link" href="https://unsplash.com/" target="_blank" rel="noopener"
+>Unsplash&lt;/a>&lt;/p>
+&lt;/blockquote></description></item></channel></rss>
