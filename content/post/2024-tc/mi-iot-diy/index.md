@@ -152,6 +152,8 @@ you can also use miiocli genericmiot for controlling it.
 
 ```
 
+![](./img/miiocli.png)
+
 以下文档从官方文档中摘录翻译。
 
 ### 控制现代（MIoT）设备
@@ -224,3 +226,96 @@ miiocli genericmiot --ip 127.0.0.1 --token 00000000000000000000000000000000 call
 - [](https://github.com/rytilahti/python-miio?tab=readme-ov-file#controlling-modern-miot-devices)
 
 ## 一行代码控制你的米家设备
+
+基于上面的这些操作，
+
+这一行代码大概出来了。
+
+```sh
+# 获取可以执行的命令
+
+miiocli genericmiot --ip 192.168.31.170 --token xxxx actions 
+
+## 执行操作
+miiocli genericmiot --ip 192.168.31.170 --token xxxx call camera:record-start
+
+## 更改属性
+miiocli genericmiot --ip 192.168.31.170 --token xxxx set camera:record-mode 1
+
+```
+
+当然如果你需要自己写点代码的话，
+
+大概是这样的。
+
+```python
+
+from miio import Device, DeviceFactory, DeviceStatus
+from loguru import logger
+
+
+class MiIotDevice():
+    def __init__(self, ip, token) -> None:
+        self.device: Device = DeviceFactory.create(ip, token)
+        self.device_info = self.get_info()
+        logger.info(f"Device: {ip}-{token} created")
+
+    def load_status(self):
+        if self.device is None:
+            return None
+        d_status: DeviceStatus = self.device.status()
+        return d_status.data
+
+    def get_info(self):
+        return {
+            "ip": self.device.ip,
+            "model": self.device.model,
+            "device_id": "nx_"+str(self.device.device_id),
+            "mi_device_id": self.device.device_id
+        }
+
+    def call_action(self, name, args):
+        if self.device is None:
+            raise Exception("Device not ready")
+        call_result = self.device.call_action(name, args)
+        logger.info(
+            f"call_action: {name}-{args} result: {call_result}")
+        return call_result
+
+    def set_properties(self, properties):
+        if self.device is None:
+            raise Exception("Device not ready")
+        call_result = self.device.send("set_properties", properties)
+        logger.info(
+            f"set_properties: {properties} finish, result: {call_result}")
+        return call_result
+
+```
+
+大概，
+
+如上。
+
+## 总结
+
+python-miio 是一个很好的工具，可以用来控制米家设备
+
+- 通过 miiocli 可以很方便的来控制设备
+- 通过 miiocli genericmiot 可以控制现代设备
+- 通过 miiocli genericmiot actions 可以查看设备支持的操作
+- 通过 miiocli genericmiot status 可以查看设备的状态
+- 通过 miiocli genericmiot set 可以更改设备的属性
+- 通过 miiocli genericmiot call 可以执行设备的操作
+- 通过 miiocli genericmiot --help 可以查看更多命令
+
+同时可以自己写代码来折腾一下具体的一些设备，
+
+自己去搞一些自动化的东西也很简单了。
+
+祝大家玩得开心~
+
+## 参考 
+
+- [python-miio](https://github.com/rytilahti/python-miio)
+- [miot-spec 米家设备属性查询（非官方）](https://home.miot-spec.com/)
+
