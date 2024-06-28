@@ -122,7 +122,7 @@ Password: 你的密码
 
 这里基本能看到自己账号下的设备了，然后我们可以通过 miiocli 命令来控制这些设备了。
 
-## 常用的控制命令
+## 控制设备
 
 ```sh
 # 这是一个摄像头设备
@@ -152,11 +152,18 @@ you can also use miiocli genericmiot for controlling it.
 
 ```
 
+以下文档从官方文档中摘录翻译。
+
 ### 控制现代（MIoT）设备
 
 大多数现代(MIoT)设备都会自动受到 genericmiot 集成的支持。
 
 在内部，它使用("miot spec")文件来了解支持的功能，如传感器、设置和操作。
+
+
+- [https://home.miot-spec.com/spec/xiaomi.controller.86v1](https://home.miot-spec.com/spec/xiaomi.controller.86v1)
+
+- [米家产品库（非官方）](https://home.miot-spec.com/)
 
 此设备型号特定文件将在您首次使用 genericmiot 集成时下载（并在本地缓存）。
 
@@ -203,4 +210,7 @@ miiocli genericmiot --ip 127.0.0.1 --token 00000000000000000000000000000000 call
 详细的文档在这里：
 
 - [](https://github.com/rytilahti/python-miio?tab=readme-ov-file#controlling-modern-miot-devices)
+
+
+### 试试看？
 
