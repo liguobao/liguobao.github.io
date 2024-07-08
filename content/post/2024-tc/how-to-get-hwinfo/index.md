@@ -1,12 +1,13 @@
 ---
-title: 如何获取计算机的硬件信息
-description: 硬件信息, hwinfo
+title: 通过Python获取计算机的硬件信息，包括CPU、GPU、内存、主板、硬盘、操作系统等。
+description: Python, CPU, GPU, 内存, 主板, 硬盘, 操作系统, 硬件信息
 slug: how-to-get-hwinfo
 date: 2024-07-08 08:00:00+0000
 categories:
   - TC
 tags:
   - 2024
+  - TC
 ---
 
 之前在C++实现过一个获取硬件信息的接口，
@@ -33,7 +34,9 @@ tags:
 
 我自己太忙了也就没空再折腾了。
 
-想了下，算了，先用Python实现一个吧。
+想了下，
+
+算了，先用Python实现一个吧。
 
 
 ## 问问GPT？
