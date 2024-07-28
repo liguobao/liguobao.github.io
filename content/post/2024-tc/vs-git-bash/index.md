@@ -33,4 +33,4 @@ C:\Program Files\Git\bin\sh.exe
 最终效果。
 
 
-![](./img/exp.jpg)
+![](/img/exp.jpg)
