@@ -1,0 +1,1197 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>.NET Core on 李国宝</title><link>https://liguobao.github.io/tags/.net-core/</link><description>Recent content in .NET Core on 李国宝</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 07 Jun 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/.net-core/index.xml" rel="self" type="application/rss+xml"/><item><title>一次依赖注入不慎引发的一连串事故</title><link>https://liguobao.github.io/p/%E4%B8%80%E6%AC%A1%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E4%B8%8D%E6%85%8E%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E8%BF%9E%E4%B8%B2%E4%BA%8B%E6%95%85/</link><pubDate>Sun, 07 Jun 2020 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/%E4%B8%80%E6%AC%A1%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E4%B8%8D%E6%85%8E%E5%BC%95%E5%8F%91%E7%9A%84%E4%B8%80%E8%BF%9E%E4%B8%B2%E4%BA%8B%E6%95%85/</guid><description>&lt;p>一次依赖注入不慎引发的一连串事故。&lt;/p>
+&lt;h2 id="起因和现象">起因和现象
+&lt;/h2>&lt;p>偶尔会看到线上服务启动的时候第一波流量进来之后，&lt;/p>
+&lt;p>迟迟没有任何的响应，同时服务的监控检查接口正常，&lt;/p>
+&lt;p>所以 K8S 集群认为服务正常，继续放入流量。&lt;/p>
+&lt;p>查看日志基本如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:30.7080743+00:00 Microsoft.AspNetCore.Hosting.Diagnostics INF] Request starting HTTP/1.0 GET http://172.16.2.52/v1/user/test
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:30.7081525+00:00 Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware DBG] The request path /v1/user/test/account-balance does not match a supported file type
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:31.7074253+00:00 Microsoft.AspNetCore.Server.Kestrel DBG] Connection id &amp;#34;0HM09A1MAAR21&amp;#34; started.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:31.7077051+00:00 Microsoft.AspNetCore.Hosting.Diagnostics INF] Request starting HTTP/1.0 GET http://172.16.2.52/v1/user/test/account-balance
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:31.7077942+00:00 Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware DBG] The request path /v1/user/test/account-balance does not match a supported file type
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:32.2103440+00:00 Microsoft.AspNetCore.Server.Kestrel DBG] Connection id &amp;#34;0HM09A1MAAR22&amp;#34; started.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:32.2118432+00:00 Microsoft.AspNetCore.Hosting.Diagnostics INF] Request starting HTTP/1.0 GET http://172.16.2.52/v1/user/test/account-balance
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:32.2125894+00:00 Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware DBG] The request path /v1/user/test/account-ba&amp;#39;lan&amp;#39;ce does not match a supported file type
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:33.2223942+00:00 Microsoft.AspNetCore.Server.Kestrel DBG] Connection id &amp;#34;0HM09A1MAAR23&amp;#34; started.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:33.2238736+00:00 Microsoft.AspNetCore.Hosting.Diagnostics INF] Request starting HTTP/1.0 GET http://172.16.2.52/v1/user/test/account-balance
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:33.2243808+00:00 Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware DBG] The request path /v1/user/test/account-balance does not match a supported file type
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:34.2177528+00:00 Microsoft.AspNetCore.Server.Kestrel DBG] Connection id &amp;#34;0HM09A1MAAR24&amp;#34; started.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:34.2189073+00:00 Microsoft.AspNetCore.Hosting.Diagnostics INF] Request starting HTTP/1.0 GET http://172.16.2.52/v1/user/test/account-balance
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:34.2193483+00:00 Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware DBG] The request path /v1/user/test/account-balance does not match a supported file type
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:35.2169806+00:00 Microsoft.AspNetCore.Server.Kestrel DBG] Connection id &amp;#34;0HM09A1MAAR25&amp;#34; started.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:35.2178259+00:00 Microsoft.AspNetCore.Hosting.Diagnostics INF] Request starting HTTP/1.0 GET http://172.16.2.52/v1/user/test/account-balance
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:35.2181055+00:00 Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware DBG] The request path /v1/user/test/account-balance does not match a supported file type
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:36.2183025+00:00 Microsoft.AspNetCore.Server.Kestrel DBG] Connection id &amp;#34;0HM09A1MAAR26&amp;#34; started.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:36.2195050+00:00 Microsoft.AspNetCore.Hosting.Diagnostics INF] Request starting HTTP/1.0 GET http://172.16.2.52/v1/user/test/account-balance
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:36.2199702+00:00 Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware DBG] The request path /v1/user/test/account-balance does not match a supported file type
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:37.2373822+00:00 Microsoft.AspNetCore.Server.Kestrel DBG] Connection id &amp;#34;0HM09A1MAAR27&amp;#34; started.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;hr>
+&lt;h3 id="引发的几种后果">引发的几种后果
+&lt;/h3>&lt;h4 id="客户端调用超时">客户端调用超时
+&lt;/h4>&lt;p>经过了 30S 甚至更长时间后看到大量的数据库连接被初始化，然后开始集中式返回。&lt;/p>
+&lt;p>此时可能对于客户端调用来说这一批请求都是超时的，&lt;/p>
+&lt;p>严重影响用户体验和某些依赖于此的其他接口。&lt;/p>
+&lt;h4 id="数据库连接暴涨">数据库连接暴涨
+&lt;/h4>&lt;p>因为同时进入大量数据库查询请求触发数据库 DbContextPool 大量创建，&lt;/p>
+&lt;p>连接数随之暴涨，数据库查询性能急速下降，可能引发其他的应用问题。&lt;/p>
+&lt;h4 id="引发服务雪崩效应服务不可用">引发服务“雪崩”效应，服务不可用
+&lt;/h4>&lt;p>请求堆积的情况下，&lt;/p>
+&lt;p>health-check 接口响应异常，&lt;/p>
+&lt;p>导致 k8s 主动重启服务，重启后继续上述情况，&lt;/p>
+&lt;p>不断恶化最后导致服务不可用。&lt;/p>
+&lt;hr>
+&lt;h2 id="排查问题">排查问题
+&lt;/h2>&lt;h3 id="数据库的问题-">数据库的问题 ？
+&lt;/h3>&lt;p>当然，首先怀疑的就是数据库了。&lt;/p>
+&lt;p>存在性能瓶颈？慢查询导致不响应？发布期间存在其他的异常？&lt;/p>
+&lt;p>这类的问题都意义排查起来了。&lt;/p>
+&lt;p>最后发现，&lt;/p>
+&lt;p>这种情况发生的时候，数据库监控里面一片祥和。&lt;/p>
+&lt;p>数据库 IO、CPU、内存都正常，&lt;/p>
+&lt;p>连接数暴涨是这种情况发生的时候带来的，&lt;/p>
+&lt;p>而不是连接数暴涨之后导致了此情况。&lt;/p>
+&lt;h3 id="数据库驱动或者-ef-core-框架的问题">数据库驱动或者 EF Core 框架的问题？
+&lt;/h3>&lt;p>是的，&lt;/p>
+&lt;p>这个怀疑一直都存在于脑海中。&lt;/p>
+&lt;p>最终，&lt;/p>
+&lt;p>昨天带着“被挨骂的情况”去问了下“Pomelo.EntityFrameworkCore.MySql”的作者。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;span class="lnt">64
+&lt;/span>&lt;span class="lnt">65
+&lt;/span>&lt;span class="lnt">66
+&lt;/span>&lt;span class="lnt">67
+&lt;/span>&lt;span class="lnt">68
+&lt;/span>&lt;span class="lnt">69
+&lt;/span>&lt;span class="lnt">70
+&lt;/span>&lt;span class="lnt">71
+&lt;/span>&lt;span class="lnt">72
+&lt;/span>&lt;span class="lnt">73
+&lt;/span>&lt;span class="lnt">74
+&lt;/span>&lt;span class="lnt">75
+&lt;/span>&lt;span class="lnt">76
+&lt;/span>&lt;span class="lnt">77
+&lt;/span>&lt;span class="lnt">78
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">春天的熊 18:34:08
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">柚子啊，我这边的.NET Core服务刚起来，建立MySQL连接的时候好慢，然后同一批请求可能无法正常响应，这个有什么好的解决思路吗？
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:34:29
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Min Pool Size = 200
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:34:32
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">放连接字符串里
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">春天的熊 18:34:53
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">这个字段支持了吗？
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:35:07
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">一直都支持
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">春天的熊 18:35:56
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">等等， public static IServiceCollection AddDbContextPool&amp;lt;TContext&amp;gt;([NotNullAttribute] this IServiceCollection serviceCollection, [NotNullAttribute] Action&amp;lt;DbContextOptionsBuilder&amp;gt; optionsAction, int poolSize = 128) where TContext : DbContext;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">春天的熊 18:36:13
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">这里不是默认最大的128么？
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:36:18
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">你这个pool size是dbcontext的
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:36:21
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">我说的是mysql连接字符串的
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:36:28
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dbcontext的pool有什么用
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">春天的熊 18:43:13
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">我问个讨打的问题，dbcontext 是具体的链接实例，EF用的，Min Pool Size 指的是这一个实例上面的连接池吗“？
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:44:07
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">你在说什么。。。
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:45:58
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">放到mysql的连接字符串上
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:46:14
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">这样第一次调用MySqlConnection的时候就会建立200个连接
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">春天的熊 18:46:56
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">默认是多少来的？100吗？
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:48:33
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:48:40
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">max默认是100
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:52:50
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">DbContextPool要解决的问题你都没搞清楚
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">春天的熊 18:53:23
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">DbContextPool要解决的是尽量不去重复创建DbContext
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:53:34
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">为什么不要重复创建DbContext
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">春天的熊 18:53:50
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">因为每个DbContext创建的代价很高，而且很慢
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:54:01
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">创建DbContext有什么代价
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:54:03
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">哪里慢了
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:54:06
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">都是毫秒级的
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:54:20
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">他的代价不在于创建 而在于回收
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Yuko丶柚子 18:54:25
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">DbContextPool要解决的问题是 因为DbContext属于较大的对象，而且是频繁被new，而且经常失去引用导致GC频繁工作。
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Yuko 大大说的情况感觉会是一个思路，&lt;/p>
+&lt;p>所以第一反应就是加了参数控制连接池。&lt;/p>
+&lt;p>不过，无果。&lt;/p>
+&lt;p>5 个实例，&lt;/p>
+&lt;p>有 3 个实例正常启动，&lt;/p>
+&lt;p>2 个实例会重复“雪崩”效应，最终无法正常启动。&lt;/p>
+&lt;p>这个尝试操作重复了好多次，&lt;/p>
+&lt;p>根据文档和 Yuko 大大指导继续加了不少 MySQL 链接参数，&lt;/p>
+&lt;p>最后，&lt;/p>
+&lt;p>重新学习了一波链接参数的优化意义，&lt;/p>
+&lt;p>无果。&lt;/p>
+&lt;hr>
+&lt;h3 id="究竟数据库驱动有没有问题">究竟数据库驱动有没有问题？
+&lt;/h3>&lt;p>没什么好的思路了，&lt;/p>
+&lt;p>远程到容器里面 Debug 基本不太现实（重新打包 + 容器化打包 + k8s + 人肉和服务器垮大洋），&lt;/p>
+&lt;p>要不，试试把日志登录调节到 Debug 看看所有的行为？&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;Using&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;Serilog.Sinks.Console&amp;#34;&lt;/span>&lt;span class="p">],&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;MinimumLevel&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;Default&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Debug&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;Override&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;Microsoft&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Debug&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;WriteTo&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;Name&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Console&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;Args&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;outputTemplate&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;[{Timestamp:o} {SourceContext} {Level:u3}] {Message:lj}{NewLine}{Exception}&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>当然，这个事情没有直接在正常的生产环境执行。&lt;/p>
+&lt;p>这里是使用新配置，重新起新实例来操作。&lt;/p>
+&lt;p>然后我们看到程序启动的时候执行 EFMigration 的时候，&lt;/p>
+&lt;p>程序和整个数据库交互的完整日志。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-mysql" data-lang="mysql">&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">4147202&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DBG&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Opening&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">to&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">database&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;user_pool&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">on&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">server&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;aliyun-rds&amp;#39;&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">4159970&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DBG&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Opened&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">to&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">database&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;user_pool&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">on&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">server&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;a&amp;#39;&lt;/span>&lt;span class="n">li&lt;/span>&lt;span class="s1">&amp;#39;yun&amp;#39;&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">4161172&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Command&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DBG&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Executing&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DbCommand&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">Parameters&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">[],&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">CommandType&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;Text&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">CommandTimeout&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;30&amp;#39;&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">SELECT&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">INFORMATION_SCHEMA&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="kp">TABLES&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">WHERE&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">TABLE_SCHEMA&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;user_pool&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">AND&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">TABLE_NAME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;__EFMigrationsHistory&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">4170776&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Command&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">INF&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Executed&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">DbCommand&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="n">ms&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">Parameters&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">[],&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">CommandType&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;Text&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">CommandTimeout&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;30&amp;#39;&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">SELECT&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">INFORMATION_SCHEMA&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="kp">TABLES&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">WHERE&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">TABLE_SCHEMA&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;user_pool&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">AND&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">TABLE_NAME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;__EFMigrationsHistory&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">4171630&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DBG&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Closing&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">to&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">database&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;user_pool&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">on&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">server&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;aliyun-rds&amp;#39;&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">4172458&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DBG&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Closed&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">to&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">database&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;user_pool&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">on&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">server&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;aliyun-rds&amp;#39;&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">4385345&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Command&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DBG&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Creating&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DbCommand&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">for&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;ExecuteReader&amp;#39;&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">4386201&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Command&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DBG&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Created&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DbCommand&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">for&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;ExecuteReader&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="n">ms&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">4386763&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DBG&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Opening&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">to&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">database&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;user_pool&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">on&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">server&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;aliyun-rds&amp;#39;&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">4400143&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DBG&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Opened&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">to&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">database&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;user_pool&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">on&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">server&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;aliyun-rds&amp;#39;&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">4404529&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Command&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DBG&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Executing&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DbCommand&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">Parameters&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">[],&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">CommandType&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;Text&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">CommandTimeout&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;30&amp;#39;&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">SELECT&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="n">MigrationId&lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="n">ProductVersion&lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="n">__EFMigrationsHistory&lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">ORDER&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">BY&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="n">MigrationId&lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">4422387&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Command&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">INF&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Executed&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="nf">DbCommand&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="n">ms&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">Parameters&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="p">[],&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">CommandType&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;Text&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">CommandTimeout&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;30&amp;#39;&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">SELECT&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="n">MigrationId&lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="n">ProductVersion&lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="n">__EFMigrationsHistory&lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="k">ORDER&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">BY&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="n">MigrationId&lt;/span>&lt;span class="o">`&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">4446400&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Command&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DBG&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">A&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">data&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">reader&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">was&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">disposed&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">4447422&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DBG&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Closing&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">to&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">database&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;user_pool&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">on&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">server&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;aliyun-rds&amp;#39;&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">4447975&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="k">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">DBG&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Closed&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">connection&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">to&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">database&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;user_pool&amp;#39;&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">on&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">server&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s1">&amp;#39;aliyun-rds&amp;#39;&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2020&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">06&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mi">05&lt;/span>&lt;span class="n">T12&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">59&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">56&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="mi">5170419&lt;/span>&lt;span class="o">+&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">00&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">Microsoft&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">EntityFrameworkCore&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Migrations&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">INF&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">No&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">migrations&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">were&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">applied&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">The&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">database&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">is&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">already&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="n">up&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="k">to&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="kt">date&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;hr>
+&lt;p>看到这里的时候，由于发现我们之前对 DbContext 和 DbConnection 的理解不太好，&lt;/p>
+&lt;p>想搞清楚究竟是不 db connection 创建的时候有哪些行为，&lt;/p>
+&lt;p>于是我们找到了 &lt;a class="link" href="https://github.com/dotnet/efcore" target="_blank" rel="noopener"
+>dotnet/efcore Github &lt;/a>的源码开始拜读，&lt;/p>
+&lt;p>PS： 源码真香，能看源码真好。&lt;/p>
+&lt;p>尝试通过“Opening connection”找到日志的场景。&lt;/p>
+&lt;p>想了解这个日志输出的时候代码在做什么样的事情，可能同时会有哪些行为。&lt;/p>
+&lt;p>在考虑是不是其他的一些行为导致了上面的服务问题？&lt;/p>
+&lt;p>最终在&lt;a class="link" href="https://github.com/dotnet/efcore/blob/14f13ef6dfb0aae7e2faedfb0de604070fc5d101/src/EFCore.Relational/Storage/RelationalConnection.cs" target="_blank" rel="noopener"
+>RelationalConnection.cs&lt;/a>确认上面这些数据库相关日志肯定是会输出的，不存在其他的异常行为。&lt;/p>
+&lt;p>PS：不用细看，我们认真浏览了代码之后确认 DbContext 正常初始化，&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;span class="lnt">64
+&lt;/span>&lt;span class="lnt">65
+&lt;/span>&lt;span class="lnt">66
+&lt;/span>&lt;span class="lnt">67
+&lt;/span>&lt;span class="lnt">68
+&lt;/span>&lt;span class="lnt">69
+&lt;/span>&lt;span class="lnt">70
+&lt;/span>&lt;span class="lnt">71
+&lt;/span>&lt;span class="lnt">72
+&lt;/span>&lt;span class="lnt">73
+&lt;/span>&lt;span class="lnt">74
+&lt;/span>&lt;span class="lnt">75
+&lt;/span>&lt;span class="lnt">76
+&lt;/span>&lt;span class="lnt">77
+&lt;/span>&lt;span class="lnt">78
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c#" data-lang="c#">&lt;span class="line">&lt;span class="cl"> &lt;span class="cs">/// &amp;lt;summary&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="cs">/// Asynchronously opens the connection to the database.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="cs">/// &amp;lt;/summary&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="cs">/// &amp;lt;param name=&amp;#34;errorsExpected&amp;#34;&amp;gt; Indicate if the connection errors are expected and should be logged as debug message. &amp;lt;/param&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="cs">/// &amp;lt;param name=&amp;#34;cancellationToken&amp;#34;&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="cs">/// A &amp;lt;see cref=&amp;#34;CancellationToken&amp;#34; /&amp;gt; to observe while waiting for the task to complete.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="cs">/// &amp;lt;/param&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="cs">/// &amp;lt;returns&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="cs">/// A task that represents the asynchronous operation, with a value of &amp;lt;see langword=&amp;#34;true&amp;#34;/&amp;gt; if the connection&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="cs">/// was actually opened.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="cs">/// &amp;lt;/returns&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">virtual&lt;/span> &lt;span class="kd">async&lt;/span> &lt;span class="n">Task&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="kt">bool&lt;/span>&lt;span class="p">&amp;gt;&lt;/span> &lt;span class="n">OpenAsync&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">CancellationToken&lt;/span> &lt;span class="n">cancellationToken&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">bool&lt;/span> &lt;span class="n">errorsExpected&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">false&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">DbConnection&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">State&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="n">ConnectionState&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Broken&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">await&lt;/span> &lt;span class="n">DbConnection&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">CloseAsync&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="n">ConfigureAwait&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">wasOpened&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">false&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">DbConnection&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">State&lt;/span> &lt;span class="p">!=&lt;/span> &lt;span class="n">ConnectionState&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Open&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">CurrentTransaction&lt;/span> &lt;span class="p">!=&lt;/span> &lt;span class="kc">null&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">await&lt;/span> &lt;span class="n">CurrentTransaction&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">DisposeAsync&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="n">ConfigureAwait&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ClearTransactions&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">clearAmbient&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="kc">false&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">await&lt;/span> &lt;span class="n">OpenDbConnectionAsync&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">errorsExpected&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">cancellationToken&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">ConfigureAwait&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">wasOpened&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_openedCount&lt;/span>&lt;span class="p">++;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">HandleAmbientTransactions&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">wasOpened&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="kd">async&lt;/span> &lt;span class="n">Task&lt;/span> &lt;span class="n">OpenDbConnectionAsync&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">bool&lt;/span> &lt;span class="n">errorsExpected&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">CancellationToken&lt;/span> &lt;span class="n">cancellationToken&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">startTime&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">DateTimeOffset&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UtcNow&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">stopwatch&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">Stopwatch&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">StartNew&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 日志输出在这里&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">interceptionResult&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">=&lt;/span> &lt;span class="k">await&lt;/span> &lt;span class="n">Dependencies&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ConnectionLogger&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ConnectionOpeningAsync&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">startTime&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">cancellationToken&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">.&lt;/span>&lt;span class="n">ConfigureAwait&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(!&lt;/span>&lt;span class="n">interceptionResult&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IsSuppressed&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">await&lt;/span> &lt;span class="n">DbConnection&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">OpenAsync&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">cancellationToken&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">ConfigureAwait&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 日志输出在这里&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">await&lt;/span> &lt;span class="n">Dependencies&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ConnectionLogger&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ConnectionOpenedAsync&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">this&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">startTime&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">stopwatch&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Elapsed&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">cancellationToken&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">.&lt;/span>&lt;span class="n">ConfigureAwait&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">Exception&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">await&lt;/span> &lt;span class="n">Dependencies&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ConnectionLogger&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ConnectionErrorAsync&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">this&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">e&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">startTime&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">stopwatch&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Elapsed&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">errorsExpected&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cancellationToken&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">.&lt;/span>&lt;span class="n">ConfigureAwait&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kc">false&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">throw&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">_openedCount&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="m">0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_openedInternally&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>当然，我们同时也去看了一眼 &lt;a class="link" href="https://mysqlconnector.net/" target="_blank" rel="noopener"
+>MySqlConnector&lt;/a>的源码，&lt;/p>
+&lt;p>确认它自身是维护了数据库连接池的。到这里基本确认不会是数据库驱动导致的上述问题。&lt;/p>
+&lt;hr>
+&lt;h2 id="某种猜测">某种猜测
+&lt;/h2>&lt;h3 id="肯定是有什么奇怪的行为阻塞了当前服务进程">肯定是有什么奇怪的行为阻塞了当前服务进程，
+&lt;/h3>&lt;h3 id="导致数据库连接的日志也没有输出">导致数据库连接的日志也没有输出。
+&lt;/h3>&lt;h3 id="锁-异步等同步资源初始化问题">锁？ 异步等同步？资源初始化问题？
+&lt;/h3>&lt;p>周五晚上查到了这里已经十一点了，&lt;/p>
+&lt;p>于是先下班回家休息了。&lt;/p>
+&lt;p>于是，&lt;/p>
+&lt;p>周六练完车之后 Call 了一下小伙伴，&lt;/p>
+&lt;p>又双双开始了愉快的 Debug。&lt;/p>
+&lt;hr>
+&lt;h3 id="插曲">插曲
+&lt;/h3>&lt;p>小伙伴海林回公司前发了个朋友圈。&lt;/p>
+&lt;p>“ 咋们继续昨天的 bug，&lt;/p>
+&lt;p>特此立 flag：修不好直播吃 bug&lt;/p>
+&lt;p>反正不是你死就是我亡…”&lt;/p>
+&lt;p>我调侃评论说:&lt;/p>
+&lt;p>你等下，我打包下代码去楼下打印出来待会当晚饭&lt;/p>
+&lt;hr>
+&lt;h2 id="开始锁定问题">开始锁定问题
+&lt;/h2>&lt;h3 id="中间件导致的吗">中间件导致的吗？
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">[2020-06-05T13:00:35.2181055+00:00 Microsoft.AspNetCore.StaticFiles.StaticFileMiddleware DBG]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">The request path /v1/user/test/account-balance does not match a supported file type
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>我们对着这个日志思考了一会人生，&lt;/p>
+&lt;p>然后把引用此中间件的代码注释掉了，&lt;/p>
+&lt;p>不过，无果。&lt;/p>
+&lt;h3 id="自定义-filters-导致的吗">自定义 filters 导致的吗？
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:01:05.3126001+00:00 Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker DBG] Execution plan of exception filters (in the following order): [&amp;#34;None&amp;#34;]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:01:05.3126391+00:00 Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker DBG] Execution plan of result filters (in the following order): [&amp;#34;Microsoft.AspNetCore.Mvc.ViewFeatures.Filters.SaveTempDataFilter&amp;#34;, &amp;#34;XXX.Filters.HTTPHeaderAttribute (Order: 0)&amp;#34;]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">[2020-06-05T13:01:05.3072206+00:00 Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker DBG] Execution plan of authorization filters (in the following order): [&amp;#34;None&amp;#34;]
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>看到这个日志我们考虑了一下，&lt;/p>
+&lt;p>是不是因为 filters 导致了问题。&lt;/p>
+&lt;p>毕竟在 HTTPHeaderAttribute 我们还还做了 ThreadLocal&amp;lt;Dictionary&amp;lt;string, string&amp;raquo; CurrentXHeaders&lt;/p>
+&lt;p>这里怀疑是不是我们的实现存在锁机制导致“假死问题”。&lt;/p>
+&lt;p>尝试去掉。&lt;/p>
+&lt;p>不过，&lt;/p>
+&lt;p>无果。&lt;/p>
+&lt;hr>
+&lt;h3 id="尝试使用-ptrace">尝试使用 ptrace
+&lt;/h3>&lt;p>没什么很好的头绪了，要不上一下 ptrace 之类的工具跟一下系统调用？&lt;/p>
+&lt;p>最早在去年就尝试过使用 ptrace 抓进程数据看系统调用，&lt;/p>
+&lt;p>后来升级到.NET Core3.0 之后，官方基于 Events + LTTng 之类的东西做了 dotnet-trace 工具，&lt;/p>
+&lt;p>官网说明：&lt;a class="link" href="https://docs.microsoft.com/en-us/dotnet/core/diagnostics/dotnet-trace" target="_blank" rel="noopener"
+>dotnet-trace performance analysis utility&lt;/a>&lt;/p>
+&lt;p>改一下打包扔上去做一个数据收集看看。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-Docker" data-lang="Docker">&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> mcr.microsoft.com/dotnet/core/sdk:3.1 AS build-env&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /app&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># copy csproj and restore as distinct layers&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> src/*.csproj ./&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> dotnet restore&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> . ./&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># copy everything else and build&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> dotnet publish src -c Release -o /app/out&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># build runtime image&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> mcr.microsoft.com/dotnet/core/aspnet:3.1&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># debug&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># Install .NET Core SDK&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> &lt;span class="nv">dotnet_sdk_version&lt;/span>&lt;span class="o">=&lt;/span>3.1.100 &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> curl -SL --output dotnet.tar.gz https://dotnetcli.azureedge.net/dotnet/Sdk/&lt;span class="nv">$dotnet_sdk_version&lt;/span>/dotnet-sdk-&lt;span class="nv">$dotnet_sdk_version&lt;/span>-linux-x64.tar.gz &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nv">dotnet_sha512&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;5217ae1441089a71103694be8dd5bb3437680f00e263ad28317665d819a92338a27466e7d7a2b1f6b74367dd314128db345fa8fff6e90d0c966dea7a9a43bd21&amp;#39;&lt;/span> &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$dotnet_sha512&lt;/span>&lt;span class="s2"> dotnet.tar.gz&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> sha512sum -c - &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> rm -rf /usr/share/dotnet &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> rm -rf /usr/bin/dotnet &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> mkdir -p /usr/share/dotnet &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> tar -ozxf dotnet.tar.gz -C /usr/share/dotnet &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> rm dotnet.tar.gz &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> ln -s /usr/share/dotnet/dotnet /usr/bin/dotnet &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span> &lt;span class="c1"># Trigger first run experience by running arbitrary cmd&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> dotnet help&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> dotnet tool install --global dotnet-trace&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> dotnet tool install -g dotnet-dump&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> dotnet tool install --global dotnet-counters&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENV&lt;/span> &lt;span class="nv">PATH&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$PATH&lt;/span>&lt;span class="s2">:/root/.dotnet/tools&amp;#34;&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># end debug&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /app&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> --from&lt;span class="o">=&lt;/span>build-env /app/out .&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENTRYPOINT&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;dotnet&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;Your-APP.dll&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;hr>
+&lt;p>更新发布，等待服务正常启动之后，&lt;/p>
+&lt;p>使用 ab -c 300 -n 3000 &amp;lsquo;http://172.16.2.52/v1/user/test/account-balance&amp;rsquo; 模拟 300 个用户同时请求，&lt;/p>
+&lt;p>使得程序进入上述的“假死状态”。&lt;/p>
+&lt;p>接着立即进入容器，执行&amp;rsquo;dotnet-trace collect -p 1&amp;rsquo; 开始收集日志。&lt;/p>
+&lt;p>最后拿到了一份大概 13M trace.nettrace 数据, 这个文件是 PerView 支持的格式，&lt;/p>
+&lt;p>在 MacOS 或者 Linux 上无法使用。&lt;/p>
+&lt;p>好在 dotnet-trace convert 可以将 trace.nettrace 转换成 speedscope/chromium 两种格式。&lt;/p>
+&lt;h4 id="speedscopechromium">speedscope/chromium
+&lt;/h4>&lt;ul>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/jlfwong/speedscope" target="_blank" rel="noopener"
+>speedscope:A fast, interactive web-based viewer for performance profiles.&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://developers.google.com/web/tools/chrome-devtools/evaluate-performance/" target="_blank" rel="noopener"
+>chrome-devtools evaluate-performance &lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://zhuanlan.zhihu.com/p/29879682" target="_blank" rel="noopener"
+>全新 Chrome Devtool Performance 使用指南&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">$dotnet&lt;/span>-trace convert 20200606-1753-trace.nettrace.txt --format Speedscope
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">$dotnet&lt;/span>-trace convert 20200606-1753-trace.nettrace.txt --format chromium
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">$speedscope&lt;/span> 20200606-1753-trace.nettrace.speedscope.json
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然后，炸鸡了。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="err">➜&lt;/span> &lt;span class="n">Downloads&lt;/span> &lt;span class="n">speedscope&lt;/span> &lt;span class="mi">20200606&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mf">1625.&lt;/span>&lt;span class="n">trace&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">speedscope&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">json&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Error&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">Cannot&lt;/span> &lt;span class="n">create&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">string&lt;/span> &lt;span class="n">longer&lt;/span> &lt;span class="n">than&lt;/span> &lt;span class="mh">0x3fffffe7&lt;/span> &lt;span class="n">characters&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">at&lt;/span> &lt;span class="ne">Object&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">slice&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">buffer&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">js&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">652&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">37&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">at&lt;/span> &lt;span class="n">Buffer&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">toString&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">buffer&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">js&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">800&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">14&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">at&lt;/span> &lt;span class="n">main&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">home&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">liguobao&lt;/span>&lt;span class="o">/.&lt;/span>&lt;span class="n">nvm&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">versions&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">node&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">v12&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">16.2&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">lib&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">node_modules&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">speedscope&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">bin&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">cli&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">js&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">69&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">39&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">at&lt;/span> &lt;span class="n">processTicksAndRejections&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">internal&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">process&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">task_queues&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">js&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">97&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">5&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Usage&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">speedscope&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">filepath&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">If&lt;/span> &lt;span class="n">invoked&lt;/span> &lt;span class="n">with&lt;/span> &lt;span class="n">no&lt;/span> &lt;span class="n">arguments&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">will&lt;/span> &lt;span class="n">open&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">local&lt;/span> &lt;span class="n">copy&lt;/span> &lt;span class="n">of&lt;/span> &lt;span class="n">speedscope&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">your&lt;/span> &lt;span class="n">default&lt;/span> &lt;span class="n">browser&lt;/span>&lt;span class="o">.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">Once&lt;/span> &lt;span class="n">open&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">you&lt;/span> &lt;span class="n">can&lt;/span> &lt;span class="n">browse&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">a&lt;/span> &lt;span class="n">profile&lt;/span> &lt;span class="n">to&lt;/span> &lt;span class="n">import&lt;/span>&lt;span class="o">.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">If&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">is&lt;/span> &lt;span class="n">used&lt;/span> &lt;span class="n">as&lt;/span> &lt;span class="n">the&lt;/span> &lt;span class="n">filepath&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">will&lt;/span> &lt;span class="n">read&lt;/span> &lt;span class="n">from&lt;/span> &lt;span class="n">stdin&lt;/span> &lt;span class="n">instead&lt;/span>&lt;span class="o">.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cat&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">path&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">to&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">profile&lt;/span> &lt;span class="o">|&lt;/span> &lt;span class="n">speedscope&lt;/span> &lt;span class="o">-&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>哦， Buffer.toString 炸鸡了。&lt;/p>
+&lt;p>看一眼 20200606-1625.trace.speedscope.json 多大?&lt;/p>
+&lt;p>900M。&lt;/p>
+&lt;p>牛逼。&lt;/p>
+&lt;p>那换 Chrome performance 看看。&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/chrome-performance.png"
+loading="lazy"
+alt="chrome-performance"
+>&lt;/p>
+&lt;p>手动装载一下 20200606-1753-trace.nettrace.chromium.json 看看。&lt;/p>
+&lt;p>等下，20200606-1753-trace.nettrace.chromium.json 这货多大？&lt;/p>
+&lt;p>哦，4G。应该没事，Intel NUC 主机内存空闲 20G，吃掉 4G 完全是没有问题的。&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/chrome_performance_load_json.png"
+loading="lazy"
+alt="chrome_performance_load_json"
+>&lt;/p>
+&lt;p>看着进度条加载，看着内存涨起来，&lt;/p>
+&lt;p>然后&amp;hellip;Chrome 控制台奔溃。再见再见，原来大家彼此完全没有信任了。&lt;/p>
+&lt;p>唉，再来一次，把文件控制在 5M 左右看看。&lt;/p>
+&lt;p>最后，把 20200606-1753-trace.nettrace.chromium.json 控制在 1.5G 了，&lt;/p>
+&lt;p>终于可以正常加载起来了。&lt;/p>
+&lt;hr>
+&lt;h3 id="chrome-performance">Chrome Performance
+&lt;/h3>&lt;p>首先， 我们看到监控里面有一堆的线程&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/Chrome%20performance_threading_74.png"
+loading="lazy"
+alt="Chrome%20performance_threading_74"
+>&lt;/p>
+&lt;p>随便选一个线程看看它做撒,选择 Call Tree 之后 点点点点点。&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/Chrome%20performance_74_call_tree.png"
+loading="lazy"
+alt="20performance_74_call_tree"
+>&lt;/p>
+&lt;p>从调用栈能看到 整个线程当前状态是“PerformWaitCallback”&lt;/p>
+&lt;p>整个操作应该的开头应该是&lt;/p>
+&lt;p>Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.KestrelConnection.System.Threading.IThreadPoolWorkItem.Execute()&lt;/p>
+&lt;p>PS： Kestrel (&lt;a class="link" href="https://github.com/aspnet/KestrelHttpServer" target="_blank" rel="noopener"
+>https://github.com/aspnet/KestrelHttpServer&lt;/a>) is a lightweight cross-platform web server that supports .NET Core and runs on multiple platforms such as Linux, macOS, and Windows. Kestrel is fully written in .Net core. It is based on libuv which is a multi-platform asynchronous eventing library.&lt;/p>
+&lt;p>PS 人话： .NET Core 内置的 HTTP Server，和 Spring Boot 中的 tomcat 组件类似&lt;/p>
+&lt;p>很正常，说明请求正常到了我们的服务里面了。&lt;/p>
+&lt;p>再看一下剩下的调用链信息。&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/dotnet-call-tree-di.png"
+loading="lazy"
+alt="dotnet-call-tree-di"
+>&lt;/p>
+&lt;p>简要的调用信息日志在这里：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start(!!0&amp;amp;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Infrastructure.KestrelConnection+&amp;lt;ExecuteAsync&amp;gt;d__32.MoveNext()
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Microsoft.AspNetCore.Server.Kestrel.Core.Internal.HttpConnectionMiddleware`1[System.__Canon].OnConnectionAsync(class Microsoft.AspNetCore.Connections.ConnectionContext) Microsoft.AspNetCore.Server.Kestrel.Core.Internal.HttpConnection.ProcessRequestsAsync(class Microsoft.AspNetCore.Hosting.Server.IHttpApplication`1&amp;lt;!!0&amp;gt;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Start(!!0&amp;amp;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start(!!0&amp;amp;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Microsoft.AspNetCore.Server.Kestrel.Core.Internal.HttpConnection+&amp;lt;ProcessRequestsAsync&amp;gt;d__12`1[System.__Canon].MoveNext()
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ProcessRequestsAsync(class Microsoft.AspNetCore.Hosting.Server.IHttpApplication`1&amp;lt;!!0&amp;gt;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Start(!!0&amp;amp;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start(!!0&amp;amp;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol+&amp;lt;ProcessRequestsAsync&amp;gt;d__216`1[System.__Canon].MoveNext()
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol.ProcessRequests(class Microsoft.AspNetCore.Hosting.Server.IHttpApplication`1&amp;lt;!!0&amp;gt;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Start(!!0&amp;amp;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start(!!0&amp;amp;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Microsoft.AspNetCore.Server.Kestrel.Core.Internal.Http.HttpProtocol+&amp;lt;ProcessRequests&amp;gt;d__217`1[System.__Canon].MoveNext()
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Microsoft.AspNetCore.Hosting.HostingApplication.ProcessRequestAsync(class Context)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Microsoft.AspNetCore.HostFiltering.HostFilteringMiddleware.Invoke(class Microsoft.AspNetCore.Http.HttpContext)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">UserCenter.ErrorHandlingMiddleware.Invoke(class Microsoft.AspNetCore.Http.HttpContext)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Start(!!0&amp;amp;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start(!!0&amp;amp;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">......
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">......
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">......
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">e.StaticFiles.StaticFileMiddleware.Invoke(class Microsoft.AspNetCore.Http.HttpContext)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Microsoft.AspNetCore.Builder.UseMiddlewareExtensions+&amp;lt;&amp;gt;c__DisplayClass4_1.&amp;lt;UseMiddleware&amp;gt;b__2(class Microsoft.AspNetCore.Http.HttpContext)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dynamicClass.lambda_method(pMT: 00007FB6D3BBE570,class System.Object,pMT: 00007FB6D4739560,pMT: 00007FB6D0BF4F98)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Microsoft.AspNetCore.Builder.UseMiddlewareExtensions.GetService(class System.IServiceProvider,class System.Type,class System.Type)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceProviderEngineScope.GetService(class System.Type)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Start(!!0&amp;amp;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor`2[Microsoft.Extensions.DependencyInjection.ServiceLookup.RuntimeResolverContext,System.__Canon].VisitCallSite(class Microsoft.Extensions.DependencyInjection.ServiceLookup.ServiceCallSite,!0)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start(!!0&amp;amp;)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">System.Runtime.CompilerServices.AsyncTaskMethodBuilder.Start(!!0&amp;amp;)
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>看到这里，其实又有了一些很给力的信息被暴露出来了。&lt;/p>
+&lt;hr>
+&lt;h4 id="performwaitcallback">PerformWaitCallback
+&lt;/h4>&lt;ul>
+&lt;li>直接字面理解，线程正在执行等待回调&lt;/li>
+&lt;/ul>
+&lt;h4 id="调用链信息">调用链信息
+&lt;/h4>&lt;p>耐心点，把所有的电调用链都展开。&lt;/p>
+&lt;p>我们能看到程序已经依次经过了下面几个流程：&lt;/p>
+&lt;p>-&amp;gt;ProcessRequestsAsync(系统)&lt;/p>
+&lt;p>-&amp;gt;ErrorHandlingMiddleware(已经加载了自定义的错误中间件)&lt;/p>
+&lt;p>-&amp;gt; HostFilteringMiddleware(加载了 Filter 中间件)&lt;/p>
+&lt;p>-&amp;gt; Microsoft.Extensions.DependencyInjection.ServiceLookup.CallSiteVisitor(调用链中的最后一个操作)&lt;/p>
+&lt;p>对应最上面的日志来说，&lt;/p>
+&lt;p>请求进来，经过了中间件和 Filter 都是没问题的，&lt;/p>
+&lt;p>最后在 DependencyInjection（依赖注入） 中没有了踪迹。&lt;/p>
+&lt;p>到这里，&lt;/p>
+&lt;p>再次验证我们昨天的思路：&lt;/p>
+&lt;h3 id="这是一个-资源阻塞问题产生的问题">这是一个 “资源阻塞问题”产生的问题
+&lt;/h3>&lt;p>虽然做 ptrace 是想能直接抓到“凶手”的，&lt;/p>
+&lt;p>最后发现并没有能跟踪到具体的实现，&lt;/p>
+&lt;p>那可咋办呢？&lt;/p>
+&lt;h2 id="控制变量实践">控制变量实践
+&lt;/h2>&lt;p>已知：&lt;/p>
+&lt;ul>
+&lt;li>并发 300 访问 /v1/user/test/account-balance 接口程序会假死&lt;/li>
+&lt;li>移除 Filter 中间件不能解决问题&lt;/li>
+&lt;li>并发 300 访问 /v1/health 健康检查接口程序正常&lt;/li>
+&lt;li>ptrace 信息告诉我们有“东西”在阻塞 DI 容器创建某些实例&lt;/li>
+&lt;/ul>
+&lt;p>开始控制变量 + 人肉二分查找。&lt;/p>
+&lt;h3 id="挪接口代码">挪接口代码
+&lt;/h3>&lt;p>/v1/user/test/account-balance 的逻辑是由 AccountService 实现的，&lt;/p>
+&lt;p>AccountService 大概依赖四五个其他的 Service 和 DBContext，&lt;/p>
+&lt;p>最主要的逻辑是加载用户几个账号，然后计算一下 balance。&lt;/p>
+&lt;p>大概代码如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c#" data-lang="c#">&lt;span class="line">&lt;span class="cl">&lt;span class="cs">/// &amp;lt;summary&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">/// 获取用户的AccountBalance汇总信息&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">/// &amp;lt;/summary&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">public&lt;/span> &lt;span class="kd">async&lt;/span> &lt;span class="n">Task&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="n">AccountBalanceStat&lt;/span>&lt;span class="p">&amp;gt;&lt;/span> &lt;span class="n">LoadAccountBalanceStatAsync&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">string&lt;/span> &lt;span class="n">owner&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 数据库查询&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">accounts&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">await&lt;/span> &lt;span class="n">_dbContext&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">BabelAccounts&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Where&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ac&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="n">ac&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Owner&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="n">owner&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">ToListAsync&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 内存计算&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">ConvertToAccountBalanceStat&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">accounts&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>什么都不改，直接把代码 CP 到 Health 接口测一下。&lt;/p>
+&lt;p>神奇，300 并发抗住了。&lt;/p>
+&lt;p>结论：&lt;/p>
+&lt;ul>
+&lt;li>上面这一段代码并不会导致服务僵死&lt;/li>
+&lt;li>数据库驱动没有问题，DbContext 没有问题，数据库资源使用没有问题&lt;/li>
+&lt;li>当前并不会触发 DI 容器异常， 问题出在 /v1/user/test/account-balance 初始化&lt;/li>
+&lt;/ul>
+&lt;h3 id="account-balance-有什么神奇的东西吗">account-balance 有什么神奇的东西吗？
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c#" data-lang="c#">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">/// &amp;lt;summary&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">/// 查询用户的Brick账号余额&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cs">/// &amp;lt;/summary&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">[HttpGet(&amp;#34;v1/user/{owner}/account-balance&amp;#34;)]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">[SwaggerResponse(200, &amp;#34;获取成功&amp;#34;, typeof(AccountBrickStat))]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">public&lt;/span> &lt;span class="kd">async&lt;/span> &lt;span class="n">Task&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="n">IActionResult&lt;/span>&lt;span class="p">&amp;gt;&lt;/span> &lt;span class="n">GetAccountBricks&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na"> [FromRoute, SwaggerParameter(&amp;#34;所有者&amp;#34;, Required = true)]&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">owner&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">owner&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">await&lt;/span> &lt;span class="n">_userService&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">FindOwnerAsync&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">owner&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Ok&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="n">data&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">await&lt;/span> &lt;span class="n">_accountService&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">LoadAccountAsync&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">owner&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="n">code&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="m">0&lt;/span> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>我们刚刚验证了 LoadAccountAsync 的代码是没有问题的，&lt;/p>
+&lt;p>要不 UserService DI 有问题，要不 AccountService DI 有问题。&lt;/p>
+&lt;p>把 UserService 加入到 HealthController 中。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c#" data-lang="c#">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">public&lt;/span> &lt;span class="n">HealthController&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">UserService&lt;/span> &lt;span class="n">userService&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">UserPoolDataContext&lt;/span> &lt;span class="n">dbContext&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_dbContext&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">dbContext&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_userService&lt;/span>&lt;span class="p">=&lt;/span> &lt;span class="n">userService&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>Bool。&lt;/p>
+&lt;p>300 并发没有撑住，程序僵死啦。&lt;/p>
+&lt;p>完美，&lt;/p>
+&lt;p>问题应该在 UserService DI 初始化了。&lt;/p>
+&lt;p>接下来就是一个个验证 UserService DI 需要的资源，&lt;/p>
+&lt;p>EmailSDK 没有问题，&lt;/p>
+&lt;p>HTTPHeaderTools 没有问题，&lt;/p>
+&lt;p>UserActivityLogService 没有问题。&lt;/p>
+&lt;p>RedisClient&amp;hellip;
+RedisClient&amp;hellip;
+RedisClient&amp;hellip;&lt;/p>
+&lt;p>OK
+OK
+Ok&lt;/p>
+&lt;p>复现炸鸡了。&lt;/p>
+&lt;hr>
+&lt;h2 id="原来是-redis-的锅">原来是 Redis 的锅？
+&lt;/h2>&lt;p>是，&lt;/p>
+&lt;p>也不是。&lt;/p>
+&lt;p>先看下我们 RedisClient 是怎么使用的。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-C#" data-lang="C#">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// startup.cs 注入了单例的ConnectionMultiplexer&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// 程序启动的时候会调用InitRedis&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">private&lt;/span> &lt;span class="k">void&lt;/span> &lt;span class="n">InitRedis&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IServiceCollection&lt;/span> &lt;span class="n">services&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">services&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">AddSingleton&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="n">ConnectionMultiplexer&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ConnectionMultiplexer&lt;/span>&lt;span class="p">&amp;gt;(&lt;/span>&lt;span class="n">factory&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ConfigurationOptions&lt;/span> &lt;span class="n">options&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">ConfigurationOptions&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Configuration&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;RedisConnectionString&amp;#34;&lt;/span>&lt;span class="p">]);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">options&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">SyncTimeout&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="m">10&lt;/span> &lt;span class="p">*&lt;/span> &lt;span class="m">10000&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">ConnectionMultiplexer&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Connect&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">options&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">//RedisClient.cs 通过构造函数传入&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">public&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">RedisClient&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="k">readonly&lt;/span> &lt;span class="n">ConnectionMultiplexer&lt;/span> &lt;span class="n">_redisMultiplexer&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="k">readonly&lt;/span> &lt;span class="n">ILogger&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="n">RedisClient&lt;/span>&lt;span class="p">&amp;gt;&lt;/span> &lt;span class="n">_logger&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="n">RedisClient&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ConnectionMultiplexer&lt;/span> &lt;span class="n">redisMultiplexer&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ILogger&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="n">RedisService&lt;/span>&lt;span class="p">&amp;gt;&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_redisMultiplexer&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">redisMultiplexer&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_logger&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">logger&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>DI 初始化 RedisClient 实例的时候，&lt;/p>
+&lt;p>需要执行 ConnectionMultiplexer.Connect 方法，&lt;/p>
+&lt;p>ConnectionMultiplexer.Connect 是同步阻塞的。&lt;/p>
+&lt;p>ConnectionMultiplexer.Connect 是同步阻塞的。&lt;/p>
+&lt;p>ConnectionMultiplexer.Connect 是同步阻塞的。&lt;/p>
+&lt;p>一切都能解释了。&lt;/p>
+&lt;p>怎么改？&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c#" data-lang="c#">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// InitRedis 直接把链接创建好，然后直接注入到IServiceCollection中&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">private&lt;/span> &lt;span class="k">void&lt;/span> &lt;span class="n">InitRedis&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IServiceCollection&lt;/span> &lt;span class="n">services&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ConfigurationOptions&lt;/span> &lt;span class="n">options&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">ConfigurationOptions&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Configuration&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;RedisConnectionString&amp;#34;&lt;/span>&lt;span class="p">]);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">options&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">SyncTimeout&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="m">10&lt;/span> &lt;span class="p">*&lt;/span> &lt;span class="m">10000&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">redisConnectionMultiplexer&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">ConnectionMultiplexer&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Connect&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">options&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">services&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">AddSingleton&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">redisConnectionMultiplexer&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Log&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Information&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;InitRedis success.&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>发布验证，&lt;/p>
+&lt;p>开门放并发 300 + 3000 请求。&lt;/p>
+&lt;p>完美抗住，丝一般顺滑。&lt;/p>
+&lt;h3 id="还有更优的写法吗">还有更优的写法吗？
+&lt;/h3>&lt;ul>
+&lt;li>看了下微软 Cache 中间件源码，更好的做法应该是通过信号量+异步锁来创建 Redis 链接，下来再研究一下&lt;/li>
+&lt;li>数据库中可能也存在类似的问题，不过当前会在 Startup 中戳一下数据库连接，应该问题不大。&lt;/li>
+&lt;/ul>
+&lt;h2 id="复盘">复盘
+&lt;/h2>&lt;p>程序启动的时候依赖注入容器同步初始化 Redis 可能很慢(几秒甚至更长)的时候，&lt;/p>
+&lt;p>其他的资源都在同步等待它初始化好，&lt;/p>
+&lt;p>最终导致请求堆积，引起程序雪崩效应。&lt;/p>
+&lt;p>Redis 初始化过慢并不每次都发生， 所以之前服务也只是偶发。&lt;/p>
+&lt;p>DI 初始化 Redis 连接的时候，redis 打来连接还是个同步的方法，&lt;/p>
+&lt;p>这种情况下还可能发生异步请求中等待同步资源产生阻塞问题。&lt;/p>
+&lt;p>同时还需要排查使用其他外部资源的时候是否会触发同类问题。&lt;/p>
+&lt;hr>
+&lt;h2 id="几个通用的小技巧">几个通用的小技巧
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>ptrace 对此类问题分析很有意义，不同语言框架都有类似的实现&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>同步、异步概念的原理和实现都要了解，这个有利于理解一些奇奇怪怪的问题&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>火焰图、Chrome dev Performance 、speedscope 都是好东西&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Debug 日志能给更多的信息，在隔离生产的情况下大胆使用&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>这辈子都不可能看源码的，写写 CURD 多美丽？源码真香，源码真牛逼。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>控制变量验证，大胆假设，小心求证，人肉二分查，先怀疑自己再怀疑框架&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>搞事的时候不要自己一个人，有 Bug 一定要拉上小伙伴一起吃&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;hr>
+&lt;h2 id="相关资料">相关资料
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.ibm.com/developerworks/cn/linux/l-cn-embedded-ptrace/index.html" target="_blank" rel="noopener"
+>IBM Developer ptrace 嵌入式系统中进程间通信的监视方法&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.jianshu.com/p/d6686cb72f68" target="_blank" rel="noopener"
+>分析进程调用 pstack 和 starce&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://wangchujiang.com/linux-command/c/pstack.html" target="_blank" rel="noopener"
+>pstack 显示每个进程的栈跟踪&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://docs.microsoft.com/en-us/dotnet/core/diagnostics/dotnet-trace" target="_blank" rel="noopener"
+>微软：dotnet-trace performance analysis utility&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://zhuanlan.zhihu.com/p/29879682" target="_blank" rel="noopener"
+>知乎：全新 Chrome Devtool Performance 使用指南&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/jlfwong/speedscope" target="_blank" rel="noopener"
+>speedscope A fast, interactive web-based viewer for performance profiles.&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.cnblogs.com/duanxz/p/5487576.html" target="_blank" rel="noopener"
+>jdk 工具之 jstack(Java Stack Trace)&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://ruanyifeng.com/blog/2017/09/flame-graph.html" target="_blank" rel="noopener"
+>阮一峰:如何读懂火焰图？&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ul></description></item></channel></rss>

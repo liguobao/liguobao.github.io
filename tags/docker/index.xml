@@ -1,0 +1,2106 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Docker on 李国宝</title><link>https://liguobao.github.io/tags/docker/</link><description>Recent content in Docker on 李国宝</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 22 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/docker/index.xml" rel="self" type="application/rss+xml"/><item><title>Ubuntu 有线网卡掉线重启备忘</title><link>https://liguobao.github.io/p/ubuntu-wifi-loss/</link><pubDate>Fri, 22 Sep 2023 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/ubuntu-wifi-loss/</guid><description>&lt;img src="https://liguobao.github.io/p/ubuntu-wifi-loss/xiaohei.png" alt="Featured image of post Ubuntu 有线网卡掉线重启备忘" />&lt;h2 id="奇怪的故障">奇怪的故障
+&lt;/h2>&lt;p>家里的台式机上有两个网卡，&lt;/p>
+&lt;p>主板自带有线网卡，PCIE 上插了一个无线网卡。&lt;/p>
+&lt;p>上次搞 李国宝：Tesla P40 显卡 2023 年 9 月跳坑指南&lt;/p>
+&lt;p>这玩意的时候，拆装过主板和机箱，&lt;/p>
+&lt;p>系统重新开始之后就有线网卡就掉线了。&lt;/p>
+&lt;p>很是奇怪。&lt;/p>
+&lt;p>再早一些时间也遇到过类似的问题，&lt;/p>
+&lt;p>每次都是把手动把之前的 Ubuntu 的 WLAN 有线网卡删掉之后，&lt;/p>
+&lt;p>重新添加回来，然后就正常工作了。&lt;/p>
+&lt;p>但是现在&amp;hellip;&lt;/p>
+&lt;p>遇到了问题。&lt;/p>
+&lt;p>我手上没有显示器了。&lt;/p>
+&lt;p>（PS：之前的借给朋友用了）&lt;/p>
+&lt;p>倒是客厅有电视机，但&amp;hellip;.&lt;/p>
+&lt;p>网线拉不过去。很是尴尬。&lt;/p>
+&lt;p>于是，无线网凑合用了好一阵子了。&lt;/p>
+&lt;p>迷。&lt;/p>
+&lt;p>说好的计算机世界没有玄学。&lt;/p>
+&lt;p>道理上。&lt;/p>
+&lt;p>只需要重置这个网卡就完事了。&lt;/p>
+&lt;p>在 ifconfig 里面，正常的网卡配置长这样。&lt;/p>
+&lt;p>无线网卡&lt;/p>
+&lt;p>一般的虚拟网络长这样。&lt;/p>
+&lt;p>不正常的网卡。&lt;/p>
+&lt;p>PS：没有 inet 字段，因为系统识别异常。&lt;/p>
+&lt;p>ifconfig down &amp;amp; up
+禁用之后再启用网卡是使用 ifconfig 命令的。&lt;/p>
+&lt;p>但是在这里无效。&lt;/p>
+&lt;p>参考：Linux 中国：Linux 中如何启用和禁用网卡？&lt;/p>
+&lt;p>还有别的办法吗？&lt;/p>
+&lt;p>Linux 中国：Linux 中如何启用和禁用网卡？&lt;/p>
+&lt;p>在上面这个文章写过有 nmtui 工具。&lt;/p>
+&lt;p>nmtui&lt;/p>
+&lt;p>nmtui 是一个与 NetworkManager 交互的、基于 curses 图形库的终端 UI 应用。&lt;/p>
+&lt;p>在启用 nmtui 的时候，如果第一个参数没有特别指定，它会引导用户选择对应的操作去执行。&lt;/p>
+&lt;p>执行以下命令打开 mntui 界面。选择 “Active a connection” 然后点击 “OK”。&lt;/p>
+&lt;p>PS： 这里都是正常的配置了。&lt;/p>
+&lt;p>异常配置的情况下，Device 显示的是一个无效的网卡 id&lt;/p>
+&lt;p>选中网卡，选择 delete。&lt;/p>
+&lt;p>然后重新 Add 一个新的网络。&lt;/p>
+&lt;p>填入我们在 ifconfig 看到的网卡 Id。&lt;/p>
+&lt;p>选择 ok。&lt;/p>
+&lt;p>完事。&lt;/p>
+&lt;p>回顾问题&lt;/p>
+&lt;p>到这里突然想明白了。&lt;/p>
+&lt;p>这个玩意是因为，硬件变更系统重新初始化之后，&lt;/p>
+&lt;p>给主板网卡分配了一个新的设备 Id，&lt;/p>
+&lt;p>然后系统网络配置使用的还是旧的设备 Id，&lt;/p>
+&lt;p>于是&amp;hellip;.&lt;/p>
+&lt;p>网络没办法正常工作了。&lt;/p>
+&lt;p>重置网卡设备对它是无效的。&lt;/p>
+&lt;p>只能重新初始化网络配置。&lt;/p>
+&lt;p>So&amp;hellip;&lt;/p>
+&lt;p>如上。&lt;/p></description></item><item><title>Python Flask：一、项目初始化</title><link>https://liguobao.github.io/p/python-flask%E4%B8%80%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/</link><pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/python-flask%E4%B8%80%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/</guid><description>&lt;h1 id="python-flask最佳实践一项目初始化">Python Flask最佳实践：一、项目初始化
+&lt;/h1>&lt;h2 id="前言">前言
+&lt;/h2>&lt;p>Python Flask 是一个很简单方便的Web框架，&lt;/p>
+&lt;p>轻轻松松就可以完成一个Web 或者纯Web API。&lt;/p>
+&lt;p>前阵子需要起一个简单的Web + 脚本项目，折腾flask的时候发现没找到比较顺手的脚手架教程。&lt;/p>
+&lt;p>摸索了好一些知识，踩了一下坑什么的，&lt;/p>
+&lt;p>最后站在巨人肩膀上更新个教程。&lt;/p>
+&lt;h2 id="代码项目结构">代码项目结构
+&lt;/h2>&lt;p>正儿八经一个项目工程，遵循 三层架构 + MVC模型 对项目代码有严格的划分，&lt;/p>
+&lt;p>对这两个概念不太了解的朋友可以自行课后补习一下。&lt;/p>
+&lt;p>说明如下:&lt;/p>
+&lt;ul>
+&lt;li>src 所有的项目代码文件&lt;/li>
+&lt;li>src/service 逻辑层代码&lt;/li>
+&lt;li>src/model 业务实体&lt;/li>
+&lt;li>src/db 数据库相关，包括model定义和dao SQL查询&lt;/li>
+&lt;li>src/sdk 依赖的外部接口&lt;/li>
+&lt;li>src/job 后台进程启动的Job，一般都是通过API启动的后台任务&lt;/li>
+&lt;li>src/utils 工具类，config 配置类也在里面&lt;/li>
+&lt;li>src/app.py flask app 启动项&lt;/li>
+&lt;li>manage.py flask.cli 启动入口 api + job&lt;/li>
+&lt;li>Dockerfile Docker打包流程&lt;/li>
+&lt;li>debug.py 本地debug 启动入口&lt;/li>
+&lt;li>requirements.txt 所有的依赖包&lt;/li>
+&lt;li>.vscode/launch.json vs code debug 配置&lt;/li>
+&lt;/ul>
+&lt;h2 id="开搞">开搞
+&lt;/h2>&lt;p>废话多说两句，我比较喜欢requirements这种包组织方式，其他的就看自己了。&lt;/p>
+&lt;h3 id="requirementstxt">requirements.txt
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-txt" data-lang="txt">&lt;span class="line">&lt;span class="cl">flask
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">flask-swagger
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">flask-swagger-ui
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">flask-bootstrap
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SQLAlchemy
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pymysql
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pydantic
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">requests
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">loguru
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gunicorn
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>简单说明&lt;/p>
+&lt;ul>
+&lt;li>flask是核心包，flask-swagger + flask-swagger-ui 是用来做Swagger UI的，flask-bootstrap 用来乱糊 HTML页面的&lt;/li>
+&lt;li>SQLAlchemy + pymysql + 一个是数据库ORM框架，一个是数据库驱动&lt;/li>
+&lt;li>pydantic 用来配合SQLAlchemy完成Model数据转换，解决一些奇怪的序列化反序列化问题&lt;/li>
+&lt;li>requests 用来对接外部HTTP接口或者写爬虫脚本&lt;/li>
+&lt;li>loguru 简易日志框架，from loguru import logger 就完事了&lt;/li>
+&lt;li>gunicorn 多进程部署&lt;/li>
+&lt;/ul></description></item><item><title>手把手教你写dotnet core(读取配置文件)</title><link>https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-core%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/</link><pubDate>Sun, 01 Jul 2018 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-core%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/</guid><description>&lt;h1 id="dotnet-core读取配置文件">dotnet core(读取配置文件)
+&lt;/h1>&lt;p>第一篇:&lt;a class="link" href="https://zhuanlan.zhihu.com/p/37460329" target="_blank" rel="noopener"
+>手把手教你写dotnet core(入门篇)&lt;/a>&lt;/p>
+&lt;p>第二篇:&lt;a class="link" href="https://zhuanlan.zhihu.com/p/37464924" target="_blank" rel="noopener"
+>手把手教你ASP.NET Core&lt;/a>&lt;/p>
+&lt;p>今天我们来学习怎么读取dotnet core程序的配置文件.&lt;/p>
+&lt;p>一般dotnet core配置文件都位于项目目录下,名为appsettings.json&lt;/p>
+&lt;h2 id="直接读文件">直接读文件
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;MySQLConnectionString&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;server=mysql地址;port=端口号;database=数据库名字;uid=账号;pwd=密码;charset=&amp;#39;utf-8&amp;#39;;Allow User Variables=True;Connection Timeout=30;SslMode=None;&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;RedisConnectionString&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;redis数据库地址:端口,name=名字,keepAlive=1800,syncTimeout=10000,connectTimeout=360000,password=访问密码,ssl=False,abortConnect=False,responseTimeout=360000,defaultDatabase=1&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;EmailAccount&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;QQ邮箱账号&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;EmailPassword&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;QQ邮箱密码&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;EmailSMTPDomain&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;smtp.qq.com&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;EmailSMTPPort&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">587&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;SenderAddress&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;QQ邮箱账号&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;ReceiverAddress&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;QQ邮箱账号&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;ReceiverName&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;liguobao-test&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;EncryptionConfigCIV&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;加密向量,16个16进制数字&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;EncryptionConfigCKEY&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;加密秘钥,16个16进制数字&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;ESURL&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;http://127.0.0.1:9201/&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;ESUserName&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;ESPassword&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;QQAPPID&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;QQAPPKey&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;QQAuthReturnURL&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="s2">&amp;#34;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>那么我们直接去读json然后序列化成对象是不是就可以了.&lt;/p>
+&lt;p>没毛病,确实是可以这样玩的. 代码大概是这样的&amp;hellip;&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-C#" data-lang="C#">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">AppSettings&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">MySQLConnectionString&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="k">get&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="k">set&lt;/span>&lt;span class="p">;}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">RedisConnectionString&lt;/span> &lt;span class="p">{&lt;/span>&lt;span class="k">get&lt;/span>&lt;span class="p">;&lt;/span>&lt;span class="k">set&lt;/span>&lt;span class="p">;}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// ....&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="n">AppSettings&lt;/span> &lt;span class="n">JsonHelper&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">string&lt;/span> &lt;span class="n">jsonFilePath&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_movieJsonFilePath&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">jsonFilePath&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(!&lt;/span>&lt;span class="n">File&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Exists&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">jsonFilePath&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">pvFile&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">File&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Create&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">jsonFilePath&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">pvFile&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Flush&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">pvFile&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Dispose&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">using&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">var&lt;/span> &lt;span class="n">stream&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">FileStream&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">jsonFilePath&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">FileMode&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">OpenOrCreate&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">StreamReader&lt;/span> &lt;span class="n">sr&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">StreamReader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">stream&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">JsonSerializer&lt;/span> &lt;span class="n">serializer&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">JsonSerializer&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">NullValueHandling&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">NullValueHandling&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Ignore&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Converters&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">JavaScriptDateTimeConverter&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//构建Json.net的读取流 &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">using&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">var&lt;/span> &lt;span class="n">reader&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">JsonTextReader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sr&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">serializer&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Deserialize&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="n">AppSettings&lt;/span>&lt;span class="p">&amp;gt;(&lt;/span>&lt;span class="n">reader&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">Exception&lt;/span> &lt;span class="n">ex&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="kc">null&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>直接读文件然后反序列化实在有点麻烦,有没有简单点的办法啊.&lt;/p>
+&lt;p>客官,只要给钱什么都有.&lt;/p>
+&lt;h2 id="使用configurationbuilder-读取">使用ConfigurationBuilder 读取
+&lt;/h2>&lt;p>直接上代码:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-C#" data-lang="C#">&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">void&lt;/span> &lt;span class="n">Configure&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IApplicationBuilder&lt;/span> &lt;span class="n">app&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">IHostingEnvironment&lt;/span> &lt;span class="n">env&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ILoggerFactory&lt;/span> &lt;span class="n">loggerFactory&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">mySQLConnectionString&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">ConfigurationBuilder&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">.&lt;/span>&lt;span class="n">SetBasePath&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Directory&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetCurrentDirectory&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">.&lt;/span>&lt;span class="n">AddJsonFile&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;appsettings.json&amp;#34;&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">Build&lt;/span>&lt;span class="p">()[&lt;/span>&lt;span class="s">&amp;#34;MySQLConnectionString&amp;#34;&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// ConnectionStrings节点下的MySQLConnectionString&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// var mySQLConnectionString = new ConfigurationBuilder()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// .SetBasePath(Directory.GetCurrentDirectory())&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// .AddJsonFile(&amp;#34;appsettings.json&amp;#34;).Build()[&amp;#34;ConnectionStrings:MySQLConnectionString&amp;#34;];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>嗯,就是这么简单粗暴,什么都不管&amp;hellip;&lt;/p>
+&lt;p>辣鸡,还有没有更优雅点的方法啊.&lt;/p>
+&lt;p>哦,这样的要求么?那么我们上DI(自动注入)吧.&lt;/p>
+&lt;h2 id="di读取配置文件">DI读取配置文件
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-C#" data-lang="C#">&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//Startup.cs&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="n">IConfiguration&lt;/span> &lt;span class="n">Configuration&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">get&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="n">Startup&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IHostingEnvironment&lt;/span> &lt;span class="n">env&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//够赞&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">builder&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">ConfigurationBuilder&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">.&lt;/span>&lt;span class="n">SetBasePath&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ContentRootPath&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">.&lt;/span>&lt;span class="n">AddJsonFile&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;appsettings.json&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">optional&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">reloadOnChange&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Configuration&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">builder&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Build&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">void&lt;/span> &lt;span class="n">ConfigureServices&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IServiceCollection&lt;/span> &lt;span class="n">services&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">services&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">AddMvc&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//将Configuration注入到APPConfiguration实例中&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">services&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">AddOptions&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="n">Configure&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="n">AppSettings&lt;/span>&lt;span class="p">&amp;gt;(&lt;/span>&lt;span class="n">Configuration&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然后我们在Controller中使用构造函数注入的方式获取APPConfiguration实例&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-C#" data-lang="C#">&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="n">AppSettings&lt;/span> &lt;span class="n">configuration&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="n">AccountController&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IOptions&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="n">AppSettings&lt;/span>&lt;span class="p">&amp;gt;&lt;/span> &lt;span class="n">configurationOption&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">this&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">configuration&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">configurationOption&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Value&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然后就可以愉快的使用了.&lt;/p>
+&lt;p>本文结束&amp;hellip;&lt;/p>
+&lt;p>拜&amp;hellip;&lt;/p></description></item><item><title>手把手教你写dotnet core(MVC)</title><link>https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-coremvc/</link><pubDate>Wed, 30 May 2018 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-coremvc/</guid><description>&lt;h1 id="aspnet-core篇">asp.net core篇
+&lt;/h1>&lt;p>上一篇&lt;a class="link" href="https://zhuanlan.zhihu.com/p/37460329" target="_blank" rel="noopener"
+>手把手教你写dotnet core(入门篇)&lt;/a>我们已经简单在dotnet core里面跑了个&amp;quot;hello world!&amp;ldquo;和累加程序.&lt;/p>
+&lt;p>今天我们的步子迈大一点,直接上 ASP.NET Core了.&lt;/p>
+&lt;ul>
+&lt;li>ASP.NET Core 是一个新的开源和跨平台的框架，用于构建如 Web 应用、物联网（IoT）应用和移动后端应用等连接到互联网的基于云的现代应用程序。ASP.NET Core 应用可运行于 .NET Core 和完整的 .NET Framework 之上。 构建它的目的是为那些部署在云端或者内部运行（on-premises）的应用提供一个优化的开发框架。它由最小开销的模块化的组件构成，因此在构建你的解决方案的同时可以保持灵活性。你可以在 Windows、Mac 和 Linux 上跨平台的开发和运行你的 ASP.NET Core 应用。 ASP.NET Core 开源在 &lt;a class="link" href="https://github.com/aspnet/home" target="_blank" rel="noopener"
+>GitHub&lt;/a> 上。&lt;/li>
+&lt;/ul>
+&lt;h2 id="创建aspnet-core程序">创建ASP.NET Core程序
+&lt;/h2>&lt;ul>
+&lt;li>开发环境: dotnet SDK + VS Code&lt;/li>
+&lt;/ul>
+&lt;p>这里还是直接使用dotnet new命令来创建ASP.NET Core项目, 终端中输入&amp;quot;dotnet new web -n FirsrMVC&amp;rdquo;.&lt;/p>
+&lt;p>自动创建FirsrMVC文件夹并生成对应的csproj和CS文件,具体操作和输出信息如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">➜ codelover-blog git:(master) ✗ dotnet new web -n FirsrMVC
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">The template &amp;#34;ASP.NET Core Empty&amp;#34; was created successfully.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">This template contains technologies from parties other than Microsoft, see https://aka.ms/template-3pn for details.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Processing post-creation actions...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Running &amp;#39;dotnet restore&amp;#39; on FirsrMVC/FirsrMVC.csproj...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Restoring packages for /Users/liguobao/code/codelover-blog/FirsrMVC/FirsrMVC.csproj...
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Generating MSBuild file /Users/liguobao/code/codelover-blog/FirsrMVC/obj/FirsrMVC.csproj.nuget.g.props.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Generating MSBuild file /Users/liguobao/code/codelover-blog/FirsrMVC/obj/FirsrMVC.csproj.nuget.g.targets.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> Restore completed in 1.97 sec for /Users/liguobao/code/codelover-blog/FirsrMVC/FirsrMVC.csproj.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Restore succeeded.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">➜ codelover-blog git:(master) ✗ cd FirsrMVC
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">➜ FirsrMVC git:(master) ✗ ls
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">FirsrMVC.csproj Program.cs Startup.cs obj/ wwwroot/
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="programcs">Program.cs
+&lt;/h3>&lt;p>在VS Code中打开FirsrMVC文件夹,简单看一下文件和Program.cs的代码&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-30%20%E4%B8%8A%E5%8D%887.42.08.png"
+loading="lazy"
+alt="文件列表"
+>&lt;/p>
+&lt;p>Program.cs依旧是Main主方法,然后调用了一下BuildWebHost方法,BuildWebHost返回一个IWebHost的实例,接着Run.&lt;/p>
+&lt;p>先不管这里具体做了什么事情,我们从语义上理解一下.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>BuildWebHost构建一个Web的Host实例,然后把WebHost实例运行起来了&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>创建WebHost使用了一个Startup的类&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>关于详细WebHost的详细解析见:&lt;a class="link" href="http://www.cnblogs.com/RainingNight/p/hosting-in-asp-net-core.html" target="_blank" rel="noopener"
+>ASP.NET Core 运行原理解剖[1]:Hosting&lt;/a>&lt;/p>
+&lt;h3 id="startupcs">Startup.cs
+&lt;/h3>&lt;p>先直接上一波代码&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-C#" data-lang="C#">&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System.Collections.Generic&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System.Linq&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System.Threading.Tasks&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">Microsoft.AspNetCore.Builder&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">Microsoft.AspNetCore.Hosting&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">Microsoft.AspNetCore.Http&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">Microsoft.Extensions.DependencyInjection&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">namespace&lt;/span> &lt;span class="nn">FirsrMVC&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">Startup&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// This method gets called by the runtime. Use this method to add services to the container.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">void&lt;/span> &lt;span class="n">ConfigureServices&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IServiceCollection&lt;/span> &lt;span class="n">services&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">void&lt;/span> &lt;span class="n">Configure&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IApplicationBuilder&lt;/span> &lt;span class="n">app&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">IHostingEnvironment&lt;/span> &lt;span class="n">env&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IsDevelopment&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">app&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UseDeveloperExceptionPage&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//直接往HTTP Response中写入&amp;#34;Hello World!&amp;#34;,即在页面直接显示此字符&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">app&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Run&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kd">async&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">context&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">await&lt;/span> &lt;span class="n">context&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WriteAsync&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Hello World!&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;ol>
+&lt;li>
+&lt;p>ConfigureServices:运行时被调用,将服务(services)添加到容器(container)中&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Configure:运行时被调用, 配置HTTP request 的pipeline&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>嗯,看不懂?没关系,待会一个个演示.&lt;/p>
+&lt;p>我们这里还是直接先跑一下程序,FirsrMVC文件夹路径下执行:dotnet run
+输出如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">➜ FirsrMVC git:(master) ✗ dotnet run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Hosting environment: Production
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Content root path: /Users/liguobao/code/codelover-blog/FirsrMVC
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Now listening on: http://localhost:5000
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Application started. Press Ctrl+C to shut down.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>然后访问&lt;a class="link" href="http://localhost:5000" target="_blank" rel="noopener"
+>http://localhost:5000&lt;/a>看看.&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-30%20%E4%B8%8A%E5%8D%888.00.09.png"
+loading="lazy"
+alt="localhost"
+>&lt;/p>
+&lt;p>好了,第一个MVC程序已经跑起来了,本文结束.逃&amp;hellip;&lt;/p>
+&lt;p>这里应该还有人吧?那我们继续了.&lt;/p>
+&lt;h3 id="wwwroot中的静态文件">wwwroot中的静态文件
+&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>在wwwroot文件夹新增first.html,随便写个能看见的HTML标签(我写的是p标签)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>在 Configure 方法中添加一句 app.UseStaticFiles(); 然后再重新运行一下&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>访问&lt;a class="link" href="http://localhost:5000/first.html" target="_blank" rel="noopener"
+>http://localhost:5000/first.html&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-30%20%E4%B8%8A%E5%8D%888.09.06.png"
+loading="lazy"
+alt="first"
+>&lt;/p>
+&lt;p>本步骤完成.&lt;/p>
+&lt;p>UseStaticFiles()方法:调用一个读取wwwroot文件夹下面的静态文件输出的中间件注册到程序中,从而完成静态文件的输出.&lt;/p>
+&lt;p>这里也告诉我们,ASP.NET Core的静态文件(JS+CSS+图片&amp;hellip;)之类的都可以放这边来.&lt;/p>
+&lt;p>甚至于如果简单做前后端分离的话,前端的vue/react项目都可以扔这里去.&lt;/p>
+&lt;h2 id="重头戏mvc">重头戏MVC
+&lt;/h2>&lt;p>终于要讲到MVC了.&lt;/p>
+&lt;blockquote>
+&lt;p>MVC模式最早由Trygve Reenskaug在1978年提出[1]，是施乐帕罗奥多研究中心（Xerox PARC）在20世纪80年代为程序语言Smalltalk发明的一种软件架构。MVC模式的目的是实现一种动态的程式设计，使后续对程序的修改和扩展简化，并且使程序某一部分的重复利用成为可能。除此之外，此模式通过对复杂度的简化，使程序结构更加直观。软件系统通过对自身基本部分分离的同时也赋予了各个基本部分应有的功能。专业人员可以通过自身的专长分组：&lt;/p>
+&lt;/blockquote>
+&lt;ol>
+&lt;li>控制器（Controller）- 负责转发请求，对请求进行处理。&lt;/li>
+&lt;li>视图（View） - 界面设计人员进行图形界面设计。&lt;/li>
+&lt;li>模型（Model） - 程序员编写程序应有的功能（实现算法等等）、数据库专家进行数据管理和数据库设计(可以实现具体的功能)。&lt;/li>
+&lt;/ol>
+&lt;p>以上概念来自&lt;a class="link" href="https://zh.wikipedia.org/zh-hans/MVC" target="_blank" rel="noopener"
+>维基百科:MVC&lt;/a>&lt;/p>
+&lt;p>在ASP.NET Core,MVC模型一般就对应着三个文件夹,Models/Views/Controllers.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Models:存放一些业务实体类,如Student,Course等,表现上就是C#的.cs文件&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Views:存放CSHTML文件,ASP.NET Core的模板文件,类HTML,也可以写C#代码&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Controllers: cs文件,继承Controller类的XXXController,实现业务逻辑代码&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>下面一起来写一个简单的MVC玩玩.&lt;/p>
+&lt;h3 id="startup">Startup
+&lt;/h3>&lt;p>修改 Startup.cs的代码,新增MVC中间件的引用,操作如下:&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>Startup.cs中的ConfigureServices方法下新增:services.AddMvc();&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Configure方法下去掉之前的UseMvc,改成&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-C#" data-lang="C#">&lt;span class="line">&lt;span class="cl"> &lt;span class="n">app&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UseMvc&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">routes&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">routes&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">MapRoute&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">name&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s">&amp;#34;default&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">template&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s">&amp;#34;{controller=Home}/{action=Index}/{id?}&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>全部代码如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-C#" data-lang="C#">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System.Collections.Generic&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System.Linq&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System.Threading.Tasks&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">Microsoft.AspNetCore.Builder&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">Microsoft.AspNetCore.Hosting&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">Microsoft.Extensions.Configuration&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">Microsoft.Extensions.DependencyInjection&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">namespace&lt;/span> &lt;span class="nn">FirsrMVC&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">Startup&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="n">Startup&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IConfiguration&lt;/span> &lt;span class="n">configuration&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Configuration&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">configuration&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="n">IConfiguration&lt;/span> &lt;span class="n">Configuration&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">get&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// This method gets called by the runtime. Use this method to add services to the container.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">void&lt;/span> &lt;span class="n">ConfigureServices&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IServiceCollection&lt;/span> &lt;span class="n">services&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">services&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">AddMvc&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">void&lt;/span> &lt;span class="n">Configure&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IApplicationBuilder&lt;/span> &lt;span class="n">app&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">IHostingEnvironment&lt;/span> &lt;span class="n">env&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IsDevelopment&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">app&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UseDeveloperExceptionPage&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">app&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UseExceptionHandler&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;/Home/Error&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">app&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UseStaticFiles&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">app&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UseMvc&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">routes&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">routes&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">MapRoute&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">name&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s">&amp;#34;default&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">template&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s">&amp;#34;{controller=Home}/{action=Index}/{id?}&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="controllers">Controllers
+&lt;/h3>&lt;p>新增Controllers文件夹,在此文件下新建HomeController.cs文件,然后填入一下代码:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-C#" data-lang="C#">&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System.Collections.Generic&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System.Diagnostics&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System.Linq&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System.Threading.Tasks&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">Microsoft.AspNetCore.Mvc&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">namespace&lt;/span> &lt;span class="nn">FirsrMVC.Controllers&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">HomeController&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="n">Controller&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="n">IActionResult&lt;/span> &lt;span class="n">Index&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">View&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="n">IActionResult&lt;/span> &lt;span class="n">About&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Json&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="n">name&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;我的名字&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">success&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">true&lt;/span> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>到这里,我们先运行一下代码.&lt;/p>
+&lt;p>如无意外的话,&lt;/p>
+&lt;p>访问&lt;a class="link" href="http://localhost:5000/" target="_blank" rel="noopener"
+>http://localhost:5000/&lt;/a> 空白一片,&lt;/p>
+&lt;p>访问&lt;a class="link" href="http://localhost:5000/Home/About" target="_blank" rel="noopener"
+>http://localhost:5000/Home/About&lt;/a> 会输出&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;name&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;我的名字&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;#34;success&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="kc">true&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="httplocalhost5000httplocalhost5000">&lt;a class="link" href="http://localhost:5000/" target="_blank" rel="noopener"
+>http://localhost:5000/&lt;/a>
+&lt;/h4>&lt;p>其实这里访问的是&lt;a class="link" href="http://localhost:5000/Home/Index" target="_blank" rel="noopener"
+>http://localhost:5000/Home/Index&lt;/a>,对应方法是HomeController/Index&lt;/p>
+&lt;p>我们看一下Log输出会发现这样的一句错误&amp;quot;fail: The view &amp;lsquo;Index&amp;rsquo; was not found. Searched locations: /Views/Home/Index.cshtml, /Views/Shared/Index.cshtml&amp;quot;&lt;/p>
+&lt;p>原因是HomeController中的Index返回的是View,&lt;/p>
+&lt;p>程序默认就会去/Views/目录下寻找/Home/Index.cshtml文件来渲染然后返回给浏览器,但是这里我们并没有这个文件,所以直接GG.&lt;/p>
+&lt;h4 id="httplocalhost5000homeabouthttplocalhost5000homeabout">&lt;a class="link" href="http://localhost:5000/Home/About" target="_blank" rel="noopener"
+>http://localhost:5000/Home/About&lt;/a>
+&lt;/h4>&lt;p>对应方法是HomeController/About,返回为Json数据,不需要View.&lt;/p>
+&lt;p>所以直接就往浏览器输出了{ name = &amp;ldquo;我的名字&amp;rdquo;, success = true }的Json格式数据&lt;/p>
+&lt;h3 id="views">Views
+&lt;/h3>&lt;p>上一步我们的的Controller已经建好了,但是缺View文件,我们这里来创建一下View文件&lt;/p>
+&lt;p>新建Views/Home文件夹,然后再在此文件夹下新增Index.cshtml文件&lt;/p>
+&lt;p>然后在Index.cshtml中输入:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">&amp;lt;p&amp;gt;First View Page&amp;lt;/p&amp;gt;&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>刷新一下&lt;a class="link" href="http://localhost:5000/" target="_blank" rel="noopener"
+>http://localhost:5000/&lt;/a>页面.&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-30%20%E4%B8%8A%E5%8D%888.51.33.png"
+loading="lazy"
+alt="View"
+>&lt;/p>
+&lt;p>View文件也建立好了.&lt;/p>
+&lt;h3 id="models">Models
+&lt;/h3>&lt;p>最后简单讲一下Model.&lt;/p>
+&lt;p>同理,新建Models文件夹,在此文件夹下新增Student.cs文件.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-C#" data-lang="C#">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">namespace&lt;/span> &lt;span class="nn">FirsrMVC&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">Student&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">Name&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">get&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">set&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kt">int&lt;/span> &lt;span class="n">Age&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">get&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">set&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>我们想做的要做的是把Student信息通过Controller返回给View,然后用View渲染出来.&lt;/p>
+&lt;p>修改一下HomeController/Index方法:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-C#" data-lang="C#">&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="n">IActionResult&lt;/span> &lt;span class="n">Index&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Models&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Student&lt;/span> &lt;span class="n">student&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Models&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Student&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="n">Name&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;小明&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Age&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="m">16&lt;/span> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">View&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">student&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>修改一下Views/Home/Index.cshtml&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">@model FirsrMVC.Models.Student
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">@if(Model !=null)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;lt;p&amp;gt;@Model.Name&amp;lt;span&amp;gt;今年&amp;lt;/span&amp;gt;@Model.Age&amp;lt;span&amp;gt;岁&amp;lt;/span&amp;gt;&amp;lt;/p&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}else
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">{
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;lt;p&amp;gt;这里什么都没有.&amp;lt;/p&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>重新运行一下程序,访问&lt;a class="link" href="http://localhost:5000/" target="_blank" rel="noopener"
+>http://localhost:5000/&lt;/a>&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-30%20%E4%B8%8A%E5%8D%889.10.25.png"
+loading="lazy"
+alt="index"
+>&lt;/p>
+&lt;p>MVC结束.&lt;/p>
+&lt;p>本文完.&lt;/p>
+&lt;p>下一节配置文件+DI依赖注入.&lt;/p></description></item><item><title>手把手教你写dotnet core(入门篇)</title><link>https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-core%E5%85%A5%E9%97%A8%E7%AF%87/</link><pubDate>Tue, 29 May 2018 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-core%E5%85%A5%E9%97%A8%E7%AF%87/</guid><description>&lt;h1 id="dotnet-core入门篇">dotnet core(入门篇)
+&lt;/h1>&lt;h2 id="开发环境准备">开发环境准备
+&lt;/h2>&lt;p>dotnet core最低开发环境要求就是一个&lt;a class="link" href="https://www.microsoft.com/net/learn/get-started/" target="_blank" rel="noopener"
+>.NET SDK&lt;/a>,在这里可以下载的到最新版本的SDK,各个平台都有.&lt;/p>
+&lt;p>理论上有了SDK什么事都能做了.&lt;/p>
+&lt;p>安装SDK的步骤参考上面的连接就OK,这部分我们跳过.&lt;/p>
+&lt;p>简单讲一下不同操作系统的开发工具选择.&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Windows平台下首选Visual Studio 2017,安装的时候选择 .NET Core部分即可,安装下来估计占用磁盘空间5G,同时会帮你装好SDK的,好用,很好用.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>MacOS/Linux平台选择 SDK + Visual Studio Code + Debug插件 + Nuget插件,很不错,完全生产级别&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>备选方案 Jetbrains家的rider,暂时没用过,resharper一直好评如潮&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>今天我这边主要是是以VS Code + Debug插件 + 命令行来进来讲解.&lt;/p>
+&lt;p>装好dotnet core SDK之后,打开命令行界面,输入dotnet看看.&lt;/p>
+&lt;ul>
+&lt;li>Windows中为CMD或者Powershell,MacOS/Linux为终端&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Usage: dotnet [options]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Usage: dotnet [path-to-application]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Options:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -h|--help Display help.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> --version Display version.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">path-to-application:
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>再输入dotnet &amp;ndash;version查看一下当前版本,我这边显示2.1.4.&lt;/p>
+&lt;p>输入dotnet help&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">.NET Command Line Tools (2.1.4)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Usage: dotnet [runtime-options] [path-to-application]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Usage: dotnet [sdk-options] [command] [arguments] [command-options]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">path-to-application:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> The path to an application .dll file to execute.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">SDK commands:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> new Initialize .NET projects.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> restore Restore dependencies specified in the .NET project.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> run Compiles and immediately executes a .NET project.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> build Builds a .NET project.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> publish Publishes a .NET project for deployment (including the runtime).
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> test Runs unit tests using the test runner specified in the project.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> pack Creates a NuGet package.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> migrate Migrates a project.json based project to a msbuild based project.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> clean Clean build output(s).
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> sln Modify solution (SLN) files.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> add Add reference to the project.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> remove Remove reference from the project.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> list List reference in the project.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> nuget Provides additional NuGet commands.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> msbuild Runs Microsoft Build Engine (MSBuild).
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> vstest Runs Microsoft Test Execution Command Line Tool.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Common options:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -v|--verbosity Set the verbosity level of the command. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -h|--help Show help.
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>有类似的这些信息,说明我们的SDK安装以及完成了.&lt;/p>
+&lt;p>Visual Studio 和Visual Studio Code的安装就不多说了.&lt;/p>
+&lt;h2 id="创建-dotnet-core程序">创建 dotnet core程序
+&lt;/h2>&lt;p>我这边只有SDK + VS Code环境,创建程序直接使用命令行了.&lt;/p>
+&lt;p>dotnet core SDK中已经有很多现成的APP模板,我们直接使用dotnet new命令就可以创建对应的程序.&lt;/p>
+&lt;p>命令行输入 &amp;quot; dotnet new &amp;ldquo;, 显示如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">Usage: new [options]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Options:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -h, --help Displays help for this command.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -l, --list Lists templates containing the specified name. If no name is specified, lists all templates.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -n, --name The name for the output being created. If no name is specified, the name of the current directory is used.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -o, --output Location to place the generated output.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -i, --install Installs a source or a template pack.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -u, --uninstall Uninstalls a source or a template pack.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> --type Filters templates based on available types. Predefined values are &amp;#34;project&amp;#34;, &amp;#34;item&amp;#34; or &amp;#34;other&amp;#34;.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> --force Forces content to be generated even if it would change existing files.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> -lang, --language Specifies the language of the template to create.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Templates Short Name Language Tags
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">--------------------------------------------------------------------------------------------------------
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Console Application console [C#], F#, VB Common/Console
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Class library classlib [C#], F#, VB Common/Library
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Unit Test Project mstest [C#], F#, VB Test/MSTest
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">xUnit Test Project xunit [C#], F#, VB Test/xUnit
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ASP.NET Core Empty web [C#], F# Web/Empty
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ASP.NET Core Web App (Model-View-Controller) mvc [C#], F# Web/MVC
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ASP.NET Core Web App razor [C#] Web/MVC/Razor Pages
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ASP.NET Core with Angular angular [C#] Web/MVC/SPA
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ASP.NET Core with React.js react [C#] Web/MVC/SPA
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ASP.NET Core with React.js and Redux reactredux [C#] Web/MVC/SPA
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ASP.NET Core Web API webapi [C#], F# Web/WebAPI
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">global.json file globaljson Config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">NuGet Config nugetconfig Config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Web Config webconfig Config
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Solution File sln Solution
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Razor Page page Web/ASP.NET
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">MVC ViewImports viewimports Web/ASP.NET
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">MVC ViewStart viewstart Web/ASP.NET
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Examples:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> dotnet new mvc --auth Individual
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> dotnet new viewimports --namespace
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> dotnet new --help
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>既然是手把手教程,肯定从最原始的Console Application 开始咯,在命令行中输入命令&amp;quot;dotnet new console -n FirstApplication&amp;rdquo;,创建一个名为FirstApplication的命令行程序&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">dotnet new console -n FirstApplication&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">cd FirstApplication&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ls FirstApplication&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#✗ cd FirstApplication&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># FirstApplication git:(master) ✗ ls&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># FirstApplication.csproj Program.cs obj/&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>我们切换到FirstApplication文件中,可以看到现在已经有三个文件.简单讲解一下:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>FirstApplication.csproj .csproj为项目构建文件(C Sharp Project”),对应maven中的pom.xml或者是gradle中的build.gradle&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Program.cs 为程序的主入口, 有一个静态的Main方法&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>obj用于存放编译过程中生成的中间临时文件,一般不用管&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>我们使用VS Code打开这个文件夹看看.&lt;/p>
+&lt;p>首次在VS Code中打开带有.csproj文件的文件夹,VS Code会提示是否需要安装相关插件,直接选择是即可.&lt;/p>
+&lt;p>我们这里要用到的插件主要是&amp;quot;C# for Visual Studio Code (powered by OmniSharp)&amp;quot;,直接在插件仓库搜C#基本就能看到.&lt;/p>
+&lt;p>直接看下Program.cs的代码:&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8810.51.02.png"
+loading="lazy"
+alt="代码1"
+>&lt;/p>
+&lt;p>一句话输出&amp;quot;Hello World!&amp;quot;&amp;hellip;&lt;/p>
+&lt;p>我们试着运行一下看看.&lt;/p>
+&lt;p>有两种方式:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>直接在对应项目文件夹位置的命令行中执行dotner run;&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>VS Code debug启动&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="dotnet-run">dotnet run
+&lt;/h3>&lt;p>&amp;ldquo;VS Code-查看-集成终端&amp;quot;可以直接调出终端,并且切到当前项目文件路径,执行 dotnet run输出如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">➜ FirstApplication git:(master) ✗ dotnet run
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Hello World!
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="vs-code-debug">VS Code debug
+&lt;/h3>&lt;p>VS Code左侧切到debug(一只虫子的图标),点击调试旁边的绿色按钮开始启动.&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8810.57.46.png"
+loading="lazy"
+alt="debug"
+>&lt;/p>
+&lt;p>终端输出:&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8810.59.51.png"
+loading="lazy"
+alt="终端"
+>&lt;/p>
+&lt;p>调试控制台输出:&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8811.00.51.png"
+loading="lazy"
+alt="控制台"
+>&lt;/p>
+&lt;p>都说了Debug了,我们简单也做个debug断点调试.&lt;/p>
+&lt;p>点击代码文件左侧黑色边栏,鼠标左键单击在第8,9行,对应位置出现断点(小红点),
+如下图:
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8811.02.09.png"
+loading="lazy"
+alt="断点"
+>&lt;/p>
+&lt;p>再次Debug运行程序.&lt;/p>
+&lt;p>第8行位置出现黄色条纹,程序处于debug默认等待下一步操作.&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8811.04.41.png"
+loading="lazy"
+alt="debug"
+>&lt;/p>
+&lt;p>左侧可查看相关变量当前值,正上方有debug相关操作(F5继续,F10单步跳过,F11单步调试&amp;hellip;)&lt;/p>
+&lt;p>F5按一下,黄色条纹往下走一步到第9行(上一步也下了断点).此时尚未输出任何的信息.&lt;/p>
+&lt;p>F5下一步执行Console.WriteLine(&amp;ldquo;Hello World!&amp;rdquo;);输出&amp;quot;Hello World!&amp;rdquo;&lt;/p>
+&lt;h3 id="写个累加程序试试水">写个累加程序试试水
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-C#" data-lang="C#">&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">namespace&lt;/span> &lt;span class="nn">FirstApplication&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">class&lt;/span> &lt;span class="nc">Program&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">static&lt;/span> &lt;span class="k">void&lt;/span> &lt;span class="n">Main&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">[]&lt;/span> &lt;span class="n">args&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">sum&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="m">0&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">var&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="m">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="p">&amp;lt;&lt;/span> &lt;span class="m">10&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">++)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">sum&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">sum&lt;/span> &lt;span class="p">+&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WriteLine&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">$&amp;#34;当前i值为:{i},sum:{sum}&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">/*
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">Loaded &amp;#39;/usr/local/share/dotnet/shared/Microsoft.NETCore.App/2.0.5/System.Runtime.Extensions.dll&amp;#39;. Skipped loading symbols. Module is optimized and the debugger option &amp;#39;Just My Code&amp;#39; is enabled.
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">当前i值为:0,sum:0
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">当前i值为:1,sum:1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">当前i值为:2,sum:3
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">当前i值为:3,sum:6
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">当前i值为:4,sum:10
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">当前i值为:5,sum:15
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">当前i值为:6,sum:21
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">当前i值为:7,sum:28
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">当前i值为:8,sum:36
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">当前i值为:9,sum:45
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">The program &amp;#39;[32086] FirstApplication.dll&amp;#39; has exited with code 0 (0x0).
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cm">*/&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在循环里面打个断点看看i的值和sum的值.&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8811.17.06.png"
+loading="lazy"
+alt="i&amp;#43;sum"
+>&lt;/p>
+&lt;p>鼠标移动到对应变量上.
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8811.17.49.png"
+loading="lazy"
+alt="鼠标移上去"
+>&lt;/p>
+&lt;p>到这里,第一个dotnet core程序基本已经完成了,本教程结束&amp;hellip;.&lt;/p>
+&lt;h2 id="骗你的这里还有">骗你的,这里还有
+&lt;/h2>&lt;p>还记得我们上面看到的FirstApplication.csproj吗?&lt;/p>
+&lt;p>我们直接在VS Code中打开看看.(VS用户随便找个文件编辑器打开)&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;Project&lt;/span> &lt;span class="na">Sdk=&lt;/span>&lt;span class="s">&amp;#34;Microsoft.NET.Sdk&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PropertyGroup&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;OutputType&amp;gt;&lt;/span>Exe&lt;span class="nt">&amp;lt;/OutputType&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;TargetFramework&amp;gt;&lt;/span>netcoreapp2.0&lt;span class="nt">&amp;lt;/TargetFramework&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/PropertyGroup&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;/Project&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这里就指定了SDK版本和程序版本,没有其他多余的东西了.&lt;/p>
+&lt;p>暂时没什么看的,我们找个web项目的来看看.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-xml" data-lang="xml">&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;Project&lt;/span> &lt;span class="na">Sdk=&lt;/span>&lt;span class="s">&amp;#34;Microsoft.NET.Sdk.Web&amp;#34;&lt;/span>&lt;span class="nt">&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PropertyGroup&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;TargetFramework&amp;gt;&lt;/span>netcoreapp2.0&lt;span class="nt">&amp;lt;/TargetFramework&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/PropertyGroup&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;ItemGroup&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;Folder&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;wwwroot\&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/ItemGroup&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;ItemGroup&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;Dapper&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;1.50.4&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;Microsoft.ApplicationInsights.AspNetCore&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;2.2.1&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;Microsoft.AspNetCore&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;2.0.2&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;Microsoft.AspNetCore.Mvc&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;2.0.3&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;Microsoft.AspNetCore.StaticFiles&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;2.0.2&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;Microsoft.EntityFrameworkCore.Design&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;2.0.2&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;Microsoft.Extensions.Logging.Debug&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;2.0.1&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;Microsoft.VisualStudio.Web.BrowserLink&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;2.0.2&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;Microsoft.VisualStudio.Web.CodeGeneration.Design&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;2.0.3&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;Newtonsoft.Json&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;11.0.2&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;StackExchange.Redis.StrongName&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;1.2.6&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;System.Diagnostics.Tools&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;4.3.0&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;System.Text.Encoding.CodePages&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;4.4.0&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;System.ValueTuple&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;*&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;Microsoft.Extensions.Configuration.Json&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;2.1.0-rc1-final&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;Pomelo.AspNetCore.TimedJob&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;2.0.0-rtm-10046&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;MySqlConnector&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;0.40.3&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;MongoDB.Driver.Core&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;2.7.0-beta0001&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;PackageReference&lt;/span> &lt;span class="na">Include=&lt;/span>&lt;span class="s">&amp;#34;MongoDB.Driver&amp;#34;&lt;/span> &lt;span class="na">Version=&lt;/span>&lt;span class="s">&amp;#34;2.7.0-beta0001&amp;#34;&lt;/span>&lt;span class="nt">/&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nt">&amp;lt;/ItemGroup&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nt">&amp;lt;/Project&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这边能看的东西就很多了.&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Project Sdk=&amp;ldquo;Microsoft.NET.Sdk.Web&amp;rdquo; SDk为Web&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Folder Include=&amp;ldquo;wwwroot&amp;quot; 包含 wwwroot静态文件&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>PackageReference Include=&amp;ldquo;Dapper&amp;rdquo; Version=&amp;ldquo;1.50.4&amp;rdquo; 引用了Dapper程序包(一个ORM框架)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>PackageReference Include=&amp;ldquo;Microsoft.AspNetCore.Mvc&amp;rdquo; Version=&amp;ldquo;2.0.3&amp;rdquo; 引用了MVC框架&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>PackageReference Include=&amp;ldquo;Newtonsoft.Json&amp;rdquo; Version=&amp;ldquo;11.0.2&amp;rdquo; 引用了Newtonsoft.Json Json库&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>这里我们先看看,具体内容在下一讲asp.net core 入门我们会详细讲解.&lt;/p>
+&lt;p>全文完&amp;hellip;.&lt;/p></description></item><item><title>手把手教你用Docker搭建Hexo博客</title><link>https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E7%94%A8docker%E6%90%AD%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2/</link><pubDate>Fri, 18 May 2018 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E7%94%A8docker%E6%90%AD%E5%BB%BAhexo%E5%8D%9A%E5%AE%A2/</guid><description>&lt;h1 id="手把手教你用docker搭建hexo博客">手把手教你用Docker搭建Hexo博客
+&lt;/h1>&lt;h2 id="hexo">hexo
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>快速、简洁且高效的博客框架,Node.js 所带来的超快生成速度，让上百个页面在几秒内瞬间完成渲染。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>只需一条指令即可部署到 GitHub Pages, Heroku 或其他网站。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Hexo 拥有强大的插件系统，安装插件可以让 Hexo 支持 Jade, CoffeeScript。&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">npm install hexo-cli -g
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">hexo init blog
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> blog
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">hexo server
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>以上来自&lt;a class="link" href="https://hexo.io/zh-cn/" target="_blank" rel="noopener"
+>Hexo官网&lt;/a>&lt;/p>
+&lt;p>到这里,你的hexo博客已经初始化好了, blog/public文件夹下面已经生成了对应的HTML文件.&lt;/p>
+&lt;p>扩展阅读:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://theme-next.iissnan.com/" target="_blank" rel="noopener"
+>hexo next主题&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://theme-next.iissnan.com/theme-settings.html" target="_blank" rel="noopener"
+>hexo next主题配置&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="docker-部署">docker 部署
+&lt;/h2>&lt;p>不BB这么多,先上Dockerfile&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-docker" data-lang="docker">&lt;span class="line">&lt;span class="cl">&lt;span class="c"># node环境镜像&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> node:latest AS build-env&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># 创建hexo-blog文件夹且设置成工作文件夹&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> mkdir -p /usr/src/hexo-blog&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /usr/src/hexo-blog&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># 复制当前文件夹下面的所有文件到hexo-blog中&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> . .&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># 安装 hexo-cli&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> npm --registry&lt;span class="o">=&lt;/span>https://registry.npm.taobao.org install hexo-cli -g &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> npm install&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># 生成静态文件&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> hexo clean &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> hexo g&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># 配置nginx&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> nginx:latest&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENV&lt;/span> &lt;span class="nv">TZ&lt;/span>&lt;span class="o">=&lt;/span>Asia/Shanghai&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> ln -snf /usr/share/zoneinfo/&lt;span class="nv">$TZ&lt;/span> /etc/localtime &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nb">echo&lt;/span> &lt;span class="nv">$TZ&lt;/span> &amp;gt; /etc/timezone&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /usr/share/nginx/html&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># 把上一部生成的HTML文件复制到Nginx中&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> --from&lt;span class="o">=&lt;/span>build-env /usr/src/hexo-blog/public /usr/share/nginx/html&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">EXPOSE&lt;/span>&lt;span class="s"> 80&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>接着跑一下看看.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">docker build -t 镜像名:latest .&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker run -p 80:80 -d 镜像名:latest&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>好了,完事&amp;hellip;.&lt;/p>
+&lt;h2 id="nginx-https证书配置">Nginx https证书配置
+&lt;/h2>&lt;p>最后Nginx配置https证书的步骤.&lt;/p>
+&lt;p>首先,你要有个证书,哪来的我不管了.&lt;/p>
+&lt;p>PS:良心推荐&lt;a class="link" href="https://freessl.org/" target="_blank" rel="noopener"
+>https://freessl.org/&lt;/a>直接生成免费证书&lt;/p>
+&lt;p>然后nginx.conf如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">events&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">worker_connections&lt;/span> &lt;span class="mi">1024&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">http&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">server&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">listen&lt;/span> &lt;span class="mi">443&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">server_name&lt;/span> &lt;span class="n">codelover&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">link&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">root&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">share&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">nginx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">html&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">index&lt;/span> &lt;span class="n">index&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">html&lt;/span> &lt;span class="n">index&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">htm&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ssl&lt;/span> &lt;span class="n">on&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ssl_certificate&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">etc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">nginx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">full_chain&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">pem&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ssl_certificate_key&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">etc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">nginx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">private&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">key&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">include&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">etc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">nginx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">mime&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">types&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">default_type&lt;/span> &lt;span class="n">application&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">octet&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">stream&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gzip&lt;/span> &lt;span class="n">on&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gzip_min_length&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gzip_buffers&lt;/span> &lt;span class="mi">4&lt;/span> &lt;span class="mi">16&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gzip_http_version&lt;/span> &lt;span class="mf">1.1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gzip_comp_level&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gzip_types&lt;/span> &lt;span class="n">text&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">plain&lt;/span> &lt;span class="n">application&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">json&lt;/span> &lt;span class="n">application&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">javascript&lt;/span> &lt;span class="n">text&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">css&lt;/span> &lt;span class="n">application&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">xml&lt;/span> &lt;span class="n">text&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">javascript&lt;/span> &lt;span class="n">image&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">jpeg&lt;/span> &lt;span class="n">image&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gif&lt;/span> &lt;span class="n">image&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">png&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gzip_vary&lt;/span> &lt;span class="n">on&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">server&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">listen&lt;/span> &lt;span class="mi">80&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">server_name&lt;/span> &lt;span class="n">codelover&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">link&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">root&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">share&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">nginx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">html&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">index&lt;/span> &lt;span class="n">index&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">html&lt;/span> &lt;span class="n">index&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">htm&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">include&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">etc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">nginx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">mime&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">types&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">default_type&lt;/span> &lt;span class="n">application&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">octet&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">stream&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这时候用docker跑你的hexo-blog镜像的时候把对应的pem和key文件映射到对应路径记录.&lt;/p>
+&lt;p>如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># codelover-blog 为配置文件路径,codelover-blog/ssl为证书路径&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker run -p 80:80 -p 443:443 &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--name codelover-blog &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-v ~/docker-data/codelover-blog/nginx.conf:/etc/nginx/nginx.conf &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-v ~/docker-data/codelover-blog/ssl/full_chain.pem:/etc/nginx/full_chain.pem &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>-v ~/docker-data/codelover-blog/ssl/private.key:/etc/nginx/private.key &lt;span class="se">\
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="se">&lt;/span>--restart&lt;span class="o">=&lt;/span>always -d 你的hexo-blog博客镜像&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>顺手也把非静态文件的nginx配置放一份,如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">events&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">worker_connections&lt;/span> &lt;span class="mi">1024&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">http&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">upstream&lt;/span> &lt;span class="n">webservers&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">#weigth参数表示权值，权值越高被分配到的几率越大&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">#本机上的Squid开启3128端口&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">server&lt;/span> &lt;span class="mf">10.31&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">160.197&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">8080&lt;/span> &lt;span class="n">weight&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">5&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">server&lt;/span> &lt;span class="mf">192.168&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="mf">0.1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">9090&lt;/span> &lt;span class="n">weight&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">3&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">server&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">listen&lt;/span> &lt;span class="mi">443&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">server_name&lt;/span> &lt;span class="n">woyaozufang&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">live&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">location&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">proxy_pass&lt;/span> &lt;span class="n">http&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">webservers&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ssl&lt;/span> &lt;span class="n">on&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ssl_certificate&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">etc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">nginx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">full_chain&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">pem&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ssl_certificate_key&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="n">etc&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">nginx&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">private&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">key&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">error_page&lt;/span> &lt;span class="mi">500&lt;/span> &lt;span class="mi">502&lt;/span> &lt;span class="mi">503&lt;/span> &lt;span class="mi">504&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="mi">50&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">html&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">location&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="mi">50&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">html&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">root&lt;/span> &lt;span class="n">html&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gzip&lt;/span> &lt;span class="n">on&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gzip_min_length&lt;/span> &lt;span class="mi">5&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gzip_buffers&lt;/span> &lt;span class="mi">4&lt;/span> &lt;span class="mi">16&lt;/span>&lt;span class="n">k&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gzip_http_version&lt;/span> &lt;span class="mf">1.1&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gzip_comp_level&lt;/span> &lt;span class="mi">3&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gzip_types&lt;/span> &lt;span class="n">text&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">plain&lt;/span> &lt;span class="n">application&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">json&lt;/span> &lt;span class="n">application&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">javascript&lt;/span> &lt;span class="n">text&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">css&lt;/span> &lt;span class="n">application&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">xml&lt;/span> &lt;span class="n">text&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">javascript&lt;/span> &lt;span class="n">image&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">jpeg&lt;/span> &lt;span class="n">image&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">gif&lt;/span> &lt;span class="n">image&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">png&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gzip_vary&lt;/span> &lt;span class="n">on&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">server&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">listen&lt;/span> &lt;span class="mi">8080&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">server_name&lt;/span> &lt;span class="n">woyaozufang&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">live&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">location&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">proxy_pass&lt;/span> &lt;span class="n">http&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">webservers&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">error_page&lt;/span> &lt;span class="mi">500&lt;/span> &lt;span class="mi">502&lt;/span> &lt;span class="mi">503&lt;/span> &lt;span class="mi">504&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="mi">50&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">html&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">location&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="mi">50&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">html&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">root&lt;/span> &lt;span class="n">html&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">server&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">listen&lt;/span> &lt;span class="mi">80&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">server_name&lt;/span> &lt;span class="n">woyaozufang&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">live&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">location&lt;/span> &lt;span class="o">/&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">proxy_pass&lt;/span> &lt;span class="n">http&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="o">//&lt;/span>&lt;span class="n">webservers&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">error_page&lt;/span> &lt;span class="mi">500&lt;/span> &lt;span class="mi">502&lt;/span> &lt;span class="mi">503&lt;/span> &lt;span class="mi">504&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="mi">50&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">html&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">location&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">/&lt;/span>&lt;span class="mi">50&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">html&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">root&lt;/span> &lt;span class="n">html&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>手把手教你用Jenkins自动发布dotnet core网站</title><link>https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E7%94%A8jenkins%E8%87%AA%E5%8A%A8%E5%8F%91%E5%B8%83dotnet-core%E7%BD%91%E7%AB%99/</link><pubDate>Tue, 08 May 2018 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E7%94%A8jenkins%E8%87%AA%E5%8A%A8%E5%8F%91%E5%B8%83dotnet-core%E7%BD%91%E7%AB%99/</guid><description>&lt;h1 id="jenkins部分">Jenkins部分
+&lt;/h1>&lt;p>首先,我们要有个Jenkins咯,下载链接:&lt;a class="link" href="https://jenkins.io/download/" target="_blank" rel="noopener"
+>https://jenkins.io/download/&lt;/a>&lt;/p>
+&lt;p>我们安装官网教程安装好jenkins,安装教程略&amp;hellip;.&lt;/p>
+&lt;p>嗯?不是说好手把手么?你妹的.&lt;/p>
+&lt;p>好好好,我们还是来手把手教程好了.&lt;/p>
+&lt;h2 id="首先安装jdk8">首先安装JDK8
+&lt;/h2>&lt;p>添加安装源之后直接apt-get install就好,下面是ubuntu的安装命令,其他系统自己玩一下就好.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo add-apt-repository ppa:webupd8team/java
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo apt-get update
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo apt-get install oracle-java8-installer
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="下载jenkinswar--启动jenkins">下载jenkins.war + 启动Jenkins
+&lt;/h2>&lt;p>下载链接:&lt;a class="link" href="http://mirrors.jenkins.io/war-stable/" target="_blank" rel="noopener"
+>http://mirrors.jenkins.io/war-stable/&lt;/a>&lt;/p>
+&lt;p>在这里面找最新的下载,我当前最新的应该是&lt;a class="link" href="http://mirrors.jenkins.io/war-stable/2.107.2/jenkins.war" target="_blank" rel="noopener"
+>2.107.2&lt;/a>&lt;/p>
+&lt;p>下载好了jenkins.war之后,在当前目录创建一个jenkins-home文件夹,设置JENKINS_HOME环境变量为jenkins-home(不设置也可以,默认在~/.jenkins)&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget http://mirrors.jenkins.io/war-stable/2.107.2/jenkins.war&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir ~/jenkins-home&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">JENKINS_HOME&lt;/span>&lt;span class="o">=&lt;/span>~/jenkins-home&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tmux&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">java -jar jenkins.war
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>一般建议开个后台进程来跑jenkins,免得终端退出之后jenkins就死掉了.&lt;/p>
+&lt;p>所以上面我先打开了tmux之后再跑java -jar jenkins.war.&lt;/p>
+&lt;p>如下图:
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%886.53.24.png"
+loading="lazy"
+alt="jenkins启动"
+>&lt;/p>
+&lt;p>接着留意一下initialAdminPassword的输出&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Jenkins initial setup is required. An admin user has been created and a password generated.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Please use the following password to proceed to installation:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">XXXXXXXXXXXXXX
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">This may also be found at: /root/jenkins-home/secrets/initialAdminPassword
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这个时候访问当前主机的8080端口已经可以看到jenkins正在启动了,稍等片刻就可以看到jenkins登录页.&lt;/p>
+&lt;p>这个时候把上面的XXXXXXXXXXXXXX复制出来,输进去点击继续配置jenkins账号密码信息之类的.&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%886.58.58.png"
+loading="lazy"
+alt="配置jenkins"
+>&lt;/p>
+&lt;p>接着安装默认插件.&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%887.00.12.png"
+loading="lazy"
+alt="安装插件"
+>&lt;/p>
+&lt;p>这里估计也要等几分钟不等,看你的机器性能和网络速度.&lt;/p>
+&lt;p>安装好了之后会进入配置登录账号密码,安装提示配置就完事.&lt;/p>
+&lt;p>最后进入jenkins页面是这样的.
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%887.02.42.png"
+loading="lazy"
+alt="jenkins"
+>&lt;/p>
+&lt;p>到现在我们已经把jenkins跑起来了,也有了一些常用的插件.&lt;/p>
+&lt;p>我们先去把dotnet core docker 编译发布相关的东西弄好之后再回来继续做jenkins任务.&lt;/p>
+&lt;h2 id="dotnet-core-docker-打包">dotnet core docker 打包
+&lt;/h2>&lt;p>在项目目录下新建Dockerfile文件,内容如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-docker" data-lang="docker">&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> microsoft/aspnetcore-build:2.0 AS build-env&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /app&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># copy csproj and restore as distinct layers&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> *.csproj ./&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> dotnet restore&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># copy everything else and build&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> . ./&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> dotnet publish -c Release -o out&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># build runtime image&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> microsoft/aspnetcore:2.0&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /app&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> --from&lt;span class="o">=&lt;/span>build-env /app/out .&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENTRYPOINT&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;dotnet&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;你的dotnet core程序.dll&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这个Dockerfile基本就是把当前目录的文件拷贝到aspnetcore-build镜像中,再里面编译好之后再发布到aspnetcore:2.0镜像中,&lt;/p>
+&lt;p>最后指定运行你的dotnet core程序&lt;/p>
+&lt;p>来源:&lt;a class="link" href="https://github.com/DaoCloud/dotnet-docker-samples" target="_blank" rel="noopener"
+>https://github.com/DaoCloud/dotnet-docker-samples&lt;/a>&lt;/p>
+&lt;h2 id="docker-build--run-脚本非必须可以使用jenkins中脚本编译替代">docker build + run 脚本(非必须,可以使用jenkins中脚本编译替代)
+&lt;/h2>&lt;p>以&lt;a class="link" href="https://github.com/liguobao/58HouseSearch/blob/master/HouseCrawler.Core/HouseCrawler.Web/" target="_blank" rel="noopener"
+>HouseCrawler.Web&lt;/a>为例,&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#!/bin/sh&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">image_version&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>date +%Y%m%d%H%M&lt;span class="sb">`&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$image_version&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ~/code/58HouseSearch/HouseCrawler.Core/HouseCrawler.Web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git pull --rebase origin master&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker stop house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker rm house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker build -t house-web:&lt;span class="nv">$image_version&lt;/span> .&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker images&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker run -p 8080:80 -v ~/docker-data/house-web/appsettings.json:/app/appsettings.json -v ~/docker-data/house-web/NLogFile/:/app/NLogFile --restart&lt;span class="o">=&lt;/span>always --name house-web -d house-web:&lt;span class="nv">$image_version&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker logs house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>通过上面这个build+run脚本,我们已经把dotnet core程序编译好了,并且打包成了docker images,还直接跑起来了.&lt;/p>
+&lt;p>但是我们想要的应该是自动化编译部署,而且上面我们都把jenkins跑起来了,所以&amp;hellip;.&lt;/p>
+&lt;h2 id="jenkins-job配置">jenkins job配置
+&lt;/h2>&lt;h3 id="新建job">新建Job
+&lt;/h3>&lt;p>打开jenkins首页,左侧选择&amp;quot;新建任务&amp;quot;(newJob),如下图:&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.10.00.png"
+loading="lazy"
+alt="newJob"
+>&lt;/p>
+&lt;p>给新的job取个名字,然后选择&amp;quot;构建自由风格的软件项目&amp;quot;,如图:&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.12.27.png"
+loading="lazy"
+alt="构建自由风格的软件项目"
+>&lt;/p>
+&lt;h3 id="添加源码仓库">添加源码仓库
+&lt;/h3>&lt;p>确认之后进入Job配置页面,源码管理里面选择git,如图:
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.14.06.png"
+loading="lazy"
+alt="源码管理"
+>&lt;/p>
+&lt;p>如果git仓库是需要权限的话需要配置一下权限,我一般简单粗暴直接把jenkins主机的公钥添加到git仓库里面,所以这里直接配置成&amp;rsquo;From the Jenkins master ~/.ssh&amp;rsquo;,也可以用账号密码访问等等的.&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.16.09.png"
+loading="lazy"
+alt="git仓库权限配置"
+>&lt;/p>
+&lt;p>&amp;ldquo;Branch Specifier (blank for &amp;lsquo;any&amp;rsquo;) &amp;ldquo;默认master分支,根据自己的需求填入不同的分支.&lt;/p>
+&lt;p>构建触发器和构建环境先跳过,我们不管,待会弄.&lt;/p>
+&lt;h3 id="构建">构建
+&lt;/h3>&lt;p>点击&amp;quot;添加构建步骤&amp;rdquo;,选择&amp;quot;Execute shell&amp;rdquo;,然后能看到如下图:
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.22.45.png"
+loading="lazy"
+alt="Execute shell"
+>&lt;/p>
+&lt;p>还记得我们上一步的脚本么?修改一下源码路径再放进去.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 切换到源码目录,对应在jenkins-home的workspace下面&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ~jenkins-home/workspace/项目名称/Dockerfile所在目录&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">image_version&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>date +%Y%m%d%H%M&lt;span class="sb">`&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$image_version&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 停止之前的docker container&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker stop house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 删除这个container&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker rm house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># build镜像并且打上tag&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker build -t house-web:&lt;span class="nv">$image_version&lt;/span> .&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker images&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 把刚刚build出来的镜像跑起来&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker run -p 8080:80 -v ~/docker-data/house-web/appsettings.json:/app/appsettings.json -v ~/docker-data/house-web/NLogFile/:/app/NLogFile --restart&lt;span class="o">=&lt;/span>always --name house-web -d house-web:&lt;span class="nv">$image_version&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker logs house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>如果jenkins主机和程序运行主机不在一台机器上,建议直接在把上面的脚本放在运行主机上,命名成 start_XXX.sh.&lt;/p>
+&lt;p>上面的命令直接就是成了&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">ssh username@发布主机的IP &lt;span class="s1">&amp;#39;~/start_XXX.sh&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>ps:记得在jenkins主机配置&lt;a class="link" href="https://blog.csdn.net/wind520/article/details/38421359" target="_blank" rel="noopener"
+>ssh免登陆&lt;/a>&lt;/p>
+&lt;h3 id="构建触发器">构建触发器
+&lt;/h3>&lt;p>构建触发器就是我们选择什么时候来触发构建任务,有几种方案可以做.&lt;/p>
+&lt;ol>
+&lt;li>使用 Build periodically,定时 or 隔N久去拉一次代码构建&lt;/li>
+&lt;li>Poll SCM：定时检查源码变更（根据SCM软件的版本号）,如果有变化就去执行构建&lt;/li>
+&lt;li>GitHub hook trigger for GITScm polling 或者其他Git平台提供的webhook&lt;/li>
+&lt;li>安装Generic Webhook Trigger插件之后,使用其他平台的webhook来触发构建任务.&lt;/li>
+&lt;/ol>
+&lt;p>我这里选择第4种方案,安装Generic Webhook Trigger插件,下面马上回告诉你为什么这样做的.&lt;/p>
+&lt;p>Generic Webhook Trigger插件在&amp;quot;系统管理-管理插件-可选插件&amp;quot;里面直接搜&amp;quot;Generic Webhook Trigger&amp;quot;安装就可以.&lt;/p>
+&lt;p>从上一步的构建步骤里面的脚本中我们就知道,其实我们现在要不就在jenkins主机上docker build,要不就在发布目标主机上build,&lt;/p>
+&lt;p>build过程比较慢而且还会产生镜像在本机or目标主机上,docker images也没有被管理起来.&lt;/p>
+&lt;p>有什么好的办法么?嗯,还真有.直接用阿里云&amp;quot;容器镜像服务&amp;quot;来构建镜像&lt;/p>
+&lt;h3 id="使用阿里云-容器镜像服务">使用阿里云-容器镜像服务
+&lt;/h3>&lt;p>首先登录阿里云,然后进入容器镜像服务,地址是&lt;a class="link" href="https://cr.console.aliyun.com/" target="_blank" rel="noopener"
+>https://cr.console.aliyun.com/&lt;/a>&lt;/p>
+&lt;p>首次进入估计需要创建一个命名空间,一般用公司名或者你的名字就完事.&lt;/p>
+&lt;p>接着选择&amp;quot;创建镜像仓库&amp;quot;.&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.51.25.png"
+loading="lazy"
+alt="创建镜像仓库"
+>&lt;/p>
+&lt;p>选地区-选命名空间-填仓库名称(就是镜像名称)-填摘要-设置代码源(支持GitHub/阿里云code/Bitbucket/私有Gitlab/本地Git等等,给个授权就完事)&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.54.10.png"
+loading="lazy"
+alt="选地区"
+>&lt;/p>
+&lt;p>构建设置选择&amp;quot;代码变更时自动构建镜像&amp;quot;,然后选一下构建分支为你想要的分支,填入Dockerfile在源码中的路径,然后保存
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.57.50.png"
+loading="lazy"
+alt="构建分支"
+>&lt;/p>
+&lt;p>接着我们进入管理平台看一下.&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%8810.00.51.png"
+loading="lazy"
+alt="aliyun-构建"
+>&lt;/p>
+&lt;p>点击一下&amp;quot;立即构建&amp;quot;,然后查看一下日志.
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%8810.02.00.png"
+loading="lazy"
+alt="build 日志"
+>&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%8810.02.49.png"
+loading="lazy"
+alt="构建成功"
+>&lt;/p>
+&lt;p>这个时候,我们用docker pull registry-internal.cn-hangzhou.aliyuncs.com/你的命名空间/你的镜像名称 就可以拉到这个阿里云build成功的镜像了.&lt;/p>
+&lt;p>镜像build的问题解决了,那么我们怎么自动把镜像发布到我们的运行主机呢?&lt;/p>
+&lt;p>这时候webhook又出来了.&lt;/p>
+&lt;h3 id="jenkins-webhook触发配置">jenkins webhook触发配置
+&lt;/h3>&lt;p>我们看阿里云镜像构建服务里面,有一项是webhook的,官方介绍在这里:&lt;a class="link" href="https://help.aliyun.com/document_detail/60949.html?spm=5176.8351553.0.0.645319912fjxim" target="_blank" rel="noopener"
+>阿里云-webhook管理&lt;/a>&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%8810.08.45.png"
+loading="lazy"
+alt="阿里云-webhook管理"
+>&lt;/p>
+&lt;p>这里就需要填入我们的webhook地址,还记得前面我无端端选择的第四种方案,然后让大家跟着安装的Generic Webhook Trigger插件么?&lt;/p>
+&lt;p>我们就是用这货来为我们提供webhook API.&lt;/p>
+&lt;p>理一下流程:&lt;/p>
+&lt;p>git仓库代码变化 -&amp;gt;阿里云容器构建服务启动 -&amp;gt; 构建好镜像之后触发webhook -&amp;gt; jenkins收到阿里云的webhook之后触发job执行部署脚本 -&amp;gt;部署脚本使用阿里云镜像run起来 -&amp;gt;完事.&lt;/p>
+&lt;p>我们继续配置Generic Webhook Trigger.&lt;/p>
+&lt;p>Generic Webhook Trigger支持的命名触发URL格式是这样的:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-http" data-lang="http">&lt;span class="line">&lt;span class="cl">&lt;span class="err">http://jenkins登录用户名:token授权码@jenkins IP:8080/generic-webhook-trigger/invoke?token=触发器名称
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>jenkins登录名和token在&amp;quot;账号-设置-API Token-Show API Token&amp;hellip;&amp;ldquo;里面能看到,找出来之后填到上面去就可以.&lt;/p>
+&lt;p>最后一个token参数其实就是&amp;quot;构建触发器&amp;quot;中&amp;quot;触发远程构建&amp;quot;的参数,建议使用job名字.这里的配置大概是这样的:&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%8810.21.13.png"
+loading="lazy"
+alt="触发远程构建"
+>&lt;/p>
+&lt;p>最后我们还需要在jenkins全局安全设置中取消勾选“防止跨站点请求伪造（Prevent Cross Site Request Forgery exploits)&amp;ldquo;选项,这样阿里云webhook才能过得来.&lt;/p>
+&lt;p>手动在浏览器中访问一下http://jenkins登录用户名:token授权码@jenkins IP:8080/generic-webhook-trigger/invoke?token=触发器名称
+如果对应的jenkins Job能正常开始执行,说明整个流程已经ok了.&lt;/p>
+&lt;p>最后我们回到上面&amp;quot;阿里云-容器镜像服务-对应镜像仓库-webhook-添加记录&amp;rdquo;
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%8810.27.02.png"
+loading="lazy"
+alt="webhook-添加记录"
+>&lt;/p>
+&lt;p>PS:webhook名称不要带特殊字符or &amp;ldquo;-&amp;ldquo;之类的,不然一直保存失败而且还不会提示你是因为名字不合法,下午被这个坑了半个小时.&lt;/p>
+&lt;p>到这里,我们基本大功告成了.&lt;/p>
+&lt;p>最后我们再改一下jenkins的脚本,不在本地build docker了,直接拿阿里云镜像服务构建出来的镜像跑就可以.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 停止之前的docker container&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker stop house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 删除这个container&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker rm house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker pull 你的阿里云镜像地址&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 把刚刚build出来的镜像跑起来&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker run --restart&lt;span class="o">=&lt;/span>always --name 你的contianer名称 你的阿里云镜像地址&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="总结一下我们做了什么">总结一下我们做了什么
+&lt;/h3>&lt;ol>
+&lt;li>搭建jenkins&lt;/li>
+&lt;li>编写Dockerfile文件,直接编译发布+打包成docker镜像+部署脚本&lt;/li>
+&lt;li>使用阿里云-容器构建服务构建docker镜像,构建成功后使用webhook通知jenkins&lt;/li>
+&lt;li>配置jenkins webhook触发器,触发部署脚本&lt;/li>
+&lt;li>其他项目/语言其实也基本一样的操作,区别只在于Dockerfile的编写&lt;/li>
+&lt;li>完事&amp;hellip;&lt;/li>
+&lt;/ol></description></item></channel></rss>

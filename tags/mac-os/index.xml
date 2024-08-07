@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Mac OS on 李国宝</title><link>https://liguobao.github.io/tags/mac-os/</link><description>Recent content in Mac OS on 李国宝</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 09 May 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/mac-os/index.xml" rel="self" type="application/rss+xml"/><item><title>Mac OS X 安装 pycrypto报 Clang not found 'stdio.h' error</title><link>https://liguobao.github.io/p/mac-os-x-%E5%AE%89%E8%A3%85-pycrypto%E6%8A%A5-clang-not-found-stdio.h-error/</link><pubDate>Thu, 09 May 2019 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/mac-os-x-%E5%AE%89%E8%A3%85-pycrypto%E6%8A%A5-clang-not-found-stdio.h-error/</guid><description>&lt;h1 id="mac-os-x-安装-pycrypto报-clang-not-found-stdioh-error">Mac OS X 安装 pycrypto报 Clang not found &amp;lsquo;stdio.h&amp;rsquo; error
+&lt;/h1>&lt;p>装一个Python包的时候用到了Clang编译C库, 然后一直报&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-c" data-lang="c">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">clang&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="mf">4.0&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nl">warning&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">argument&lt;/span> &lt;span class="n">unused&lt;/span> &lt;span class="n">during&lt;/span> &lt;span class="nl">compilation&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">L&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">usr&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">local&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">lib&lt;/span>&lt;span class="err">&amp;#39;&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">Wunused&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">command&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">line&lt;/span>&lt;span class="o">-&lt;/span>&lt;span class="n">argument&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">src&lt;/span>&lt;span class="o">/&lt;/span>&lt;span class="n">_fastmath&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nl">c&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="mi">29&lt;/span>&lt;span class="o">:&lt;/span>&lt;span class="mi">10&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="n">fatal&lt;/span> &lt;span class="nl">error&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="n">stdio&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">h&lt;/span>&lt;span class="err">&amp;#39;&lt;/span> &lt;span class="n">file&lt;/span> &lt;span class="n">not&lt;/span> &lt;span class="n">found&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="cp">#include&lt;/span> &lt;span class="cpf">&amp;lt;stdio.h&amp;gt;&lt;/span>&lt;span class="cp">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span> &lt;span class="o">^~~~~~~~~&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="mi">1&lt;/span> &lt;span class="n">error&lt;/span> &lt;span class="n">generated&lt;/span>&lt;span class="p">.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nl">error&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">command&lt;/span> &lt;span class="err">&amp;#39;&lt;/span>&lt;span class="n">clang&lt;/span>&lt;span class="err">&amp;#39;&lt;/span> &lt;span class="n">failed&lt;/span> &lt;span class="n">with&lt;/span> &lt;span class="n">exit&lt;/span> &lt;span class="n">status&lt;/span> &lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>见鬼, 这不是C最通用的库么? 咋还能找不到.&lt;/p>
+&lt;p>检查一下clang版本.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">➜ src git:&lt;span class="o">(&lt;/span>develop&lt;span class="o">)&lt;/span> clang --version
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">clang version 4.0.1 &lt;span class="o">(&lt;/span>tags/RELEASE_401/final&lt;span class="o">)&lt;/span>Target: x86_64-apple-darwin18.5.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Thread model: posix
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">InstalledDir: /usr/local/opt/llvm@4/bin
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>挺正常的&amp;hellip;&lt;/p>
+&lt;p>有人说坏境变量问题, 导入一下试试.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="s2">&amp;#34;CFLAGS=-I/usr/local/include -L/usr/local/lib&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>无果.&lt;/p>
+&lt;p>又翻了一遍stackoverflow..&lt;/p>
+&lt;p>找到了这个.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> /Library/Developer/CommandLineTools/Packages
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">open macOS_SDK_headers_for_macOS_xx.pgk
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># macOS_SDK_headers_for_macOS_xx.pgk 对应自己的系统版本&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>跳出安装界面, 点点点&amp;hellip;&lt;/p>
+&lt;p>It work!&lt;/p>
+&lt;p>愉快安装 pip install pycrypto.&lt;/p></description></item></channel></rss>

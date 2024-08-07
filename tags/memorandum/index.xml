@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Memorandum on 李国宝</title><link>https://liguobao.github.io/tags/memorandum/</link><description>Recent content in Memorandum on 李国宝</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 04 Oct 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/memorandum/index.xml" rel="self" type="application/rss+xml"/><item><title>备忘网站</title><link>https://liguobao.github.io/p/%E5%A4%87%E5%BF%98%E7%BD%91%E7%AB%99/</link><pubDate>Tue, 04 Oct 2016 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/%E5%A4%87%E5%BF%98%E7%BD%91%E7%AB%99/</guid><description>&lt;h1 id="备忘网站">备忘网站
+&lt;/h1>&lt;h2 id="markdown-语法说明-简体中文版httpwowubuntucommarkdown">&lt;a class="link" href="http://wowubuntu.com/markdown/" target="_blank" rel="noopener"
+>Markdown 语法说明 (简体中文版)&lt;/a>
+&lt;/h2>&lt;h2 id="markdown-basics-快速入门httpwowubuntucommarkdownbasichtml">&lt;a class="link" href="http://wowubuntu.com/markdown/basic.html" target="_blank" rel="noopener"
+>Markdown: Basics （快速入门）&lt;/a>
+&lt;/h2>&lt;h2 id="使用github和hexo搭建免费静态blog本博客案例httpwsgzaogithubioposthexo-guide">&lt;a class="link" href="http://wsgzao.github.io/post/hexo-guide/" target="_blank" rel="noopener"
+>使用GitHub和Hexo搭建免费静态Blog(本博客案例)&lt;/a>
+&lt;/h2>&lt;p>###安装Hexo&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">npm install hexo-cli -g
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install hexo --save
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#如果命令无法运行，可以尝试更换taobao的npm源&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install -g cnpm --registry&lt;span class="o">=&lt;/span>https://registry.npm.taobao.org
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="安装hexo插件">安装Hexo插件
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">npm install hexo-generator-index --save
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install hexo-generator-archive --save
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install hexo-generator-category --save
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install hexo-generator-tag --save
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install hexo-server --save
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install hexo-deployer-git --save
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install hexo-deployer-heroku --save
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install hexo-deployer-rsync --save
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install hexo-deployer-openshift --save
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install hexo-renderer-marked@0.2 --save
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install hexo-renderer-stylus@0.2 --save
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install hexo-generator-feed@1 --save
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm install hexo-generator-sitemap@1 --save
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="win下面的git客户端提示filename-too-long解决方法httpswwwmxgwinfotfilename-too-long-in-githtml">&lt;a class="link" href="https://www.mxgw.info/t/filename-too-long-in-git.html" target="_blank" rel="noopener"
+>win下面的git客户端提示FIlename too long解决方法&lt;/a>
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">git config --global core.longpaths &lt;span class="nb">true&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="git-ssh-配置和使用httpssegmentfaultcoma1190000002645623">&lt;a class="link" href="https://segmentfault.com/a/1190000002645623" target="_blank" rel="noopener"
+>git-ssh 配置和使用&lt;/a>
+&lt;/h2></description></item></channel></rss>
