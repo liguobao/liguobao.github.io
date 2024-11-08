@@ -142,4 +142,10 @@ fastboot flash boot /sdcard/Download/magisk_patched-xxx.img
 # 重启
 fastboot reboot
 
+
+##  LineageOS Build Archive 下载
+
+- [LineageOS 老版本](https://lineage-archive.timschumi.net/)
+- [lineageos 最新版本](https://download.lineageos.org/devices/sagit/builds)
+
 ```
