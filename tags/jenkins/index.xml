@@ -1,0 +1,373 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Jenkins on 李国宝</title><link>https://liguobao.github.io/tags/jenkins/</link><description>Recent content in Jenkins on 李国宝</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 08 May 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/jenkins/index.xml" rel="self" type="application/rss+xml"/><item><title>手把手教你用Jenkins自动发布dotnet core网站</title><link>https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E7%94%A8jenkins%E8%87%AA%E5%8A%A8%E5%8F%91%E5%B8%83dotnet-core%E7%BD%91%E7%AB%99/</link><pubDate>Tue, 08 May 2018 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E7%94%A8jenkins%E8%87%AA%E5%8A%A8%E5%8F%91%E5%B8%83dotnet-core%E7%BD%91%E7%AB%99/</guid><description>&lt;h1 id="jenkins部分">Jenkins部分
+&lt;/h1>&lt;p>首先,我们要有个Jenkins咯,下载链接:&lt;a class="link" href="https://jenkins.io/download/" target="_blank" rel="noopener"
+>https://jenkins.io/download/&lt;/a>&lt;/p>
+&lt;p>我们安装官网教程安装好jenkins,安装教程略&amp;hellip;.&lt;/p>
+&lt;p>嗯?不是说好手把手么?你妹的.&lt;/p>
+&lt;p>好好好,我们还是来手把手教程好了.&lt;/p>
+&lt;h2 id="首先安装jdk8">首先安装JDK8
+&lt;/h2>&lt;p>添加安装源之后直接apt-get install就好,下面是ubuntu的安装命令,其他系统自己玩一下就好.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo add-apt-repository ppa:webupd8team/java
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo apt-get update
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo apt-get install oracle-java8-installer
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="下载jenkinswar--启动jenkins">下载jenkins.war + 启动Jenkins
+&lt;/h2>&lt;p>下载链接:&lt;a class="link" href="http://mirrors.jenkins.io/war-stable/" target="_blank" rel="noopener"
+>http://mirrors.jenkins.io/war-stable/&lt;/a>&lt;/p>
+&lt;p>在这里面找最新的下载,我当前最新的应该是&lt;a class="link" href="http://mirrors.jenkins.io/war-stable/2.107.2/jenkins.war" target="_blank" rel="noopener"
+>2.107.2&lt;/a>&lt;/p>
+&lt;p>下载好了jenkins.war之后,在当前目录创建一个jenkins-home文件夹,设置JENKINS_HOME环境变量为jenkins-home(不设置也可以,默认在~/.jenkins)&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">wget http://mirrors.jenkins.io/war-stable/2.107.2/jenkins.war&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">mkdir ~/jenkins-home&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">export&lt;/span> &lt;span class="nv">JENKINS_HOME&lt;/span>&lt;span class="o">=&lt;/span>~/jenkins-home&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tmux&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">java -jar jenkins.war
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>一般建议开个后台进程来跑jenkins,免得终端退出之后jenkins就死掉了.&lt;/p>
+&lt;p>所以上面我先打开了tmux之后再跑java -jar jenkins.war.&lt;/p>
+&lt;p>如下图:
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%886.53.24.png"
+loading="lazy"
+alt="jenkins启动"
+>&lt;/p>
+&lt;p>接着留意一下initialAdminPassword的输出&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Jenkins initial setup is required. An admin user has been created and a password generated.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">Please use the following password to proceed to installation:
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">XXXXXXXXXXXXXX
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">This may also be found at: /root/jenkins-home/secrets/initialAdminPassword
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这个时候访问当前主机的8080端口已经可以看到jenkins正在启动了,稍等片刻就可以看到jenkins登录页.&lt;/p>
+&lt;p>这个时候把上面的XXXXXXXXXXXXXX复制出来,输进去点击继续配置jenkins账号密码信息之类的.&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%886.58.58.png"
+loading="lazy"
+alt="配置jenkins"
+>&lt;/p>
+&lt;p>接着安装默认插件.&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%887.00.12.png"
+loading="lazy"
+alt="安装插件"
+>&lt;/p>
+&lt;p>这里估计也要等几分钟不等,看你的机器性能和网络速度.&lt;/p>
+&lt;p>安装好了之后会进入配置登录账号密码,安装提示配置就完事.&lt;/p>
+&lt;p>最后进入jenkins页面是这样的.
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%887.02.42.png"
+loading="lazy"
+alt="jenkins"
+>&lt;/p>
+&lt;p>到现在我们已经把jenkins跑起来了,也有了一些常用的插件.&lt;/p>
+&lt;p>我们先去把dotnet core docker 编译发布相关的东西弄好之后再回来继续做jenkins任务.&lt;/p>
+&lt;h2 id="dotnet-core-docker-打包">dotnet core docker 打包
+&lt;/h2>&lt;p>在项目目录下新建Dockerfile文件,内容如下:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-docker" data-lang="docker">&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> microsoft/aspnetcore-build:2.0 AS build-env&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /app&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># copy csproj and restore as distinct layers&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> *.csproj ./&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> dotnet restore&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># copy everything else and build&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> . ./&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> dotnet publish -c Release -o out&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># build runtime image&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> microsoft/aspnetcore:2.0&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /app&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> --from&lt;span class="o">=&lt;/span>build-env /app/out .&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENTRYPOINT&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="s2">&amp;#34;dotnet&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;你的dotnet core程序.dll&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这个Dockerfile基本就是把当前目录的文件拷贝到aspnetcore-build镜像中,再里面编译好之后再发布到aspnetcore:2.0镜像中,&lt;/p>
+&lt;p>最后指定运行你的dotnet core程序&lt;/p>
+&lt;p>来源:&lt;a class="link" href="https://github.com/DaoCloud/dotnet-docker-samples" target="_blank" rel="noopener"
+>https://github.com/DaoCloud/dotnet-docker-samples&lt;/a>&lt;/p>
+&lt;h2 id="docker-build--run-脚本非必须可以使用jenkins中脚本编译替代">docker build + run 脚本(非必须,可以使用jenkins中脚本编译替代)
+&lt;/h2>&lt;p>以&lt;a class="link" href="https://github.com/liguobao/58HouseSearch/blob/master/HouseCrawler.Core/HouseCrawler.Web/" target="_blank" rel="noopener"
+>HouseCrawler.Web&lt;/a>为例,&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#!/bin/sh&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">image_version&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>date +%Y%m%d%H%M&lt;span class="sb">`&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$image_version&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ~/code/58HouseSearch/HouseCrawler.Core/HouseCrawler.Web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">git pull --rebase origin master&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker stop house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker rm house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker build -t house-web:&lt;span class="nv">$image_version&lt;/span> .&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker images&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker run -p 8080:80 -v ~/docker-data/house-web/appsettings.json:/app/appsettings.json -v ~/docker-data/house-web/NLogFile/:/app/NLogFile --restart&lt;span class="o">=&lt;/span>always --name house-web -d house-web:&lt;span class="nv">$image_version&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker logs house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>通过上面这个build+run脚本,我们已经把dotnet core程序编译好了,并且打包成了docker images,还直接跑起来了.&lt;/p>
+&lt;p>但是我们想要的应该是自动化编译部署,而且上面我们都把jenkins跑起来了,所以&amp;hellip;.&lt;/p>
+&lt;h2 id="jenkins-job配置">jenkins job配置
+&lt;/h2>&lt;h3 id="新建job">新建Job
+&lt;/h3>&lt;p>打开jenkins首页,左侧选择&amp;quot;新建任务&amp;quot;(newJob),如下图:&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.10.00.png"
+loading="lazy"
+alt="newJob"
+>&lt;/p>
+&lt;p>给新的job取个名字,然后选择&amp;quot;构建自由风格的软件项目&amp;quot;,如图:&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.12.27.png"
+loading="lazy"
+alt="构建自由风格的软件项目"
+>&lt;/p>
+&lt;h3 id="添加源码仓库">添加源码仓库
+&lt;/h3>&lt;p>确认之后进入Job配置页面,源码管理里面选择git,如图:
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.14.06.png"
+loading="lazy"
+alt="源码管理"
+>&lt;/p>
+&lt;p>如果git仓库是需要权限的话需要配置一下权限,我一般简单粗暴直接把jenkins主机的公钥添加到git仓库里面,所以这里直接配置成&amp;rsquo;From the Jenkins master ~/.ssh&amp;rsquo;,也可以用账号密码访问等等的.&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.16.09.png"
+loading="lazy"
+alt="git仓库权限配置"
+>&lt;/p>
+&lt;p>&amp;ldquo;Branch Specifier (blank for &amp;lsquo;any&amp;rsquo;) &amp;ldquo;默认master分支,根据自己的需求填入不同的分支.&lt;/p>
+&lt;p>构建触发器和构建环境先跳过,我们不管,待会弄.&lt;/p>
+&lt;h3 id="构建">构建
+&lt;/h3>&lt;p>点击&amp;quot;添加构建步骤&amp;rdquo;,选择&amp;quot;Execute shell&amp;rdquo;,然后能看到如下图:
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.22.45.png"
+loading="lazy"
+alt="Execute shell"
+>&lt;/p>
+&lt;p>还记得我们上一步的脚本么?修改一下源码路径再放进去.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 切换到源码目录,对应在jenkins-home的workspace下面&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">cd&lt;/span> ~jenkins-home/workspace/项目名称/Dockerfile所在目录&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">image_version&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="sb">`&lt;/span>date +%Y%m%d%H%M&lt;span class="sb">`&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="nv">$image_version&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 停止之前的docker container&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker stop house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 删除这个container&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker rm house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># build镜像并且打上tag&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker build -t house-web:&lt;span class="nv">$image_version&lt;/span> .&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker images&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 把刚刚build出来的镜像跑起来&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker run -p 8080:80 -v ~/docker-data/house-web/appsettings.json:/app/appsettings.json -v ~/docker-data/house-web/NLogFile/:/app/NLogFile --restart&lt;span class="o">=&lt;/span>always --name house-web -d house-web:&lt;span class="nv">$image_version&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker logs house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>如果jenkins主机和程序运行主机不在一台机器上,建议直接在把上面的脚本放在运行主机上,命名成 start_XXX.sh.&lt;/p>
+&lt;p>上面的命令直接就是成了&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">ssh username@发布主机的IP &lt;span class="s1">&amp;#39;~/start_XXX.sh&amp;#39;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>ps:记得在jenkins主机配置&lt;a class="link" href="https://blog.csdn.net/wind520/article/details/38421359" target="_blank" rel="noopener"
+>ssh免登陆&lt;/a>&lt;/p>
+&lt;h3 id="构建触发器">构建触发器
+&lt;/h3>&lt;p>构建触发器就是我们选择什么时候来触发构建任务,有几种方案可以做.&lt;/p>
+&lt;ol>
+&lt;li>使用 Build periodically,定时 or 隔N久去拉一次代码构建&lt;/li>
+&lt;li>Poll SCM：定时检查源码变更（根据SCM软件的版本号）,如果有变化就去执行构建&lt;/li>
+&lt;li>GitHub hook trigger for GITScm polling 或者其他Git平台提供的webhook&lt;/li>
+&lt;li>安装Generic Webhook Trigger插件之后,使用其他平台的webhook来触发构建任务.&lt;/li>
+&lt;/ol>
+&lt;p>我这里选择第4种方案,安装Generic Webhook Trigger插件,下面马上回告诉你为什么这样做的.&lt;/p>
+&lt;p>Generic Webhook Trigger插件在&amp;quot;系统管理-管理插件-可选插件&amp;quot;里面直接搜&amp;quot;Generic Webhook Trigger&amp;quot;安装就可以.&lt;/p>
+&lt;p>从上一步的构建步骤里面的脚本中我们就知道,其实我们现在要不就在jenkins主机上docker build,要不就在发布目标主机上build,&lt;/p>
+&lt;p>build过程比较慢而且还会产生镜像在本机or目标主机上,docker images也没有被管理起来.&lt;/p>
+&lt;p>有什么好的办法么?嗯,还真有.直接用阿里云&amp;quot;容器镜像服务&amp;quot;来构建镜像&lt;/p>
+&lt;h3 id="使用阿里云-容器镜像服务">使用阿里云-容器镜像服务
+&lt;/h3>&lt;p>首先登录阿里云,然后进入容器镜像服务,地址是&lt;a class="link" href="https://cr.console.aliyun.com/" target="_blank" rel="noopener"
+>https://cr.console.aliyun.com/&lt;/a>&lt;/p>
+&lt;p>首次进入估计需要创建一个命名空间,一般用公司名或者你的名字就完事.&lt;/p>
+&lt;p>接着选择&amp;quot;创建镜像仓库&amp;quot;.&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.51.25.png"
+loading="lazy"
+alt="创建镜像仓库"
+>&lt;/p>
+&lt;p>选地区-选命名空间-填仓库名称(就是镜像名称)-填摘要-设置代码源(支持GitHub/阿里云code/Bitbucket/私有Gitlab/本地Git等等,给个授权就完事)&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.54.10.png"
+loading="lazy"
+alt="选地区"
+>&lt;/p>
+&lt;p>构建设置选择&amp;quot;代码变更时自动构建镜像&amp;quot;,然后选一下构建分支为你想要的分支,填入Dockerfile在源码中的路径,然后保存
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%889.57.50.png"
+loading="lazy"
+alt="构建分支"
+>&lt;/p>
+&lt;p>接着我们进入管理平台看一下.&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%8810.00.51.png"
+loading="lazy"
+alt="aliyun-构建"
+>&lt;/p>
+&lt;p>点击一下&amp;quot;立即构建&amp;quot;,然后查看一下日志.
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%8810.02.00.png"
+loading="lazy"
+alt="build 日志"
+>&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%8810.02.49.png"
+loading="lazy"
+alt="构建成功"
+>&lt;/p>
+&lt;p>这个时候,我们用docker pull registry-internal.cn-hangzhou.aliyuncs.com/你的命名空间/你的镜像名称 就可以拉到这个阿里云build成功的镜像了.&lt;/p>
+&lt;p>镜像build的问题解决了,那么我们怎么自动把镜像发布到我们的运行主机呢?&lt;/p>
+&lt;p>这时候webhook又出来了.&lt;/p>
+&lt;h3 id="jenkins-webhook触发配置">jenkins webhook触发配置
+&lt;/h3>&lt;p>我们看阿里云镜像构建服务里面,有一项是webhook的,官方介绍在这里:&lt;a class="link" href="https://help.aliyun.com/document_detail/60949.html?spm=5176.8351553.0.0.645319912fjxim" target="_blank" rel="noopener"
+>阿里云-webhook管理&lt;/a>&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%8810.08.45.png"
+loading="lazy"
+alt="阿里云-webhook管理"
+>&lt;/p>
+&lt;p>这里就需要填入我们的webhook地址,还记得前面我无端端选择的第四种方案,然后让大家跟着安装的Generic Webhook Trigger插件么?&lt;/p>
+&lt;p>我们就是用这货来为我们提供webhook API.&lt;/p>
+&lt;p>理一下流程:&lt;/p>
+&lt;p>git仓库代码变化 -&amp;gt;阿里云容器构建服务启动 -&amp;gt; 构建好镜像之后触发webhook -&amp;gt; jenkins收到阿里云的webhook之后触发job执行部署脚本 -&amp;gt;部署脚本使用阿里云镜像run起来 -&amp;gt;完事.&lt;/p>
+&lt;p>我们继续配置Generic Webhook Trigger.&lt;/p>
+&lt;p>Generic Webhook Trigger支持的命名触发URL格式是这样的:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-http" data-lang="http">&lt;span class="line">&lt;span class="cl">&lt;span class="err">http://jenkins登录用户名:token授权码@jenkins IP:8080/generic-webhook-trigger/invoke?token=触发器名称
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>jenkins登录名和token在&amp;quot;账号-设置-API Token-Show API Token&amp;hellip;&amp;ldquo;里面能看到,找出来之后填到上面去就可以.&lt;/p>
+&lt;p>最后一个token参数其实就是&amp;quot;构建触发器&amp;quot;中&amp;quot;触发远程构建&amp;quot;的参数,建议使用job名字.这里的配置大概是这样的:&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%8810.21.13.png"
+loading="lazy"
+alt="触发远程构建"
+>&lt;/p>
+&lt;p>最后我们还需要在jenkins全局安全设置中取消勾选“防止跨站点请求伪造（Prevent Cross Site Request Forgery exploits)&amp;ldquo;选项,这样阿里云webhook才能过得来.&lt;/p>
+&lt;p>手动在浏览器中访问一下http://jenkins登录用户名:token授权码@jenkins IP:8080/generic-webhook-trigger/invoke?token=触发器名称
+如果对应的jenkins Job能正常开始执行,说明整个流程已经ok了.&lt;/p>
+&lt;p>最后我们回到上面&amp;quot;阿里云-容器镜像服务-对应镜像仓库-webhook-添加记录&amp;rdquo;
+&lt;img src="http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-06%20%E4%B8%8B%E5%8D%8810.27.02.png"
+loading="lazy"
+alt="webhook-添加记录"
+>&lt;/p>
+&lt;p>PS:webhook名称不要带特殊字符or &amp;ldquo;-&amp;ldquo;之类的,不然一直保存失败而且还不会提示你是因为名字不合法,下午被这个坑了半个小时.&lt;/p>
+&lt;p>到这里,我们基本大功告成了.&lt;/p>
+&lt;p>最后我们再改一下jenkins的脚本,不在本地build docker了,直接拿阿里云镜像服务构建出来的镜像跑就可以.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 停止之前的docker container&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker stop house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 删除这个container&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker rm house-web&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker pull 你的阿里云镜像地址&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 把刚刚build出来的镜像跑起来&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker run --restart&lt;span class="o">=&lt;/span>always --name 你的contianer名称 你的阿里云镜像地址&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="总结一下我们做了什么">总结一下我们做了什么
+&lt;/h3>&lt;ol>
+&lt;li>搭建jenkins&lt;/li>
+&lt;li>编写Dockerfile文件,直接编译发布+打包成docker镜像+部署脚本&lt;/li>
+&lt;li>使用阿里云-容器构建服务构建docker镜像,构建成功后使用webhook通知jenkins&lt;/li>
+&lt;li>配置jenkins webhook触发器,触发部署脚本&lt;/li>
+&lt;li>其他项目/语言其实也基本一样的操作,区别只在于Dockerfile的编写&lt;/li>
+&lt;li>完事&amp;hellip;&lt;/li>
+&lt;/ol></description></item></channel></rss>

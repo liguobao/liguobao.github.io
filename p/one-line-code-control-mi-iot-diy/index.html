@@ -1,0 +1,260 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="米家,智能家居,自动化,HomeAssistant"><title>一行代码控制你的米家设备</title>
+<link rel=canonical href=https://liguobao.github.io/p/one-line-code-control-mi-iot-diy/><link rel=stylesheet href=/scss/style.min.663803bebe609202d5b39d848f2d7c2dc8b598a2d879efa079fa88893d29c49c.css><meta property='og:title' content="一行代码控制你的米家设备"><meta property='og:description' content="米家,智能家居,自动化,HomeAssistant"><meta property='og:url' content='https://liguobao.github.io/p/one-line-code-control-mi-iot-diy/'><meta property='og:site_name' content='李国宝'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='zhihu'><meta property='article:tag' content='2024'><meta property='article:published_time' content='2024-06-27T08:00:00+00:00'><meta property='article:modified_time' content='2024-06-27T08:00:00+00:00'><meta property='og:image' content='https://liguobao.github.io/p/one-line-code-control-mi-iot-diy/mi-iot-diy.png'><meta name=twitter:title content="一行代码控制你的米家设备"><meta name=twitter:description content="米家,智能家居,自动化,HomeAssistant"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content='https://liguobao.github.io/p/one-line-code-control-mi-iot-diy/mi-iot-diy.png'><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/zhihu-lgb_hu7020874663192600704.png width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/>李国宝</a></h1><h2 class=site-description>人生删除指南</h2></div></header><ol class=menu-social><li><a href=https://github.com/liguobao target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://www.zhihu.com/people/codelover target=_blank title=知乎 rel=me><svg class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/><svg class="icon icon-tabler icon-tabler-home" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><polyline points="5 12 3 12 12 3 21 12 19 12"/><path d="M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"/><path d="M9 21v-6a2 2 0 012-2h2a2 2 0 012 2v6"/></svg>
+<span>Home</span></a></li><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/liguobao-resume/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>About</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li><li class=menu-bottom-section><ol class=menu><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#前言>前言</a></li><li><a href=#又一个新需求>又一个“新需求”</a></li><li><a href=#最近的实践>最近的实践</a></li><li><a href=#python-miio-起手>python-miio 起手</a><ol><li><a href=#获取设备ip地址和token>获取设备IP地址和Token</a></li></ol></li><li><a href=#控制设备>控制设备</a><ol><li><a href=#控制现代miot设备>控制现代（MIoT）设备</a></li><li><a href=#设备状态>设备状态</a></li><li><a href=#更改设置>更改设置</a></li></ol></li><li><a href=#一行代码控制你的米家设备>一行代码控制你的米家设备</a></li><li><a href=#总结>总结</a></li><li><a href=#参考>参考</a></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/p/one-line-code-control-mi-iot-diy/><img src=/p/one-line-code-control-mi-iot-diy/mi-iot-diy_hu12170380078912889595.png srcset="/p/one-line-code-control-mi-iot-diy/mi-iot-diy_hu12170380078912889595.png 800w, /p/one-line-code-control-mi-iot-diy/mi-iot-diy_hu14819424924342657391.png 1600w" width=800 height=800 loading=lazy alt="Featured image of post 一行代码控制你的米家设备"></a></div><div class=article-details><header class=article-category><a href=/categories/zhihu/ style=background-color:#2a9d8f;color:#fff>知乎回答</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/p/one-line-code-control-mi-iot-diy/>一行代码控制你的米家设备</a></h2><h3 class=article-subtitle>米家,智能家居,自动化,HomeAssistant</h3></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Jun 27, 2024</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 4 分钟</time></div></footer></div></header><section class=article-content><h2 id=前言>前言</h2><p>大概在去年还是前年的时候，因为手机换成了iOS，没有小爱同学了之后，</p><p>只能使用米家App来控制米家设备实在蛋疼，</p><p>于是那阵子就折腾过 HomeAssistant 方案， 于是写过这样的文章。</p><p><a class=link href=https://zhuanlan.zhihu.com/p/444212384 target=_blank rel=noopener>知乎专栏：Home Assistant 智能家居系统搭建指南（米家+Siri）</a></p><p>这个方案配合HomePod音响，基本满足了我的需求了。</p><p>后面家里基本是就是各种设备都有一点，HomePod基本就是全屋中控的存在了。</p><p>Home Assistant 在家里的主机24小时跑着，基本也没出什么岔子，也就很久继续折腾了。</p><h2 id=又一个新需求>又一个“新需求”</h2><p>年初有个大佬找过我，咨询能不能基于现在的米家或者其他硬件设备，自己做公寓的智能家居方案。</p><p>基于上面的一些经验，我也就给了一些建议，但是也没深入去研究。</p><p>那阵子让某二十年老师去折腾了一下DIY控制米家设备的方案，</p><p>这朋友的进度不那么理想，最后也没出什么成果。</p><p>只是那阵子知道了有一个</p><p><a class=link href=https://github.com/rytilahti/python-miio target=_blank rel=noopener>github.com/rytilahti/python-miio</a> 的好工具。</p><ul><li>Python library & console tool for controlling Xiaomi smart appliances</li><li>一个用于控制小米智能家居设备的Python库和控制台工具</li></ul><p>很有趣，Mark 一下。</p><h2 id=最近的实践>最近的实践</h2><p>最近嘛，又因为一些奇奇怪怪的需求，需要“正儿八经”来折腾米家设备控制方案了。</p><p>最早做方案验证的时候，甚至是用Appium来模拟操作米家App</p><p>但是嘛，卡顿，慢，不稳定&mldr;</p><p>到了这两周开始进入正式的实践阶段，决定还是用 python-miio 来搞了，</p><p>虽然Hack，但是肯定比Appium来的稳定。</p><p>So，让我们开始吧。</p><h2 id=python-miio-起手>python-miio 起手</h2><p>首先，我们先在本地安装 python-miio</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl><span class=c1># 切记，请不要直接安装 pip install python-miio </span>
+</span></span><span class=line><span class=cl><span class=c1># 默认的Release版本是0.5.12，22年的版本了</span>
+</span></span><span class=line><span class=cl>pip install python-miio<span class=o>==</span>0.6.0.dev0
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 或者直接从Github上安装最新的版本</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>pip install git+https://github.com/rytilahti/python-miio.git
+</span></span></code></pre></td></tr></table></div></div><p>这个安装好了之后，本地命令行环境应该有了 miiocli 这个命令行工具了。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-bash data-lang=bash><span class=line><span class=cl>➜  ~ miiocli --help
+</span></span><span class=line><span class=cl>Usage: miiocli <span class=o>[</span>OPTIONS<span class=o>]</span> COMMAND <span class=o>[</span>ARGS<span class=o>]</span>...
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Options:
+</span></span><span class=line><span class=cl>  -d, --debug
+</span></span><span class=line><span class=cl>  -o, --output <span class=o>[</span>default<span class=p>|</span>json<span class=p>|</span>json_pretty<span class=o>]</span>
+</span></span><span class=line><span class=cl>  --version                       Show the version and exit.
+</span></span><span class=line><span class=cl>  --help                          Show this message and exit.
+</span></span></code></pre></td></tr></table></div></div><p>正常情况下，我们应该可以通过 miiocli 来控制我们的米家设备了。</p><p>首先，我们需要找到我们的设备的IP地址和Token。</p><p>后面的所有操作，都是基于这两个信息来进行的。</p><h3 id=获取设备ip地址和token>获取设备IP地址和Token</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>➜  ~ miiocli cloud
+</span></span><span class=line><span class=cl>Username: 你的小米账号
+</span></span><span class=line><span class=cl>Password: <span class=nv>你的密码</span>
+</span></span><span class=line><span class=cl><span class=o>==</span> Xiaomi Smart Camera C400 <span class=o>(</span>Device online <span class=o>)</span> <span class=o>==</span>
+</span></span><span class=line><span class=cl>	Model: chuangmi.camera.039a01
+</span></span><span class=line><span class=cl>	Token: XXX
+</span></span><span class=line><span class=cl>	IP: 192.168.31.170 <span class=o>(</span>mac: 94:F8:27:05:5B:AA<span class=o>)</span>
+</span></span><span class=line><span class=cl>	DID: <span class=m>1029838640</span>
+</span></span><span class=line><span class=cl>	Locale: <span class=nv>cn</span>
+</span></span><span class=line><span class=cl><span class=o>==</span> Xiaomi智能摄像机 <span class=o>(</span>Device online <span class=o>)</span> <span class=o>==</span>
+</span></span><span class=line><span class=cl>	Model: chuangmi.camera.029a02
+</span></span><span class=line><span class=cl>	Token: XXX
+</span></span><span class=line><span class=cl>	IP: 192.168.31.233 <span class=o>(</span>mac: 60:7E:A4:C0:E6:26<span class=o>)</span>
+</span></span><span class=line><span class=cl>	DID: <span class=m>525571884</span>
+</span></span><span class=line><span class=cl>	Locale: <span class=nv>cn</span>
+</span></span><span class=line><span class=cl><span class=o>==</span> 智能插座-Ubuntu <span class=o>(</span>Device online <span class=o>)</span> <span class=o>==</span>
+</span></span><span class=line><span class=cl>	Model: chuangmi.plug.212a01
+</span></span><span class=line><span class=cl>	Token: XXX
+</span></span><span class=line><span class=cl>	IP: 192.168.31.141 <span class=o>(</span>mac: 58:B6:23:EB:11:EF<span class=o>)</span>
+</span></span><span class=line><span class=cl>	DID: <span class=m>433609370</span>
+</span></span><span class=line><span class=cl>	Locale: cn
+</span></span></code></pre></td></tr></table></div></div><p>这里基本能看到自己账号下的设备了，然后我们可以通过 miiocli 命令来控制这些设备了。</p><h2 id=控制设备>控制设备</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=c1># 这是一个摄像头设备</span>
+</span></span><span class=line><span class=cl>➜  ~ miiocli device --ip 192.168.31.170 --token xxxx info
+</span></span><span class=line><span class=cl>Running <span class=nb>command</span> info
+</span></span><span class=line><span class=cl>Model: chuangmi.camera.039a01
+</span></span><span class=line><span class=cl>Hardware version: Linux
+</span></span><span class=line><span class=cl>Firmware version: 5.1.6_0420
+</span></span><span class=line><span class=cl>Supported using: GenericMiot
+</span></span><span class=line><span class=cl>Command: miiocli genericmiot --ip 192.168.31.170 --token xxxx
+</span></span><span class=line><span class=cl>Supported by genericmiot: True
+</span></span></code></pre></td></tr></table></div></div><p>这里需要比较关注的东西是 Supported by genericmiot ,</p><p>有这个的话，基本就可以通过 miiocli genericmiot 来控制这个设备了。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-txt data-lang=txt><span class=line><span class=cl># Supported by genericmiot: True
+</span></span><span class=line><span class=cl>Note that the command field which gives you the direct command to use for controlling the device. 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>If the device is supported by the genericmiot integration as stated in the output, 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>you can also use miiocli genericmiot for controlling it.
+</span></span></code></pre></td></tr></table></div></div><p><img src=/img/miiocli.png loading=lazy></p><p>以下文档从官方文档中摘录翻译。</p><h3 id=控制现代miot设备>控制现代（MIoT）设备</h3><p>大多数现代(MIoT)设备都会自动受到 genericmiot 集成的支持。</p><p>在内部，它使用(&ldquo;miot spec&rdquo;)文件来了解支持的功能，如传感器、设置和操作。</p><ul><li><p><a class=link href=https://home.miot-spec.com/spec/xiaomi.controller.86v1 target=_blank rel=noopener>https://home.miot-spec.com/spec/xiaomi.controller.86v1</a></p></li><li><p><a class=link href=https://home.miot-spec.com/ target=_blank rel=noopener>米家产品库（非官方）</a></p></li></ul><p>此设备型号特定文件将在您首次使用 genericmiot 集成时下载（并在本地缓存）。</p><p>所有支持设备的功能都可以使用常见命令来控制：</p><p>status （显示设备状态）、 set （更改设置）、 actions 列出可用操作</p><p>和 call 执行操作。</p><h3 id=设备状态>设备状态</h3><p>执行 status 将显示当前设备状态，以及设置的可接受值（标有访问 RW ）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>miiocli genericmiot --ip 127.0.0.1 --token <span class=m>00000000000000000000000000000000</span> status
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Service Light <span class=o>(</span>light<span class=o>)</span>
+</span></span><span class=line><span class=cl>        Switch Status <span class=o>(</span>light:on, access: RW<span class=o>)</span>: False <span class=o>(</span>&lt;class <span class=s1>&#39;bool&#39;</span>&gt;, <span class=o>)</span>
+</span></span><span class=line><span class=cl>        Brightness <span class=o>(</span>light:brightness, access: RW<span class=o>)</span>: <span class=m>60</span> % <span class=o>(</span>&lt;class <span class=s1>&#39;int&#39;</span>&gt;, min: 1, max: 100, step: 1<span class=o>)</span>
+</span></span><span class=line><span class=cl>        Power Off Delay Time <span class=o>(</span>light:off-delay-time, access: RW<span class=o>)</span>: 1:47:00 <span class=o>(</span>&lt;class <span class=s1>&#39;int&#39;</span>&gt;, min: 0, max: 120, step: 1<span class=o>)</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=更改设置>更改设置</h3><p>要更改设置，您需要提供设置的名称（例如，在上面的示例中 light:brightness ）：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl> miiocli genericmiot --ip 127.0.0.1 --token <span class=m>00000000000000000000000000000000</span> <span class=nb>set</span> light:brightness <span class=m>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl> <span class=o>[{</span><span class=s1>&#39;did&#39;</span>: <span class=s1>&#39;light:brightness&#39;</span>, <span class=s1>&#39;siid&#39;</span>: 2, <span class=s1>&#39;piid&#39;</span>: 3, <span class=s1>&#39;code&#39;</span>: 0<span class=o>}]</span>
+</span></span></code></pre></td></tr></table></div></div><p>使用动作
+大多数设备还将提供操作：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>miiocli genericmiot --ip 127.0.0.1 --token <span class=m>00000000000000000000000000000000</span> actions
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Light <span class=o>(</span>light<span class=o>)</span>
+</span></span><span class=line><span class=cl>        light:toggle            Toggle
+</span></span><span class=line><span class=cl>        light:brightness-down   Brightness Down
+</span></span><span class=line><span class=cl>        light:brightness-up     Brightness Up
+</span></span></code></pre></td></tr></table></div></div><p>这些可以使用 call 命令执行：</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>miiocli genericmiot --ip 127.0.0.1 --token <span class=m>00000000000000000000000000000000</span> call light:toggle
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>{</span><span class=s1>&#39;code&#39;</span>: 0, <span class=s1>&#39;out&#39;</span>: <span class=o>[]}</span>
+</span></span></code></pre></td></tr></table></div></div><p>使用 miiocli genericmiot &ndash;help 获取更多可用命令。</p><p>详细的文档在这里：</p><ul><li><a class=link href="https://github.com/rytilahti/python-miio?tab=readme-ov-file#controlling-modern-miot-devices" target=_blank rel=noopener></a></li></ul><h2 id=一行代码控制你的米家设备>一行代码控制你的米家设备</h2><p>基于上面的这些操作，</p><p>这一行代码大概出来了。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=c1># 获取可以执行的命令</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>miiocli genericmiot --ip 192.168.31.170 --token xxxx actions 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## 执行操作</span>
+</span></span><span class=line><span class=cl>miiocli genericmiot --ip 192.168.31.170 --token xxxx call camera:record-start
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## 更改属性</span>
+</span></span><span class=line><span class=cl>miiocli genericmiot --ip 192.168.31.170 --token xxxx <span class=nb>set</span> camera:record-mode <span class=m>1</span>
+</span></span></code></pre></td></tr></table></div></div><p>当然如果你需要自己写点代码的话，</p><p>大概是这样的。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>miio</span> <span class=kn>import</span> <span class=n>Device</span><span class=p>,</span> <span class=n>DeviceFactory</span><span class=p>,</span> <span class=n>DeviceStatus</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>loguru</span> <span class=kn>import</span> <span class=n>logger</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>class</span> <span class=nc>MiIotDevice</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=fm>__init__</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>ip</span><span class=p>,</span> <span class=n>token</span><span class=p>)</span> <span class=o>-&gt;</span> <span class=kc>None</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=p>:</span> <span class=n>Device</span> <span class=o>=</span> <span class=n>DeviceFactory</span><span class=o>.</span><span class=n>create</span><span class=p>(</span><span class=n>ip</span><span class=p>,</span> <span class=n>token</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=bp>self</span><span class=o>.</span><span class=n>device_info</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>get_info</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=n>logger</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;Device: </span><span class=si>{</span><span class=n>ip</span><span class=si>}</span><span class=s2>-</span><span class=si>{</span><span class=n>token</span><span class=si>}</span><span class=s2> created&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>load_status</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>device</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=kc>None</span>
+</span></span><span class=line><span class=cl>        <span class=n>d_status</span><span class=p>:</span> <span class=n>DeviceStatus</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=o>.</span><span class=n>status</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>d_status</span><span class=o>.</span><span class=n>data</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>get_info</span><span class=p>(</span><span class=bp>self</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;ip&#34;</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=o>.</span><span class=n>ip</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;model&#34;</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=o>.</span><span class=n>model</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;device_id&#34;</span><span class=p>:</span> <span class=s2>&#34;nx_&#34;</span><span class=o>+</span><span class=nb>str</span><span class=p>(</span><span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=o>.</span><span class=n>device_id</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>            <span class=s2>&#34;mi_device_id&#34;</span><span class=p>:</span> <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=o>.</span><span class=n>device_id</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>call_action</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>name</span><span class=p>,</span> <span class=n>args</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>device</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&#34;Device not ready&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>call_result</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=o>.</span><span class=n>call_action</span><span class=p>(</span><span class=n>name</span><span class=p>,</span> <span class=n>args</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>logger</span><span class=o>.</span><span class=n>info</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>            <span class=sa>f</span><span class=s2>&#34;call_action: </span><span class=si>{</span><span class=n>name</span><span class=si>}</span><span class=s2>-</span><span class=si>{</span><span class=n>args</span><span class=si>}</span><span class=s2> result: </span><span class=si>{</span><span class=n>call_result</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>call_result</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>set_properties</span><span class=p>(</span><span class=bp>self</span><span class=p>,</span> <span class=n>properties</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=bp>self</span><span class=o>.</span><span class=n>device</span> <span class=ow>is</span> <span class=kc>None</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>raise</span> <span class=ne>Exception</span><span class=p>(</span><span class=s2>&#34;Device not ready&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>call_result</span> <span class=o>=</span> <span class=bp>self</span><span class=o>.</span><span class=n>device</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=s2>&#34;set_properties&#34;</span><span class=p>,</span> <span class=n>properties</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>logger</span><span class=o>.</span><span class=n>info</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>            <span class=sa>f</span><span class=s2>&#34;set_properties: </span><span class=si>{</span><span class=n>properties</span><span class=si>}</span><span class=s2> finish, result: </span><span class=si>{</span><span class=n>call_result</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>call_result</span>
+</span></span></code></pre></td></tr></table></div></div><p>大概，</p><p>如上。</p><h2 id=总结>总结</h2><p>python-miio 是一个很好的工具，可以用来控制米家设备</p><ul><li>通过 miiocli 可以很方便的来控制设备</li><li>通过 miiocli genericmiot 可以控制现代设备</li><li>通过 miiocli genericmiot actions 可以查看设备支持的操作</li><li>通过 miiocli genericmiot status 可以查看设备的状态</li><li>通过 miiocli genericmiot set 可以更改设备的属性</li><li>通过 miiocli genericmiot call 可以执行设备的操作</li><li>通过 miiocli genericmiot &ndash;help 可以查看更多命令</li></ul><p>同时可以自己写代码来折腾一下具体的一些设备，</p><p>自己去搞一些自动化的东西也很简单了。</p><p>祝大家玩得开心~</p><h2 id=参考>参考</h2><ul><li><a class=link href=https://github.com/rytilahti/python-miio target=_blank rel=noopener>python-miio</a></li><li><a class=link href=https://home.miot-spec.com/ target=_blank rel=noopener>miot-spec 米家设备属性查询（非官方）</a></li></ul></section><footer class=article-footer><section class=article-tags><a href=/tags/zhihu/>Zhihu</a>
+<a href=/tags/2024/>2024</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentcolor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>最后更新于 Jun 27, 2024 08:00 UTC</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/p/zhihu-salon-0728/><div class=article-details><h2 class=article-title>知乎盐沙龙-20240728</h2></div></a></article><article class=has-image><a href=/p/vs-git-bash/><div class=article-image><img src=/p/vs-git-bash/bash.fc8d6b65f713526326167e8ae70e02b5_hu4000876672970878451.jpg width=250 height=150 loading=lazy alt="Featured image of post Visual Studio 添加Git Bash 到终端" data-key=vs-git-bash data-hash="md5-/I1rZfcTUmMmFn6K5w4CtQ=="></div><div class=article-details><h2 class=article-title>Visual Studio 添加Git Bash 到终端</h2></div></a></article><article class=has-image><a href=/p/android-magisk-install/><div class=article-image><img src=/p/android-magisk-install/logo.0bd0197c8b306596de537bc57749afd7_hu7509668732940573540.png width=250 height=150 loading=lazy alt="Featured image of post 用 Magisk 开始你的安卓折腾之路" data-key=android-magisk-install data-hash="md5-C9AZfIswZZbeU3vFd0mv1w=="></div><div class=article-details><h2 class=article-title>用 Magisk 开始你的安卓折腾之路</h2></div></a></article><article class=has-image><a href=/p/q-cloud-api-down-k3s-up/><div class=article-image><img src=/p/q-cloud-api-down-k3s-up/qcloud.70ff526e01557f1bd1b0a5ce29822e24_hu14488200987016495456.png width=250 height=150 loading=lazy alt="Featured image of post 腾讯云API网关废了？集群开源方案平替" data-key=q-cloud-api-down-k3s-up data-hash="md5-cP9SbgFVfxvRsKXOKYIuJA=="></div><div class=article-details><h2 class=article-title>腾讯云API网关废了？集群开源方案平替</h2></div></a></article><article class=has-image><a href=/p/gpt2077-free-gpt4/><div class=article-image><img src=/p/gpt2077-free-gpt4/girl.a1f1a425f999bed6a2f40e1f42572d76_hu13975693829113625974.png width=250 height=150 loading=lazy alt="Featured image of post GPT2077 免费GPT4站点~" data-key=gpt2077-free-gpt4 data-hash="md5-ofGkJfmZvtai9A4fQlctdg=="></div><div class=article-details><h2 class=article-title>GPT2077 免费GPT4站点~</h2></div></a></article></div></div></aside><script src=https://utteranc.es/client.js repo=liguobao/liguobao.github.io issue-term=title crossorigin=anonymous async></script><style>.utterances{max-width:unset}</style><script>let utterancesLoaded=!1;function setUtterancesTheme(e){let t=document.querySelector(".utterances iframe");t&&t.contentWindow.postMessage({type:"set-theme",theme:`github-${e}`},"https://utteranc.es")}addEventListener("message",e=>{if(e.origin!=="https://utteranc.es")return;utterancesLoaded=!0,setUtterancesTheme(document.documentElement.dataset.scheme)}),window.addEventListener("onColorSchemeChange",e=>{if(!utterancesLoaded)return;setUtterancesTheme(e.detail)})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2024 李国宝</section><section class=powerby>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.29.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

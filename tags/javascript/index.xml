@@ -1,0 +1,800 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Javascript on 李国宝</title><link>https://liguobao.github.io/tags/javascript/</link><description>Recent content in Javascript on 李国宝</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 01 Nov 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/javascript/index.xml" rel="self" type="application/rss+xml"/><item><title>ASP.NET MVC 微信JS-SDK认证</title><link>https://liguobao.github.io/p/asp.net-mvc-%E5%BE%AE%E4%BF%A1js-sdk%E8%AE%A4%E8%AF%81/</link><pubDate>Tue, 01 Nov 2016 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/asp.net-mvc-%E5%BE%AE%E4%BF%A1js-sdk%E8%AE%A4%E8%AF%81/</guid><description>&lt;h1 id="aspnet-mvc-微信js-sdk认证">ASP.NET MVC 微信JS-SDK认证
+&lt;/h1>&lt;h2 id="写在前面">写在前面
+&lt;/h2>&lt;p>前阵子因为有个项目需要做微信自定义分享功能，因而去研究了下微信JS-SDK相关知识。&lt;/p>
+&lt;p>此文做个简单的记(tu)录(cao)&amp;hellip;&lt;/p>
+&lt;h2 id="开始">开始
+&lt;/h2>&lt;p>所有的东西都从文档开始:&lt;a class="link" href="http://mp.weixin.qq.com/wiki/11/74ad127cc054f6b80759c40f77ec03db.html" target="_blank" rel="noopener"
+>微信JSSDK说明文档&lt;/a>&lt;/p>
+&lt;p>&lt;img src="http://7xread.com1.z0.glb.clouddn.com/44b1232e-9311-4abb-9200-6dd4936d7c47"
+loading="lazy"
+alt="分享接口"
+>&lt;/p>
+&lt;p>项目需要用到的是&lt;a class="link" href="http://mp.weixin.qq.com/wiki/11/74ad127cc054f6b80759c40f77ec03db.html#.E5.88.86.E4.BA.AB.E6.8E.A5.E5.8F.A3" target="_blank" rel="noopener"
+>分享接口&lt;/a> 不过使用微信JS-SDK之前，需要做JS接口认证。&lt;/p>
+&lt;p>认证如下：&lt;/p>
+&lt;p>步骤一：绑定域名&lt;/p>
+&lt;p>步骤二：引入JS文件&lt;/p>
+&lt;p>步骤三：通过config接口注入权限验证配置&lt;/p>
+&lt;p>步骤四：通过ready接口处理成功验证&lt;/p>
+&lt;p>步骤五：通过error接口处理失败验证&lt;/p>
+&lt;p>步骤一中允许使用域名/子域名，只要xx.com/xxx.txt或者xx.com/mp/xxx.txt能访问就好。域名认证通过之后，此域名下的所有端口的网站都可以使用JS-SDK。&lt;/p>
+&lt;p>步骤二没什么问题，略过。&lt;/p>
+&lt;p>步骤三最磨人，下面单独讲解。&lt;/p>
+&lt;h3 id="config接口注入权限验证配置">config接口注入权限验证配置
+&lt;/h3>&lt;p>先来一段说明：&lt;/p>
+&lt;p>所有需要使用JS-SDK的页面必须先注入配置信息，否则将无法调用
+（同一个url仅需调用一次，对于变化url的SPA的web app可在每次url变化时进行调用,
+目前Android微信客户端不支持pushState的H5新特性，
+所以使用pushState来实现web app的页面会导致签名失败，此问题会在Android6.2中修复）。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="nx">wx&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">config&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">debug&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// 开启调试模式,调用的所有api的返回值会在客户端alert出来，
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">//若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">appId&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// 必填，公众号的唯一标识
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">timestamp&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">,&lt;/span> &lt;span class="c1">// 必填，生成签名的时间戳
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">nonceStr&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// 必填，生成签名的随机串
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">signature&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="c1">// 必填，签名，见附录1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">jsApiList&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">[]&lt;/span> &lt;span class="c1">// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>看到这里肯定懵逼了，这是都什么鬼&amp;hellip;怎么玩啊。&lt;/p>
+&lt;p>提示我们去看附录1&amp;hellip;看完之后总结如下：&lt;/p>
+&lt;ol>
+&lt;li>使用config接口注入权限验证配置，重点是生成合法的signatrue&lt;/li>
+&lt;li>生成signature需要通过appid和secret获取token&lt;/li>
+&lt;li>时间戳和调用接口URL必不可少&lt;/li>
+&lt;li>此操作需要服务端完成，不能使用客户端实现&lt;/li>
+&lt;/ol>
+&lt;p>整个过程变成：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>通过appid和secret获取access_token，接着使用token获取jsapi_ticket；&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>拿到jsapi_ticket之后，把jsapi_ticket、时间戳、随机字符串、接口调用页面URL 拼接成完整字符串，使用sha1算法加密得到signature。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>最后返回至页面，在wx.config里面填入appid，上一步的时间戳timestamp，上一部的随机字符串、sha1拿到的signature，想要使用的JS接口。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>废话少说，直接上代码吧。&lt;/p>
+&lt;h3 id="代码时间">代码时间
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt"> 10
+&lt;/span>&lt;span class="lnt"> 11
+&lt;/span>&lt;span class="lnt"> 12
+&lt;/span>&lt;span class="lnt"> 13
+&lt;/span>&lt;span class="lnt"> 14
+&lt;/span>&lt;span class="lnt"> 15
+&lt;/span>&lt;span class="lnt"> 16
+&lt;/span>&lt;span class="lnt"> 17
+&lt;/span>&lt;span class="lnt"> 18
+&lt;/span>&lt;span class="lnt"> 19
+&lt;/span>&lt;span class="lnt"> 20
+&lt;/span>&lt;span class="lnt"> 21
+&lt;/span>&lt;span class="lnt"> 22
+&lt;/span>&lt;span class="lnt"> 23
+&lt;/span>&lt;span class="lnt"> 24
+&lt;/span>&lt;span class="lnt"> 25
+&lt;/span>&lt;span class="lnt"> 26
+&lt;/span>&lt;span class="lnt"> 27
+&lt;/span>&lt;span class="lnt"> 28
+&lt;/span>&lt;span class="lnt"> 29
+&lt;/span>&lt;span class="lnt"> 30
+&lt;/span>&lt;span class="lnt"> 31
+&lt;/span>&lt;span class="lnt"> 32
+&lt;/span>&lt;span class="lnt"> 33
+&lt;/span>&lt;span class="lnt"> 34
+&lt;/span>&lt;span class="lnt"> 35
+&lt;/span>&lt;span class="lnt"> 36
+&lt;/span>&lt;span class="lnt"> 37
+&lt;/span>&lt;span class="lnt"> 38
+&lt;/span>&lt;span class="lnt"> 39
+&lt;/span>&lt;span class="lnt"> 40
+&lt;/span>&lt;span class="lnt"> 41
+&lt;/span>&lt;span class="lnt"> 42
+&lt;/span>&lt;span class="lnt"> 43
+&lt;/span>&lt;span class="lnt"> 44
+&lt;/span>&lt;span class="lnt"> 45
+&lt;/span>&lt;span class="lnt"> 46
+&lt;/span>&lt;span class="lnt"> 47
+&lt;/span>&lt;span class="lnt"> 48
+&lt;/span>&lt;span class="lnt"> 49
+&lt;/span>&lt;span class="lnt"> 50
+&lt;/span>&lt;span class="lnt"> 51
+&lt;/span>&lt;span class="lnt"> 52
+&lt;/span>&lt;span class="lnt"> 53
+&lt;/span>&lt;span class="lnt"> 54
+&lt;/span>&lt;span class="lnt"> 55
+&lt;/span>&lt;span class="lnt"> 56
+&lt;/span>&lt;span class="lnt"> 57
+&lt;/span>&lt;span class="lnt"> 58
+&lt;/span>&lt;span class="lnt"> 59
+&lt;/span>&lt;span class="lnt"> 60
+&lt;/span>&lt;span class="lnt"> 61
+&lt;/span>&lt;span class="lnt"> 62
+&lt;/span>&lt;span class="lnt"> 63
+&lt;/span>&lt;span class="lnt"> 64
+&lt;/span>&lt;span class="lnt"> 65
+&lt;/span>&lt;span class="lnt"> 66
+&lt;/span>&lt;span class="lnt"> 67
+&lt;/span>&lt;span class="lnt"> 68
+&lt;/span>&lt;span class="lnt"> 69
+&lt;/span>&lt;span class="lnt"> 70
+&lt;/span>&lt;span class="lnt"> 71
+&lt;/span>&lt;span class="lnt"> 72
+&lt;/span>&lt;span class="lnt"> 73
+&lt;/span>&lt;span class="lnt"> 74
+&lt;/span>&lt;span class="lnt"> 75
+&lt;/span>&lt;span class="lnt"> 76
+&lt;/span>&lt;span class="lnt"> 77
+&lt;/span>&lt;span class="lnt"> 78
+&lt;/span>&lt;span class="lnt"> 79
+&lt;/span>&lt;span class="lnt"> 80
+&lt;/span>&lt;span class="lnt"> 81
+&lt;/span>&lt;span class="lnt"> 82
+&lt;/span>&lt;span class="lnt"> 83
+&lt;/span>&lt;span class="lnt"> 84
+&lt;/span>&lt;span class="lnt"> 85
+&lt;/span>&lt;span class="lnt"> 86
+&lt;/span>&lt;span class="lnt"> 87
+&lt;/span>&lt;span class="lnt"> 88
+&lt;/span>&lt;span class="lnt"> 89
+&lt;/span>&lt;span class="lnt"> 90
+&lt;/span>&lt;span class="lnt"> 91
+&lt;/span>&lt;span class="lnt"> 92
+&lt;/span>&lt;span class="lnt"> 93
+&lt;/span>&lt;span class="lnt"> 94
+&lt;/span>&lt;span class="lnt"> 95
+&lt;/span>&lt;span class="lnt"> 96
+&lt;/span>&lt;span class="lnt"> 97
+&lt;/span>&lt;span class="lnt"> 98
+&lt;/span>&lt;span class="lnt"> 99
+&lt;/span>&lt;span class="lnt">100
+&lt;/span>&lt;span class="lnt">101
+&lt;/span>&lt;span class="lnt">102
+&lt;/span>&lt;span class="lnt">103
+&lt;/span>&lt;span class="lnt">104
+&lt;/span>&lt;span class="lnt">105
+&lt;/span>&lt;span class="lnt">106
+&lt;/span>&lt;span class="lnt">107
+&lt;/span>&lt;span class="lnt">108
+&lt;/span>&lt;span class="lnt">109
+&lt;/span>&lt;span class="lnt">110
+&lt;/span>&lt;span class="lnt">111
+&lt;/span>&lt;span class="lnt">112
+&lt;/span>&lt;span class="lnt">113
+&lt;/span>&lt;span class="lnt">114
+&lt;/span>&lt;span class="lnt">115
+&lt;/span>&lt;span class="lnt">116
+&lt;/span>&lt;span class="lnt">117
+&lt;/span>&lt;span class="lnt">118
+&lt;/span>&lt;span class="lnt">119
+&lt;/span>&lt;span class="lnt">120
+&lt;/span>&lt;span class="lnt">121
+&lt;/span>&lt;span class="lnt">122
+&lt;/span>&lt;span class="lnt">123
+&lt;/span>&lt;span class="lnt">124
+&lt;/span>&lt;span class="lnt">125
+&lt;/span>&lt;span class="lnt">126
+&lt;/span>&lt;span class="lnt">127
+&lt;/span>&lt;span class="lnt">128
+&lt;/span>&lt;span class="lnt">129
+&lt;/span>&lt;span class="lnt">130
+&lt;/span>&lt;span class="lnt">131
+&lt;/span>&lt;span class="lnt">132
+&lt;/span>&lt;span class="lnt">133
+&lt;/span>&lt;span class="lnt">134
+&lt;/span>&lt;span class="lnt">135
+&lt;/span>&lt;span class="lnt">136
+&lt;/span>&lt;span class="lnt">137
+&lt;/span>&lt;span class="lnt">138
+&lt;/span>&lt;span class="lnt">139
+&lt;/span>&lt;span class="lnt">140
+&lt;/span>&lt;span class="lnt">141
+&lt;/span>&lt;span class="lnt">142
+&lt;/span>&lt;span class="lnt">143
+&lt;/span>&lt;span class="lnt">144
+&lt;/span>&lt;span class="lnt">145
+&lt;/span>&lt;span class="lnt">146
+&lt;/span>&lt;span class="lnt">147
+&lt;/span>&lt;span class="lnt">148
+&lt;/span>&lt;span class="lnt">149
+&lt;/span>&lt;span class="lnt">150
+&lt;/span>&lt;span class="lnt">151
+&lt;/span>&lt;span class="lnt">152
+&lt;/span>&lt;span class="lnt">153
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-csharp" data-lang="csharp">&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">WeiXinController&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="n">Controller&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="k">readonly&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">appid&lt;/span> &lt;span class="p">=&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Web&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Configuration&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WebConfigurationManager&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">AppSettings&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;wxappid&amp;#34;&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="k">readonly&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">secret&lt;/span> &lt;span class="p">=&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Web&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Configuration&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WebConfigurationManager&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">AppSettings&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;wxsecret&amp;#34;&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="k">readonly&lt;/span> &lt;span class="kt">bool&lt;/span> &lt;span class="n">isDedug&lt;/span> &lt;span class="p">=&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Web&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Configuration&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WebConfigurationManager&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">AppSettings&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;IsDebug&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="p">==&lt;/span>&lt;span class="s">&amp;#34;true&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">_ticket&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="n">DateTime&lt;/span> &lt;span class="n">_lastTimestamp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="n">ActionResult&lt;/span> &lt;span class="n">Info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">string&lt;/span> &lt;span class="n">url&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="kt">string&lt;/span> &lt;span class="n">noncestr&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IsNullOrEmpty&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">_ticket&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">||&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_lastTimestamp&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="kc">null&lt;/span> &lt;span class="p">||&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">_lastTimestamp&lt;/span> &lt;span class="p">-&lt;/span> &lt;span class="n">DateTime&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Now&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">Milliseconds&lt;/span> &lt;span class="p">&amp;gt;&lt;/span> &lt;span class="m">7200&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">resultString&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">HTTPHelper&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetHTMLByURL&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;amp;appid=&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">+&lt;/span> &lt;span class="n">appid&lt;/span> &lt;span class="p">+&lt;/span> &lt;span class="s">&amp;#34;&amp;amp;secret=&amp;#34;&lt;/span> &lt;span class="p">+&lt;/span> &lt;span class="n">secret&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">dynamic&lt;/span> &lt;span class="n">resultValue&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">JsonConvert&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">DeserializeObject&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="kt">dynamic&lt;/span>&lt;span class="p">&amp;gt;(&lt;/span>&lt;span class="n">resultString&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">resultValue&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="kc">null&lt;/span> &lt;span class="p">||&lt;/span> &lt;span class="n">resultValue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">access_token&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="kc">null&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">||&lt;/span> &lt;span class="n">resultValue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">access_token&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Value&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="kc">null&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Json&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="n">issuccess&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">false&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">error&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;获取token失败&amp;#34;&lt;/span> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">token&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">resultValue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">access_token&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Value&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">resultString&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">HTTPHelper&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetHTMLByURL&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=&amp;#34;&lt;/span> &lt;span class="p">+&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">token&lt;/span> &lt;span class="p">+&lt;/span> &lt;span class="s">&amp;#34;&amp;amp;type=jsapi&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">dynamic&lt;/span> &lt;span class="n">ticketValue&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">JsonConvert&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">DeserializeObject&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="kt">dynamic&lt;/span>&lt;span class="p">&amp;gt;(&lt;/span>&lt;span class="n">resultString&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">ticketValue&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="kc">null&lt;/span> &lt;span class="p">||&lt;/span> &lt;span class="n">ticketValue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">errcode&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="kc">null&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">||&lt;/span> &lt;span class="n">ticketValue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">errcode&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Value&lt;/span> &lt;span class="p">!=&lt;/span> &lt;span class="m">0&lt;/span> &lt;span class="p">||&lt;/span> &lt;span class="n">ticketValue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ticket&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="kc">null&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Json&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="n">issuccess&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">false&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">error&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;获取ticketValue失败&amp;#34;&lt;/span> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_ticket&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">ticketValue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ticket&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Value&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_lastTimestamp&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">DateTime&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Now&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">timestamp&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">GetTimeStamp&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">hexString&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Format&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;jsapi_ticket={0}&amp;amp;noncestr={3}&amp;amp;timestamp={1}&amp;amp;url={2}&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_ticket&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">timestamp&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">url&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">noncestr&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Json&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">issuccess&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">sha1value&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">GetSHA1Value&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">hexString&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">timestamp&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">timestamp&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">url&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">url&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">appid&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">appid&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">debug&lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="n">isDedug&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">tiket&lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="n">_ticket&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">timestamp&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">GetTimeStamp&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">hexString&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Format&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;jsapi_ticket={0}&amp;amp;noncestr=1234567890123456&amp;amp;timestamp={1}&amp;amp;url={2}&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_ticket&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">timestamp&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">url&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Json&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">issuccess&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">sha1value&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">GetSHA1Value&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">hexString&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">timestamp&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">timestamp&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">url&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">url&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">appid&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">appid&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">debug&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">isDedug&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">tiket&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">_ticket&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">GetSHA1Value&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">string&lt;/span> &lt;span class="n">sourceString&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">hash&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">SHA1&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Create&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="n">ComputeHash&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Encoding&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UTF8&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetBytes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sourceString&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Join&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">hash&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Select&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">b&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ToString&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;x2&amp;#34;&lt;/span>&lt;span class="p">)).&lt;/span>&lt;span class="n">ToArray&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">GetTimeStamp&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">TimeSpan&lt;/span> &lt;span class="n">ts&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">DateTime&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Now&lt;/span> &lt;span class="p">-&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">DateTime&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="m">1970&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="m">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="m">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="m">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="m">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="m">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="m">0&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Convert&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ToInt64&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ts&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">TotalSeconds&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">ToString&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">HTTPHelper&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">GetHTMLByURL&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">string&lt;/span> &lt;span class="n">url&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">string&lt;/span> &lt;span class="n">htmlCode&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Empty&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">HttpWebRequest&lt;/span> &lt;span class="n">webRequest&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Net&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">HttpWebRequest&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Net&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WebRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Create&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">url&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">webRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Timeout&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="m">30000&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">webRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Method&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;GET&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">webRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UserAgent&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;Mozilla/4.0&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">webRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Headers&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Add&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Accept-Encoding&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;gzip, deflate&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">HttpWebResponse&lt;/span> &lt;span class="n">webResponse&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Net&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">HttpWebResponse&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">webRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetResponse&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//获取目标网站的编码格式&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">string&lt;/span> &lt;span class="n">contentype&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">webResponse&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Headers&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;Content-Type&amp;#34;&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Regex&lt;/span> &lt;span class="n">regex&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Regex&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;charset\\s*=\\s*[\\W]?\\s*([\\w-]+)&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">RegexOptions&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IgnoreCase&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">webResponse&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ContentEncoding&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ToLower&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="s">&amp;#34;gzip&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="c1">//如果使用了GZip则先解压&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">using&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Stream&lt;/span> &lt;span class="n">streamReceive&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">webResponse&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetResponseStream&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">using&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">var&lt;/span> &lt;span class="n">zipStream&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Compression&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GZipStream&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">streamReceive&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Compression&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">CompressionMode&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Decompress&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//匹配编码格式&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">regex&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IsMatch&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">contentype&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Encoding&lt;/span> &lt;span class="n">ending&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">Encoding&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetEncoding&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">regex&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Match&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">contentype&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">Groups&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="m">1&lt;/span>&lt;span class="p">].&lt;/span>&lt;span class="n">Value&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Trim&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">using&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">StreamReader&lt;/span> &lt;span class="n">sr&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">StreamReader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">zipStream&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ending&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">htmlCode&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">sr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ReadToEnd&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">using&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">StreamReader&lt;/span> &lt;span class="n">sr&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">StreamReader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">zipStream&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Encoding&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UTF8&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">htmlCode&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">sr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ReadToEnd&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">using&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Stream&lt;/span> &lt;span class="n">streamReceive&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">webResponse&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetResponseStream&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">encoding&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">Encoding&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Default&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">contentype&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Contains&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;utf&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">encoding&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">Encoding&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UTF8&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">using&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">StreamReader&lt;/span> &lt;span class="n">sr&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">StreamReader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">streamReceive&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">encoding&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">htmlCode&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">sr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ReadToEnd&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">htmlCode&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">Exception&lt;/span> &lt;span class="n">ex&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>PS：这里要注意缓存一下_ticket（即access_token），照微信文档说的，access_token两个小时内有效，不需要频繁调用。而且获取access_token的接口有调用次数的限制，如果超过了次数，就不允许调用了。&lt;/p>
+&lt;p>PPS:建议noncestr和URL由前台传入比较适合，使用 var theWebUrl = window.location.href.split(&amp;rsquo;#&amp;rsquo;)[0] 获取URL，noncestr就随意了。&lt;/p>
+&lt;p>PPPS:遇到诡异的invalid signature的时候，首先检查url参数，然后检查noncestr，再不行重启一下程序获取一个新的token回来继续玩。&lt;/p></description></item><item><title>使用requirejs编写模块化代码</title><link>https://liguobao.github.io/p/%E4%BD%BF%E7%94%A8requirejs%E7%BC%96%E5%86%99%E6%A8%A1%E5%9D%97%E5%8C%96%E4%BB%A3%E7%A0%81/</link><pubDate>Sat, 22 Oct 2016 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/%E4%BD%BF%E7%94%A8requirejs%E7%BC%96%E5%86%99%E6%A8%A1%E5%9D%97%E5%8C%96%E4%BB%A3%E7%A0%81/</guid><description>&lt;h1 id="写在前面">写在前面
+&lt;/h1>&lt;p>最早接触javascript的时候，javascript代码直接扔在script标签里面就完事了。&lt;/p>
+&lt;p>反正代码不多，交互简单，逻辑不难，和HTML混在一起也未尝不可。&lt;/p>
+&lt;p>后来交互越来越复杂，代码越多越多了，我们就开始把JS代码独立到了单独的JS文件中。&lt;/p>
+&lt;p>公共的库引用在前，自己的逻辑代码引用在后，全局变量定义在HTML内部，在独立JS文件中直接使用变量就好。&lt;/p>
+&lt;p>我们会经常看到下面这种代码：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">　　&amp;lt;script src=&amp;#34;1.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">　　&amp;lt;script src=&amp;#34;2.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">　　&amp;lt;script src=&amp;#34;3.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">　　&amp;lt;script src=&amp;#34;4.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">　　&amp;lt;script src=&amp;#34;5.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">　　&amp;lt;script src=&amp;#34;6.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>通过script标签顺序去js管理依赖关系。&lt;/p>
+&lt;p>阮一峰老师在&lt;a class="link" href="http://www.ruanyifeng.com/blog/2012/11/require_js.html" target="_blank" rel="noopener"
+>Javascript模块化编程（三）：require.js的用法&lt;/a>
+一文中总结了这样写法的缺点：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">首先，加载的时候，浏览器会停止网页渲染，加载文件越多，网页失去响应的时间就会越长；
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">其次，由于js文件之间存在依赖关系，因此必须严格保证加载顺序（比如上例的1.js要在2.js的前面），依赖性最大的模块一定要放到最后加载.
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">当依赖关系很复杂的时候，代码的编写和维护都会变得困难。
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>而requirejs的诞生便是为了解决这个问题。&lt;/p>
+&lt;h3 id="requirejshttprequirejsorgdocsdownloadhtml">&lt;a class="link" href="http://requirejs.org/docs/download.html" target="_blank" rel="noopener"
+>requirejs&lt;/a>
+&lt;/h3>&lt;p>在&lt;a class="link" href="http://requirejs.org/docs/download.html" target="_blank" rel="noopener"
+>官网&lt;/a>把requirejs 下载回来之后。使用一般的方法引入：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">&amp;lt;script src=&amp;#34;js/require.js&amp;#34;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>但是这样的方法，还是可能在加载require.js的时候导致网页失去响应。解决方案一般有两种：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>把上面的代码放到网页底部&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>使用异步的方法加载，如下：&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">&amp;lt;script src=&amp;#34;js/require.js&amp;#34; defer async=&amp;#34;true&amp;#34; &amp;gt;&amp;lt;/script&amp;gt;
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>&lt;a class="link" href="http://www.w3school.com.cn/html5/att_script_async.asp" target="_blank" rel="noopener"
+>async属性&lt;/a> 表明这个文件需要异步加载，避免网页失去响应。&lt;/p>
+&lt;p>不过IE下不支持这个属性，只支持defer，所以可以把defer也写上。&lt;/p>
+&lt;h3 id="加载主模块">加载主模块
+&lt;/h3>&lt;p>在上一步，我们已经引入了require了，那么require怎么知道我们究竟要加载什么东西呢？答案是使用data-main属性。
+假设我们的主模块为js/home.js,引入代码应该如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">　&amp;lt;script src=&amp;#34;js/require.js&amp;#34; data-main=&amp;#34;js/home&amp;#34;&amp;gt;&amp;lt;/script&amp;gt;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> //require.js默认文件后缀为js，所以home.js可以写成home。
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>接下来我使用&lt;a class="link" href="https://github.com/liguobao/58HouseSearch" target="_blank" rel="noopener"
+>58HouseSearch&lt;/a> 的代码来讲解重构过程。&lt;/p>
+&lt;p>在此项目里面，重构前大概就是JS变量漫天飞，js文件里面各种函数到处乱放。一开始用起来还没什么，后来加入了更多功能的时候，JS代码维护起来就疼不欲生了。因此托了个小伙伴帮忙使用模块化思想重构了一下JS代码。&lt;/p>
+&lt;p>上面说了，我们首先需要创建我们的模块，在这个项目里面，主模块叫home.js。&lt;/p>
+&lt;p>home.js中我们需要配置一下require.config.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">require.config({
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> baseUrl: &amp;#39;/DomainJS/&amp;#39;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> paths: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> jquery: &amp;#34;lib/jquery-1.11.3.min&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;AMUI&amp;#34;: &amp;#34;lib/amazeui.2.7.1.min&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;jquery.range&amp;#34;: &amp;#34;lib/jquery.range&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;es5&amp;#34;: &amp;#34;lib/es5&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;mapController&amp;#34;: &amp;#34;mapController&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;addToolbar&amp;#34;: &amp;#34;addToolbar&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> shim: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;addToolbar&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> deps: [&amp;#34;jquery&amp;#34;]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &amp;#34;jquery.range&amp;#34;: {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> deps: [&amp;#34;jquery&amp;#34;]
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">});
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>在这里我主要配置了一下baseURL(所有模块的查找根路径)，paths(名称映射)，shim(
+为那些没有使用define()来声明依赖关系、设置模块的&amp;quot;浏览器全局变量注入&amp;quot;型脚本做依赖和导出配置。)&lt;/p>
+&lt;p>关于require.config的详细内容可以看下下面这些文章：&lt;/p>
+&lt;ol>
+&lt;li>&lt;a class="link" href="https://segmentfault.com/a/1190000002401665" target="_blank" rel="noopener"
+>RequireJS进阶:配置文件的学习&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://segmentfault.com/a/1190000002403806" target="_blank" rel="noopener"
+>RequireJS进阶:模块的优化及配置的详解&lt;/a>&lt;/li>
+&lt;/ol>
+&lt;p>配置做完了，我们也可以开始真正写我们的逻辑代码了,我们使用require来加载我们需要的库。
+代码如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">require([&amp;#39;domready!&amp;#39;, &amp;#39;jquery&amp;#39;, &amp;#39;AMUI&amp;#39;, &amp;#39;mapController&amp;#39;, &amp;#39;city&amp;#39;, &amp;#39;commuteGo&amp;#39;], function (doc, $, AMUI, mapController, city, commuteGo) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> city.initAllCityInfo();
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> mapController.init();
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> $(&amp;#34;input[name=&amp;#39;locationType&amp;#39;]&amp;#34;).bind(&amp;#39;click&amp;#39;, mapController.locationMethodOnChange)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> $(&amp;#34;input[name=&amp;#39;vehicle&amp;#39;]&amp;#34;).bind(&amp;#39;click&amp;#39;, commuteGo.go)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> $(&amp;#39;#Get58Data&amp;#39;).bind(&amp;#39;click&amp;#39;, function(e) {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> e.preventDefault();
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> mapController.Get58DataClick();
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> e.stopPropagation();
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> });
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> $.ajax({
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> type: &amp;#34;post&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> url: &amp;#34;../Commom/GetPVCount&amp;#34;,
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> data: { },
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> success: function (result)
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> if (result.IsSuccess){
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> $(&amp;#34;#lblPVCount&amp;#34;).text(result.PVCount);
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }else {
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> $(&amp;#34;#lblPVCount&amp;#34;).text(0);
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> console.log(result.Error);
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> }
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> });
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> $(&amp;#39;#search-offcanvas&amp;#39;).offCanvas({ effect: &amp;#39;overlay&amp;#39; });
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> $(&amp;#34;.amap-sug-result&amp;#34;).css(&amp;#34;z-index&amp;#34;, 9999);
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">})
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>忽略function里面的具体逻辑，加载如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-fallback" data-lang="fallback">&lt;span class="line">&lt;span class="cl">require([&amp;#39;domready!&amp;#39;, &amp;#39;jquery&amp;#39;, &amp;#39;AMUI&amp;#39;, &amp;#39;mapController&amp;#39;, &amp;#39;city&amp;#39;, &amp;#39;commuteGo&amp;#39;],
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">function (doc, $, AMUI, mapController, city, commuteGo){
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">//todo
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">});
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>第一个参数为一个数组，表示所依赖的模块，此处为[&amp;lsquo;domready!&amp;rsquo;, &amp;lsquo;jquery&amp;rsquo;, &amp;lsquo;AMUI&amp;rsquo;, &amp;lsquo;mapController&amp;rsquo;, &amp;lsquo;city&amp;rsquo;, &amp;lsquo;commuteGo&amp;rsquo;]；&lt;/p>
+&lt;p>第二个参数为回调函数，当前面指定的模块都全部加载成功之后，便调用此函数。加载的模块会以参数形式传入此函数，从而在回调函数内部就可以使用这些模块啦。&lt;/p>
+&lt;p>require()异步加载所需模块的时候，此时浏览器并不会失去响应；当前面的模块加载成功之后，执行回调函数才会运行我们的逻辑代码，因此解决了依赖性问题。&lt;/p>
+&lt;p>讲完了模块加载，我们下面讲一下模块编写。&lt;/p>
+&lt;h3 id="amd模块编写">AMD模块编写
+&lt;/h3>&lt;p>require.js加载的模块的采用的AMD规范。所以我们的模块必须按照AMD的规定来写。&lt;/p>
+&lt;p>关于AMD规范详情可以看这个文章：&lt;a class="link" href="http://www.ruanyifeng.com/blog/2012/10/asynchronous_module_definition.html" target="_blank" rel="noopener"
+>Javascript模块化编程（二）：AMD规范&lt;/a>&lt;/p>
+&lt;p>模块有两个情况，不依赖其他模块和依赖其他模块。&lt;/p>
+&lt;h4 id="不依赖其他模块">不依赖其他模块
+&lt;/h4>&lt;p>直接define定义，使用function回调。&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/liguobao/58HouseSearch/blob/master/58HouseSearch/DomainJS/helper.js" target="_blank" rel="noopener"
+>58HouseSearch/DomainJS/helper.js&lt;/a>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">define&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">function&lt;/span> &lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="o">//&lt;/span>&lt;span class="err">获取&lt;/span>&lt;span class="n">URL中的参数&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">var&lt;/span> &lt;span class="n">getQueryString&lt;/span>&lt;span class="o">=&lt;/span> &lt;span class="n">function&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">var&lt;/span> &lt;span class="n">reg&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">new&lt;/span> &lt;span class="n">RegExp&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;(^|&amp;amp;)&amp;#34;&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">name&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="s2">&amp;#34;=([^&amp;amp;]*)(&amp;amp;|$)&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">var&lt;/span> &lt;span class="n">r&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">window&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">location&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">search&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">substr&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">match&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">reg&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">r&lt;/span> &lt;span class="o">!=&lt;/span> &lt;span class="n">null&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">unescape&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">r&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">]);&lt;/span> &lt;span class="k">return&lt;/span> &lt;span class="n">null&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">getQueryString&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">getQueryString&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="依赖其他模块">依赖其他模块
+&lt;/h4>&lt;p>define中如同require一样，用数组表明需要加载的模块，function回调。&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/liguobao/58HouseSearch/blob/master/58HouseSearch/DomainJS/marker.js" target="_blank" rel="noopener"
+>58HouseSearch/DomainJS/marker.js&lt;/a>&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-gdscript3" data-lang="gdscript3">&lt;span class="line">&lt;span class="cl">&lt;span class="n">define&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="s1">&amp;#39;mapSignleton&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;city&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;transfer&amp;#39;&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">function&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">mapSignleton&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">city&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">transfer&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">var&lt;/span> &lt;span class="n">_map&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">mapSignleton&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">map&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">var&lt;/span> &lt;span class="n">_workMarker&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">null&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">var&lt;/span> &lt;span class="n">_markerArray&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">var&lt;/span> &lt;span class="nb">load&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">function&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">locationName&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_workMarker&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">new&lt;/span> &lt;span class="n">AMap&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Marker&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">map&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">_map&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">title&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">locationName&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">icon&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;http://webapi.amap.com/theme/v1.3/markers/n/mark_r.png&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">position&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">x&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">y&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">var&lt;/span> &lt;span class="n">add&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">function&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">address&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">rent&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">href&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">markBG&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">new&lt;/span> &lt;span class="n">AMap&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Geocoder&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">city&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">city&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">name&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">radius&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">1000&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">})&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">getLocation&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">address&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">function&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">status&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">status&lt;/span> &lt;span class="o">===&lt;/span> &lt;span class="s2">&amp;#34;complete&amp;#34;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">info&lt;/span> &lt;span class="o">===&lt;/span> &lt;span class="s1">&amp;#39;OK&amp;#39;&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">var&lt;/span> &lt;span class="n">geocode&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">geocodes&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">var&lt;/span> &lt;span class="n">rentMarker&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">new&lt;/span> &lt;span class="n">AMap&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Marker&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">map&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">_map&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">title&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">address&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">icon&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">markBG&lt;/span> &lt;span class="err">?&lt;/span> &lt;span class="s1">&amp;#39;IMG/Little/&amp;#39;&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">markBG&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="s1">&amp;#39;http://webapi.amap.com/theme/v1.3/markers/n/mark_b.png&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">position&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span>&lt;span class="n">geocode&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">location&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">getLng&lt;/span>&lt;span class="p">(),&lt;/span> &lt;span class="n">geocode&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">location&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">getLat&lt;/span>&lt;span class="p">()]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_markerArray&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">push&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">rentMarker&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">rentMarker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">content&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;&amp;lt;div&amp;gt;&amp;lt;a target = &amp;#39;_blank&amp;#39; href=&amp;#39;&amp;#34;&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">href&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="s2">&amp;#34;&amp;#39;&amp;gt;房源：&amp;#34;&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">address&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="s2">&amp;#34; 租金：&amp;#34;&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">rent&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="s2">&amp;#34;&amp;lt;/a&amp;gt;&amp;lt;div&amp;gt;&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">rentMarker&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">on&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;click&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">function&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">transfer&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">add&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">address&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">var&lt;/span> &lt;span class="n">clearArray&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">function&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">_markerArray&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="n">_markerArray&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">length&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="n">_map&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">remove&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">_markerArray&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_markerArray&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">var&lt;/span> &lt;span class="n">clear&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">function&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">_workMarker&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_map&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">remove&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">_workMarker&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">load&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">load&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">add&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">add&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">clearArray&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">clearArray&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">clear&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">clear&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>这样的话，一个供require调用的模块也就写好了。&lt;/p>
+&lt;p>最后感谢小伙伴&lt;a class="link" href="https://www.zhihu.com/people/piratf" target="_blank" rel="noopener"
+>Larry Sean&lt;/a> 帮忙重构代码。&lt;/p>
+&lt;p>全文完。&lt;/p></description></item></channel></rss>

@@ -1,0 +1,351 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>性能调优 on 李国宝</title><link>https://liguobao.github.io/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/</link><description>Recent content in 性能调优 on 李国宝</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 03 Aug 2019 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/%E6%80%A7%E8%83%BD%E8%B0%83%E4%BC%98/index.xml" rel="self" type="application/rss+xml"/><item><title>.NET Core乱糊代码之"异步调差性能"指北</title><link>https://liguobao.github.io/p/.net-core%E4%B9%B1%E7%B3%8A%E4%BB%A3%E7%A0%81%E4%B9%8B%E5%BC%82%E6%AD%A5%E8%B0%83%E5%B7%AE%E6%80%A7%E8%83%BD%E6%8C%87%E5%8C%97/</link><pubDate>Sat, 03 Aug 2019 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/.net-core%E4%B9%B1%E7%B3%8A%E4%BB%A3%E7%A0%81%E4%B9%8B%E5%BC%82%E6%AD%A5%E8%B0%83%E5%B7%AE%E6%80%A7%E8%83%BD%E6%8C%87%E5%8C%97/</guid><description>&lt;h1 id="net-core乱糊代码之异步调差性能指北">.NET Core乱糊代码之&amp;quot;异步调差性能&amp;quot;指北
+&lt;/h1>&lt;h2 id="前言">前言
+&lt;/h2>&lt;p>故事要从好久之前说起,线上某服务从零到上线都是我撸的, 架构主要是.NET Core API + EF, 从最早的日活一千到现在日活几万.&lt;/p>
+&lt;p>平时在线人数几百, 高峰上千, 靠着6-8个Docker实例基本撑住了, 请求量来说QPS在100左右. 平摊下来其实每个实例的并发量不算太高.&lt;/p>
+&lt;p>但是某个迭代开始发现,&lt;/p>
+&lt;p>这个Web API有一定几率在启动的时候接收到大量请求后堆积起来, 看日志显示请求进来了, 但是一直没有到逻辑代码或者数据库查询,&lt;/p>
+&lt;p>所有的请求看起来都是在等调度.&lt;/p>
+&lt;h2 id="已知信息">已知信息
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>出现场景大多是刚启动的时候大量请求进来, 可能会把实例打崩&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>偶尔有场景是突然涌进大量用户, 也可能把实例打崩&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>发生问题时实例CPU占用率和内存都很正常, 整个宿主机运转正常, 也没有大量IO读写操作, 基本排除外部因素&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>网络情况正常, 内网中没有奇怪的数据请求,不存在网络风暴之类的东西&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>发生问题前此时数据库连接数正常, 实例不断被重启后或者一直僵死中, 数据库连接数会不断增加, 也有一定几率会把数据库连接数撑爆.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="开始侦查模式">开始&amp;quot;侦查模式&amp;quot;
+&lt;/h2>&lt;h3 id="猜想一-数据库搞事了">猜想一, 数据库搞事了?
+&lt;/h3>&lt;p>最早怀疑是数据库连接的问题.&lt;/p>
+&lt;p>总所周知EF首次启动特别慢, 如果一开始查询比较多进来, 直接落到数据库查询.&lt;/p>
+&lt;p>每个EF实例初始化都需要耗费一定时间, 这样势必是会影响整个性能的.&lt;/p>
+&lt;p>这种情况下, 如果可以对EF DB Pool做一次预热是不是会好一些呢?&lt;/p>
+&lt;p>所以曾经在Startup.cs下面写过类似的预热代码.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-csharp" data-lang="csharp">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">private&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="k">void&lt;/span> &lt;span class="n">InitDataContextService&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IApplicationBuilder&lt;/span> &lt;span class="n">app&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WriteLine&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">$&amp;#34;InitDataContextService start,now:{DateTime.Now.ToString()}&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">tasks&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">List&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="n">Task&lt;/span>&lt;span class="p">&amp;gt;();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">var&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="m">0&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span> &lt;span class="p">&amp;lt;=&lt;/span> &lt;span class="m">10&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="n">i&lt;/span>&lt;span class="p">++)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">serviceScope&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">app&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ApplicationServices&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">CreateScope&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">context&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">serviceScope&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ServiceProvider&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetRequiredService&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="n">XXXContext&lt;/span>&lt;span class="p">&amp;gt;();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">t&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">context&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Database&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">CanConnectAsync&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">tasks&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Add&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">t&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Task&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WaitAll&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">tasks&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ToArray&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WriteLine&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">$&amp;#34;InitDataContextService finish,now:{DateTime.Now.ToString()}&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>用Task异步的方式来控制每次尽量产生不同的实例, 已达到预热数据量连接池的效果.&lt;/p>
+&lt;p>是不是很机智啊? (P, 然而并没有半毛钱的效果)&lt;/p>
+&lt;h3 id="猜想二-同步请求等待资源导致性能变差-启动的时候被打崩">猜想二, 同步请求等待资源导致性能变差, 启动的时候被打崩?
+&lt;/h3>&lt;p>最早版本所有的Controller Action 都是同步请求, 来一个请求同步查询数据, 执行HTTP请求等等都是正常的逻辑代码.&lt;/p>
+&lt;p>从来不用async/awati之类的东西.(就是这么懒)&lt;/p>
+&lt;p>既然出事了, 改一版看看.&lt;/p>
+&lt;p>开始锵锵锵改Controller Action, 改成Task&lt;ActionResult>的形式.&lt;/p>
+&lt;p>基本代码&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-csharp" data-lang="csharp">&lt;span class="line">&lt;span class="cl">&lt;span class="na">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">[HttpGet(&amp;#34;v1/books/{id}&amp;#34;, Name = &amp;#34;GetBook&amp;#34;)]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">[SwaggerResponse(200, &amp;#34;获取成功&amp;#34;, typeof(BookDetail))]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na">[SwaggerResponse(404, &amp;#34;找不到书籍&amp;#34;)]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">public&lt;/span> &lt;span class="kd">async&lt;/span> &lt;span class="n">Task&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="n">IActionResult&lt;/span>&lt;span class="p">&amp;gt;&lt;/span> &lt;span class="n">GetBook&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="n">FromRoute&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="kt">string&lt;/span> &lt;span class="n">id&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Ok&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="n">data&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">await&lt;/span> &lt;span class="n">_bookService&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">FindBookDetailForUser&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">id&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="n">code&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="m">0&lt;/span> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>service层的用到的方法同时也改造成异步, 从头到尾都是异步.&lt;/p>
+&lt;p>这样测下来, 性能比同步大概涨了30%-50%左右(瞎测的, 也不太记得了数值了,没有参考意义)&lt;/p>
+&lt;p>就这样又上了一个版本, 比再前面几个版本都好点了, 现在发生打崩的情况降低了很多.&lt;/p>
+&lt;h3 id="玄学现场又做了一些奇怪的事情">玄学现场:又做了一些奇怪的事情
+&lt;/h3>&lt;p>后来又发现, 每次启动的时候, 在正式流量打入之前, 尽量预热一下api实例的话, 被直接打崩的几率会变低,&lt;/p>
+&lt;p>整体api会比较正常启动.&lt;/p>
+&lt;p>至少算是一个能操作的事情, 这个时候就很傻了, 每次发布的时候都手动ab test一下还没有转入流量的实例,&lt;/p>
+&lt;p>尽可能预热一下数据库和这个HTTP管道.&lt;/p>
+&lt;p>这个时候真的是玄学现场, 太让我沮丧了.&lt;/p>
+&lt;h3 id="墨菲定律总是会来的">墨菲定律总是会来的
+&lt;/h3>&lt;p>前天晚上发布新版本, 预发布环境政策, 性能正常之后推到生产, 然后全线告警.&lt;/p>
+&lt;p>神奇了, 现在又见鬼了.&lt;/p>
+&lt;p>用上面的压测预热折腾了一个小时, 没有成功全部启动应用, 最后无奈先回滚了, 回滚后服务正常.&lt;/p>
+&lt;p>OK, 这个迭代的代码加剧了应用被打崩的情况.&lt;/p>
+&lt;p>现总结一下当前情况&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>这次上线前, 数据库已经升级了配置, 整体监控上数据库没有任何的瓶颈&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>没有大的逻辑变动, 老的核心接口基本都异步改造完成, 新接口基本都是异步的&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>不存在缓存穿透问题, Redis缓存命中正常.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>这次发布最大变更是IP定位, 需要处理headers中的IP数据,&lt;/p>
+&lt;p>使用ActionFilterAttribute在请求进入Action方法前完成IP到地区的转换.&lt;/p>
+&lt;p>这里主要会用到Redis和MaxMind.Db, 优先从Redis查询IP地区缓存, 没有命中则直接查询MaxMind.Db数据, 查询好之后再写入到Redis中.&lt;/p>
+&lt;p>代码大概是这样的.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-csharp" data-lang="csharp">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kd">public&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">HTTPHeaderAttribute&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="n">ActionFilterAttribute&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="k">readonly&lt;/span> &lt;span class="n">HTTPHeaderTools&lt;/span> &lt;span class="n">_httpHeaderTools&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="k">readonly&lt;/span> &lt;span class="n">MaxMindDBClient&lt;/span> &lt;span class="n">_maxMindDBClient&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="k">readonly&lt;/span> &lt;span class="n">RedisService&lt;/span> &lt;span class="n">_redisService&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="n">HTTPHeaderAttribute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">HTTPHeaderTools&lt;/span> &lt;span class="n">httpHeaderTools&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">MaxMindDBClient&lt;/span> &lt;span class="n">maxMindDBClient&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">RedisService&lt;/span> &lt;span class="n">redisService&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_httpHeaderTools&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">httpHeaderTools&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_maxMindDBClient&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">maxMindDBClient&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_redisService&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">redisService&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">override&lt;/span> &lt;span class="k">void&lt;/span> &lt;span class="n">OnActionExecuting&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ActionExecutingContext&lt;/span> &lt;span class="n">context&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">dicXHeaders&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Dictionary&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">&amp;gt;();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">string&lt;/span> &lt;span class="n">locationISOCode&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">GetLocationISOCode&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">context&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">dicXHeaders&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Add&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">CommonConst&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">LocationHeaderKey&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">locationISOCode&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_httpHeaderTools&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">CurrentXHeaders&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">ThreadLocal&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="n">Dictionary&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">&amp;gt;&amp;gt;(()&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="n">dicXHeaders&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">GetLocationISOCode&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ActionExecutingContext&lt;/span> &lt;span class="n">context&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">string&lt;/span> &lt;span class="n">requestIP&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">context&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">HttpContext&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Request&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Headers&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetHeaderValue&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;X-Forwarded-For&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">requestIP&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Contains&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;,&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">requestIP&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">requestIP&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Split&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;,&amp;#34;&lt;/span>&lt;span class="p">)[&lt;/span>&lt;span class="m">0&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">locationISOCode&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">_redisService&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ReadHashValueByKey&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">&amp;gt;(&lt;/span>&lt;span class="n">ConstRedisKey&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IPLocations&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">requestIP&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IsNullOrEmpty&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">locationISOCode&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">locationISOCode&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">_maxMindDBClient&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetIPLocationISOCode&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">requestIP&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_redisService&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WriteHash&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ConstRedisKey&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IPLocations&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">requestIP&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">locationISOCode&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">locationISOCode&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>代码先扔着, 看起来没什么特别的地方.&lt;/p>
+&lt;p>好了, 我要睡了明天继续&amp;hellip;&lt;/p>
+&lt;p>等我睡醒了再继续..&lt;/p>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;br/>
+&lt;p>先直接甩真正解决问题的的代码:&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-csharp" data-lang="csharp">&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">HTTPHeaderAttribute&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="n">ActionFilterAttribute&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="k">readonly&lt;/span> &lt;span class="n">HTTPHeaderTools&lt;/span> &lt;span class="n">_httpHeaderTools&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="k">readonly&lt;/span> &lt;span class="n">MaxMindDBClient&lt;/span> &lt;span class="n">_maxMindDBClient&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="k">readonly&lt;/span> &lt;span class="n">RedisService&lt;/span> &lt;span class="n">_redisService&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="n">HTTPHeaderAttribute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">HTTPHeaderTools&lt;/span> &lt;span class="n">httpHeaderTools&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">MaxMindDBClient&lt;/span> &lt;span class="n">maxMindDBClient&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">RedisService&lt;/span> &lt;span class="n">redisService&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_httpHeaderTools&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">httpHeaderTools&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_maxMindDBClient&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">maxMindDBClient&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_redisService&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">redisService&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">override&lt;/span> &lt;span class="kd">async&lt;/span> &lt;span class="n">Task&lt;/span> &lt;span class="n">OnActionExecutionAsync&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ActionExecutingContext&lt;/span> &lt;span class="n">context&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ActionExecutionDelegate&lt;/span> &lt;span class="n">next&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">dicXHeaders&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Dictionary&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">&amp;gt;();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">string&lt;/span> &lt;span class="n">locationISOCode&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">await&lt;/span> &lt;span class="n">GetLocationISOCode&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">context&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">dicXHeaders&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Add&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">CommonConst&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">LocationHeaderKey&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">locationISOCode&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_httpHeaderTools&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">CurrentXHeaders&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">ThreadLocal&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="n">Dictionary&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">&amp;gt;&amp;gt;(()&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="n">dicXHeaders&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">await&lt;/span> &lt;span class="n">next&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="kd">async&lt;/span> &lt;span class="n">Task&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">&amp;gt;&lt;/span> &lt;span class="n">GetLocationISOCode&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ActionExecutingContext&lt;/span> &lt;span class="n">context&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">string&lt;/span> &lt;span class="n">requestIP&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">context&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">HttpContext&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Request&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Headers&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetHeaderValue&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;X-Forwarded-For&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">requestIP&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Contains&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;,&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">requestIP&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">requestIP&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Split&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;,&amp;#34;&lt;/span>&lt;span class="p">)[&lt;/span>&lt;span class="m">0&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IsNullOrEmpty&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">requestIP&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">CommonConst&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ChinaISOCode&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">locationISOCode&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">await&lt;/span> &lt;span class="n">_redisService&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ReadHashValueByKeyAsync&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ConstRedisKey&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IPLocations&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">requestIP&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IsNullOrEmpty&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">locationISOCode&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">locationISOCode&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">_maxMindDBClient&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetIPLocationISOCode&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">requestIP&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_redisService&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WriteHash&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ConstRedisKey&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IPLocations&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">requestIP&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">locationISOCode&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">locationISOCode&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>先睡觉了, 有想法的朋友欢迎评论打架&amp;hellip;&lt;/p></description></item></channel></rss>

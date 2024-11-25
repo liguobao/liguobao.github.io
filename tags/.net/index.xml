@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>.Net on 李国宝</title><link>https://liguobao.github.io/tags/.net/</link><description>Recent content in .Net on 李国宝</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 01 Nov 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/.net/index.xml" rel="self" type="application/rss+xml"/><item><title>ASP.NET MVC 微信JS-SDK认证</title><link>https://liguobao.github.io/p/asp.net-mvc-%E5%BE%AE%E4%BF%A1js-sdk%E8%AE%A4%E8%AF%81/</link><pubDate>Tue, 01 Nov 2016 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/asp.net-mvc-%E5%BE%AE%E4%BF%A1js-sdk%E8%AE%A4%E8%AF%81/</guid><description>&lt;h1 id="aspnet-mvc-微信js-sdk认证">ASP.NET MVC 微信JS-SDK认证
+&lt;/h1>&lt;h2 id="写在前面">写在前面
+&lt;/h2>&lt;p>前阵子因为有个项目需要做微信自定义分享功能，因而去研究了下微信JS-SDK相关知识。&lt;/p>
+&lt;p>此文做个简单的记(tu)录(cao)&amp;hellip;&lt;/p>
+&lt;h2 id="开始">开始
+&lt;/h2>&lt;p>所有的东西都从文档开始:&lt;a class="link" href="http://mp.weixin.qq.com/wiki/11/74ad127cc054f6b80759c40f77ec03db.html" target="_blank" rel="noopener"
+>微信JSSDK说明文档&lt;/a>&lt;/p>
+&lt;p>&lt;img src="http://7xread.com1.z0.glb.clouddn.com/44b1232e-9311-4abb-9200-6dd4936d7c47"
+loading="lazy"
+alt="分享接口"
+>&lt;/p>
+&lt;p>项目需要用到的是&lt;a class="link" href="http://mp.weixin.qq.com/wiki/11/74ad127cc054f6b80759c40f77ec03db.html#.E5.88.86.E4.BA.AB.E6.8E.A5.E5.8F.A3" target="_blank" rel="noopener"
+>分享接口&lt;/a> 不过使用微信JS-SDK之前，需要做JS接口认证。&lt;/p>
+&lt;p>认证如下：&lt;/p>
+&lt;p>步骤一：绑定域名&lt;/p>
+&lt;p>步骤二：引入JS文件&lt;/p>
+&lt;p>步骤三：通过config接口注入权限验证配置&lt;/p>
+&lt;p>步骤四：通过ready接口处理成功验证&lt;/p>
+&lt;p>步骤五：通过error接口处理失败验证&lt;/p>
+&lt;p>步骤一中允许使用域名/子域名，只要xx.com/xxx.txt或者xx.com/mp/xxx.txt能访问就好。域名认证通过之后，此域名下的所有端口的网站都可以使用JS-SDK。&lt;/p>
+&lt;p>步骤二没什么问题，略过。&lt;/p>
+&lt;p>步骤三最磨人，下面单独讲解。&lt;/p>
+&lt;h3 id="config接口注入权限验证配置">config接口注入权限验证配置
+&lt;/h3>&lt;p>先来一段说明：&lt;/p>
+&lt;p>所有需要使用JS-SDK的页面必须先注入配置信息，否则将无法调用
+（同一个url仅需调用一次，对于变化url的SPA的web app可在每次url变化时进行调用,
+目前Android微信客户端不支持pushState的H5新特性，
+所以使用pushState来实现web app的页面会导致签名失败，此问题会在Android6.2中修复）。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;span class="lnt">9
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="nx">wx&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">config&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">debug&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// 开启调试模式,调用的所有api的返回值会在客户端alert出来，
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">//若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">appId&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// 必填，公众号的唯一标识
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">timestamp&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">,&lt;/span> &lt;span class="c1">// 必填，生成签名的时间戳
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">nonceStr&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="c1">// 必填，生成签名的随机串
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">signature&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="c1">// 必填，签名，见附录1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">jsApiList&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">[]&lt;/span> &lt;span class="c1">// 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>&lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>看到这里肯定懵逼了，这是都什么鬼&amp;hellip;怎么玩啊。&lt;/p>
+&lt;p>提示我们去看附录1&amp;hellip;看完之后总结如下：&lt;/p>
+&lt;ol>
+&lt;li>使用config接口注入权限验证配置，重点是生成合法的signatrue&lt;/li>
+&lt;li>生成signature需要通过appid和secret获取token&lt;/li>
+&lt;li>时间戳和调用接口URL必不可少&lt;/li>
+&lt;li>此操作需要服务端完成，不能使用客户端实现&lt;/li>
+&lt;/ol>
+&lt;p>整个过程变成：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>通过appid和secret获取access_token，接着使用token获取jsapi_ticket；&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>拿到jsapi_ticket之后，把jsapi_ticket、时间戳、随机字符串、接口调用页面URL 拼接成完整字符串，使用sha1算法加密得到signature。&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>最后返回至页面，在wx.config里面填入appid，上一步的时间戳timestamp，上一部的随机字符串、sha1拿到的signature，想要使用的JS接口。&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>废话少说，直接上代码吧。&lt;/p>
+&lt;h3 id="代码时间">代码时间
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt"> 10
+&lt;/span>&lt;span class="lnt"> 11
+&lt;/span>&lt;span class="lnt"> 12
+&lt;/span>&lt;span class="lnt"> 13
+&lt;/span>&lt;span class="lnt"> 14
+&lt;/span>&lt;span class="lnt"> 15
+&lt;/span>&lt;span class="lnt"> 16
+&lt;/span>&lt;span class="lnt"> 17
+&lt;/span>&lt;span class="lnt"> 18
+&lt;/span>&lt;span class="lnt"> 19
+&lt;/span>&lt;span class="lnt"> 20
+&lt;/span>&lt;span class="lnt"> 21
+&lt;/span>&lt;span class="lnt"> 22
+&lt;/span>&lt;span class="lnt"> 23
+&lt;/span>&lt;span class="lnt"> 24
+&lt;/span>&lt;span class="lnt"> 25
+&lt;/span>&lt;span class="lnt"> 26
+&lt;/span>&lt;span class="lnt"> 27
+&lt;/span>&lt;span class="lnt"> 28
+&lt;/span>&lt;span class="lnt"> 29
+&lt;/span>&lt;span class="lnt"> 30
+&lt;/span>&lt;span class="lnt"> 31
+&lt;/span>&lt;span class="lnt"> 32
+&lt;/span>&lt;span class="lnt"> 33
+&lt;/span>&lt;span class="lnt"> 34
+&lt;/span>&lt;span class="lnt"> 35
+&lt;/span>&lt;span class="lnt"> 36
+&lt;/span>&lt;span class="lnt"> 37
+&lt;/span>&lt;span class="lnt"> 38
+&lt;/span>&lt;span class="lnt"> 39
+&lt;/span>&lt;span class="lnt"> 40
+&lt;/span>&lt;span class="lnt"> 41
+&lt;/span>&lt;span class="lnt"> 42
+&lt;/span>&lt;span class="lnt"> 43
+&lt;/span>&lt;span class="lnt"> 44
+&lt;/span>&lt;span class="lnt"> 45
+&lt;/span>&lt;span class="lnt"> 46
+&lt;/span>&lt;span class="lnt"> 47
+&lt;/span>&lt;span class="lnt"> 48
+&lt;/span>&lt;span class="lnt"> 49
+&lt;/span>&lt;span class="lnt"> 50
+&lt;/span>&lt;span class="lnt"> 51
+&lt;/span>&lt;span class="lnt"> 52
+&lt;/span>&lt;span class="lnt"> 53
+&lt;/span>&lt;span class="lnt"> 54
+&lt;/span>&lt;span class="lnt"> 55
+&lt;/span>&lt;span class="lnt"> 56
+&lt;/span>&lt;span class="lnt"> 57
+&lt;/span>&lt;span class="lnt"> 58
+&lt;/span>&lt;span class="lnt"> 59
+&lt;/span>&lt;span class="lnt"> 60
+&lt;/span>&lt;span class="lnt"> 61
+&lt;/span>&lt;span class="lnt"> 62
+&lt;/span>&lt;span class="lnt"> 63
+&lt;/span>&lt;span class="lnt"> 64
+&lt;/span>&lt;span class="lnt"> 65
+&lt;/span>&lt;span class="lnt"> 66
+&lt;/span>&lt;span class="lnt"> 67
+&lt;/span>&lt;span class="lnt"> 68
+&lt;/span>&lt;span class="lnt"> 69
+&lt;/span>&lt;span class="lnt"> 70
+&lt;/span>&lt;span class="lnt"> 71
+&lt;/span>&lt;span class="lnt"> 72
+&lt;/span>&lt;span class="lnt"> 73
+&lt;/span>&lt;span class="lnt"> 74
+&lt;/span>&lt;span class="lnt"> 75
+&lt;/span>&lt;span class="lnt"> 76
+&lt;/span>&lt;span class="lnt"> 77
+&lt;/span>&lt;span class="lnt"> 78
+&lt;/span>&lt;span class="lnt"> 79
+&lt;/span>&lt;span class="lnt"> 80
+&lt;/span>&lt;span class="lnt"> 81
+&lt;/span>&lt;span class="lnt"> 82
+&lt;/span>&lt;span class="lnt"> 83
+&lt;/span>&lt;span class="lnt"> 84
+&lt;/span>&lt;span class="lnt"> 85
+&lt;/span>&lt;span class="lnt"> 86
+&lt;/span>&lt;span class="lnt"> 87
+&lt;/span>&lt;span class="lnt"> 88
+&lt;/span>&lt;span class="lnt"> 89
+&lt;/span>&lt;span class="lnt"> 90
+&lt;/span>&lt;span class="lnt"> 91
+&lt;/span>&lt;span class="lnt"> 92
+&lt;/span>&lt;span class="lnt"> 93
+&lt;/span>&lt;span class="lnt"> 94
+&lt;/span>&lt;span class="lnt"> 95
+&lt;/span>&lt;span class="lnt"> 96
+&lt;/span>&lt;span class="lnt"> 97
+&lt;/span>&lt;span class="lnt"> 98
+&lt;/span>&lt;span class="lnt"> 99
+&lt;/span>&lt;span class="lnt">100
+&lt;/span>&lt;span class="lnt">101
+&lt;/span>&lt;span class="lnt">102
+&lt;/span>&lt;span class="lnt">103
+&lt;/span>&lt;span class="lnt">104
+&lt;/span>&lt;span class="lnt">105
+&lt;/span>&lt;span class="lnt">106
+&lt;/span>&lt;span class="lnt">107
+&lt;/span>&lt;span class="lnt">108
+&lt;/span>&lt;span class="lnt">109
+&lt;/span>&lt;span class="lnt">110
+&lt;/span>&lt;span class="lnt">111
+&lt;/span>&lt;span class="lnt">112
+&lt;/span>&lt;span class="lnt">113
+&lt;/span>&lt;span class="lnt">114
+&lt;/span>&lt;span class="lnt">115
+&lt;/span>&lt;span class="lnt">116
+&lt;/span>&lt;span class="lnt">117
+&lt;/span>&lt;span class="lnt">118
+&lt;/span>&lt;span class="lnt">119
+&lt;/span>&lt;span class="lnt">120
+&lt;/span>&lt;span class="lnt">121
+&lt;/span>&lt;span class="lnt">122
+&lt;/span>&lt;span class="lnt">123
+&lt;/span>&lt;span class="lnt">124
+&lt;/span>&lt;span class="lnt">125
+&lt;/span>&lt;span class="lnt">126
+&lt;/span>&lt;span class="lnt">127
+&lt;/span>&lt;span class="lnt">128
+&lt;/span>&lt;span class="lnt">129
+&lt;/span>&lt;span class="lnt">130
+&lt;/span>&lt;span class="lnt">131
+&lt;/span>&lt;span class="lnt">132
+&lt;/span>&lt;span class="lnt">133
+&lt;/span>&lt;span class="lnt">134
+&lt;/span>&lt;span class="lnt">135
+&lt;/span>&lt;span class="lnt">136
+&lt;/span>&lt;span class="lnt">137
+&lt;/span>&lt;span class="lnt">138
+&lt;/span>&lt;span class="lnt">139
+&lt;/span>&lt;span class="lnt">140
+&lt;/span>&lt;span class="lnt">141
+&lt;/span>&lt;span class="lnt">142
+&lt;/span>&lt;span class="lnt">143
+&lt;/span>&lt;span class="lnt">144
+&lt;/span>&lt;span class="lnt">145
+&lt;/span>&lt;span class="lnt">146
+&lt;/span>&lt;span class="lnt">147
+&lt;/span>&lt;span class="lnt">148
+&lt;/span>&lt;span class="lnt">149
+&lt;/span>&lt;span class="lnt">150
+&lt;/span>&lt;span class="lnt">151
+&lt;/span>&lt;span class="lnt">152
+&lt;/span>&lt;span class="lnt">153
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-csharp" data-lang="csharp">&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">WeiXinController&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="n">Controller&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="k">readonly&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">appid&lt;/span> &lt;span class="p">=&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Web&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Configuration&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WebConfigurationManager&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">AppSettings&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;wxappid&amp;#34;&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="k">readonly&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">secret&lt;/span> &lt;span class="p">=&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Web&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Configuration&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WebConfigurationManager&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">AppSettings&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;wxsecret&amp;#34;&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="k">readonly&lt;/span> &lt;span class="kt">bool&lt;/span> &lt;span class="n">isDedug&lt;/span> &lt;span class="p">=&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Web&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Configuration&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WebConfigurationManager&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">AppSettings&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;IsDebug&amp;#34;&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="p">==&lt;/span>&lt;span class="s">&amp;#34;true&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">_ticket&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="n">DateTime&lt;/span> &lt;span class="n">_lastTimestamp&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="n">ActionResult&lt;/span> &lt;span class="n">Info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">string&lt;/span> &lt;span class="n">url&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="kt">string&lt;/span> &lt;span class="n">noncestr&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IsNullOrEmpty&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">_ticket&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">||&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_lastTimestamp&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="kc">null&lt;/span> &lt;span class="p">||&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">_lastTimestamp&lt;/span> &lt;span class="p">-&lt;/span> &lt;span class="n">DateTime&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Now&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">Milliseconds&lt;/span> &lt;span class="p">&amp;gt;&lt;/span> &lt;span class="m">7200&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">resultString&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">HTTPHelper&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetHTMLByURL&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&amp;amp;appid=&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">+&lt;/span> &lt;span class="n">appid&lt;/span> &lt;span class="p">+&lt;/span> &lt;span class="s">&amp;#34;&amp;amp;secret=&amp;#34;&lt;/span> &lt;span class="p">+&lt;/span> &lt;span class="n">secret&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">dynamic&lt;/span> &lt;span class="n">resultValue&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">JsonConvert&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">DeserializeObject&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="kt">dynamic&lt;/span>&lt;span class="p">&amp;gt;(&lt;/span>&lt;span class="n">resultString&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">resultValue&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="kc">null&lt;/span> &lt;span class="p">||&lt;/span> &lt;span class="n">resultValue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">access_token&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="kc">null&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">||&lt;/span> &lt;span class="n">resultValue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">access_token&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Value&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="kc">null&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Json&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="n">issuccess&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">false&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">error&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;获取token失败&amp;#34;&lt;/span> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">token&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">resultValue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">access_token&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Value&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">resultString&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">HTTPHelper&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetHTMLByURL&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=&amp;#34;&lt;/span> &lt;span class="p">+&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">token&lt;/span> &lt;span class="p">+&lt;/span> &lt;span class="s">&amp;#34;&amp;amp;type=jsapi&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">dynamic&lt;/span> &lt;span class="n">ticketValue&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">JsonConvert&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">DeserializeObject&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="kt">dynamic&lt;/span>&lt;span class="p">&amp;gt;(&lt;/span>&lt;span class="n">resultString&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">ticketValue&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="kc">null&lt;/span> &lt;span class="p">||&lt;/span> &lt;span class="n">ticketValue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">errcode&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="kc">null&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">||&lt;/span> &lt;span class="n">ticketValue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">errcode&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Value&lt;/span> &lt;span class="p">!=&lt;/span> &lt;span class="m">0&lt;/span> &lt;span class="p">||&lt;/span> &lt;span class="n">ticketValue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ticket&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="kc">null&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Json&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="n">issuccess&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">false&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">error&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;获取ticketValue失败&amp;#34;&lt;/span> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_ticket&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">ticketValue&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ticket&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Value&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_lastTimestamp&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">DateTime&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Now&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">timestamp&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">GetTimeStamp&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">hexString&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Format&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;jsapi_ticket={0}&amp;amp;noncestr={3}&amp;amp;timestamp={1}&amp;amp;url={2}&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_ticket&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">timestamp&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">url&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">noncestr&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Json&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">issuccess&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">sha1value&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">GetSHA1Value&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">hexString&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">timestamp&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">timestamp&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">url&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">url&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">appid&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">appid&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">debug&lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="n">isDedug&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">tiket&lt;/span>&lt;span class="p">=&lt;/span>&lt;span class="n">_ticket&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">timestamp&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">GetTimeStamp&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">hexString&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Format&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;jsapi_ticket={0}&amp;amp;noncestr=1234567890123456&amp;amp;timestamp={1}&amp;amp;url={2}&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_ticket&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">timestamp&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">url&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Json&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">new&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">issuccess&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">sha1value&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">GetSHA1Value&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">hexString&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">timestamp&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">timestamp&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">url&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">url&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">appid&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">appid&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">debug&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">isDedug&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="n">tiket&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">_ticket&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">GetSHA1Value&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">string&lt;/span> &lt;span class="n">sourceString&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">hash&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">SHA1&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Create&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="n">ComputeHash&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Encoding&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UTF8&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetBytes&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">sourceString&lt;/span>&lt;span class="p">));&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Join&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">hash&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Select&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">b&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="n">b&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ToString&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;x2&amp;#34;&lt;/span>&lt;span class="p">)).&lt;/span>&lt;span class="n">ToArray&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">GetTimeStamp&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">TimeSpan&lt;/span> &lt;span class="n">ts&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">DateTime&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Now&lt;/span> &lt;span class="p">-&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">DateTime&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="m">1970&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="m">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="m">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="m">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="m">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="m">0&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="m">0&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">Convert&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ToInt64&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ts&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">TotalSeconds&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">ToString&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">HTTPHelper&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">GetHTMLByURL&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">string&lt;/span> &lt;span class="n">url&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">string&lt;/span> &lt;span class="n">htmlCode&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Empty&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">HttpWebRequest&lt;/span> &lt;span class="n">webRequest&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Net&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">HttpWebRequest&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Net&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WebRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Create&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">url&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">webRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Timeout&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="m">30000&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">webRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Method&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;GET&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">webRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UserAgent&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;Mozilla/4.0&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">webRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Headers&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Add&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Accept-Encoding&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;gzip, deflate&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">HttpWebResponse&lt;/span> &lt;span class="n">webResponse&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Net&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">HttpWebResponse&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="n">webRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetResponse&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//获取目标网站的编码格式&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">string&lt;/span> &lt;span class="n">contentype&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">webResponse&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Headers&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s">&amp;#34;Content-Type&amp;#34;&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Regex&lt;/span> &lt;span class="n">regex&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">Regex&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;charset\\s*=\\s*[\\W]?\\s*([\\w-]+)&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">RegexOptions&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IgnoreCase&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">webResponse&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ContentEncoding&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ToLower&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">==&lt;/span> &lt;span class="s">&amp;#34;gzip&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>&lt;span class="c1">//如果使用了GZip则先解压&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">using&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Stream&lt;/span> &lt;span class="n">streamReceive&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">webResponse&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetResponseStream&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">using&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">var&lt;/span> &lt;span class="n">zipStream&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Compression&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GZipStream&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">streamReceive&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Compression&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">CompressionMode&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Decompress&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//匹配编码格式&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">regex&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IsMatch&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">contentype&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Encoding&lt;/span> &lt;span class="n">ending&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">Encoding&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetEncoding&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">(&lt;/span>&lt;span class="n">regex&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Match&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">contentype&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">Groups&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="m">1&lt;/span>&lt;span class="p">].&lt;/span>&lt;span class="n">Value&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Trim&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">using&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">StreamReader&lt;/span> &lt;span class="n">sr&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">StreamReader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">zipStream&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ending&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">htmlCode&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">sr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ReadToEnd&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">using&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">StreamReader&lt;/span> &lt;span class="n">sr&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">StreamReader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">zipStream&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Encoding&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UTF8&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">htmlCode&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">sr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ReadToEnd&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">using&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Stream&lt;/span> &lt;span class="n">streamReceive&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">webResponse&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetResponseStream&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">encoding&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">Encoding&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Default&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">contentype&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Contains&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;utf&amp;#34;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">encoding&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">Encoding&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UTF8&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">using&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">StreamReader&lt;/span> &lt;span class="n">sr&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">StreamReader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">streamReceive&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">encoding&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">htmlCode&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">sr&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ReadToEnd&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">htmlCode&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">Exception&lt;/span> &lt;span class="n">ex&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>PS：这里要注意缓存一下_ticket（即access_token），照微信文档说的，access_token两个小时内有效，不需要频繁调用。而且获取access_token的接口有调用次数的限制，如果超过了次数，就不允许调用了。&lt;/p>
+&lt;p>PPS:建议noncestr和URL由前台传入比较适合，使用 var theWebUrl = window.location.href.split(&amp;rsquo;#&amp;rsquo;)[0] 获取URL，noncestr就随意了。&lt;/p>
+&lt;p>PPPS:遇到诡异的invalid signature的时候，首先检查url参数，然后检查noncestr，再不行重启一下程序获取一个新的token回来继续玩。&lt;/p></description></item></channel></rss>
