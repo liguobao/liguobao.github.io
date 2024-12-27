@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Android on 李国宝</title><link>https://liguobao.github.io/tags/android/</link><description>Recent content in Android on 李国宝</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Fri, 05 Jul 2024 08:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/android/index.xml" rel="self" type="application/rss+xml"/><item><title>用 Magisk 开始你的安卓折腾之路</title><link>https://liguobao.github.io/p/android-magisk-install/</link><pubDate>Fri, 05 Jul 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/android-magisk-install/</guid><description>&lt;img src="https://liguobao.github.io/p/android-magisk-install/logo.png" alt="Featured image of post 用 Magisk 开始你的安卓折腾之路" />&lt;h2 id="前言">前言
+&lt;/h2>&lt;p>也不要问为什么要搞这个了，&lt;/p>
+&lt;p>你都看到这个文章的话，&lt;/p>
+&lt;p>还有兴趣看下去的话，&lt;/p>
+&lt;p>那就是你也有这个需求了。&lt;/p>
+&lt;h2 id="什么是-magisk">什么是 Magisk
+&lt;/h2>&lt;h3 id="introduction">Introduction
+&lt;/h3>&lt;p>Magisk is a suite of open source software for customizing Android,&lt;/p>
+&lt;p>supporting devices higher than Android 6.0.&lt;/p>
+&lt;p>Some highlight features:&lt;/p>
+&lt;ul>
+&lt;li>MagiskSU: Provide root access for applications&lt;/li>
+&lt;li>Magisk Modules: Modify read-only partitions by installing modules&lt;/li>
+&lt;li>MagiskBoot: The most complete tool for unpacking and repacking Android boot images&lt;/li>
+&lt;li>Zygisk: Run code in every Android applications&amp;rsquo; processes&lt;/li>
+&lt;/ul>
+&lt;p>Powered by &lt;a class="link" href="https://github.com/topjohnwu/Magisk" target="_blank" rel="noopener"
+>Magisk&lt;/a>&lt;/p>
+&lt;h2 id="操作步骤预览">操作步骤预览
+&lt;/h2>&lt;ul>
+&lt;li>解BL锁&lt;/li>
+&lt;li>安装 Magisk App&lt;/li>
+&lt;li>下载对应系统版本的ROM包提取boot.img&lt;/li>
+&lt;li>使用 Magisk 修改boot.img&lt;/li>
+&lt;li>刷入修改后的boot.img&lt;/li>
+&lt;li>安装 Magisk 模块&lt;/li>
+&lt;li>享受”自由新世界“&lt;/li>
+&lt;/ul>
+&lt;h2 id="解bl锁">解BL锁
+&lt;/h2>&lt;ul>
+&lt;li>蛇有蛇路，shu有shu路，自己看着办了。&lt;/li>
+&lt;li>小米设备可以参考 &lt;a class="link" href="https://www.miui.com/unlock/" target="_blank" rel="noopener"
+>Xiaomi 解BL锁&lt;/a>&lt;/li>
+&lt;li>一加设备可以参考 &lt;a class="link" href="https://www.oneplus.com/cn/developer" target="_blank" rel="noopener"
+>OnePlus 阿木大侠&lt;/a>&lt;/li>
+&lt;li>其他设备请自行搜索&lt;/li>
+&lt;/ul>
+&lt;p>2024年，最好解锁的设备，是 OnePlus 了。&lt;/p>
+&lt;p>其他的，都是弟弟。&lt;/p>
+&lt;p>（ 本来考虑要不买台小米14的，因为BL锁劝退了十年米粉）&lt;/p>
+&lt;h2 id="安装-magisk-app">安装 Magisk App
+&lt;/h2>&lt;ul>
+&lt;li>下载 &lt;a class="link" href="https://github.com/topjohnwu/Magisk/releases" target="_blank" rel="noopener"
+>Magisk/releases&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>下载后，自行安装到手机上。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">adb install Magisk-v26.4.apk
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="提取bootimg">提取boot.img
+&lt;/h2>&lt;ul>
+&lt;li>下载对应系统版本的ROM包提取boot.img&lt;/li>
+&lt;/ul>
+&lt;p>如果是卡刷包，可以直接解压，找到boot.img&lt;/p>
+&lt;p>如果是线刷包，解压之后得到的是 playload.bin，需要使用工具解压。&lt;/p>
+&lt;p>Windows上可以使用FastbootEnhance工具，Mac/Linux上可以使用payload_dumper工具。&lt;/p>
+&lt;p>基本大同小异。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## 使用 Magisk 生成修补后的boot.img&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- Magisk App -&amp;gt; Install -&amp;gt; Install -&amp;gt; Select and Patch a File -&amp;gt; 选择boot.img
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- 等待生成修补后的boot.img，自动保存到 /sdcard/Download/magisk_patched-xxx.img
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">## 刷入修改后的boot.img&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">- 手机进入Fastboot模式，连接电脑
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="sb">```&lt;/span>sh
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 检查设备是否连接成功&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">fastboot devices&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 刷入修改后的boot.img&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">fastboot flash boot /sdcard/Download/magisk_patched-xxx.img
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>刷入完成后，重启手机。&lt;/p>
+&lt;h2 id="magisk-激活">Magisk 激活
+&lt;/h2>&lt;p>重启手机之后，重新打开Magisk App，第一次应该会提示需要启动修复。&lt;/p>
+&lt;p>正常情况下，修复完成后会重启手机，再次开机后就完事了。&lt;/p>
+&lt;h2 id="安装-magisk-模块">安装 Magisk 模块
+&lt;/h2>&lt;ul>
+&lt;li>下载面具模块，在本地安装即可。&lt;/li>
+&lt;/ul>
+&lt;p>大体流程基本如此。&lt;/p>
+&lt;h2 id="常用命令列表">常用命令列表
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 进入Fastboot模式&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">adb reboot bootloader
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 检查fastboot设备是否连接成功&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">fastboot devices
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">#解锁&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">fastboot oem unlock
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 其他设备解BL锁&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">fastboot flashing unlock
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 刷入boot.img&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">fastboot flash boot ./Download/magisk_patched-xxx.img
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 重启&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">fastboot reboot
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="lineageos-build-archive-下载">LineageOS Build Archive 下载
+&lt;/h2>&lt;ul>
+&lt;li>&lt;a class="link" href="https://lineage-archive.timschumi.net/" target="_blank" rel="noopener"
+>LineageOS 老版本&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://download.lineageos.org/devices/sagit/builds" target="_blank" rel="noopener"
+>lineageos 最新版本&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="lineageos-设置网络探测地址">LineageOS 设置网络探测地址
+&lt;/h2>&lt;p>更换 captive 连接验证服务器&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">adb shell settings delete global captive_portal_https_url
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">adb shell settings delete global captive_portal_http_url
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">adb shell settings put global captive_portal_https_url https://connect.rom.miui.com/generate_204
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">adb shell settings put global captive_portal_http_url http://connect.rom.miui.com/generate_204
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item></channel></rss>

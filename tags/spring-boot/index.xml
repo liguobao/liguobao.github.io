@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Spring Boot on 李国宝</title><link>https://liguobao.github.io/tags/spring-boot/</link><description>Recent content in Spring Boot on 李国宝</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Mon, 18 Jun 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/spring-boot/index.xml" rel="self" type="application/rss+xml"/><item><title>后端API入门学习指北</title><link>https://liguobao.github.io/p/%E5%90%8E%E7%AB%AFapi%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8C%97/</link><pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/%E5%90%8E%E7%AB%AFapi%E5%85%A5%E9%97%A8%E5%AD%A6%E4%B9%A0%E6%8C%87%E5%8C%97/</guid><description>&lt;h1 id="后端api入门学习指北">后端API入门学习指北
+&lt;/h1>&lt;p>了解一下一下概念.&lt;/p>
+&lt;h2 id="restful-api标准">RESTful API标准]
+&lt;/h2>&lt;p>所有的API都遵循[RESTful API标准].&lt;/p>
+&lt;p>建议大家都简单了解一下HTTP协议和RESTful API相关资料.&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.ruanyifeng.com/blog/2011/09/restful.html?spm=a2c4e.11153940.blogcont533536.9.8aa6538f8as8Dc" target="_blank" rel="noopener"
+>阮一峰:理解RESTful架构&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.ruanyifeng.com/blog/2014/05/restful_api.html" target="_blank" rel="noopener"
+>阮一峰:RESTful API 设计指南&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/aisuhua/restful-api-design-references" target="_blank" rel="noopener"
+>RESTful API指南&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="依赖注入-di">依赖注入 DI
+&lt;/h2>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.cnblogs.com/yangecnu/p/Introduce-Dependency-Injection.html" target="_blank" rel="noopener"
+>浅谈依赖注入&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.ruanyifeng.com/blog/2016/09/software-architecture.html" target="_blank" rel="noopener"
+>阮一峰:软件架构入门&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h2 id="java版">Java版
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>JDK版本:1.8 +&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>集成开发环境: IDEA &lt;a class="link" href="https://www.jetbrains.com/idea/" target="_blank" rel="noopener"
+>https://www.jetbrains.com/idea/&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库:MySQL 5.7+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>内存数据库:Redis&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库访问框架: mybatis + groovy脚本(PS:如果自己熟悉JPA也可以用)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>构建工具: maven(自己熟悉gradle的话也可以用)&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>Java框架直接上Spring Boot + Spring MVC.&lt;/p>
+&lt;h3 id="资料链接">资料链接
+&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.ibm.com/developerworks/cn/java/wa-spring1/index.html" target="_blank" rel="noopener"
+>IBM:Spring 框架简介&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.ibm.com/developerworks/cn/java/j-maven/index.html" target="_blank" rel="noopener"
+>IBM:Maven 让事情变得简单&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.tianmaying.com/tutorial/spring-mvc-quickstart" target="_blank" rel="noopener"
+>Spring MVC快速入门教程&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.ibm.com/developerworks/cn/java/j-spring-boot-basics-perry/index.html" target="_blank" rel="noopener"
+>IBM:Spring Boot 基础&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.tianmaying.com/tutorial/spring-boot-overview" target="_blank" rel="noopener"
+>Spring Boot——开发新一代Spring Java应用&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://spring.io/guides/gs/spring-boot/" target="_blank" rel="noopener"
+>Building an Application with Spring Boot&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.tianmaying.com/tutorial/mybatis-spring" target="_blank" rel="noopener"
+>MyBatis入门实例：整合Spring MVC与MyBatis开发问答网站&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.mybatis.org/mybatis-3/zh/index.html" target="_blank" rel="noopener"
+>mybatis 官网&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="java入门目标">Java入门目标
+&lt;/h3>&lt;p>使用Spring boot 搭建Web API,通过Web API对数据增删查改.&lt;/p>
+&lt;h2 id="c版">C#版
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>.NET版本: dotnet core 2.0&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>集成开发环境: Visual Studio Code + dotnet core SDK 或者 Visual Studio 2017(推荐使用 Visual Studio Code)&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库:MySQL 5.7+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>内存数据库:Redis&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库访问框架: Dapper&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>dotnet core 直接使用dotnet core mvc框架即可,依赖注入直接使用原生框架.&lt;/p>
+&lt;h3 id="入门资料链接">入门资料链接
+&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://zhuanlan.zhihu.com/p/37460329" target="_blank" rel="noopener"
+>手把手教你写dotnet core(入门篇)&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://zhuanlan.zhihu.com/p/37464924" target="_blank" rel="noopener"
+>手把手教你ASP.NET Core&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://docs.microsoft.com/zh-cn/dotnet/core/tutorials/" target="_blank" rel="noopener"
+>微软:NET Core 教程&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.cnblogs.com/dotNETCoreSG/p/aspnetcore-1-getting_started.html" target="_blank" rel="noopener"
+>ASP.NET Core 中文文档 第一章 入门&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.cnblogs.com/Sinte-Beuve/p/4231053.html" target="_blank" rel="noopener"
+>Dapper 使用教程&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://github.com/StackExchange/Dapper" target="_blank" rel="noopener"
+>Dapper Github&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="c入门目标">C#入门目标
+&lt;/h3>&lt;p>使用ASP.NET Core搭建Web API,通过Web API对数据增删查改.&lt;/p>
+&lt;h2 id="python版">Python版
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>Python版本:3.6.5&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>集成开发环境: Visual Studio Code + Python debug插件 或者 pycharm&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库:MySQL 5.7+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>内存数据库:Redis&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库访问框架: sqlalchemy&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>Python使用flask框架搭建Web API&lt;/p>
+&lt;h3 id="入门到放弃资料">入门到放弃资料
+&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://zhuanlan.zhihu.com/flask" target="_blank" rel="noopener"
+>知乎-李辉:Hello, Flask!&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000" target="_blank" rel="noopener"
+>廖雪峰:Python教程&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.runoob.com/python3/python3-tutorial.html" target="_blank" rel="noopener"
+>菜鸟教程:Python3基础&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.jianshu.com/p/0d234e14b5d3" target="_blank" rel="noopener"
+>SQLAlchemy ORM教程&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.shiyanlou.com/courses/724" target="_blank" rel="noopener"
+>实验楼:SQLAlchemy 基础教程&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://zhuanlan.zhihu.com/p/27400862" target="_blank" rel="noopener"
+>知乎-猪了个去:SQLAlchemy入门和进阶&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="python入门目标">Python入门目标
+&lt;/h3>&lt;p>使用Python flask搭建Web API,通过Web API对数据增删查改.&lt;/p>
+&lt;h2 id="php版本">PHP版本
+&lt;/h2>&lt;p>真有人选择这个?拖出去打死算了吧&amp;hellip;&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>PHP版本: 7.1 +&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>集成开发环境: Visual Studio Code + PHP debug插件 + nginx + php-fpm&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库:MySQL 5.7+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>内存数据库:Redis&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库访问框架: 忘了,回头补&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>构建工具:composer&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="入门到拍黄片">入门到拍黄片
+&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://docs.golaravel.com/docs/5.6/installation/" target="_blank" rel="noopener"
+>Laravel-简洁、优雅的PHP开发框架(PHP Web Framework)&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://lvwenhan.com/laravel/432.html" target="_blank" rel="noopener"
+>laravel 中文教程&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="拍黄片入门目标">拍黄片入门目标
+&lt;/h3>&lt;p>使用laravel 搭建Web API,通过Web API对数据增删查改.&lt;/p>
+&lt;h2 id="nodejs-版">node.js 版
+&lt;/h2>&lt;ul>
+&lt;li>
+&lt;p>node.js版本:9.0+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>集成开发环境: Visual Studio Code&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库:MySQL 5.7+&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>内存数据库:Redis&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>数据库访问框架: sequelize 或者orm2&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>构建工具:npm&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h3 id="nodejs入门资料链接">node.js入门资料链接
+&lt;/h3>&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.expressjs.com.cn/" target="_blank" rel="noopener"
+>Express:基于 Node.js 平台，快速、开放、极简的 web 开发框架。&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://www.runoob.com/nodejs/nodejs-express-framework.html" target="_blank" rel="noopener"
+>菜鸟教程:Node.js Express 框架&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="http://docs.sequelizejs.com/" target="_blank" rel="noopener"
+>sequelizejs&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://haibinpark.gitbooks.io/sequelize-zh-manual/content/" target="_blank" rel="noopener"
+>Sequelize 中文手册&lt;/a>&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h3 id="nodejs入门目标">node.js入门目标
+&lt;/h3>&lt;p>使用Express 搭建Web API,通过Web API对数据增删查改.&lt;/p>
+&lt;p>没了,纯粹占行用的&amp;hellip;&lt;/p>
+&lt;p>拜.&lt;/p></description></item></channel></rss>

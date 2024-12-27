@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Crawler on 李国宝</title><link>https://liguobao.github.io/tags/crawler/</link><description>Recent content in Crawler on 李国宝</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sun, 04 Dec 2016 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/crawler/index.xml" rel="self" type="application/rss+xml"/><item><title>手把手教你用.NET Core写爬虫</title><link>https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E7%94%A8.net-core%E5%86%99%E7%88%AC%E8%99%AB/</link><pubDate>Sun, 04 Dec 2016 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E7%94%A8.net-core%E5%86%99%E7%88%AC%E8%99%AB/</guid><description>&lt;h1 id="手把手教你用net-core写爬虫">手把手教你用.NET Core写爬虫
+&lt;/h1>&lt;h2 id="写在前面">写在前面
+&lt;/h2>&lt;p>自从上一个项目&lt;a class="link" href="https://github.com/liguobao/58HouseSearch" target="_blank" rel="noopener"
+>58HouseSearch&lt;/a>从.NET迁移到.NET core之后，磕磕碰碰磨蹭了一个月才正式上线到新版本。
+然后最近又开了个新坑，搞了个&lt;a class="link" href="http://codelover.win/" target="_blank" rel="noopener"
+>Dy2018Crawler&lt;/a>用来爬dy2018电影天堂上面的电影资源。这里也借机简单介绍一下如何基于.NET Core写一个爬虫。
+PS：如有偏错，敬请指明&amp;hellip;
+PPS:该去电影院还是多去电影院，毕竟美人良时可无价。&lt;/p>
+&lt;h2 id="准备工作net-core准备">准备工作（.NET Core准备）
+&lt;/h2>&lt;p>首先，肯定是先安装.NET Core咯。下载及安装教程在这里：&lt;a class="link" href="https://www.microsoft.com/net/core" target="_blank" rel="noopener"
+>.NET - Powerful Open Source Development&lt;/a>。无论你是Windows、linux还是mac，统统可以玩。&lt;/p>
+&lt;p>我这里的环境是：Windows10 + VS2015 community updata3 + .NET Core 1.1.0 SDK + .NET Core 1.0.1 tools Preview 2.&lt;/p>
+&lt;p>理论上，只需要安装一下 .NET Core 1.1.0 SDK 即可开发.NET Core程序，至于用什么工具写代码都无关紧要了。&lt;/p>
+&lt;p>安装好以上工具之后，在VS2015的新建项目就可以看到.NET Core的模板了。如下图：&lt;/p>
+&lt;p>&lt;img src="https://www.microsoft.com/net/images/screenshots/FileNewProject.png"
+loading="lazy"
+alt="123"
+>&lt;/p>
+&lt;p>为了简单起见，我们创建的时候，直接选择VS .NET Core tools自带的模板。&lt;/p>
+&lt;h2 id="一个爬虫的自我修养">一个爬虫的自我修养
+&lt;/h2>&lt;h3 id="分析网页">分析网页
+&lt;/h3>&lt;p>写爬虫之前，我们首先要先去了解一下即将要爬取的网页数据组成。&lt;/p>
+&lt;p>具体到网页的话，便是分析我们要抓取的数据在HTML里面是用什么标签抑或有什么样的标记，然后使用这个标记把数据从HTML中提取出来。在我这里的话，用的更多的是HTML标签的ID和CSS属性。&lt;/p>
+&lt;p>以本文章想要爬取的dy2018.com为例,简单描述一下这个过程。dy2018.com主页如下图：&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/123.png"
+loading="lazy"
+alt="123"
+>&lt;/p>
+&lt;p>在chrome里面，按F12进入开发者模式，接着如下图使用鼠标选择对应页面数据，然后去分析页面HTML组成。&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/chromeF12_Select_HTML.png"
+loading="lazy"
+alt="234"
+>&lt;/p>
+&lt;p>接着我们开始分析页面数据:&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/chrome_dy2018_lstmovie_divclass.png"
+loading="lazy"
+alt="123"
+>&lt;/p>
+&lt;p>&lt;img src="http://qiniu.house2048.cn/chrome_dy2018_a.png"
+loading="lazy"
+alt="123"
+>&lt;/p>
+&lt;p>经过简单分析HTML，我们得到以下结论：&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>&lt;a class="link" href="https://www.dy2018.com" target="_blank" rel="noopener"
+>www.dy2018.com&lt;/a>首页的电影数据存储在一个class为co_content222的div标签里面&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>电影详情链接为a标签，标签显示文本就是电影名称，URL即详情URL&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;p>那么总结下来，我们的工作就是：找到class=&amp;lsquo;co_content222&amp;rsquo; 的div标签，从里面提取所有的a标签数据。&lt;/p>
+&lt;h3 id="开始写代码">开始写代码&amp;hellip;
+&lt;/h3>&lt;p>之前在写&lt;a class="link" href="https://zhuanlan.zhihu.com/p/22764927" target="_blank" rel="noopener"
+>58HouseSearch项目迁移到asp.net core&lt;/a>简单提过AngleSharp库，一个基于.NET（C#）开发的专门为解析xHTML源码的DLL组件。&lt;/p>
+&lt;ol>
+&lt;li>
+&lt;p>AngleSharp主页在这里：&lt;a class="link" href="https://anglesharp.github.io/" target="_blank" rel="noopener"
+>https://anglesharp.github.io/&lt;/a>，&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>博客园文章：&lt;a class="link" href="http://www.cnblogs.com/pandait/p/AngleSharp.html" target="_blank" rel="noopener"
+>解析HTML利器AngleSharp介绍&lt;/a>，&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Nuget地址:&lt;a class="link" href="https://www.nuget.org/packages/AngleSharp" target="_blank" rel="noopener"
+>Nuget AngleSharp&lt;/a> 安装命令：Install-Package AngleSharp&lt;/p>
+&lt;/li>
+&lt;/ol>
+&lt;h4 id="获取电影列表数据">获取电影列表数据
+&lt;/h4>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-csharp" data-lang="csharp">&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="n">HtmlParser&lt;/span> &lt;span class="n">htmlParser&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">HtmlParser&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="n">ConcurrentDictionary&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">MovieInfo&lt;/span>&lt;span class="p">&amp;gt;&lt;/span> &lt;span class="n">_cdMovieInfo&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">ConcurrentDictionary&lt;/span>&lt;span class="p">&amp;lt;&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">MovieInfo&lt;/span>&lt;span class="p">&amp;gt;();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="k">void&lt;/span> &lt;span class="n">AddToHotMovieList&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//此操作不阻塞当前其他操作，所以使用Task&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// _cdMovieInfo 为线程安全字典，存储了当期所有的电影数据&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Task&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Factory&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">StartNew&lt;/span>&lt;span class="p">(()=&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//通过URL获取HTML&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">htmlDoc&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">HTTPHelper&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetHTMLByURL&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;http://www.dy2018.com/&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//HTML 解析成 IDocument&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">dom&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">htmlParser&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">htmlDoc&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//从dom中提取所有class=&amp;#39;co_content222&amp;#39;的div标签&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//QuerySelectorAll方法接受 选择器语法 &lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">lstDivInfo&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">dom&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">QuerySelectorAll&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;div.co_content222&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">lstDivInfo&lt;/span> &lt;span class="p">!=&lt;/span> &lt;span class="kc">null&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//前三个DIV为新电影&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">foreach&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="kt">var&lt;/span> &lt;span class="n">divInfo&lt;/span> &lt;span class="k">in&lt;/span> &lt;span class="n">lstDivInfo&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Take&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="m">3&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//获取div中所有的a标签且a标签中含有&amp;#34;/i/&amp;#34;的&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//Contains(&amp;#34;/i/&amp;#34;) 条件的过滤是因为在测试中发现这一块div中的a标签有可能是广告链接&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">divInfo&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">QuerySelectorAll&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;a&amp;#34;&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">Where&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetAttribute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;href&amp;#34;&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">Contains&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;/i/&amp;#34;&lt;/span>&lt;span class="p">)).&lt;/span>&lt;span class="n">ToList&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="n">ForEach&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">a&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//拼接成完整链接&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">onlineURL&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;http://www.dy2018.com&amp;#34;&lt;/span> &lt;span class="p">+&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetAttribute&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;href&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//看一下是否已经存在于现有数据中&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(!&lt;/span>&lt;span class="n">_cdMovieInfo&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ContainsKey&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">onlineURL&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//获取电影的详细信息&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">MovieInfo&lt;/span> &lt;span class="n">movieInfo&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">FillMovieInfoFormWeb&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">onlineURL&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//下载链接不为空才添加到现有数据&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">movieInfo&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">XunLeiDownLoadURLList&lt;/span> &lt;span class="p">!=&lt;/span> &lt;span class="kc">null&lt;/span> &lt;span class="p">&amp;amp;&amp;amp;&lt;/span> &lt;span class="n">movieInfo&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">XunLeiDownLoadURLList&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Count&lt;/span> &lt;span class="p">!=&lt;/span> &lt;span class="m">0&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">_cdMovieInfo&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">TryAdd&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">movieInfo&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Dy2018OnlineUrl&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">movieInfo&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">catch&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">Exception&lt;/span> &lt;span class="n">ex&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="获取电影详细信息">获取电影详细信息
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-csharp" data-lang="csharp">&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">private&lt;/span> &lt;span class="n">MovieInfo&lt;/span> &lt;span class="n">FillMovieInfoFormWeb&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">AngleSharp&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Dom&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IElement&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">onlineURL&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">movieHTML&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">HTTPHelper&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetHTMLByURL&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">onlineURL&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">movieDoc&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">htmlParser&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Parse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">movieHTML&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//http://www.dy2018.com/i/97462.html 分析过程见上，不再赘述&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//电影的详细介绍 在id为Zoom的标签中&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">zoom&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">movieDoc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetElementById&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;Zoom&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//下载链接在 bgcolor=&amp;#39;#fdfddf&amp;#39;的td中，有可能有多个链接&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">lstDownLoadURL&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">movieDoc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">QuerySelectorAll&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;[bgcolor=&amp;#39;#fdfddf&amp;#39;]&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//发布时间 在class=&amp;#39;updatetime&amp;#39;的span标签中&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">updatetime&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">movieDoc&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">QuerySelector&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;span.updatetime&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="kt">var&lt;/span> &lt;span class="n">pubDate&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">DateTime&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Now&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">updatetime&lt;/span>&lt;span class="p">!=&lt;/span>&lt;span class="kc">null&lt;/span> &lt;span class="p">&amp;amp;&amp;amp;&lt;/span> &lt;span class="p">!&lt;/span>&lt;span class="kt">string&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IsNullOrEmpty&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">updatetime&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">InnerHtml&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//内容带有“发布时间：”字样，replace成&amp;#34;&amp;#34;之后再去转换，转换失败不影响流程&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">DateTime&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">TryParse&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">updatetime&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">InnerHtml&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Replace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;发布时间：&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">),&lt;/span> &lt;span class="k">out&lt;/span> &lt;span class="n">pubDate&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">movieInfo&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">MovieInfo&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//InnerHtml中可能还包含font标签，做多一个Replace&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">MovieName&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">a&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">InnerHtml&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Replace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;&amp;lt;font color=\&amp;#34;#0c9000\&amp;#34;&amp;gt;&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">Replace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;&amp;lt;font color=\&amp;#34; #0c9000\&amp;#34;&amp;gt;&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="s">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">Replace&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;&amp;lt;/font&amp;gt;&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s">&amp;#34;&amp;#34;&lt;/span>&lt;span class="p">),&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Dy2018OnlineUrl&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">onlineURL&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">MovieIntro&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">zoom&lt;/span> &lt;span class="p">!=&lt;/span> &lt;span class="kc">null&lt;/span> &lt;span class="p">?&lt;/span> &lt;span class="n">WebUtility&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">HtmlEncode&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">zoom&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">InnerHtml&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="s">&amp;#34;暂无介绍...&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="c1">//可能没有简介，虽然好像不怎么可能&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">XunLeiDownLoadURLList&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">lstDownLoadURL&lt;/span> &lt;span class="p">!=&lt;/span> &lt;span class="kc">null&lt;/span> &lt;span class="p">?&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">lstDownLoadURL&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Select&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">d&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="n">d&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">FirstElementChild&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">InnerHtml&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="n">ToList&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">:&lt;/span> &lt;span class="kc">null&lt;/span>&lt;span class="p">,&lt;/span>&lt;span class="c1">//可能没有下载链接&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">PubDate&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">pubDate&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">movieInfo&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="httphelper">HTTPHelper
+&lt;/h3>&lt;p>这边有个小坑，dy2018网页编码格式是GB2312,.NET Core默认不支持GB2312，使用Encoding.GetEncoding(&amp;ldquo;GB2312&amp;rdquo;)的时候会抛出异常。&lt;/p>
+&lt;p>解决方案是手动安装System.Text.Encoding.CodePages包(Install-Package System.Text.Encoding.CodePages),&lt;/p>
+&lt;p>然后在Starup.cs的Configure方法中加入Encoding.RegisterProvider(CodePagesEncodingProvider.Instance),接着就可以正常使用Encoding.GetEncoding(&amp;ldquo;GB2312&amp;rdquo;)了。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-csharp" data-lang="csharp">&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System.Net.Http&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System.Net.Http.Headers&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">using&lt;/span> &lt;span class="nn">System.Text&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">namespace&lt;/span> &lt;span class="nn">Dy2018Crawler&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">HTTPHelper&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="n">HttpClient&lt;/span> &lt;span class="n">Client&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="k">get&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">HttpClient&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="kd">static&lt;/span> &lt;span class="kt">string&lt;/span> &lt;span class="n">GetHTMLByURL&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="kt">string&lt;/span> &lt;span class="n">url&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Net&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WebRequest&lt;/span> &lt;span class="n">wRequest&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Net&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WebRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Create&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">url&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">wRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ContentType&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;text/html; charset=gb2312&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">wRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Method&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="s">&amp;#34;get&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">wRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UseDefaultCredentials&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="kc">true&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Get the response instance.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kt">var&lt;/span> &lt;span class="n">task&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">wRequest&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetResponseAsync&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Net&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WebResponse&lt;/span> &lt;span class="n">wResp&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">task&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Result&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Stream&lt;/span> &lt;span class="n">respStream&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="n">wResp&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetResponseStream&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//dy2018这个网站编码方式是GB2312,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">using&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">StreamReader&lt;/span> &lt;span class="n">reader&lt;/span> &lt;span class="p">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="n">System&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IO&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">StreamReader&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">respStream&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">Encoding&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">GetEncoding&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;GB2312&amp;#34;&lt;/span>&lt;span class="p">)))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">reader&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ReadToEnd&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">catch&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">Exception&lt;/span> &lt;span class="n">ex&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">WriteLine&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">ex&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">ToString&lt;/span>&lt;span class="p">());&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="kt">string&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Empty&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="定时任务的实现">定时任务的实现
+&lt;/h3>&lt;p>定时任务我这里使用的是&lt;a class="link" href="https://www.nuget.org/packages/Pomelo.AspNetCore.TimedJob/1.1.0-rtm-10026" target="_blank" rel="noopener"
+>Pomelo.AspNetCore.TimedJob&lt;/a>。&lt;/p>
+&lt;p>Pomelo.AspNetCore.TimedJob是一个.NET Core实现的定时任务job库，支持毫秒级定时任务、从数据库读取定时配置、同步异步定时任务等功能。&lt;/p>
+&lt;p>由.NET Core社区大神兼前微软MVP&lt;a class="link" href="https://www.nuget.org/profiles/AmamiyaYuuko" target="_blank" rel="noopener"
+>AmamiyaYuuko&lt;/a>(入职微软之后就卸任MVP&amp;hellip;)开发维护，不过好像没有开源，回头问下看看能不能开源掉。&lt;/p>
+&lt;p>nuget上有各种版本，按需自取。地址：https://www.nuget.org/packages/Pomelo.AspNetCore.TimedJob/1.1.0-rtm-10026&lt;/p>
+&lt;p>作者自己的介绍文章：&lt;a class="link" href="http://www.1234.sh/post/pomelo-extensions-timed-jobs" target="_blank" rel="noopener"
+>Timed Job - Pomelo扩展包系列&lt;/a>&lt;/p>
+&lt;h3 id="startupcs相关代码">Startup.cs相关代码
+&lt;/h3>&lt;p>我这边使用的话，首先肯定是先安装对应的包：Install-Package Pomelo.AspNetCore.TimedJob -Pre&lt;/p>
+&lt;p>然后在Startup.cs的ConfigureServices函数里面添加Service,在Configure函数里面Use一下。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-csharp" data-lang="csharp">&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// This method gets called by the runtime. Use this method to add services to the container.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">void&lt;/span> &lt;span class="n">ConfigureServices&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IServiceCollection&lt;/span> &lt;span class="n">services&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Add framework services.&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">services&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">AddMvc&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//Add TimedJob services&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">services&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">AddTimedJob&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">void&lt;/span> &lt;span class="n">Configure&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">IApplicationBuilder&lt;/span> &lt;span class="n">app&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">IHostingEnvironment&lt;/span> &lt;span class="n">env&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ILoggerFactory&lt;/span> &lt;span class="n">loggerFactory&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//使用TimedJob&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">app&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UseTimedJob&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="n">env&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">IsDevelopment&lt;/span>&lt;span class="p">())&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">app&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UseDeveloperExceptionPage&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">app&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UseBrowserLink&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">app&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UseExceptionHandler&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s">&amp;#34;/Home/Error&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">app&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UseStaticFiles&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">app&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">UseMvc&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">routes&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">routes&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">MapRoute&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">name&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s">&amp;#34;default&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">template&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s">&amp;#34;{controller=Home}/{action=Index}/{id?}&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">Encoding&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">RegisterProvider&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">CodePagesEncodingProvider&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="n">Instance&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h4 id="job相关代码">Job相关代码
+&lt;/h4>&lt;p>接着新建一个类，明明为XXXJob.cs,引用命名空间using Pomelo.AspNetCore.TimedJob，XXXJob继承于Job，添加以下代码。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-C#" data-lang="C#">&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">class&lt;/span> &lt;span class="nc">AutoGetMovieListJob&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="n">Job&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// Begin 起始时间；Interval执行时间间隔，单位是毫秒，建议使用以下格式，此处为3小时；SkipWhileExecuting是否等待上一个执行完成，true为等待；&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="na"> [Invoke(Begin = &amp;#34;2016-11-29 22:10&amp;#34;, Interval = 1000 * 3600*3, SkipWhileExecuting =true)]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kd">public&lt;/span> &lt;span class="k">void&lt;/span> &lt;span class="n">Run&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//Job要执行的逻辑代码&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//LogHelper.Info(&amp;#34;Start crawling&amp;#34;);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//AddToLatestMovieList(100);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//AddToHotMovieList();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//LogHelper.Info(&amp;#34;Finish crawling&amp;#34;);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="项目发布相关">项目发布相关
+&lt;/h2>&lt;h3 id="新增runtimes节点">新增runtimes节点
+&lt;/h3>&lt;p>使用VS2015新建的模板工程，project.json配置默认是没有runtimes节点的.&lt;/p>
+&lt;p>我们想要发布到非Windows平台的时候，需要手动配置一下此节点以便生成。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;span class="lnt">7
+&lt;/span>&lt;span class="lnt">8
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;runtimes&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;win7-x64&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;win7-x86&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;osx.10.10-x64&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;osx.10.11-x64&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{},&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ubuntu.14.04-x64&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="删除注释scripts节点">删除/注释scripts节点
+&lt;/h3>&lt;p>生成时会调用node.js脚本构建前端代码，这个不能确保每个环境都有bower存在&amp;hellip;注释完事。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//&amp;#34;scripts&amp;#34;: {
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// &amp;#34;prepublish&amp;#34;: [ &amp;#34;bower install&amp;#34;, &amp;#34;dotnet bundle&amp;#34; ],
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">// &amp;#34;postpublish&amp;#34;: [ &amp;#34;dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%&amp;#34; ]
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="c1">//},
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="删除注释dependencies节点里面的type">删除/注释dependencies节点里面的type
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-javascript" data-lang="javascript">&lt;span class="line">&lt;span class="cl">&lt;span class="s2">&amp;#34;dependencies&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;Microsoft.NETCore.App&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;version&amp;#34;&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;1.1.0&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">//&amp;#34;type&amp;#34;: &amp;#34;platform&amp;#34;
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">},&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>project.json的相关配置说明可以看下这个官方文档：&lt;a class="link" href="https://github.com/aspnet/Home/wiki/Project.json-file" target="_blank" rel="noopener"
+>Project.json-file&lt;/a>,
+或者张善友老师的文章&lt;a class="link" href="http://www.cnblogs.com/shanyou/p/5693453.html" target="_blank" rel="noopener"
+>.NET Core系列 ： 2 、project.json 这葫芦里卖的什么药&lt;/a>&lt;/p>
+&lt;h3 id="开发编译发布">开发编译发布
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">//还原各种包文件
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dotnet restore&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">//发布到C:&lt;span class="se">\c&lt;/span>ode&lt;span class="se">\w&lt;/span>ebsite&lt;span class="se">\D&lt;/span>y2018Crawler文件夹
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">dotnet publish -r ubuntu.14.04-x64 -c Release -o &lt;span class="s2">&amp;#34;C:\code\website\Dy2018Crawler&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>最后，照旧开源&amp;hellip;&amp;hellip;以上代码都在下面找到：&lt;/p>
+&lt;p>Gayhub地址：&lt;a class="link" href="https://github.com/liguobao/Dy2018Crawler" target="_blank" rel="noopener"
+>https://github.com/liguobao/Dy2018Crawler&lt;/a>&lt;/p>
+&lt;p>在线地址：&lt;a class="link" href="http://codelover.win/" target="_blank" rel="noopener"
+>http://codelover.win/&lt;/a>&lt;/p>
+&lt;p>PS:回头写个爬片大家滋持不啊&amp;hellip;&lt;/p></description></item></channel></rss>
