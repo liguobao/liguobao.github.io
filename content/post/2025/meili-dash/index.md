@@ -21,7 +21,7 @@ tags:
 所以我自己构建了一个静态站点镜像。
 
 ```dockerfile
-FROM node:20-alpine as build-env
+FROM node:20-alpine AS build-env
 
 WORKDIR /home/node/app
 
@@ -35,15 +35,27 @@ COPY --chown=node:node . .
 RUN yarn install
 ENV NODE_ENV=production
 # if you want to use your own meilisearch server, you can set the following env
-# ENV REACT_APP_MEILI_SERVER_ADDRESS=http://you-server:7700
+# ENV REACT_APP_MEILI_SERVER_ADDRESS=http://meilisearch:7700
 # ENV REACT_APP_MEILI_API_KEY=masterKey
 RUN yarn build
 
 FROM nginx
-COPY --from=build /home/node/app/build/ /usr/share/nginx/html/
-expose 80
+COPY --from=build-env /home/node/app/build/ /usr/share/nginx/html/
+
 
 ```
 
-大概如此。
+## Docker with Nginx
 
+nginx is also available in the Docker image. 
+
+You can use it to serve the mini-dashboard.
+
+```bash
+docker build --build-arg REACT_APP_MEILI_SERVER_ADDRESS=http://meilisearch:7700 -t meilisearch-mini-dashboard-nginx . -f Dockerfile.nginx
+docker run -p 8080:80 meilisearch-mini-dashboard-nginx
+```
+
+You can then access the mini-dashboard at `http://localhost:8080`.
+
+大概如此。
