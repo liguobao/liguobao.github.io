@@ -59,3 +59,38 @@ docker run -p 8080:80 meilisearch-mini-dashboard-nginx
 You can then access the mini-dashboard at `http://localhost:8080`.
 
 大概如此。
+
+当然，最简单的还是直接把用docker-compose
+
+```yaml
+
+version: "3.8"
+services:
+  meilisearch-node1:
+    image: getmeili/meilisearch:v1.12
+    restart: always
+    container_name: meilisearch-node1
+    ports:
+      - "7700:7700"
+    environment:
+      MEILI_MASTER_KEY: "iinti_2025_gogogo_123"
+      MEILI_ENV: "production"
+      MEILI_DB_PATH: "/meili_data"
+      MEILI_NO_ANALYTICS: "true"
+    volumes:
+      - /mnt/nvme/Meilisearch/meili_data/node1:/meili_data
+    networks:
+      - meili-network
+  meilisearch-dashboard:
+    restart: always
+    image: mini-dashboard-nginx
+    container_name: meilisearch-dashboard
+    ports:
+      - "7707:80"
+    networks:
+      - meili-network
+networks:
+  meili-network:
+    driver: bridge
+
+```
