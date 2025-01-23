@@ -3,6 +3,7 @@ title: 一行代码下载微博相册
 description: weibo
 slug: one-line-download-weibo-img
 date: 2025-01-23 08:00:00+0000
+image: logo.png
 categories:
   - TC
 tags:
@@ -142,6 +143,8 @@ tags:
 
 效果嘛。
 
+![zip-download.png](/img/post/one-line-download-weibo-img/zip-download.png)
+
 大概会遇到CORS错误。
 
 解决办法嘛 -> Modheader 修改一下ResponseHeader。
@@ -149,3 +152,7 @@ tags:
 Access-Control-Allow-Origin 直接填成 *
 
 完事。
+
+下载内容。
+
+![result-show.png](/img/post/one-line-download-weibo-img/result-show.png)
