@@ -1,7 +1,7 @@
 ---
 title: 亭林镇“往事”
 description: 亭林镇,上海,韩寒
-slug: 
+slug: tingling-world
 date: 2025-03-31 12:36:00+0000
 image: logo.png
 categories:
