@@ -39,13 +39,21 @@ comments: false
 
 ## 项目
 
-### [地图搜租房](https://house2048.cn/app/house-map/#/)
+### [地图搜租房](https://web.house2048.cn)
 
 满大街找租房心力交瘁？试试换个方式直接在地图上搜租房!
 
 多平台房源爬虫 + 地图强力驱动,帮助你迅速找到合适房源。
 
 微信小程序"地图搜租房"已上线，欢迎关注【人生删除指南】微信公众号体验反馈。
+
+### 知乎 Copilot
+
+自动刷新收件箱未读消息数
+
+支持导出回答、文章、想法
+
+- [zhihu-copilot](https://oss.r2049.cn/zhihu-copilot)
 
 ### [GPT2077](https://chat.r2049.cn/user/login)
 
