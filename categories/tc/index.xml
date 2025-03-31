@@ -1,0 +1,1567 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>TC on</title><link>https://liguobao.github.io/categories/tc/</link><description>Recent content in TC on</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Thu, 23 Jan 2025 08:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/categories/tc/index.xml" rel="self" type="application/rss+xml"/><item><title>一行代码下载微博相册</title><link>https://liguobao.github.io/p/one-line-download-weibo-img/</link><pubDate>Thu, 23 Jan 2025 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/one-line-download-weibo-img/</guid><description>&lt;img src="https://liguobao.github.io/p/one-line-download-weibo-img/logo.png" alt="Featured image of post 一行代码下载微博相册" />&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt"> 10
+&lt;/span>&lt;span class="lnt"> 11
+&lt;/span>&lt;span class="lnt"> 12
+&lt;/span>&lt;span class="lnt"> 13
+&lt;/span>&lt;span class="lnt"> 14
+&lt;/span>&lt;span class="lnt"> 15
+&lt;/span>&lt;span class="lnt"> 16
+&lt;/span>&lt;span class="lnt"> 17
+&lt;/span>&lt;span class="lnt"> 18
+&lt;/span>&lt;span class="lnt"> 19
+&lt;/span>&lt;span class="lnt"> 20
+&lt;/span>&lt;span class="lnt"> 21
+&lt;/span>&lt;span class="lnt"> 22
+&lt;/span>&lt;span class="lnt"> 23
+&lt;/span>&lt;span class="lnt"> 24
+&lt;/span>&lt;span class="lnt"> 25
+&lt;/span>&lt;span class="lnt"> 26
+&lt;/span>&lt;span class="lnt"> 27
+&lt;/span>&lt;span class="lnt"> 28
+&lt;/span>&lt;span class="lnt"> 29
+&lt;/span>&lt;span class="lnt"> 30
+&lt;/span>&lt;span class="lnt"> 31
+&lt;/span>&lt;span class="lnt"> 32
+&lt;/span>&lt;span class="lnt"> 33
+&lt;/span>&lt;span class="lnt"> 34
+&lt;/span>&lt;span class="lnt"> 35
+&lt;/span>&lt;span class="lnt"> 36
+&lt;/span>&lt;span class="lnt"> 37
+&lt;/span>&lt;span class="lnt"> 38
+&lt;/span>&lt;span class="lnt"> 39
+&lt;/span>&lt;span class="lnt"> 40
+&lt;/span>&lt;span class="lnt"> 41
+&lt;/span>&lt;span class="lnt"> 42
+&lt;/span>&lt;span class="lnt"> 43
+&lt;/span>&lt;span class="lnt"> 44
+&lt;/span>&lt;span class="lnt"> 45
+&lt;/span>&lt;span class="lnt"> 46
+&lt;/span>&lt;span class="lnt"> 47
+&lt;/span>&lt;span class="lnt"> 48
+&lt;/span>&lt;span class="lnt"> 49
+&lt;/span>&lt;span class="lnt"> 50
+&lt;/span>&lt;span class="lnt"> 51
+&lt;/span>&lt;span class="lnt"> 52
+&lt;/span>&lt;span class="lnt"> 53
+&lt;/span>&lt;span class="lnt"> 54
+&lt;/span>&lt;span class="lnt"> 55
+&lt;/span>&lt;span class="lnt"> 56
+&lt;/span>&lt;span class="lnt"> 57
+&lt;/span>&lt;span class="lnt"> 58
+&lt;/span>&lt;span class="lnt"> 59
+&lt;/span>&lt;span class="lnt"> 60
+&lt;/span>&lt;span class="lnt"> 61
+&lt;/span>&lt;span class="lnt"> 62
+&lt;/span>&lt;span class="lnt"> 63
+&lt;/span>&lt;span class="lnt"> 64
+&lt;/span>&lt;span class="lnt"> 65
+&lt;/span>&lt;span class="lnt"> 66
+&lt;/span>&lt;span class="lnt"> 67
+&lt;/span>&lt;span class="lnt"> 68
+&lt;/span>&lt;span class="lnt"> 69
+&lt;/span>&lt;span class="lnt"> 70
+&lt;/span>&lt;span class="lnt"> 71
+&lt;/span>&lt;span class="lnt"> 72
+&lt;/span>&lt;span class="lnt"> 73
+&lt;/span>&lt;span class="lnt"> 74
+&lt;/span>&lt;span class="lnt"> 75
+&lt;/span>&lt;span class="lnt"> 76
+&lt;/span>&lt;span class="lnt"> 77
+&lt;/span>&lt;span class="lnt"> 78
+&lt;/span>&lt;span class="lnt"> 79
+&lt;/span>&lt;span class="lnt"> 80
+&lt;/span>&lt;span class="lnt"> 81
+&lt;/span>&lt;span class="lnt"> 82
+&lt;/span>&lt;span class="lnt"> 83
+&lt;/span>&lt;span class="lnt"> 84
+&lt;/span>&lt;span class="lnt"> 85
+&lt;/span>&lt;span class="lnt"> 86
+&lt;/span>&lt;span class="lnt"> 87
+&lt;/span>&lt;span class="lnt"> 88
+&lt;/span>&lt;span class="lnt"> 89
+&lt;/span>&lt;span class="lnt"> 90
+&lt;/span>&lt;span class="lnt"> 91
+&lt;/span>&lt;span class="lnt"> 92
+&lt;/span>&lt;span class="lnt"> 93
+&lt;/span>&lt;span class="lnt"> 94
+&lt;/span>&lt;span class="lnt"> 95
+&lt;/span>&lt;span class="lnt"> 96
+&lt;/span>&lt;span class="lnt"> 97
+&lt;/span>&lt;span class="lnt"> 98
+&lt;/span>&lt;span class="lnt"> 99
+&lt;/span>&lt;span class="lnt">100
+&lt;/span>&lt;span class="lnt">101
+&lt;/span>&lt;span class="lnt">102
+&lt;/span>&lt;span class="lnt">103
+&lt;/span>&lt;span class="lnt">104
+&lt;/span>&lt;span class="lnt">105
+&lt;/span>&lt;span class="lnt">106
+&lt;/span>&lt;span class="lnt">107
+&lt;/span>&lt;span class="lnt">108
+&lt;/span>&lt;span class="lnt">109
+&lt;/span>&lt;span class="lnt">110
+&lt;/span>&lt;span class="lnt">111
+&lt;/span>&lt;span class="lnt">112
+&lt;/span>&lt;span class="lnt">113
+&lt;/span>&lt;span class="lnt">114
+&lt;/span>&lt;span class="lnt">115
+&lt;/span>&lt;span class="lnt">116
+&lt;/span>&lt;span class="lnt">117
+&lt;/span>&lt;span class="lnt">118
+&lt;/span>&lt;span class="lnt">119
+&lt;/span>&lt;span class="lnt">120
+&lt;/span>&lt;span class="lnt">121
+&lt;/span>&lt;span class="lnt">122
+&lt;/span>&lt;span class="lnt">123
+&lt;/span>&lt;span class="lnt">124
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-js" data-lang="js">&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// ==UserScript==
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// @name 下载微博相册图片为ZIP文件
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// @namespace http://tampermonkey.net/
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// @version 0.1
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// @description 下载微博相册上的所有图片并将它们打包为ZIP文件
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// @author You
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// @match https://weibo.com/u/*?tabtype=album
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// @grant GM_addStyle
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">// ==/UserScript==
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">(&lt;/span>&lt;span class="kd">function&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s1">&amp;#39;use strict&amp;#39;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 获取微博用户的 ID 作为下载文件名
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">match&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">window&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">location&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">href&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">match&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sr">/https:\/\/weibo\.com\/u\/(\d+)\?/&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="nx">match&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;无法获取微博用户 ID&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">userId&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">match&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">];&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">downloadFileName&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="sb">`weibo_album_&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">userId&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">.zip`&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 插入按钮到页面顶部并居中
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">button&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">document&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">createElement&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;button&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">button&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">innerText&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;下载图片为ZIP&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">button&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">style&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">position&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;fixed&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">button&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">style&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">top&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;50%&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 垂直居中
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">button&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">style&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">left&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;50%&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 水平居中
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">button&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">style&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">transform&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;translate(-50%, -50%)&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 使按钮完全居中
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">button&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">style&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">zIndex&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;9999&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 确保按钮位于页面顶部
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">button&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">style&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">padding&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;10px 20px&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">button&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">style&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">backgroundColor&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;#007bff&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">button&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">style&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">color&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;#fff&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">button&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">style&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">border&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;none&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">button&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">style&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">borderRadius&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;5px&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">button&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">style&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">cursor&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;pointer&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">button&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">style&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">fontSize&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;16px&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 增加字体大小
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">button&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">style&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">boxShadow&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;0 2px 10px rgba(0, 0, 0, 0.3)&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 添加阴影
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nb">document&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">body&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">appendChild&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">button&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 按钮点击事件
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">button&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">addEventListener&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;click&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="p">()&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">downloadAllImagesAsZip&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 加载 JSZip 库
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">loadJSZip&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">()&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nb">Promise&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nx">resolve&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">reject&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">script&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">document&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">createElement&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;script&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">script&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">src&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">script&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">onload&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">resolve&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">script&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">onerror&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">reject&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">document&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">head&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">appendChild&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">script&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 下载所有图片并打包为ZIP
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">downloadAllImagesAsZip&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">async&lt;/span> &lt;span class="p">()&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;开始加载 JSZip...&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">await&lt;/span> &lt;span class="nx">loadJSZip&lt;/span>&lt;span class="p">();&lt;/span> &lt;span class="c1">// 加载 JSZip
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;JSZip 加载完成。&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">zip&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nx">JSZip&lt;/span>&lt;span class="p">();&lt;/span> &lt;span class="c1">// 使用 new JSZip() 实例化
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">images&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">document&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">getElementsByClassName&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;woo-picture-img&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`共找到 &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">images&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">length&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> 张图片。`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">images&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">length&lt;/span> &lt;span class="o">===&lt;/span> &lt;span class="mi">0&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">alert&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;没有找到任何图片！&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// 如果没有图片，提示用户
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="k">return&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 终止函数，不执行下载逻辑
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 下载所有图片并存储到内存中
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="kr">const&lt;/span> &lt;span class="nx">imageBlobs&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="kr">await&lt;/span> &lt;span class="nb">Promise&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">all&lt;/span>&lt;span class="p">(&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">Array&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">from&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">images&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="nx">map&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nx">img&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">index&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">img&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">tagName&lt;/span> &lt;span class="o">===&lt;/span> &lt;span class="s2">&amp;#34;IMG&amp;#34;&lt;/span> &lt;span class="o">&amp;amp;&amp;amp;&lt;/span> &lt;span class="nx">img&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">src&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`开始下载图片 &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">index&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">: &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">img&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">src&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nx">fetch&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">img&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">src&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">.&lt;/span>&lt;span class="nx">then&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nx">response&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="o">!&lt;/span>&lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">ok&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">throw&lt;/span> &lt;span class="k">new&lt;/span> &lt;span class="nb">Error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`HTTP 状态码: &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">status&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="nx">response&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">blob&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">.&lt;/span>&lt;span class="nx">then&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nx">blob&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`图片 &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">index&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> 下载完成。`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nx">blob&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">index&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">src&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="nx">img&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">src&lt;/span> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">.&lt;/span>&lt;span class="k">catch&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">error&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`无法下载图片 &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">index&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">: &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">img&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">src&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">error&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="kc">null&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 返回 null 表示下载失败
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span> &lt;span class="k">else&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">warn&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`图片元素无效: &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">img&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="kc">null&lt;/span>&lt;span class="p">;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;所有图片下载完成，开始添加到 ZIP 包。&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 将图片添加到 ZIP 包
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">imageBlobs&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">forEach&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nx">image&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="p">(&lt;/span>&lt;span class="nx">image&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">ext&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">image&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">src&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">split&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;.&amp;#34;&lt;/span>&lt;span class="p">).&lt;/span>&lt;span class="nx">pop&lt;/span>&lt;span class="p">().&lt;/span>&lt;span class="nx">split&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;?&amp;#34;&lt;/span>&lt;span class="p">)[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">||&lt;/span> &lt;span class="s2">&amp;#34;jpg&amp;#34;&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 提取扩展名
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">zip&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">file&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`image-&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">image&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">index&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">.&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">ext&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb">`&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nx">image&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">blob&lt;/span>&lt;span class="p">);&lt;/span> &lt;span class="c1">// 添加到 ZIP
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sb">`图片 &lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nx">image&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">index&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="mi">1&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="sb"> 已添加到 ZIP 包。`&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1">// 生成 ZIP 并下载
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;开始生成 ZIP 文件。&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">zip&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">generateAsync&lt;/span>&lt;span class="p">({&lt;/span> &lt;span class="nx">type&lt;/span>&lt;span class="o">:&lt;/span> &lt;span class="s2">&amp;#34;blob&amp;#34;&lt;/span> &lt;span class="p">}).&lt;/span>&lt;span class="nx">then&lt;/span>&lt;span class="p">((&lt;/span>&lt;span class="nx">content&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="p">=&amp;gt;&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;ZIP 文件生成完成，开始下载。&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kr">const&lt;/span> &lt;span class="nx">a&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">document&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">createElement&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;a&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">a&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">href&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">URL&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">createObjectURL&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">content&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">a&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">download&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nx">downloadFileName&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="c1">// 使用用户 ID 作为下载文件名
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1">&lt;/span> &lt;span class="nb">document&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">body&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">appendChild&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">a&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">a&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">click&lt;/span>&lt;span class="p">();&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">document&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">body&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">removeChild&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="nx">a&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nx">console&lt;/span>&lt;span class="p">.&lt;/span>&lt;span class="nx">log&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s2">&amp;#34;ZIP 文件下载完成。&amp;#34;&lt;/span>&lt;span class="p">);&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">});&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">};&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="p">})();&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>效果嘛。&lt;/p>
+&lt;p>&lt;img src="https://liguobao.github.io/img/post/one-line-download-weibo-img/zip-download.png"
+loading="lazy"
+alt="zip-download.png"
+>&lt;/p>
+&lt;p>大概会遇到CORS错误。&lt;/p>
+&lt;p>解决办法嘛 -&amp;gt; Modheader 修改一下ResponseHeader。&lt;/p>
+&lt;p>Access-Control-Allow-Origin 直接填成 *&lt;/p>
+&lt;p>完事。&lt;/p>
+&lt;p>下载内容。&lt;/p>
+&lt;p>&lt;img src="https://liguobao.github.io/img/post/one-line-download-weibo-img/result-show.png"
+loading="lazy"
+alt="result-show.png"
+>&lt;/p></description></item><item><title>构建 meilisearch mini-dashboard 静态站点镜像</title><link>https://liguobao.github.io/p/meili-dashboard/</link><pubDate>Thu, 16 Jan 2025 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/meili-dashboard/</guid><description>&lt;img src="https://liguobao.github.io/p/meili-dashboard/logo.png" alt="Featured image of post 构建 meilisearch mini-dashboard 静态站点镜像" />&lt;p>&lt;a class="link" href="https://github.com/meilisearch/mini-dashboard" target="_blank" rel="noopener"
+>mini-dashboard&lt;/a> 是 meilisearch 的一个小型查询看板，&lt;/p>
+&lt;p>提供了比较集群的查询页面，对于我的需求来说刚好够用。&lt;/p>
+&lt;p>不过官方的镜像构建只是个node Debug版本，&lt;/p>
+&lt;p>所以我自己构建了一个静态站点镜像。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-dockerfile" data-lang="dockerfile">&lt;span class="line">&lt;span class="cl">&lt;span class="k">FROM&lt;/span>&lt;span class="s"> node:20-alpine AS build-env&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">WORKDIR&lt;/span>&lt;span class="s"> /home/node/app&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> chown -R node:node /home/node/app&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">USER&lt;/span>&lt;span class="s"> node&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> package*.json ./&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> --chown&lt;span class="o">=&lt;/span>node:node . .&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> yarn install&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">ENV&lt;/span> &lt;span class="nv">NODE_ENV&lt;/span>&lt;span class="o">=&lt;/span>production
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c"># if you want to use your own meilisearch server, you can set the following env&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># ENV REACT_APP_MEILI_SERVER_ADDRESS=http://meilisearch:7700&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="c"># ENV REACT_APP_MEILI_API_KEY=masterKey&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">RUN&lt;/span> yarn build&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">FROM&lt;/span>&lt;span class="s"> nginx&lt;/span>&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="err">&lt;/span>&lt;span class="k">COPY&lt;/span> --from&lt;span class="o">=&lt;/span>build-env /home/node/app/build/ /usr/share/nginx/html/&lt;span class="err">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="docker-with-nginx">Docker with Nginx
+&lt;/h2>&lt;p>nginx is also available in the Docker image.&lt;/p>
+&lt;p>You can use it to serve the mini-dashboard.&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">docker build --build-arg &lt;span class="nv">REACT_APP_MEILI_SERVER_ADDRESS&lt;/span>&lt;span class="o">=&lt;/span>http://meilisearch:7700 -t meilisearch-mini-dashboard-nginx . -f Dockerfile.nginx
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker run -p 8080:80 meilisearch-mini-dashboard-nginx
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>You can then access the mini-dashboard at &lt;code>http://localhost:8080&lt;/code>.&lt;/p>
+&lt;p>大概如此。&lt;/p>
+&lt;p>当然，最简单的还是直接把用docker-compose&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">version&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;3.8&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">services&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">meilisearch-node1&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">getmeili/meilisearch:v1.12&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">restart&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">always&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">container_name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">meilisearch-node1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;7700:7700&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">environment&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">MEILI_MASTER_KEY&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;iinti_2025_gogogo_123&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">MEILI_ENV&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;production&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">MEILI_DB_PATH&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;/meili_data&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">MEILI_NO_ANALYTICS&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;true&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">volumes&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">/mnt/nvme/Meilisearch/meili_data/node1:/meili_data&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">networks&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">meili-network&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">meilisearch-dashboard&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">restart&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">always&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">mini-dashboard-nginx&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">container_name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">meilisearch-dashboard&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="s2">&amp;#34;7707:80&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">networks&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">meili-network&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">networks&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">meili-network&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">driver&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">bridge&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div></description></item><item><title>Windows 整盘备份迁移简易教程</title><link>https://liguobao.github.io/p/windows-c-disk-move/</link><pubDate>Fri, 27 Dec 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/windows-c-disk-move/</guid><description>&lt;h2 id="windows-整盘备份迁移简易教程">Windows 整盘备份迁移简易教程
+&lt;/h2>&lt;p>死党前阵子一直在抱怨电脑磁盘空间不够用了，&lt;/p>
+&lt;p>查了下他的笔记本型号，问了下小米客服确认，这个型号只有一个M.2插槽，没有预留扩展位。&lt;/p>
+&lt;p>不过SSD并没有焊死在主板上，拆装起来还是比较方便的。&lt;/p>
+&lt;p>查了一下拆机教程，背板螺丝拆下来之后就能换硬盘了。&lt;/p>
+&lt;h3 id="准备工具">准备工具
+&lt;/h3>&lt;ul>
+&lt;li>4T M.2 SSD&lt;/li>
+&lt;li>维修螺丝刀套装&lt;/li>
+&lt;li>SSD 硬盘盒&lt;/li>
+&lt;li>软件：分区助手&lt;/li>
+&lt;/ul>
+&lt;h2 id="操作流程">操作流程
+&lt;/h2>&lt;ul>
+&lt;li>把新硬盘装到SSD 硬盘盒&lt;/li>
+&lt;li>使用“分区助手” 克隆整个磁盘分区到新硬盘&lt;/li>
+&lt;li>拆笔记本后盖，替换原硬盘&lt;/li>
+&lt;li>开机确认系统正常启动运行&lt;/li>
+&lt;/ul>
+&lt;h2 id="克隆整个磁盘分区">克隆整个磁盘分区
+&lt;/h2>&lt;p>这个没什么太多需要讲的，打开分区助手，&lt;/p>
+&lt;p>选择磁盘克隆，选择源盘和目标盘，然后开始克隆。&lt;/p>
+&lt;p>看磁盘速度，都是SSD的情况，我这边一个多小时就跑完了。&lt;/p>
+&lt;p>教程可以参考：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.disktool.cn/content-center/migrate-os-to-ssd/transfer-os-to-ssd.html" target="_blank" rel="noopener"
+>无需重装，轻松将系统迁移到固态硬盘!&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://www.disktool.cn/jiaocheng/migrate-system-drive.html" target="_blank" rel="noopener"
+>如何快速将系统迁移到新硬盘？3种数据迁移方法！&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>操作流程大同小异，不再赘述。&lt;/p>
+&lt;p>迁移完成之后，可以打开文件夹，简单看一下数据是不是正常的。&lt;/p>
+&lt;h2 id="拆装硬盘">拆装硬盘
+&lt;/h2>&lt;p>这个很简单，基本就是拧螺丝，拆下来，换上去。&lt;/p>
+&lt;p>我扔了一个操作视频给死党，他自己都搞掂了。&lt;/p>
+&lt;p>是的。本次操作全程他自己完成，我只能远程指导。&lt;/p>
+&lt;h2 id="第一个问题no-bootable-device">第一个“问题”：No bootable device
+&lt;/h2>&lt;p>换好硬盘之后开机，直接显示 “No bootable device”。&lt;/p>
+&lt;p>迷糊，难道硬盘没插紧？&lt;/p>
+&lt;p>让老友再次检查了，确认硬盘确实接紧了。&lt;/p>
+&lt;p>让他换回老硬盘试试开机，一切正常。&lt;/p>
+&lt;p>再次换回新硬盘，还是显示 “No bootable device”。&lt;/p>
+&lt;p>奈何他手上没有PE U盘，夜里太晚了先不折腾了，白天搞个PE盘在试试。&lt;/p>
+&lt;p>白天想了下，这个问题应该是引导问题，新硬盘没有引导信息。&lt;/p>
+&lt;p>搞到了新PE盘之后，远程指导他进入PE系统，确认了新硬盘是正常识别的了，&lt;/p>
+&lt;p>容量和分区看起来和老硬盘是一致的。&lt;/p>
+&lt;p>先直接用PE自带的工具做了一次引导修复。&lt;/p>
+&lt;p>再次重启，依旧还是一样的错误。&lt;/p>
+&lt;h2 id="第二个问题主引导记录不太对">第二个“问题”：主引导记录不太对？
+&lt;/h2>&lt;p>再次进入PE系统，使用 diskgenius 手动修复了一下主引导记录。&lt;/p>
+&lt;p>启动之后，还是一样的错误。&lt;/p>
+&lt;p>神奇了，还差个什么玩意呢。&lt;/p>
+&lt;p>突然想起了老早之前的操作，迁移了磁盘之后，是不是给这玩意磁盘转成GPT 格式。&lt;/p>
+&lt;p>再次进入 PE 系统，使用 diskgenius 将新硬盘转换为 GPT 格式。&lt;/p>
+&lt;p>重启，正常启动。&lt;/p>
+&lt;h2 id="总结">总结
+&lt;/h2>&lt;ul>
+&lt;li>搞系统迁移，还是要备好PE工具在手。&lt;/li>
+&lt;li>硬盘迁移之后，要注意磁盘格式问题。&lt;/li>
+&lt;/ul>
+&lt;h2 id="参考资料">参考资料
+&lt;/h2>&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.laomaotao.net/winpe/2020/0313/8129.html" target="_blank" rel="noopener"
+>如何使用老毛桃winpe进行磁盘分区引导修复?&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://zhuanlan.zhihu.com/p/419605886" target="_blank" rel="noopener"
+>MBR(主引导记录)介绍及修复&lt;/a>&lt;/li>
+&lt;/ul></description></item><item><title>npm.taobao.org 淘宝镜像源证书过期解决方案</title><link>https://liguobao.github.io/p/npm-taobao-org-exp/</link><pubDate>Tue, 06 Aug 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/npm-taobao-org-exp/</guid><description>&lt;img src="https://liguobao.github.io/p/npm-taobao-org-exp/npm.png" alt="Featured image of post npm.taobao.org 淘宝镜像源证书过期解决方案" />&lt;h2 id="npmtaobaoorg-https-证书过期">npm.taobao.org https 证书过期
+&lt;/h2>&lt;ul>
+&lt;li>这玩意过期也不是一两天了，所有用了依赖这个镜像源的都会直接报错。&lt;/li>
+&lt;li>前阵子因为查构建失败问题，折腾了好几个小时才意识到是证书过期了。&lt;/li>
+&lt;li>一开始以为是自己的网络问题，后来发现是源的问题。&lt;/li>
+&lt;/ul>
+&lt;p>虽然这个域名已经被cname到 &lt;code>registry.npmmirror.com&lt;/code>，然而在npm的时候，并不会自动跳转到这个新的域名。&lt;/p>
+&lt;p>So，依旧构建失败。&lt;/p>
+&lt;h2 id="解决方案">解决方案
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">npm config &lt;span class="nb">set&lt;/span> registry registry.npmmirror.com
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">npm config &lt;span class="nb">set&lt;/span> registry registry.npmjs.org
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>如果项目根目录有 &lt;code>.npmrc&lt;/code> 文件，记得要改下这个文件。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">&lt;span class="nv">registry&lt;/span>&lt;span class="o">=&lt;/span>https://registry.npmmirror.com
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="切记">切记
+&lt;/h2>&lt;ul>
+&lt;li>不要过度依赖某厂商的服务，尤其是国内的。&lt;/li>
+&lt;li>有时候，不如直接用官方源。&lt;/li>
+&lt;/ul></description></item><item><title>通过Python获取计算机的硬件信息，包括CPU、GPU、内存、主板、硬盘、操作系统等。</title><link>https://liguobao.github.io/p/how-to-get-hwinfo-by-python/</link><pubDate>Mon, 08 Jul 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/how-to-get-hwinfo-by-python/</guid><description>&lt;img src="https://liguobao.github.io/p/how-to-get-hwinfo-by-python/logo.png" alt="Featured image of post 通过Python获取计算机的硬件信息，包括CPU、GPU、内存、主板、硬盘、操作系统等。" />&lt;h2 id="需求">需求
+&lt;/h2>&lt;p>之前在C++实现过一个获取硬件信息的接口，&lt;/p>
+&lt;p>用的是 &lt;a class="link" href="https://github.com/lfreist/hwinfo" target="_blank" rel="noopener"
+>hwinfo&lt;/a>,&lt;/p>
+&lt;p>大概返回了下面的硬件信息。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-json" data-lang="json">&lt;span class="line">&lt;span class="cl">&lt;span class="p">{&lt;/span> &lt;span class="nt">&amp;#34;cpuModel&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;12th Gen Intel(R) Core(TM) i7-12700K&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;gpuName&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Microsoft Remote Display Adapter | NVIDIA GeForce RTX 3070&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;ramVendor&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;A-DATA Technology&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;ramSerialNumber&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;CC500&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;ramTotalSizeBytes&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">34359740000&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;ramFreeSizeBytes&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">-1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;mainBoardVendor&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Rev 1.xx&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;mainBoardName&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;PRIME Z690-P D4&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;mainBoardSerialNumber&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;xxx&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;disks&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="p">[&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nt">&amp;#34;model&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;ST12000VN0008-2YS101&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;serialNumber&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34; ZRT0DJ&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;size&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;12000132426240&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;freeSize&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;-1&amp;#34;&lt;/span> &lt;span class="p">},&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nt">&amp;#34;model&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Samsung SSD 980 1TB&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;serialNumber&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;0025.&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;size&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;1000202273280&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;freeSize&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;-1&amp;#34;&lt;/span> &lt;span class="p">},&lt;/span> &lt;span class="p">{&lt;/span> &lt;span class="nt">&amp;#34;model&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;WDC WD10EZEX-00BBHA0&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;serialNumber&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34; WD-WATM2266&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;size&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;1000202273280&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;freeSize&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;-1&amp;#34;&lt;/span> &lt;span class="p">}&lt;/span> &lt;span class="p">],&lt;/span> &lt;span class="nt">&amp;#34;osOperatingSystem&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;19044&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;osShortName&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Windows&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;osArchitecture&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;32 bit&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;diskTotalSize&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">14000536972800&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="nt">&amp;#34;logicDiskTotalFreeSpace&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="mi">0&lt;/span> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>代码没撒看的，基本都是调库，hwinfo 的样例写得还不错~&lt;/p>
+&lt;p>不过前几天发现这玩意偶尔会崩掉，&lt;/p>
+&lt;p>错误是0000005，应该是内存访问错误，&lt;/p>
+&lt;p>道理来是个空引用触发的。&lt;/p>
+&lt;p>老早之前还给这个库修个字符串编码的Bug，&lt;/p>
+&lt;p>在后面老哥应该还升级过几个版本，&lt;/p>
+&lt;p>我自己太忙了也就没空再折腾了。&lt;/p>
+&lt;p>想了下，&lt;/p>
+&lt;p>算了，先用Python实现一个吧。&lt;/p>
+&lt;h2 id="问问gpt">问问GPT？
+&lt;/h2>&lt;p>Q：
+1、我想在Python3 中实现电脑硬件信息读取，返回上面的JSON，请问如何处理。
+2、帮我兼容一下，如果不在Windows平台的话，尽可能给足够的信息回去，没有的信息给默认值即可。
+3、对应的库版本是哪些？给我个requirements&lt;/p>
+&lt;p>A：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt"> 10
+&lt;/span>&lt;span class="lnt"> 11
+&lt;/span>&lt;span class="lnt"> 12
+&lt;/span>&lt;span class="lnt"> 13
+&lt;/span>&lt;span class="lnt"> 14
+&lt;/span>&lt;span class="lnt"> 15
+&lt;/span>&lt;span class="lnt"> 16
+&lt;/span>&lt;span class="lnt"> 17
+&lt;/span>&lt;span class="lnt"> 18
+&lt;/span>&lt;span class="lnt"> 19
+&lt;/span>&lt;span class="lnt"> 20
+&lt;/span>&lt;span class="lnt"> 21
+&lt;/span>&lt;span class="lnt"> 22
+&lt;/span>&lt;span class="lnt"> 23
+&lt;/span>&lt;span class="lnt"> 24
+&lt;/span>&lt;span class="lnt"> 25
+&lt;/span>&lt;span class="lnt"> 26
+&lt;/span>&lt;span class="lnt"> 27
+&lt;/span>&lt;span class="lnt"> 28
+&lt;/span>&lt;span class="lnt"> 29
+&lt;/span>&lt;span class="lnt"> 30
+&lt;/span>&lt;span class="lnt"> 31
+&lt;/span>&lt;span class="lnt"> 32
+&lt;/span>&lt;span class="lnt"> 33
+&lt;/span>&lt;span class="lnt"> 34
+&lt;/span>&lt;span class="lnt"> 35
+&lt;/span>&lt;span class="lnt"> 36
+&lt;/span>&lt;span class="lnt"> 37
+&lt;/span>&lt;span class="lnt"> 38
+&lt;/span>&lt;span class="lnt"> 39
+&lt;/span>&lt;span class="lnt"> 40
+&lt;/span>&lt;span class="lnt"> 41
+&lt;/span>&lt;span class="lnt"> 42
+&lt;/span>&lt;span class="lnt"> 43
+&lt;/span>&lt;span class="lnt"> 44
+&lt;/span>&lt;span class="lnt"> 45
+&lt;/span>&lt;span class="lnt"> 46
+&lt;/span>&lt;span class="lnt"> 47
+&lt;/span>&lt;span class="lnt"> 48
+&lt;/span>&lt;span class="lnt"> 49
+&lt;/span>&lt;span class="lnt"> 50
+&lt;/span>&lt;span class="lnt"> 51
+&lt;/span>&lt;span class="lnt"> 52
+&lt;/span>&lt;span class="lnt"> 53
+&lt;/span>&lt;span class="lnt"> 54
+&lt;/span>&lt;span class="lnt"> 55
+&lt;/span>&lt;span class="lnt"> 56
+&lt;/span>&lt;span class="lnt"> 57
+&lt;/span>&lt;span class="lnt"> 58
+&lt;/span>&lt;span class="lnt"> 59
+&lt;/span>&lt;span class="lnt"> 60
+&lt;/span>&lt;span class="lnt"> 61
+&lt;/span>&lt;span class="lnt"> 62
+&lt;/span>&lt;span class="lnt"> 63
+&lt;/span>&lt;span class="lnt"> 64
+&lt;/span>&lt;span class="lnt"> 65
+&lt;/span>&lt;span class="lnt"> 66
+&lt;/span>&lt;span class="lnt"> 67
+&lt;/span>&lt;span class="lnt"> 68
+&lt;/span>&lt;span class="lnt"> 69
+&lt;/span>&lt;span class="lnt"> 70
+&lt;/span>&lt;span class="lnt"> 71
+&lt;/span>&lt;span class="lnt"> 72
+&lt;/span>&lt;span class="lnt"> 73
+&lt;/span>&lt;span class="lnt"> 74
+&lt;/span>&lt;span class="lnt"> 75
+&lt;/span>&lt;span class="lnt"> 76
+&lt;/span>&lt;span class="lnt"> 77
+&lt;/span>&lt;span class="lnt"> 78
+&lt;/span>&lt;span class="lnt"> 79
+&lt;/span>&lt;span class="lnt"> 80
+&lt;/span>&lt;span class="lnt"> 81
+&lt;/span>&lt;span class="lnt"> 82
+&lt;/span>&lt;span class="lnt"> 83
+&lt;/span>&lt;span class="lnt"> 84
+&lt;/span>&lt;span class="lnt"> 85
+&lt;/span>&lt;span class="lnt"> 86
+&lt;/span>&lt;span class="lnt"> 87
+&lt;/span>&lt;span class="lnt"> 88
+&lt;/span>&lt;span class="lnt"> 89
+&lt;/span>&lt;span class="lnt"> 90
+&lt;/span>&lt;span class="lnt"> 91
+&lt;/span>&lt;span class="lnt"> 92
+&lt;/span>&lt;span class="lnt"> 93
+&lt;/span>&lt;span class="lnt"> 94
+&lt;/span>&lt;span class="lnt"> 95
+&lt;/span>&lt;span class="lnt"> 96
+&lt;/span>&lt;span class="lnt"> 97
+&lt;/span>&lt;span class="lnt"> 98
+&lt;/span>&lt;span class="lnt"> 99
+&lt;/span>&lt;span class="lnt">100
+&lt;/span>&lt;span class="lnt">101
+&lt;/span>&lt;span class="lnt">102
+&lt;/span>&lt;span class="lnt">103
+&lt;/span>&lt;span class="lnt">104
+&lt;/span>&lt;span class="lnt">105
+&lt;/span>&lt;span class="lnt">106
+&lt;/span>&lt;span class="lnt">107
+&lt;/span>&lt;span class="lnt">108
+&lt;/span>&lt;span class="lnt">109
+&lt;/span>&lt;span class="lnt">110
+&lt;/span>&lt;span class="lnt">111
+&lt;/span>&lt;span class="lnt">112
+&lt;/span>&lt;span class="lnt">113
+&lt;/span>&lt;span class="lnt">114
+&lt;/span>&lt;span class="lnt">115
+&lt;/span>&lt;span class="lnt">116
+&lt;/span>&lt;span class="lnt">117
+&lt;/span>&lt;span class="lnt">118
+&lt;/span>&lt;span class="lnt">119
+&lt;/span>&lt;span class="lnt">120
+&lt;/span>&lt;span class="lnt">121
+&lt;/span>&lt;span class="lnt">122
+&lt;/span>&lt;span class="lnt">123
+&lt;/span>&lt;span class="lnt">124
+&lt;/span>&lt;span class="lnt">125
+&lt;/span>&lt;span class="lnt">126
+&lt;/span>&lt;span class="lnt">127
+&lt;/span>&lt;span class="lnt">128
+&lt;/span>&lt;span class="lnt">129
+&lt;/span>&lt;span class="lnt">130
+&lt;/span>&lt;span class="lnt">131
+&lt;/span>&lt;span class="lnt">132
+&lt;/span>&lt;span class="lnt">133
+&lt;/span>&lt;span class="lnt">134
+&lt;/span>&lt;span class="lnt">135
+&lt;/span>&lt;span class="lnt">136
+&lt;/span>&lt;span class="lnt">137
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">psutil&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">cpuinfo&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">GPUtil&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">platform&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">json&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_cpu_info&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cpu&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">cpuinfo&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get_cpu_info&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">cpu&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="s1">&amp;#39;brand_raw&amp;#39;&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;Unknown CPU (&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">)&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_gpu_info&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gpus&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">GPUtil&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">getGPUs&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34; | &amp;#34;&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">join&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="n">gpu&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">name&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">gpu&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">gpus&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;Unknown GPU (&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">)&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_ram_info&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">platform&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;Windows&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">import&lt;/span> &lt;span class="nn">wmi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">c&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">wmi&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">WMI&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">memory&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Win32_PhysicalMemory&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ram_vendor&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">memory&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Manufacturer&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ram_serial_number&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">memory&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">SerialNumber&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ram_total_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">int&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">memory&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Capacity&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ram_free_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">psutil&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">virtual_memory&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">available&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">ram_vendor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_serial_number&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_total_size&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_free_size&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">vm&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">psutil&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">virtual_memory&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;Unknown Vendor&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;Unknown Serial&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">vm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">total&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">vm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">available&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;Unknown Vendor&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;Unknown Serial&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_mainboard_info&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">platform&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;Windows&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">import&lt;/span> &lt;span class="nn">wmi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">c&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">wmi&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">WMI&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">board&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Win32_BaseBoard&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mainboard_vendor&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">board&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Manufacturer&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mainboard_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">board&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Product&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mainboard_serial&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">board&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">SerialNumber&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">mainboard_vendor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mainboard_name&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mainboard_serial&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;Unknown Vendor&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;Unknown Board&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;Unknown Serial&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;Unknown Vendor&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;Unknown Board&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;Unknown Serial (&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">)&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_disk_info&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">platform&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;Windows&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">import&lt;/span> &lt;span class="nn">wmi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">c&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">wmi&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">WMI&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">disks&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">disk&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Win32_DiskDrive&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">disk&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Model&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">serial_number&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">disk&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">SerialNumber&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">strip&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">int&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">disk&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Size&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">disks&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;model&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">model&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;serialNumber&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">serial_number&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;size&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">size&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;freeSize&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">disks&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">disks&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">disk&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">psutil&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">disk_partitions&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">usage&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">psutil&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">disk_usage&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">disk&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">mountpoint&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">disks&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;model&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Unknown Model&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;serialNumber&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Unknown Serial&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;size&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">usage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">total&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;freeSize&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">usage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">free&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">disks&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="p">[{&lt;/span>&lt;span class="s2">&amp;#34;model&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Unknown&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;serialNumber&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Unknown&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;size&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;freeSize&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">}]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_os_info&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">os_version&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">platform&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">version&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">os_short_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">platform&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">os_arch&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">platform&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">architecture&lt;/span>&lt;span class="p">()[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">os_version&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">os_short_name&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">os_arch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="s2">&amp;#34;Unknown&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;Unknown&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;Unknown&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_total_disk_size_and_free_space&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">total_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">total_free_space&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">partition&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">psutil&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">disk_partitions&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">usage&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">psutil&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">disk_usage&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">partition&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">mountpoint&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">total_size&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">usage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">total&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">total_free_space&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">usage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">free&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">PermissionError&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">continue&lt;/span> &lt;span class="c1"># 避免某些磁盘没有权限访问导致的错误&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">total_size&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">total_free_space&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_hardware_info&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cpu_model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_cpu_info&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gpu_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_gpu_info&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ram_vendor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_serial_number&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_total_size&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_free_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_ram_info&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mainboard_vendor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mainboard_name&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mainboard_serial_number&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_mainboard_info&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">disks&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_disk_info&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">os_version&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">os_short_name&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">os_arch&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_os_info&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">total_disk_size&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">total_free_space&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_total_disk_size_and_free_space&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;cpuModel&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">cpu_model&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;gpuName&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">gpu_name&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ramVendor&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ram_vendor&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ramSerialNumber&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ram_serial_number&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ramTotalSizeBytes&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ram_total_size&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ramFreeSizeBytes&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ram_free_size&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;mainBoardVendor&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">mainboard_vendor&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;mainBoardName&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">mainboard_name&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;mainBoardSerialNumber&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">mainboard_serial_number&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;disks&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">disks&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;osOperatingSystem&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">os_version&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;osShortName&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">os_short_name&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;osArchitecture&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">os_arch&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;diskTotalSize&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">total_disk_size&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;logicDiskTotalFreeSpace&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">total_free_space&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="vm">__name__&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;__main__&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">hardware_info&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_hardware_info&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">json&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">dumps&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">hardware_info&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">indent&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="优化">优化
+&lt;/h2>&lt;ul>
+&lt;li>get_hardware_info 这个函数执行比较慢，能优化一下吗？ 部分信息获取之后应该是可以缓存起来的&lt;/li>
+&lt;li>我使用的lorugu 库，请帮我加一些日志，确认一下调用耗时&lt;/li>
+&lt;li>我的日志使用标准输出即可，不用写文件；lru_cache 可以设置过期时间吗?&lt;/li>
+&lt;li>get_cpu_info太慢了&lt;/li>
+&lt;/ul>
+&lt;p>2024-07-05 16:24:16.370 | INFO | main:get_cpu_info:54 - get_cpu_info() took 1.1144 seconds&lt;/p>
+&lt;p>cpu = cpuinfo.get_cpu_info() 为嘛它这么慢，有其他的实现吗？&lt;/p>
+&lt;p>最终代码&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt"> 10
+&lt;/span>&lt;span class="lnt"> 11
+&lt;/span>&lt;span class="lnt"> 12
+&lt;/span>&lt;span class="lnt"> 13
+&lt;/span>&lt;span class="lnt"> 14
+&lt;/span>&lt;span class="lnt"> 15
+&lt;/span>&lt;span class="lnt"> 16
+&lt;/span>&lt;span class="lnt"> 17
+&lt;/span>&lt;span class="lnt"> 18
+&lt;/span>&lt;span class="lnt"> 19
+&lt;/span>&lt;span class="lnt"> 20
+&lt;/span>&lt;span class="lnt"> 21
+&lt;/span>&lt;span class="lnt"> 22
+&lt;/span>&lt;span class="lnt"> 23
+&lt;/span>&lt;span class="lnt"> 24
+&lt;/span>&lt;span class="lnt"> 25
+&lt;/span>&lt;span class="lnt"> 26
+&lt;/span>&lt;span class="lnt"> 27
+&lt;/span>&lt;span class="lnt"> 28
+&lt;/span>&lt;span class="lnt"> 29
+&lt;/span>&lt;span class="lnt"> 30
+&lt;/span>&lt;span class="lnt"> 31
+&lt;/span>&lt;span class="lnt"> 32
+&lt;/span>&lt;span class="lnt"> 33
+&lt;/span>&lt;span class="lnt"> 34
+&lt;/span>&lt;span class="lnt"> 35
+&lt;/span>&lt;span class="lnt"> 36
+&lt;/span>&lt;span class="lnt"> 37
+&lt;/span>&lt;span class="lnt"> 38
+&lt;/span>&lt;span class="lnt"> 39
+&lt;/span>&lt;span class="lnt"> 40
+&lt;/span>&lt;span class="lnt"> 41
+&lt;/span>&lt;span class="lnt"> 42
+&lt;/span>&lt;span class="lnt"> 43
+&lt;/span>&lt;span class="lnt"> 44
+&lt;/span>&lt;span class="lnt"> 45
+&lt;/span>&lt;span class="lnt"> 46
+&lt;/span>&lt;span class="lnt"> 47
+&lt;/span>&lt;span class="lnt"> 48
+&lt;/span>&lt;span class="lnt"> 49
+&lt;/span>&lt;span class="lnt"> 50
+&lt;/span>&lt;span class="lnt"> 51
+&lt;/span>&lt;span class="lnt"> 52
+&lt;/span>&lt;span class="lnt"> 53
+&lt;/span>&lt;span class="lnt"> 54
+&lt;/span>&lt;span class="lnt"> 55
+&lt;/span>&lt;span class="lnt"> 56
+&lt;/span>&lt;span class="lnt"> 57
+&lt;/span>&lt;span class="lnt"> 58
+&lt;/span>&lt;span class="lnt"> 59
+&lt;/span>&lt;span class="lnt"> 60
+&lt;/span>&lt;span class="lnt"> 61
+&lt;/span>&lt;span class="lnt"> 62
+&lt;/span>&lt;span class="lnt"> 63
+&lt;/span>&lt;span class="lnt"> 64
+&lt;/span>&lt;span class="lnt"> 65
+&lt;/span>&lt;span class="lnt"> 66
+&lt;/span>&lt;span class="lnt"> 67
+&lt;/span>&lt;span class="lnt"> 68
+&lt;/span>&lt;span class="lnt"> 69
+&lt;/span>&lt;span class="lnt"> 70
+&lt;/span>&lt;span class="lnt"> 71
+&lt;/span>&lt;span class="lnt"> 72
+&lt;/span>&lt;span class="lnt"> 73
+&lt;/span>&lt;span class="lnt"> 74
+&lt;/span>&lt;span class="lnt"> 75
+&lt;/span>&lt;span class="lnt"> 76
+&lt;/span>&lt;span class="lnt"> 77
+&lt;/span>&lt;span class="lnt"> 78
+&lt;/span>&lt;span class="lnt"> 79
+&lt;/span>&lt;span class="lnt"> 80
+&lt;/span>&lt;span class="lnt"> 81
+&lt;/span>&lt;span class="lnt"> 82
+&lt;/span>&lt;span class="lnt"> 83
+&lt;/span>&lt;span class="lnt"> 84
+&lt;/span>&lt;span class="lnt"> 85
+&lt;/span>&lt;span class="lnt"> 86
+&lt;/span>&lt;span class="lnt"> 87
+&lt;/span>&lt;span class="lnt"> 88
+&lt;/span>&lt;span class="lnt"> 89
+&lt;/span>&lt;span class="lnt"> 90
+&lt;/span>&lt;span class="lnt"> 91
+&lt;/span>&lt;span class="lnt"> 92
+&lt;/span>&lt;span class="lnt"> 93
+&lt;/span>&lt;span class="lnt"> 94
+&lt;/span>&lt;span class="lnt"> 95
+&lt;/span>&lt;span class="lnt"> 96
+&lt;/span>&lt;span class="lnt"> 97
+&lt;/span>&lt;span class="lnt"> 98
+&lt;/span>&lt;span class="lnt"> 99
+&lt;/span>&lt;span class="lnt">100
+&lt;/span>&lt;span class="lnt">101
+&lt;/span>&lt;span class="lnt">102
+&lt;/span>&lt;span class="lnt">103
+&lt;/span>&lt;span class="lnt">104
+&lt;/span>&lt;span class="lnt">105
+&lt;/span>&lt;span class="lnt">106
+&lt;/span>&lt;span class="lnt">107
+&lt;/span>&lt;span class="lnt">108
+&lt;/span>&lt;span class="lnt">109
+&lt;/span>&lt;span class="lnt">110
+&lt;/span>&lt;span class="lnt">111
+&lt;/span>&lt;span class="lnt">112
+&lt;/span>&lt;span class="lnt">113
+&lt;/span>&lt;span class="lnt">114
+&lt;/span>&lt;span class="lnt">115
+&lt;/span>&lt;span class="lnt">116
+&lt;/span>&lt;span class="lnt">117
+&lt;/span>&lt;span class="lnt">118
+&lt;/span>&lt;span class="lnt">119
+&lt;/span>&lt;span class="lnt">120
+&lt;/span>&lt;span class="lnt">121
+&lt;/span>&lt;span class="lnt">122
+&lt;/span>&lt;span class="lnt">123
+&lt;/span>&lt;span class="lnt">124
+&lt;/span>&lt;span class="lnt">125
+&lt;/span>&lt;span class="lnt">126
+&lt;/span>&lt;span class="lnt">127
+&lt;/span>&lt;span class="lnt">128
+&lt;/span>&lt;span class="lnt">129
+&lt;/span>&lt;span class="lnt">130
+&lt;/span>&lt;span class="lnt">131
+&lt;/span>&lt;span class="lnt">132
+&lt;/span>&lt;span class="lnt">133
+&lt;/span>&lt;span class="lnt">134
+&lt;/span>&lt;span class="lnt">135
+&lt;/span>&lt;span class="lnt">136
+&lt;/span>&lt;span class="lnt">137
+&lt;/span>&lt;span class="lnt">138
+&lt;/span>&lt;span class="lnt">139
+&lt;/span>&lt;span class="lnt">140
+&lt;/span>&lt;span class="lnt">141
+&lt;/span>&lt;span class="lnt">142
+&lt;/span>&lt;span class="lnt">143
+&lt;/span>&lt;span class="lnt">144
+&lt;/span>&lt;span class="lnt">145
+&lt;/span>&lt;span class="lnt">146
+&lt;/span>&lt;span class="lnt">147
+&lt;/span>&lt;span class="lnt">148
+&lt;/span>&lt;span class="lnt">149
+&lt;/span>&lt;span class="lnt">150
+&lt;/span>&lt;span class="lnt">151
+&lt;/span>&lt;span class="lnt">152
+&lt;/span>&lt;span class="lnt">153
+&lt;/span>&lt;span class="lnt">154
+&lt;/span>&lt;span class="lnt">155
+&lt;/span>&lt;span class="lnt">156
+&lt;/span>&lt;span class="lnt">157
+&lt;/span>&lt;span class="lnt">158
+&lt;/span>&lt;span class="lnt">159
+&lt;/span>&lt;span class="lnt">160
+&lt;/span>&lt;span class="lnt">161
+&lt;/span>&lt;span class="lnt">162
+&lt;/span>&lt;span class="lnt">163
+&lt;/span>&lt;span class="lnt">164
+&lt;/span>&lt;span class="lnt">165
+&lt;/span>&lt;span class="lnt">166
+&lt;/span>&lt;span class="lnt">167
+&lt;/span>&lt;span class="lnt">168
+&lt;/span>&lt;span class="lnt">169
+&lt;/span>&lt;span class="lnt">170
+&lt;/span>&lt;span class="lnt">171
+&lt;/span>&lt;span class="lnt">172
+&lt;/span>&lt;span class="lnt">173
+&lt;/span>&lt;span class="lnt">174
+&lt;/span>&lt;span class="lnt">175
+&lt;/span>&lt;span class="lnt">176
+&lt;/span>&lt;span class="lnt">177
+&lt;/span>&lt;span class="lnt">178
+&lt;/span>&lt;span class="lnt">179
+&lt;/span>&lt;span class="lnt">180
+&lt;/span>&lt;span class="lnt">181
+&lt;/span>&lt;span class="lnt">182
+&lt;/span>&lt;span class="lnt">183
+&lt;/span>&lt;span class="lnt">184
+&lt;/span>&lt;span class="lnt">185
+&lt;/span>&lt;span class="lnt">186
+&lt;/span>&lt;span class="lnt">187
+&lt;/span>&lt;span class="lnt">188
+&lt;/span>&lt;span class="lnt">189
+&lt;/span>&lt;span class="lnt">190
+&lt;/span>&lt;span class="lnt">191
+&lt;/span>&lt;span class="lnt">192
+&lt;/span>&lt;span class="lnt">193
+&lt;/span>&lt;span class="lnt">194
+&lt;/span>&lt;span class="lnt">195
+&lt;/span>&lt;span class="lnt">196
+&lt;/span>&lt;span class="lnt">197
+&lt;/span>&lt;span class="lnt">198
+&lt;/span>&lt;span class="lnt">199
+&lt;/span>&lt;span class="lnt">200
+&lt;/span>&lt;span class="lnt">201
+&lt;/span>&lt;span class="lnt">202
+&lt;/span>&lt;span class="lnt">203
+&lt;/span>&lt;span class="lnt">204
+&lt;/span>&lt;span class="lnt">205
+&lt;/span>&lt;span class="lnt">206
+&lt;/span>&lt;span class="lnt">207
+&lt;/span>&lt;span class="lnt">208
+&lt;/span>&lt;span class="lnt">209
+&lt;/span>&lt;span class="lnt">210
+&lt;/span>&lt;span class="lnt">211
+&lt;/span>&lt;span class="lnt">212
+&lt;/span>&lt;span class="lnt">213
+&lt;/span>&lt;span class="lnt">214
+&lt;/span>&lt;span class="lnt">215
+&lt;/span>&lt;span class="lnt">216
+&lt;/span>&lt;span class="lnt">217
+&lt;/span>&lt;span class="lnt">218
+&lt;/span>&lt;span class="lnt">219
+&lt;/span>&lt;span class="lnt">220
+&lt;/span>&lt;span class="lnt">221
+&lt;/span>&lt;span class="lnt">222
+&lt;/span>&lt;span class="lnt">223
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-python" data-lang="python">&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">psutil&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">GPUtil&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">platform&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">json&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">time&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">import&lt;/span> &lt;span class="nn">subprocess&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">functools&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">wraps&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">loguru&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">logger&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="kn">from&lt;/span> &lt;span class="nn">datetime&lt;/span> &lt;span class="kn">import&lt;/span> &lt;span class="n">datetime&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">timedelta&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 配置 loguru 将日志输出到标准输出&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">remove&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">add&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="k">lambda&lt;/span> &lt;span class="n">msg&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">msg&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">end&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;&amp;#39;&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 自定义缓存装饰器&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">timed_lru_cache&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">seconds&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">int&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">maxsize&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="nb">int&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">128&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">def&lt;/span> &lt;span class="nf">wrapper&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">func&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cache&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cache_expiration&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">{}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nd">@wraps&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">func&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">def&lt;/span> &lt;span class="nf">inner&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">args&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">now&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">datetime&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">now&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="c1"># 清除过期缓存&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">key&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="nb">list&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">cache_expiration&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">cache_expiration&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">key&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">&amp;lt;&lt;/span> &lt;span class="n">now&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cache&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">pop&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">key&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kc">None&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cache_expiration&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">pop&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">key&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kc">None&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">args&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">cache&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">cache&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">args&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">func&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="o">*&lt;/span>&lt;span class="n">args&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cache&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">args&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">result&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cache_expiration&lt;/span>&lt;span class="p">[&lt;/span>&lt;span class="n">args&lt;/span>&lt;span class="p">]&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">now&lt;/span> &lt;span class="o">+&lt;/span> &lt;span class="n">timedelta&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">seconds&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">seconds&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="nb">len&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">cache&lt;/span>&lt;span class="p">)&lt;/span> &lt;span class="o">&amp;gt;&lt;/span> &lt;span class="n">maxsize&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">oldest&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">min&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">cache_expiration&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">key&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">cache_expiration&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">get&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cache&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">pop&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">oldest&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kc">None&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cache_expiration&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">pop&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">oldest&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="kc">None&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">result&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">inner&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">wrapper&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@timed_lru_cache&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">60&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_cpu_info&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">start_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">platform&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;Windows&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">subprocess&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">run&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="s1">&amp;#39;wmic&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;cpu&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;get&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;Name&amp;#39;&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">stdout&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">subprocess&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">PIPE&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">stderr&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">subprocess&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">PIPE&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">text&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">True&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cpu_model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">stdout&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">split&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="p">)[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">strip&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">elif&lt;/span> &lt;span class="n">platform&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;Linux&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">subprocess&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">run&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="s1">&amp;#39;lscpu&amp;#39;&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">stdout&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">subprocess&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">PIPE&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">stderr&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">subprocess&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">PIPE&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">text&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">True&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">line&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">stdout&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">split&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="se">\n&lt;/span>&lt;span class="s1">&amp;#39;&lt;/span>&lt;span class="p">):&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="s1">&amp;#39;Model name&amp;#39;&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">line&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cpu_model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">line&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">split&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="s1">&amp;#39;:&amp;#39;&lt;/span>&lt;span class="p">)[&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">]&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">strip&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">break&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">elif&lt;/span> &lt;span class="n">platform&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;Darwin&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">result&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">subprocess&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">run&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="s1">&amp;#39;sysctl&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;-n&amp;#39;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s1">&amp;#39;machdep.cpu.brand_string&amp;#39;&lt;/span>&lt;span class="p">],&lt;/span> &lt;span class="n">stdout&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">subprocess&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">PIPE&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">stderr&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="n">subprocess&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">PIPE&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">text&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="kc">True&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cpu_model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">result&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">stdout&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">strip&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cpu_model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;Unsupported platform&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cpu_model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;Unknown CPU (&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">)&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">end_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;get_cpu_info() took &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">end_time&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">start_time&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">.3f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> seconds&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">cpu_model&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@timed_lru_cache&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">60&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_gpu_info&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">start_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gpus&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">GPUtil&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">getGPUs&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gpu_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34; | &amp;#34;&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">join&lt;/span>&lt;span class="p">([&lt;/span>&lt;span class="n">gpu&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">name&lt;/span> &lt;span class="k">for&lt;/span> &lt;span class="n">gpu&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">gpus&lt;/span>&lt;span class="p">])&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gpu_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;Unknown GPU (&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">)&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">end_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;get_gpu_info() took &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">end_time&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">start_time&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">.3f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> seconds&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">gpu_name&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@timed_lru_cache&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">60&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_ram_info&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">start_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">platform&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;Windows&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">import&lt;/span> &lt;span class="nn">wmi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">c&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">wmi&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">WMI&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">memory&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Win32_PhysicalMemory&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ram_vendor&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">memory&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Manufacturer&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ram_serial_number&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">memory&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">SerialNumber&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ram_total_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">int&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">memory&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Capacity&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ram_free_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">psutil&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">virtual_memory&lt;/span>&lt;span class="p">()&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">available&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">break&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">vm&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">psutil&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">virtual_memory&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ram_vendor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_serial_number&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_total_size&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_free_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;Unknown Vendor&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;Unknown Serial&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">vm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">total&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">vm&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">available&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ram_vendor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_serial_number&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_total_size&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_free_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;Unknown Vendor&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;Unknown Serial&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">end_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;get_ram_info() took &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">end_time&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">start_time&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">.3f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> seconds&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">ram_vendor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_serial_number&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_total_size&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_free_size&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@timed_lru_cache&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">60&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_mainboard_info&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">start_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">platform&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;Windows&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">import&lt;/span> &lt;span class="nn">wmi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">c&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">wmi&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">WMI&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">board&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Win32_BaseBoard&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mainboard_vendor&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">board&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Manufacturer&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mainboard_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">board&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Product&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mainboard_serial&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">board&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">SerialNumber&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">break&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mainboard_vendor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mainboard_name&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mainboard_serial&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;Unknown Vendor&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;Unknown Board&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;Unknown Serial&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mainboard_vendor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mainboard_name&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mainboard_serial&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;Unknown Vendor&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;Unknown Board&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;Unknown Serial (&lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">e&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">)&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">end_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;get_mainboard_info() took &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">end_time&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">start_time&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">.3f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> seconds&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">mainboard_vendor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mainboard_name&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mainboard_serial&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@timed_lru_cache&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">60&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_disk_info&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">start_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">if&lt;/span> &lt;span class="n">platform&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="p">()&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;Windows&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="kn">import&lt;/span> &lt;span class="nn">wmi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">c&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">wmi&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">WMI&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">disks&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">disk&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">c&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Win32_DiskDrive&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">disk&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Model&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">serial_number&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">disk&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">SerialNumber&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">strip&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="nb">int&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">disk&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">Size&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">disks&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;model&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">model&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;serialNumber&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">serial_number&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;size&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">size&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;freeSize&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">else&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">disks&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">disk&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">psutil&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">disk_partitions&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">usage&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">psutil&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">disk_usage&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">disk&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">mountpoint&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">disks&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">append&lt;/span>&lt;span class="p">({&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;model&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Unknown Model&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;serialNumber&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Unknown Serial&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;size&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">usage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">total&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;freeSize&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">usage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">free&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">})&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">disks&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="p">[{&lt;/span>&lt;span class="s2">&amp;#34;model&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Unknown&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;serialNumber&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="s2">&amp;#34;Unknown&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;size&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;freeSize&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">}]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">end_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;get_disk_info() took &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">end_time&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">start_time&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">.3f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> seconds&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">disks&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@timed_lru_cache&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">60&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_os_info&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">start_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">os_version&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">platform&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">version&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">os_short_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">platform&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">system&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">os_arch&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">platform&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">architecture&lt;/span>&lt;span class="p">()[&lt;/span>&lt;span class="mi">0&lt;/span>&lt;span class="p">]&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">os_version&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">os_short_name&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">os_arch&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="s2">&amp;#34;Unknown&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;Unknown&amp;#34;&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="s2">&amp;#34;Unknown&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">end_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;get_os_info() took &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">end_time&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">start_time&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">.3f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> seconds&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">os_version&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">os_short_name&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">os_arch&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nd">@timed_lru_cache&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="mi">60&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_total_disk_size_and_free_space&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">start_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">total_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">total_free_space&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="mi">0&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">for&lt;/span> &lt;span class="n">partition&lt;/span> &lt;span class="ow">in&lt;/span> &lt;span class="n">psutil&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">disk_partitions&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">try&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">usage&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">psutil&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">disk_usage&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">partition&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">mountpoint&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">total_size&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">usage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">total&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">total_free_space&lt;/span> &lt;span class="o">+=&lt;/span> &lt;span class="n">usage&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">free&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">PermissionError&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">continue&lt;/span> &lt;span class="c1"># 避免某些磁盘没有权限访问导致的错误&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">except&lt;/span> &lt;span class="ne">Exception&lt;/span> &lt;span class="k">as&lt;/span> &lt;span class="n">e&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">total_size&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">total_free_space&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="o">-&lt;/span>&lt;span class="mi">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">end_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;get_total_disk_size_and_free_space() took &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">end_time&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">start_time&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">.3f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> seconds&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="n">total_size&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">total_free_space&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">def&lt;/span> &lt;span class="nf">get_hardware_info&lt;/span>&lt;span class="p">():&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">start_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">cpu_model&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_cpu_info&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">gpu_name&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_gpu_info&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">ram_vendor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_serial_number&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_total_size&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">ram_free_size&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_ram_info&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">mainboard_vendor&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mainboard_name&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">mainboard_serial_number&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_mainboard_info&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">disks&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_disk_info&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">os_version&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">os_short_name&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">os_arch&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_os_info&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">total_disk_size&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">total_free_space&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_total_disk_size_and_free_space&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">end_time&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">time&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">time&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">logger&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">info&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="sa">f&lt;/span>&lt;span class="s2">&amp;#34;get_hardware_info() took &lt;/span>&lt;span class="si">{&lt;/span>&lt;span class="n">end_time&lt;/span> &lt;span class="o">-&lt;/span> &lt;span class="n">start_time&lt;/span>&lt;span class="si">:&lt;/span>&lt;span class="s2">.3f&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> seconds&amp;#34;&lt;/span>&lt;span class="p">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="k">return&lt;/span> &lt;span class="p">{&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;cpuModel&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">cpu_model&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;gpuName&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">gpu_name&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ramVendor&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ram_vendor&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ramSerialNumber&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ram_serial_number&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ramTotalSizeBytes&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ram_total_size&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;ramFreeSizeBytes&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">ram_free_size&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;mainBoardVendor&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">mainboard_vendor&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;mainBoardName&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">mainboard_name&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;mainBoardSerialNumber&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">mainboard_serial_number&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;disks&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">disks&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;osOperatingSystem&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">os_version&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;osShortName&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">os_short_name&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;osArchitecture&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">os_arch&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;diskTotalSize&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">total_disk_size&lt;/span>&lt;span class="p">,&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="s2">&amp;#34;logicDiskTotalFreeSpace&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span> &lt;span class="n">total_free_space&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="p">}&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="vm">__name__&lt;/span> &lt;span class="o">==&lt;/span> &lt;span class="s2">&amp;#34;__main__&amp;#34;&lt;/span>&lt;span class="p">:&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="n">hardware_info&lt;/span> &lt;span class="o">=&lt;/span> &lt;span class="n">get_hardware_info&lt;/span>&lt;span class="p">()&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">print&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">json&lt;/span>&lt;span class="o">.&lt;/span>&lt;span class="n">dumps&lt;/span>&lt;span class="p">(&lt;/span>&lt;span class="n">hardware_info&lt;/span>&lt;span class="p">,&lt;/span> &lt;span class="n">indent&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="mi">2&lt;/span>&lt;span class="p">))&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="requirementstxt">requirements.txt
+&lt;/h2>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-txt" data-lang="txt">&lt;span class="line">&lt;span class="cl">psutil==5.9.5
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">gputil==1.4.0
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">WMI==1.5.1; sys_platform == &amp;#39;win32&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">pywin32==306; sys_platform == &amp;#39;win32&amp;#39;
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">loguru==0.5.3
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="总结">总结
+&lt;/h2>&lt;ul>
+&lt;li>我一句代码都没写。jpg&lt;/li>
+&lt;li>确实GPT过于强大。jpg&lt;/li>
+&lt;li>GPT确实需要调教。jpg&lt;/li>
+&lt;/ul></description></item><item><title>WebCamera 基于WebRTC的点对点网络摄像头</title><link>https://liguobao.github.io/p/open-source-web-camera/</link><pubDate>Wed, 12 Jun 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/open-source-web-camera/</guid><description>&lt;img src="https://liguobao.github.io/p/open-source-web-camera/web-c.png" alt="Featured image of post WebCamera 基于WebRTC的点对点网络摄像头" />&lt;h2 id="webcamera-基于webrtc的点对点网络摄像头">WebCamera 基于WebRTC的点对点网络摄像头
+&lt;/h2>&lt;p>前几天逛推，看到有个大佬开源了个小项目，基于WebRTC的点对点网络摄像头。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://github.com/ShouChenICU/WebCamera" target="_blank" rel="noopener"
+>github.com/ShouChenICU/WebCamera&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>顺手看了一眼代码和文档，发现这个项目还是挺有意思的，&lt;/p>
+&lt;p>于是自己部署了一个，用下来有点意思，于是写个文章分享一下~&lt;/p>
+&lt;h2 id="项目介绍">项目介绍
+&lt;/h2>&lt;ul>
+&lt;li>WebCamera 是一个基于 WebRTC 技术的网络摄像头工具站，使用 Nuxt.js 框架开发，并通过 Yarn 进行包管理。&lt;/li>
+&lt;/ul>
+&lt;h3 id="特性">特性
+&lt;/h3>&lt;ul>
+&lt;li>实时视频流: 使用 WebRTC 技术实现高效的实时视频流。&lt;/li>
+&lt;li>跨平台支持: 兼容多种浏览器和设备。&lt;/li>
+&lt;li>易于开发: 基于 Nuxt.js 框架，方便扩展和维护。&lt;/li>
+&lt;li>模块化设计: 便于功能的扩展和集成。&lt;/li>
+&lt;li>隐私安全: 使用点对点加密连接，保护隐私安全。&lt;/li>
+&lt;/ul>
+&lt;h2 id="docker部署">docker部署
+&lt;/h2>&lt;ul>
+&lt;li>ccr.ccs.tencentyun.com/liguobao/tools:web-camera&lt;/li>
+&lt;li>是我构建的镜像，托管在腾讯云容器镜像服务上。&lt;/li>
+&lt;/ul>
+&lt;p>自行构建如下：&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-sh" data-lang="sh">&lt;span class="line">&lt;span class="cl">docker build -t webcamera .
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker run -d -p 3000:3000 webcamera
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h3 id="k8s-部署">k8s 部署
+&lt;/h3>&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;span class="lnt">31
+&lt;/span>&lt;span class="lnt">32
+&lt;/span>&lt;span class="lnt">33
+&lt;/span>&lt;span class="lnt">34
+&lt;/span>&lt;span class="lnt">35
+&lt;/span>&lt;span class="lnt">36
+&lt;/span>&lt;span class="lnt">37
+&lt;/span>&lt;span class="lnt">38
+&lt;/span>&lt;span class="lnt">39
+&lt;/span>&lt;span class="lnt">40
+&lt;/span>&lt;span class="lnt">41
+&lt;/span>&lt;span class="lnt">42
+&lt;/span>&lt;span class="lnt">43
+&lt;/span>&lt;span class="lnt">44
+&lt;/span>&lt;span class="lnt">45
+&lt;/span>&lt;span class="lnt">46
+&lt;/span>&lt;span class="lnt">47
+&lt;/span>&lt;span class="lnt">48
+&lt;/span>&lt;span class="lnt">49
+&lt;/span>&lt;span class="lnt">50
+&lt;/span>&lt;span class="lnt">51
+&lt;/span>&lt;span class="lnt">52
+&lt;/span>&lt;span class="lnt">53
+&lt;/span>&lt;span class="lnt">54
+&lt;/span>&lt;span class="lnt">55
+&lt;/span>&lt;span class="lnt">56
+&lt;/span>&lt;span class="lnt">57
+&lt;/span>&lt;span class="lnt">58
+&lt;/span>&lt;span class="lnt">59
+&lt;/span>&lt;span class="lnt">60
+&lt;/span>&lt;span class="lnt">61
+&lt;/span>&lt;span class="lnt">62
+&lt;/span>&lt;span class="lnt">63
+&lt;/span>&lt;span class="lnt">64
+&lt;/span>&lt;span class="lnt">65
+&lt;/span>&lt;span class="lnt">66
+&lt;/span>&lt;span class="lnt">67
+&lt;/span>&lt;span class="lnt">68
+&lt;/span>&lt;span class="lnt">69
+&lt;/span>&lt;span class="lnt">70
+&lt;/span>&lt;span class="lnt">71
+&lt;/span>&lt;span class="lnt">72
+&lt;/span>&lt;span class="lnt">73
+&lt;/span>&lt;span class="lnt">74
+&lt;/span>&lt;span class="lnt">75
+&lt;/span>&lt;span class="lnt">76
+&lt;/span>&lt;span class="lnt">77
+&lt;/span>&lt;span class="lnt">78
+&lt;/span>&lt;span class="lnt">79
+&lt;/span>&lt;span class="lnt">80
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-yaml" data-lang="yaml">&lt;span class="line">&lt;span class="cl">&lt;span class="nn">---&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">apps/v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Deployment&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">web-camera&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">labels&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">app&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">web-camera&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">replicas&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">selector&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">matchLabels&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">app&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">web-camera&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">template&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">labels&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">app&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">web-camera&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">containers&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">web-camera&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">image&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ccr.ccs.tencentyun.com/liguobao/tools:web-camera&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">containerPort&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">3000&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">resources&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">requests&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">memory&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;512Mi&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">cpu&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;500m&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">limits&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">memory&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;2048Mi&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">cpu&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;1000m&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">readinessProbe&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">httpGet&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">path&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">/&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">3000&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">initialDelaySeconds&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">120&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">periodSeconds&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">60&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">env&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">DOCKER_ENABLE_SECURITY&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">value&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;false&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">dnsPolicy&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ClusterFirst&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">restartPolicy&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Always&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">terminationGracePeriodSeconds&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">30&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nn">---&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Service&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">web-camera&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">selector&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">app&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">web-camera&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ports&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">protocol&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">TCP&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">3000&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">targetPort&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">3000&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">type&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ClusterIP&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nn">---&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">apiVersion&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">networking.k8s.io/v1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">kind&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Ingress&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">metadata&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">annotations&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">cert-manager.io/cluster-issuer&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">letsencrypt-prod&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">kubernetes.io/tls-acme&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="s2">&amp;#34;true&amp;#34;&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">generation&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">1&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">ingress-web-camera&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w">&lt;/span>&lt;span class="nt">spec&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">ingressClassName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">traefik&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">rules&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">host&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">xxx.yyy.cn&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">http&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">paths&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">backend&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">service&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">name&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">web-camera&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">port&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">number&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="m">3000&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">path&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">/&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">pathType&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">Prefix&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">tls&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="nt">hosts&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>- &lt;span class="l">xxx.yyy.cn&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="w"> &lt;/span>&lt;span class="nt">secretName&lt;/span>&lt;span class="p">:&lt;/span>&lt;span class="w"> &lt;/span>&lt;span class="l">xxx-yyy-cn-tls&lt;/span>&lt;span class="w">
+&lt;/span>&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;h2 id="后续">后续
+&lt;/h2>&lt;p>和大佬聊了下，后续可能会做个简单的在线视频会议的项目，可以期待一下~&lt;/p>
+&lt;h2 id="参考">参考
+&lt;/h2>&lt;ul>
+&lt;li>&lt;a class="link" href="https://github.com/ShouChenICU/WebCamera" target="_blank" rel="noopener"
+>WebCamera&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://webrtc.org/?hl=zh-cn" target="_blank" rel="noopener"
+>WebRTC&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://javascript.ruanyifeng.com/htmlapi/webrtc.html" target="_blank" rel="noopener"
+>阮一峰：WebRTC 文档&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>WebRTC 这个协议有点意思，有兴趣的朋友可以多了解一下~&lt;/p>
+&lt;p>毕竟大佬都说也就看了两天，就写出来了~&lt;/p></description></item><item><title>VS Code 支持 C# 解决方案文件</title><link>https://liguobao.github.io/p/vscode-support-csharp-sln/</link><pubDate>Mon, 10 Jun 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/vscode-support-csharp-sln/</guid><description>&lt;img src="https://liguobao.github.io/p/vscode-support-csharp-sln/code.png" alt="Featured image of post VS Code 支持 C# 解决方案文件" />&lt;h2 id="vs-code的c插件好像不太正常">VS Code的C#插件好像不太正常
+&lt;/h2>&lt;p>最近起了个新的C#项目，想着多个Project 按文件夹划分，&lt;/p>
+&lt;p>在根目录扔一个solution就完事了，但是在VS Code里面打开的时候，&lt;/p>
+&lt;p>发现在Project 源码里面引用信息和提示都不太正常，&lt;/p>
+&lt;p>迷，一直都是这样用的，不应该有什么问题嘛。&lt;/p>
+&lt;p>搜了一波发现，有些朋友也遇到了类似的问题。&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://www.cnblogs.com/WikiChen/p/17061707.html" target="_blank" rel="noopener"
+>[VS Code] 解决C#代码F12无效&lt;/a>&lt;/li>
+&lt;li>&lt;a class="link" href="https://blog.csdn.net/s5260203/article/details/120012240" target="_blank" rel="noopener"
+>VSCode C# 转到定义(F12)和ctrl+鼠标左键无效的解决方案&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>说到的基本都是，OmniSharp插件不太正常，需要手动指定一下。&lt;/p>
+&lt;p>但是&amp;hellip;&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/github/omnisharp-vscode" target="_blank" rel="noopener"
+>omnisharp-vscode:This repository has been archived by the owner on Jun 22, 2023. It is now read-only.&lt;/a>&lt;/p>
+&lt;p>自然，这个方法也是没用的了。&lt;/p>
+&lt;p>不过嘛。&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/dotnet/vscode-csharp" target="_blank" rel="noopener"
+>dotnet/vscode-csharp&lt;/a> 已经是被官方支持的了。&lt;/p>
+&lt;p>A Visual Studio Code extension that provides rich language support for C# and is shipped along with C# Dev Kit. Powered by a Language Server Protocol (LSP) server, this extension integrates with open source components like Roslyn and Razor to provide rich type information and a faster, more reliable C# experience.&lt;/p>
+&lt;p>所以，是不是说应该安装一下这玩意就好了？&lt;/p>
+&lt;p>&lt;a class="link" href="https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit" target="_blank" rel="noopener"
+>C# Dev Kit&lt;/a>&lt;/p>
+&lt;p>最后验证了一下，确实是这样的。&lt;/p>
+&lt;p>C# Dev Kit 插件支持了sln的加载，安装好了之后手动确认哪个sln文件就可以了。&lt;/p>
+&lt;p>一切回归正常。&lt;/p>
+&lt;p>水完。&lt;/p></description></item><item><title>如何配置Github Page页面</title><link>https://liguobao.github.io/p/how-to-set-github-page/</link><pubDate>Tue, 19 Dec 2023 13:34:08 +0000</pubDate><guid>https://liguobao.github.io/p/how-to-set-github-page/</guid><description>&lt;img src="https://liguobao.github.io/p/how-to-set-github-page/cover.png" alt="Featured image of post 如何配置Github Page页面" />&lt;p>具体教程：&lt;a class="link" href="https://docs.github.com/zh/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener"
+>配置 GitHub Pages 站点的发布源&lt;/a>&lt;/p>
+&lt;p>重点是：&lt;/p>
+&lt;p>设置对应仓库的分支。&lt;/p>
+&lt;p>一般我们使用Hugo之类的模板，&lt;/p>
+&lt;p>都是生成了一个public 静态文件夹的。&lt;/p>
+&lt;p>然后使用Github Action生成静态文件，&lt;/p>
+&lt;p>一般是发布到当前任务的独立分支。&lt;/p>
+&lt;h2 id="我的例子">我的例子
+&lt;/h2>&lt;p>我的仓库是：&lt;/p>
+&lt;ul>
+&lt;li>&lt;a class="link" href="https://github.com/liguobao/liguobao.github.io" target="_blank" rel="noopener"
+>iguobao/liguobao.github.io&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>主分支 &lt;a class="link" href="https://github.com/liguobao/liguobao.github.io" target="_blank" rel="noopener"
+>master&lt;/a> 就是我的配置和文章，&lt;/p>
+&lt;p>静态文件分支是：&lt;/p>
+&lt;p>&lt;a class="link" href="https://github.com/liguobao/liguobao.github.io/tree/gh-pages" target="_blank" rel="noopener"
+>liguobao.github.io/tree/gh-pages&lt;/a>&lt;/p>
+&lt;p>这个时候，就需要在&lt;/p>
+&lt;p>Github 项目中 settings/pages 设置我的 &amp;ldquo;Your GitHub Pages site&amp;rdquo;&lt;/p>
+&lt;p>分支为 gh-pages&lt;/p>
+&lt;p>&lt;img src="https://liguobao.github.io/p/how-to-set-github-page/cover.png"
+width="2402"
+height="1400"
+srcset="https://liguobao.github.io/p/how-to-set-github-page/cover_hu_b4993e3eb456fd63.png 480w, https://liguobao.github.io/p/how-to-set-github-page/cover_hu_87b0516968be86e8.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="171"
+data-flex-basis="411px"
+>&lt;/p>
+&lt;p>然后。&lt;/p>
+&lt;p>完事。&lt;/p>
+&lt;blockquote>
+&lt;p>Photo by &lt;a class="link" href="https://unsplash.com/@pawel_czerwinski" target="_blank" rel="noopener"
+>Pawel Czerwinski&lt;/a> on &lt;a class="link" href="https://unsplash.com/" target="_blank" rel="noopener"
+>Unsplash&lt;/a>&lt;/p>&lt;/blockquote></description></item></channel></rss>
