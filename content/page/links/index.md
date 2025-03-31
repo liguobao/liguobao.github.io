@@ -24,6 +24,6 @@ comments: false
 
 - [virjar blog](http://virjar.com/)
 
-- [地图搜租房](https://house2048.cn/app/house-map)
+- [地图搜租房](https://web.house2048.cn/)
 
 - [知乎专栏：编程技术向北，人生删除指南](https://zhuanlan.zhihu.com/codelover)
