@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>K3s on</title><link>https://liguobao.github.io/tags/k3s/</link><description>Recent content in K3s on</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Sat, 07 Jun 2025 08:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/k3s/index.xml" rel="self" type="application/rss+xml"/><item><title>k3s日常ImagePullError备忘录</title><link>https://liguobao.github.io/p/k3s-image-pull-error/</link><pubDate>Sat, 07 Jun 2025 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/k3s-image-pull-error/</guid><description>&lt;p>在国内搞事情嘛，日常得解决网络问题。&lt;/p>
+&lt;p>在本地倒好说，在服务器就有点蛋疼了。&lt;/p>
+&lt;p>今天折腾k3s集群的时候，不小心把etcd干没了。&lt;/p>
+&lt;p>于是开始重装整个集群。&lt;/p>
+&lt;p>别的都好说，反正镜像都在某云，然鹅traefik就蛋疼了。&lt;/p>
+&lt;p>这玩意用的是docker hub源。&lt;/p>
+&lt;p>如果是早些年也好说，国内那么多的镜像源，随便配一个也就完事了&lt;/p>
+&lt;p>但是去年之后，镜像源死得七七八八了。&lt;/p>
+&lt;p>总不能给服务器也挂个科学上网吧。&lt;/p>
+&lt;p>而且科学上网的前提是你还得先科学上网出去下载东西。&lt;/p>
+&lt;p>死局。&lt;/p>
+&lt;p>折腾了几个小时之后突发奇想。&lt;/p>
+&lt;p>直接在本地导出镜像再导入不就完事了。&lt;/p>
+&lt;p>k3s 虽然用的不是docker运行时，但也有兼容的命令啊。&lt;/p>
+&lt;p>问了下GPT，很简单。&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt">1
+&lt;/span>&lt;span class="lnt">2
+&lt;/span>&lt;span class="lnt">3
+&lt;/span>&lt;span class="lnt">4
+&lt;/span>&lt;span class="lnt">5
+&lt;/span>&lt;span class="lnt">6
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-bash" data-lang="bash">&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">docker save docker.io/traefik:v3.4.1 -o traefik_v3.4.1.tar
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">scp traefik_v3.4.1.tar root@my-ip:~/
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">ctr -n k8s.io images import /root/traefik_v3.4.1.tar
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>完事了。&lt;/p>
+&lt;p>对。就这么简单完事了。&lt;/p>
+&lt;p>一切都那么和谐。&lt;/p></description></item></channel></rss>
