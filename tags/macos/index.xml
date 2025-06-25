@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>MacOS on</title><link>https://liguobao.github.io/tags/macos/</link><description>Recent content in MacOS on</description><generator>Hugo -- gohugo.io</generator><language>zh-cn</language><lastBuildDate>Tue, 24 Jun 2025 23:36:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/macos/index.xml" rel="self" type="application/rss+xml"/><item><title>macOS无损迁移PC微信聊天记录</title><link>https://liguobao.github.io/p/wechat-backup/</link><pubDate>Tue, 24 Jun 2025 23:36:00 +0000</pubDate><guid>https://liguobao.github.io/p/wechat-backup/</guid><description>&lt;p>手机端迁移聊天记录基本用微信内部工具完事了，
+macOS跨机器迁移倒是需要折腾一下了。
+研究了一下，其实只需要备份
+&amp;ldquo;$HOME/Library/Containers/com.tencent.xinWeChat&amp;rdquo;&lt;/p>
+&lt;p>整个文件夹到新机器，
+两边保持微信版本一致，
+基本就没啥需要处理的。&lt;/p>
+&lt;p>于是在GPT的帮助下，
+写了下面的一个脚本 backup_wechat.sh&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;span class="lnt">26
+&lt;/span>&lt;span class="lnt">27
+&lt;/span>&lt;span class="lnt">28
+&lt;/span>&lt;span class="lnt">29
+&lt;/span>&lt;span class="lnt">30
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="nb">set&lt;/span> -euo pipefail
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">BACKUP_SRC&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$HOME&lt;/span>&lt;span class="s2">/Library/Containers/com.tencent.xinWeChat&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">BACKUP_DIR&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;/Volumes/workspace/weixin&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">TIMESTAMP&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>date +%Y%m%d_%H%M%S&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">BACKUP_DEST&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$BACKUP_DIR&lt;/span>&lt;span class="s2">/wechat_backup_&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">TIMESTAMP&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2">.tar.gz&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;🚀 开始备份微信聊天记录...&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 检查微信进程&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> pgrep -f WeChat &amp;gt; /dev/null&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;⚠️ 检测到微信正在运行，请先退出微信（Cmd + Q），然后重新运行脚本。&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">exit&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 检查数据目录&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> ! -d &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$BACKUP_SRC&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;❌ 找不到微信数据目录：&lt;/span>&lt;span class="nv">$BACKUP_SRC&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">exit&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 检查备份目录&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> ! -d &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$BACKUP_DIR&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;❌ 备份目录不存在：&lt;/span>&lt;span class="nv">$BACKUP_DIR&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">exit&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;📦 开始打包...（开始时间：&lt;/span>&lt;span class="k">$(&lt;/span>date &lt;span class="s1">&amp;#39;+%F %T&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="s2">）&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">START_TIME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>date +%s&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">tar --exclude&lt;span class="o">=&lt;/span>&lt;span class="s1">&amp;#39;.com.apple.containermanagerd.metadata.plist&amp;#39;&lt;/span> --preserve-permissions -czf &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$BACKUP_DEST&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -C &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$HOME&lt;/span>&lt;span class="s2">/Library/Containers&amp;#34;&lt;/span> com.tencent.xinWeChat
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">END_TIME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>date +%s&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">DURATION&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$((&lt;/span>END_TIME &lt;span class="o">-&lt;/span> START_TIME&lt;span class="k">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;✅ 备份完成！&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;📁 文件位置：&lt;/span>&lt;span class="nv">$BACKUP_DEST&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;⏱️ 耗时：&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DURATION&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> 秒（&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">printf&lt;/span> &lt;span class="s1">&amp;#39;%02d:%02d&amp;#39;&lt;/span> &lt;span class="k">$((&lt;/span>DURATION/60&lt;span class="k">))&lt;/span> &lt;span class="k">$((&lt;/span>DURATION%60&lt;span class="k">)))&lt;/span>&lt;span class="s2">）&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>备注：/Volumes/workspace/weixin 是挂载到本地的NAS 盘，
+毕竟我电脑没有170G的可用空间了。
+建议有SSD移动硬盘那就更好的，
+不过我手上确实没这玩意~&lt;/p>
+&lt;p>还原脚本 restore_wechat.sh&lt;/p>
+&lt;div class="highlight">&lt;div class="chroma">
+&lt;table class="lntable">&lt;tr>&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code>&lt;span class="lnt"> 1
+&lt;/span>&lt;span class="lnt"> 2
+&lt;/span>&lt;span class="lnt"> 3
+&lt;/span>&lt;span class="lnt"> 4
+&lt;/span>&lt;span class="lnt"> 5
+&lt;/span>&lt;span class="lnt"> 6
+&lt;/span>&lt;span class="lnt"> 7
+&lt;/span>&lt;span class="lnt"> 8
+&lt;/span>&lt;span class="lnt"> 9
+&lt;/span>&lt;span class="lnt">10
+&lt;/span>&lt;span class="lnt">11
+&lt;/span>&lt;span class="lnt">12
+&lt;/span>&lt;span class="lnt">13
+&lt;/span>&lt;span class="lnt">14
+&lt;/span>&lt;span class="lnt">15
+&lt;/span>&lt;span class="lnt">16
+&lt;/span>&lt;span class="lnt">17
+&lt;/span>&lt;span class="lnt">18
+&lt;/span>&lt;span class="lnt">19
+&lt;/span>&lt;span class="lnt">20
+&lt;/span>&lt;span class="lnt">21
+&lt;/span>&lt;span class="lnt">22
+&lt;/span>&lt;span class="lnt">23
+&lt;/span>&lt;span class="lnt">24
+&lt;/span>&lt;span class="lnt">25
+&lt;/span>&lt;/code>&lt;/pre>&lt;/td>
+&lt;td class="lntd">
+&lt;pre tabindex="0" class="chroma">&lt;code class="language-shell" data-lang="shell">&lt;span class="line">&lt;span class="cl">&lt;span class="cp">#!/bin/bash
+&lt;/span>&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="cp">&lt;/span>&lt;span class="nb">set&lt;/span> -euo pipefail
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">BACKUP_DIR&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;/Volumes/workspace/weixin&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">BACKUP_FILE&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>ls -t &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$BACKUP_DIR&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>/wechat_backup_*.tar.gz 2&amp;gt;/dev/null &lt;span class="p">|&lt;/span> head -1 &lt;span class="o">||&lt;/span> &lt;span class="nb">true&lt;/span>&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">TARGET_DIR&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$HOME&lt;/span>&lt;span class="s2">/Library/Containers/com.tencent.xinWeChat&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> &lt;span class="o">[&lt;/span> -z &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$BACKUP_FILE&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="o">]&lt;/span>&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;❌ 未找到备份文件，请确认 &lt;/span>&lt;span class="nv">$BACKUP_DIR&lt;/span>&lt;span class="s2"> 目录下有微信备份文件。&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">exit&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;🚀 开始还原微信聊天记录...&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">if&lt;/span> pgrep -f WeChat &amp;gt; /dev/null&lt;span class="p">;&lt;/span> &lt;span class="k">then&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;⚠️ 检测到微信正在运行，请先退出微信（Cmd + Q），然后重新运行脚本。&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl"> &lt;span class="nb">exit&lt;/span> &lt;span class="m">1&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="k">fi&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;📦 还原的备份文件：&lt;/span>&lt;span class="nv">$BACKUP_FILE&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;📦 文件大小：&lt;/span>&lt;span class="k">$(&lt;/span>du -sh &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$BACKUP_FILE&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> &lt;span class="p">|&lt;/span> awk &lt;span class="s1">&amp;#39;{print $1}&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;📂 开始解压并覆盖旧数据...（开始时间：&lt;/span>&lt;span class="k">$(&lt;/span>date &lt;span class="s1">&amp;#39;+%F %T&amp;#39;&lt;/span>&lt;span class="k">)&lt;/span>&lt;span class="s2">）&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">START_TIME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>date +%s&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="c1"># 解压，覆盖旧内容（不删除原目录）&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">sudo tar -xzf &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$BACKUP_FILE&lt;/span>&lt;span class="s2">&amp;#34;&lt;/span> -C &lt;span class="s2">&amp;#34;&lt;/span>&lt;span class="nv">$HOME&lt;/span>&lt;span class="s2">/Library/Containers&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">END_TIME&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$(&lt;/span>date +%s&lt;span class="k">)&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nv">DURATION&lt;/span>&lt;span class="o">=&lt;/span>&lt;span class="k">$((&lt;/span>END_TIME &lt;span class="o">-&lt;/span> START_TIME&lt;span class="k">))&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;✅ 还原完成！&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;⏱️ 耗时：&lt;/span>&lt;span class="si">${&lt;/span>&lt;span class="nv">DURATION&lt;/span>&lt;span class="si">}&lt;/span>&lt;span class="s2"> 秒（&lt;/span>&lt;span class="k">$(&lt;/span>&lt;span class="nb">printf&lt;/span> &lt;span class="s1">&amp;#39;%02d:%02d&amp;#39;&lt;/span> &lt;span class="k">$((&lt;/span>DURATION/60&lt;span class="k">))&lt;/span> &lt;span class="k">$((&lt;/span>DURATION%60&lt;span class="k">)))&lt;/span>&lt;span class="s2">）&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;span class="line">&lt;span class="cl">&lt;span class="nb">echo&lt;/span> &lt;span class="s2">&amp;#34;请打开微信检查聊天记录是否完整。&amp;#34;&lt;/span>
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/td>&lt;/tr>&lt;/table>
+&lt;/div>
+&lt;/div>&lt;p>整个过程甚至比手机聊天记录备份还原还要快多了。
+(毕竟跑满带宽的NAS传输速度还是很快的)&lt;/p>
+&lt;p>微信真的&amp;hellip;.&lt;/p>
+&lt;p>道理来说 Windows电脑也差不多是类似的，&lt;/p>
+&lt;p>不过我手上基本没在Windows上折腾了，
+自己看着来了~&lt;/p></description></item></channel></rss>
