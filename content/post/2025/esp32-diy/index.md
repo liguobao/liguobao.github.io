@@ -63,9 +63,6 @@ https://post.smzdm.com/p/aev3zw74/
 上了淘宝看了一圈，最终找了一个ESP32C3的板子。
 
 
-
-
-
 支持C口，电脑直连就完事了。
 
 什么驱动都不需要，甚至macOS也是直接能用的~
@@ -607,14 +604,13 @@ def display_text_on_tft(tft, text_content):
 
 装回去之后发现显示反了，安装位置没法改了，直接改下代码算了。
 
-
-
-
-
+![显示效果](img/post/esp32-diy/xiaoguo1.png)
+![显示效果](img/post/esp32-diy/xiaoguo2.png)
 
 
 内部走线
 
+![显示效果](img/post/esp32-diy/neibu.png)
 
 塞了个USB线进去，供电+数据传输
 
