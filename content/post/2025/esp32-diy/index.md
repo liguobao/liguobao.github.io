@@ -3,6 +3,7 @@ title: 从0开始做一个互联网主机秘钥 （基于ESP32）
 description: ESP32, 秘钥, 互联网主机
 slug: esp32-diy
 date: 2025-07-30 23:36:00+0000
+image: logo.png
 categories:
   - 人生删除指南
 tags:
@@ -605,12 +606,12 @@ def display_text_on_tft(tft, text_content):
 装回去之后发现显示反了，安装位置没法改了，直接改下代码算了。
 
 ![显示效果](img/post/esp32-diy/xiaoguo1.png)
-![显示效果](img/post/esp32-diy/xiaoguo2.png)
+![显示效果](img/post/esp32-diy/xiaoguo2.jpg)
 
 
 内部走线
 
-![显示效果](img/post/esp32-diy/neibu.png)
+![显示效果](img/post/esp32-diy/neibu.jpg)
 
 塞了个USB线进去，供电+数据传输
 
