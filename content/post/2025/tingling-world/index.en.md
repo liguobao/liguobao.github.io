@@ -1,6 +1,6 @@
 ---
-title: Tinglin Town "Past Events"
-description: Tinglin Town, Shanghai, Han Han
+title: "Tinglin Town \"Past Events\""
+description: "Tinglin Town, Shanghai, Han Han"
 slug: tingling-world
 date: 2025-03-31 12:36:00+0000
 image: logo.png

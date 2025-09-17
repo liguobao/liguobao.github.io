@@ -1,6 +1,6 @@
 ---
-title: How to Build Your IP Proxy Pool 2025 Edition
-description: Steps and precautions for building an IP proxy pool
+title: "How to Build Your IP Proxy Pool 2025 Edition"
+description: "Steps and precautions for building an IP proxy pool"
 slug: how-to-build-your-ip-proxy
 date: 2025-09-17 08:00:00+0000
 image: logo.png

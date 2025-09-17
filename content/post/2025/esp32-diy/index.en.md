@@ -1,6 +1,6 @@
 ---
-title: Starting from Scratch: Making an Internet Host Key (Based on ESP32)
-description: ESP32, Key, Internet Host
+title: "Starting from Scratch: Making an Internet Host Key (Based on ESP32)"
+description: "ESP32, Key, Internet Host"
 slug: esp32-diy
 date: 2025-07-30 23:36:00+0000
 image: logo.png

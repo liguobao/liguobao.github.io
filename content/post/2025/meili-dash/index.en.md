@@ -1,6 +1,6 @@
 ---
-title: Build meilisearch mini-dashboard static site image
-description: meilisearch, dashboard, static site
+title: "Build meilisearch mini-dashboard static site image"
+description: "meilisearch, dashboard, static site"
 slug: meili-dashboard
 date: 2025-01-16 08:00:00+0000
 image: logo.png

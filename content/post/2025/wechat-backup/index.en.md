@@ -1,6 +1,6 @@
 ---
-title: macOS Lossless Migration of PC WeChat Chat Records
-description: macOS, WeChat, Chat Records, Migration
+title: "macOS Lossless Migration of PC WeChat Chat Records"
+description: "macOS, WeChat, Chat Records, Migration"
 slug: wechat-backup
 date: 2025-06-24 23:36:00+0000
 categories:
