@@ -20,5 +20,11 @@ identifier = "zhihu"
 name = "知乎"
 url = "https://www.zhihu.com/people/codelover"
 
+
+[[social]]
+identifier = "twitter"
+name = "Twitter"
+url = "https://x.com/Liguobao2049"
+
 [social.params]
 icon = "brand-twitter"
