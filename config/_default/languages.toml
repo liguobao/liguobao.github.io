@@ -3,12 +3,12 @@ languageName = "简体中文"
 languagedirection = "ltr"
 title = "人生删除指南"
 contentdir = "content/zh"
-weight = 1
+weight = 30
 
 
-[en]
+[english]
 languageName = "English"
 languagedirection = "ltr"
 title = "Lift Deleted Guide"
 contentdir = "content/en"
-weight = 2
+weight = 100
