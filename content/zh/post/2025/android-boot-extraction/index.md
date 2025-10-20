@@ -8,7 +8,11 @@ categories:
 tags:
   - 2025
   - android
-  - boot
+  - boot.img
+  - dsu-sideloader
+  - system-squeak
+  - magisk
+  - 
 ---
 
 ## 从刷机包提取 boot.img
