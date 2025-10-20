@@ -1,6 +1,6 @@
 ---
-title: Magisk 面具安装手把手教程之一：解锁Bootloader + 提取boot.img
-description: Magisk Installation Guide Part 1: Unlocking Bootloader
+title: "Magisk 面具安装手把手教程之一：解锁Bootloader + 提取boot.img"
+description: "Magisk Installation Guide Part 1: Unlocking Bootloader"
 slug: android-magisk-install-guide-part-1-unlock-bootloader
 date: 2025-10-20 08:00:00+0000
 image: logo.png
