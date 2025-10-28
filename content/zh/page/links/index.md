@@ -27,3 +27,7 @@ comments: false
 - [地图搜租房](https://web.house2048.cn/)
 
 - [知乎专栏：编程技术向北，人生删除指南](https://zhuanlan.zhihu.com/codelover)
+
+- [寻味阿婆](https://biteup.r2049.cn/)
+
+- [Hacknical: Hacknical, hacker & technical. A website for GitHub user to make a better resume.](https://hacknical.com/)
