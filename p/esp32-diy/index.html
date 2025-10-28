@@ -1,0 +1,855 @@
+<!doctype html><html lang=zh-cn dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="ESP32, 秘钥, 互联网主机"><title>从0开始做一个互联网主机秘钥 （基于ESP32）</title><link rel=canonical href=https://liguobao.github.io/p/esp32-diy/><link rel=stylesheet href=/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css><meta property='og:title' content="从0开始做一个互联网主机秘钥 （基于ESP32）"><meta property='og:description' content="ESP32, 秘钥, 互联网主机"><meta property='og:url' content='https://liguobao.github.io/p/esp32-diy/'><meta property='og:site_name' content='人生删除指南'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='2025'><meta property='article:tag' content='ESP32'><meta property='article:tag' content='秘钥'><meta property='article:tag' content='互联网主机'><meta property='article:published_time' content='2025-07-30T23:36:00+00:00'><meta property='article:modified_time' content='2025-07-30T23:36:00+00:00'><meta property='og:image' content='https://liguobao.github.io/p/esp32-diy/logo.png'><meta name=twitter:title content="从0开始做一个互联网主机秘钥 （基于ESP32）"><meta name=twitter:description content="ESP32, 秘钥, 互联网主机"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content='https://liguobao.github.io/p/esp32-diy/logo.png'><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label=切换菜单>
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/><img src=/img/zhihu-lgb_hu_b21b612b464d8faa.png width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/>人生删除指南</a></h1><h2 class=site-description>liguobao</h2></div></header><ol class=menu-social><li><a href=https://github.com/liguobao target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://x.com/Liguobao2049 target=_blank title=Twitter rel=me><svg class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li><li><a href=https://www.zhihu.com/people/codelover target=_blank title=知乎 rel=me><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/liguobao-resume/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>About</span></a></li><li><a href=/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://liguobao.github.io/ selected>简体中文</option><option value=https://liguobao.github.io/english/>English</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>暗色模式</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">目录</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#选个硬件板子---esp32c3>选个硬件板子 -> ESP32C3</a></li><li><a href=#开发框架---micropython>开发框架 -> micropython</a></li><li><a href=#选个屏幕---225寸长条屏>选个屏幕 -> 2.25寸长条屏</a></li></ol><ol><li><a href=#主函数---屏幕初始化--适配高度宽度>主函数 -> 屏幕初始化 + 适配高度、宽度</a></li><li><a href=#多行文本显示>多行文本显示</a></li><li><a href=#总结>总结</a></li><li><a href=#后记---友情忠告>后记 -> “友情忠告”</a></li></ol></nav></div></section></aside><main class="main full-width"><article class="has-image main-article"><header class=article-header><div class=article-image><a href=/p/esp32-diy/><img src=/p/esp32-diy/logo_hu_8a0b4724f2cd0d35.png srcset="/p/esp32-diy/logo_hu_8a0b4724f2cd0d35.png 800w, /p/esp32-diy/logo_hu_cf5eabaa2d310aff.png 1600w" width=800 height=308 loading=lazy alt="Featured image of post 从0开始做一个互联网主机秘钥 （基于ESP32）"></a></div><div class=article-details><header class=article-category><a href=/categories/%E4%BA%BA%E7%94%9F%E5%88%A0%E9%99%A4%E6%8C%87%E5%8D%97/>人生删除指南</a></header><div class=article-title-wrapper><h2 class=article-title><a href=/p/esp32-diy/>从0开始做一个互联网主机秘钥 （基于ESP32）</a></h2><h3 class=article-subtitle>ESP32, 秘钥, 互联网主机</h3></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>Jul 30, 2025</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>阅读时长: 9 分钟</time></div></footer></div></header><section class=article-content><p>前阵子刷“什么值得买”的时候看到，</p><p>【流浪地球2】联名款互联网主机秘钥充电宝大甩卖了，</p><p><a class=link href=https://post.smzdm.com/p/aev3zw74/ target=_blank rel=noopener>https://post.smzdm.com/p/aev3zw74/</a></p><p>原价两三百的玩意，有故障的大概四五十块块，能用的大概80-90。</p><p>200块买个上不了飞机的充电宝是个大聪明，</p><p>90块买个联名手办还要什么自行车啊。</p><p>于是，下单搞了一个。到手了如下：</p><p>一个数码管的显示屏，下面三个按钮可以控制显示功能。</p><p>甚至还能看到充电功率和电量~</p><p>能用，很重，不适合出门。</p><p>确实就是个手办玩具。</p><p>过了两天又想了下，要不拆了这玩意，‘</p><p>把显示屏接到自己的设备上，</p><p>在设备上写个支持 Authenticator 2FA的程序，</p><p>让它做个真正的“互联网主机秘钥”设备？</p><p>说干就干。</p><p>首先就是选个硬件板子，需要小，同时能驱动显示屏。</p><p>看了一下，ESP32 很合适，IO口够用，</p><p>能驱动小显示器，能连接WIFI，</p><p>价格也便宜~</p><h2 id=选个硬件板子---esp32c3>选个硬件板子 -> ESP32C3</h2><p>上了淘宝看了一圈，最终找了一个ESP32C3的板子。</p><p>支持C口，电脑直连就完事了。</p><p>什么驱动都不需要，甚至macOS也是直接能用的~</p><h2 id=开发框架---micropython>开发框架 -> micropython</h2><p>看了一圈开发框架之后，发现还是micropython比较简单。</p><p>boot.py是框架自带的，自己的逻辑写在main.py，</p><p>IO口和网络都内部自带，需要的驱动基本都能找到第三方库。</p><p>不过，需要自己刷个固件 -> 在 ESP32 上开始使用 MicroPython。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># 安装esptool工具</span>
+</span></span><span class=line><span class=cl>pip install esptool
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 擦除设备</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## macOS or linux</span>
+</span></span><span class=line><span class=cl>esptool.py --port /dev/ttyUSB0 erase_flash
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## windows 上</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>python esptool --port COM6 erase_flash
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 按住boot键，执行刷入刷入固件 </span>
+</span></span><span class=line><span class=cl><span class=c1># 下载链接：https://micropython.org/download/ESP32_GENERIC_C3/</span>
+</span></span><span class=line><span class=cl><span class=c1># 其他的版本自己看</span>
+</span></span><span class=line><span class=cl>esptool.py --chip esp32 --port /dev/ttyUSB0 --baud <span class=m>460800</span> write_flash -z 0x0000 micropython.bin
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## Windows版本</span>
+</span></span><span class=line><span class=cl>python esptool --port COM6 --baud <span class=m>460800</span> write_flash -z 0x0000 micropython.bin
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1>## 刷入成功之后，断电重启</span>
+</span></span><span class=line><span class=cl>刷入成功之后，断电重启。
+</span></span></code></pre></td></tr></table></div></div><p>验证micropython环境</p><p>最简单的方案，VS Code Pymark 插件：Pymakr - Visual Studio Marketplace</p><p>装上去之后，在左侧栏目，点击一下“</p><p>”图标，选择“List Device”。</p><p>如果ListDevice没有出现或者报错了，</p><p>可能需要再安装一下Nodejs运行环境。（Windows上碰到过：choco install nodejs 完事。）</p><p>再点击“设备COM”，选择“连接”图标之后，在选择“终端”图标。</p><p>选择终端图标之后，能看到这个命令行界面，说明micropython环境好了。</p><p>如果看到的是报错，估计是上面的固件没有刷好。</p><p>重新尝试输入固件即可。</p><p>PS：可能需要切换&ndash;baud 460800 输入，具体的看micropython文档或者问下AI</p><p>esptool.py &ndash;chip esp32 &ndash;port /dev/ttyUSB0 &ndash;baud 460800 write_flash -z 0x0000 micropython.bin</p><h2 id=选个屏幕---225寸长条屏>选个屏幕 -> 2.25寸长条屏</h2><p>选屏幕是个大难题了。找了一圈很难找到这个规格的屏幕。</p><p>这玩意显示区域：1.8CM高，15CM宽，长条形。</p><p>在淘宝翻了一圈都没找到类似的规格。</p><p>最后退而求次：2.25寸 TFT液晶屏幕。</p><p>支持了ST7789（micropython有st7789.py驱动)。</p><p>显示屏的8P接口分表是：GND、VCC、SCL、SDA、RST、DC、CS、BL。</p><p>对着ESP32的引脚，就是在右侧一个个接进去。</p><p>ESP32的引脚分别是：GND、3.3V、GPIO02、GPIO03、GPIO02、GPIO10、GPIO06、GPIO07</p><p>对应代码：</p><h1 id=你的接线-sclsdarstdccs---gpi002gpi003gpi010gpi006gpi007>你的接线: SCL、SDA、RST、DC、CS -> GPI002、GPI003、GPI010、GPI006、GPI007</h1><p>SCK_PIN = 2 # SCL 引脚 (时钟) -> GPI002
+MOSI_PIN = 3 # SDA 引脚 (数据) -> GPI003<br>RST_PIN = 10 # RST 引脚 (复位) -> GPI010
+DC_PIN = 6 # DC 引脚 (数据/命令) -> GPI006
+CS_PIN = 7 # CS 引脚 (片选) -> GPI007</p><h1 id=->&mdash;&mdash;&mdash;&mdash;-`&mdash;&mdash;&mdash;&mdash;&ndash;</h1><p>最后屏幕的BE口接到另一个GND。（这里我也没弄懂，测试出来的</p><p>然后屏幕就点亮了。</p><p>&ldquo;开始表演&rdquo; ：项目代码
+-rw-r&ndash;r&ndash; 1 liguobao staff 6.3K 7 30 11:05 http_server.py
+-rw-r&ndash;r&ndash; 1 liguobao staff 4.3K 7 30 11:05 main.py
+-rw-r&ndash;r&ndash; 1 liguobao staff 265B 7 20 13:53 pymakr.conf
+-rw-r&ndash;r&ndash; 1 liguobao staff 1.6K 7 30 11:05 show_text.py
+-rw-r&ndash;r&ndash;@ 1 liguobao staff 30K 7 22 15:19 st7789.py
+-rw-r&ndash;r&ndash;@ 1 liguobao staff 3.6K 7 22 15:19 vga1_8x8.py</p><p>st7789和vga1 都来源于： <a class=link href=https://github.com/russhughes/st7789py_mpy/ target=_blank rel=noopener>https://github.com/russhughes/st7789py_mpy/</a></p><p>连接WIFI + 实现HTTP服务
+http_server.py</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span><span class=lnt>171
+</span><span class=lnt>172
+</span><span class=lnt>173
+</span><span class=lnt>174
+</span><span class=lnt>175
+</span><span class=lnt>176
+</span><span class=lnt>177
+</span><span class=lnt>178
+</span><span class=lnt>179
+</span><span class=lnt>180
+</span><span class=lnt>181
+</span><span class=lnt>182
+</span><span class=lnt>183
+</span><span class=lnt>184
+</span><span class=lnt>185
+</span><span class=lnt>186
+</span><span class=lnt>187
+</span><span class=lnt>188
+</span><span class=lnt>189
+</span><span class=lnt>190
+</span><span class=lnt>191
+</span><span class=lnt>192
+</span><span class=lnt>193
+</span><span class=lnt>194
+</span><span class=lnt>195
+</span><span class=lnt>196
+</span><span class=lnt>197
+</span><span class=lnt>198
+</span><span class=lnt>199
+</span><span class=lnt>200
+</span><span class=lnt>201
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>network</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>time</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>socket</span>
+</span></span><span class=line><span class=cl><span class=c1>#from show_text import display_text_on_tft</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># --- WiFi 网络配置列表 ---</span>
+</span></span><span class=line><span class=cl><span class=n>WIFI_NETWORKS</span> <span class=o>=</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span><span class=s2>&#34;ssid&#34;</span><span class=p>:</span> <span class=s2>&#34;xiaomi_505&#34;</span><span class=p>,</span> <span class=s2>&#34;password&#34;</span><span class=p>:</span> <span class=s2>&#34;密码&#34;</span><span class=p>},</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span><span class=s2>&#34;ssid&#34;</span><span class=p>:</span> <span class=s2>&#34;miaowuwu_505&#34;</span><span class=p>,</span> <span class=s2>&#34;password&#34;</span><span class=p>:</span> <span class=s2>&#34;密码&#34;</span><span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>connect_wifi</span><span class=p>(</span><span class=n>ssid</span><span class=p>,</span> <span class=n>password</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;连接到指定的 WiFi 网络&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=n>wlan</span> <span class=o>=</span> <span class=n>network</span><span class=o>.</span><span class=n>WLAN</span><span class=p>(</span><span class=n>network</span><span class=o>.</span><span class=n>STA_IF</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>wlan</span><span class=o>.</span><span class=n>active</span><span class=p>(</span><span class=kc>True</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=ow>not</span> <span class=n>wlan</span><span class=o>.</span><span class=n>isconnected</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;正在连接 WiFi: </span><span class=si>{</span><span class=n>ssid</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>wlan</span><span class=o>.</span><span class=n>connect</span><span class=p>(</span><span class=n>ssid</span><span class=p>,</span> <span class=n>password</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>_</span> <span class=ow>in</span> <span class=nb>range</span><span class=p>(</span><span class=mi>15</span><span class=p>):</span> <span class=c1># 最多等待15秒</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>wlan</span><span class=o>.</span><span class=n>isconnected</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>                <span class=n>ip_address</span> <span class=o>=</span> <span class=n>wlan</span><span class=o>.</span><span class=n>ifconfig</span><span class=p>()[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;连接成功，IP 地址: </span><span class=si>{</span><span class=n>ip_address</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span> <span class=n>ip_address</span>
+</span></span><span class=line><span class=cl>            <span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;WiFi 连接失败: </span><span class=si>{</span><span class=n>ssid</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=kc>None</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>ip_address</span> <span class=o>=</span> <span class=n>wlan</span><span class=o>.</span><span class=n>ifconfig</span><span class=p>()[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;WiFi 已连接，IP 地址: </span><span class=si>{</span><span class=n>ip_address</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>ip_address</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>connect_to_available_wifi</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;尝试连接到可用的 WiFi 网络&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;开始扫描并连接可用的 WiFi 网络...&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=n>wlan</span> <span class=o>=</span> <span class=n>network</span><span class=o>.</span><span class=n>WLAN</span><span class=p>(</span><span class=n>network</span><span class=o>.</span><span class=n>STA_IF</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>wlan</span><span class=o>.</span><span class=n>active</span><span class=p>(</span><span class=kc>True</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=c1># 如果已经连接，直接返回IP地址</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>wlan</span><span class=o>.</span><span class=n>isconnected</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>        <span class=n>ip_address</span> <span class=o>=</span> <span class=n>wlan</span><span class=o>.</span><span class=n>ifconfig</span><span class=p>()[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;WiFi 已连接，IP 地址: </span><span class=si>{</span><span class=n>ip_address</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>ip_address</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=c1># 扫描可用的WiFi网络</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;正在扫描WiFi网络...&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>networks</span> <span class=o>=</span> <span class=n>wlan</span><span class=o>.</span><span class=n>scan</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>available_ssids</span> <span class=o>=</span> <span class=p>[</span><span class=n>net</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span><span class=o>.</span><span class=n>decode</span><span class=p>(</span><span class=s1>&#39;utf-8&#39;</span><span class=p>)</span> <span class=k>for</span> <span class=n>net</span> <span class=ow>in</span> <span class=n>networks</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;扫描到的网络: </span><span class=si>{</span><span class=n>available_ssids</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=c1># 尝试连接配置中的WiFi网络</span>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>wifi_config</span> <span class=ow>in</span> <span class=n>WIFI_NETWORKS</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>ssid</span> <span class=o>=</span> <span class=n>wifi_config</span><span class=p>[</span><span class=s2>&#34;ssid&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        <span class=n>password</span> <span class=o>=</span> <span class=n>wifi_config</span><span class=p>[</span><span class=s2>&#34;password&#34;</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>ssid</span> <span class=ow>in</span> <span class=n>available_ssids</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;找到配置的网络: </span><span class=si>{</span><span class=n>ssid</span><span class=si>}</span><span class=s2>，尝试连接...&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>ip_address</span> <span class=o>=</span> <span class=n>connect_wifi</span><span class=p>(</span><span class=n>ssid</span><span class=p>,</span> <span class=n>password</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>ip_address</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span> <span class=n>ip_address</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;未找到网络: </span><span class=si>{</span><span class=n>ssid</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;无法连接到任何配置的WiFi网络&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=kc>None</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>url_decode</span><span class=p>(</span><span class=n>text</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;简单的URL解码&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;+&#39;</span><span class=p>,</span> <span class=s1>&#39; &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;%20&#39;</span><span class=p>,</span> <span class=s1>&#39; &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;%21&#39;</span><span class=p>,</span> <span class=s1>&#39;!&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;%22&#39;</span><span class=p>,</span> <span class=s1>&#39;&#34;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;%23&#39;</span><span class=p>,</span> <span class=s1>&#39;#&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;%24&#39;</span><span class=p>,</span> <span class=s1>&#39;$&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;%25&#39;</span><span class=p>,</span> <span class=s1>&#39;%&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;%26&#39;</span><span class=p>,</span> <span class=s1>&#39;&amp;&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;%27&#39;</span><span class=p>,</span> <span class=s2>&#34;&#39;&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;%28&#39;</span><span class=p>,</span> <span class=s1>&#39;(&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;%29&#39;</span><span class=p>,</span> <span class=s1>&#39;)&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;%2A&#39;</span><span class=p>,</span> <span class=s1>&#39;*&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;%2B&#39;</span><span class=p>,</span> <span class=s1>&#39;+&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;%2C&#39;</span><span class=p>,</span> <span class=s1>&#39;,&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;%2D&#39;</span><span class=p>,</span> <span class=s1>&#39;-&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;</span><span class=si>%2E</span><span class=s1>&#39;</span><span class=p>,</span> <span class=s1>&#39;.&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>text</span> <span class=o>=</span> <span class=n>text</span><span class=o>.</span><span class=n>replace</span><span class=p>(</span><span class=s1>&#39;</span><span class=si>%2F</span><span class=s1>&#39;</span><span class=p>,</span> <span class=s1>&#39;/&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>return</span> <span class=n>text</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>handle_request</span><span class=p>(</span><span class=n>tft</span><span class=p>,</span> <span class=n>conn</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;处理HTTP请求&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>try</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>request</span> <span class=o>=</span> <span class=n>conn</span><span class=o>.</span><span class=n>recv</span><span class=p>(</span><span class=mi>1024</span><span class=p>)</span><span class=o>.</span><span class=n>decode</span><span class=p>(</span><span class=s1>&#39;utf-8&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;收到请求:</span><span class=se>\n</span><span class=si>{</span><span class=n>request</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>        <span class=c1># 解析请求行</span>
+</span></span><span class=line><span class=cl>        <span class=n>lines</span> <span class=o>=</span> <span class=n>request</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>lines</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>request_line</span> <span class=o>=</span> <span class=n>lines</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>            <span class=n>parts</span> <span class=o>=</span> <span class=n>request_line</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39; &#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=nb>len</span><span class=p>(</span><span class=n>parts</span><span class=p>)</span> <span class=o>&gt;=</span> <span class=mi>2</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=n>method</span> <span class=o>=</span> <span class=n>parts</span><span class=p>[</span><span class=mi>0</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>                <span class=n>path</span> <span class=o>=</span> <span class=n>parts</span><span class=p>[</span><span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>                
+</span></span><span class=line><span class=cl>                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;方法: </span><span class=si>{</span><span class=n>method</span><span class=si>}</span><span class=s2>, 路径: </span><span class=si>{</span><span class=n>path</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=n>method</span> <span class=o>==</span> <span class=s1>&#39;GET&#39;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                    <span class=c1># 解析查询参数</span>
+</span></span><span class=line><span class=cl>                    <span class=k>if</span> <span class=s1>&#39;?&#39;</span> <span class=ow>in</span> <span class=n>path</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                        <span class=n>path_part</span><span class=p>,</span> <span class=n>query_part</span> <span class=o>=</span> <span class=n>path</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;?&#39;</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                        <span class=n>params</span> <span class=o>=</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>                        <span class=k>for</span> <span class=n>param</span> <span class=ow>in</span> <span class=n>query_part</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;&amp;&#39;</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>                            <span class=k>if</span> <span class=s1>&#39;=&#39;</span> <span class=ow>in</span> <span class=n>param</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                                <span class=n>key</span><span class=p>,</span> <span class=n>value</span> <span class=o>=</span> <span class=n>param</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;=&#39;</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                                <span class=n>params</span><span class=p>[</span><span class=n>key</span><span class=p>]</span> <span class=o>=</span> <span class=n>url_decode</span><span class=p>(</span><span class=n>value</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                        
+</span></span><span class=line><span class=cl>                        <span class=c1># 获取text参数</span>
+</span></span><span class=line><span class=cl>                        <span class=n>received_text</span> <span class=o>=</span> <span class=n>params</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=s1>&#39;text&#39;</span><span class=p>,</span> <span class=kc>None</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                    <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                        <span class=n>received_text</span> <span class=o>=</span> <span class=kc>None</span>
+</span></span><span class=line><span class=cl>                    <span class=k>if</span> <span class=ow>not</span> <span class=n>received_text</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                        <span class=n>response</span> <span class=o>=</span> <span class=s2>&#34;&#34;&#34;HTTP/1.1 400 Bad Request</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Content-Type: text/plain</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Connection: close</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2></span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Bad Request: &#39;text&#39; parameter is required&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>                        <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;请求中缺少&#39;text&#39;参数&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                        <span class=n>conn</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=n>response</span><span class=o>.</span><span class=n>encode</span><span class=p>(</span><span class=s1>&#39;utf-8&#39;</span><span class=p>))</span> 
+</span></span><span class=line><span class=cl>                        <span class=n>conn</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>                        <span class=k>return</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>                    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;从 GET 请求中提取的文本: &#39;</span><span class=si>{</span><span class=n>received_text</span><span class=si>}</span><span class=s2>&#39;&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                    <span class=n>show_text</span> <span class=o>=</span> <span class=sa>f</span><span class=s2>&#34;Received Text:</span><span class=se>\n</span><span class=si>{</span><span class=n>received_text</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>                    <span class=c1># 显示器代码</span>
+</span></span><span class=line><span class=cl>                    <span class=c1># display_text_on_tft(tft, show_text)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>                    <span class=c1># 发送成功响应</span>
+</span></span><span class=line><span class=cl>                    <span class=n>response</span> <span class=o>=</span> <span class=s2>&#34;&#34;&#34;HTTP/1.1 200 OK</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Content-Type: text/plain</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Connection: close</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2></span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Text received and displayed!&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>                <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                    <span class=c1># 方法不允许</span>
+</span></span><span class=line><span class=cl>                    <span class=n>response</span> <span class=o>=</span> <span class=s2>&#34;&#34;&#34;HTTP/1.1 405 Method Not Allowed</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Content-Type: text/plain</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Connection: close</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2></span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Method Not Allowed. Only GET is supported.&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=n>response</span> <span class=o>=</span> <span class=s2>&#34;&#34;&#34;HTTP/1.1 400 Bad Request</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Content-Type: text/plain</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Connection: close</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2></span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Bad Request&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>response</span> <span class=o>=</span> <span class=s2>&#34;&#34;&#34;HTTP/1.1 400 Bad Request</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Content-Type: text/plain</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Connection: close</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2></span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Bad Request&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>        <span class=n>conn</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=n>response</span><span class=o>.</span><span class=n>encode</span><span class=p>(</span><span class=s1>&#39;utf-8&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>    <span class=k>except</span> <span class=ne>Exception</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;处理请求时出错: </span><span class=si>{</span><span class=n>e</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>try</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>error_response</span> <span class=o>=</span> <span class=s2>&#34;&#34;&#34;HTTP/1.1 500 Internal Server Error</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Content-Type: text/plain</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Connection: close</span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2></span><span class=se>\r</span><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>Internal Server Error&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>            <span class=n>conn</span><span class=o>.</span><span class=n>send</span><span class=p>(</span><span class=n>error_response</span><span class=o>.</span><span class=n>encode</span><span class=p>(</span><span class=s1>&#39;utf-8&#39;</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>        <span class=k>except</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>pass</span>
+</span></span><span class=line><span class=cl>    <span class=k>finally</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>conn</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>start_http_server</span><span class=p>(</span><span class=n>tft</span><span class=p>,</span> <span class=n>ip_address</span><span class=p>,</span> <span class=n>port</span><span class=o>=</span><span class=mi>80</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;启动HTTP服务器&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=n>addr</span> <span class=o>=</span> <span class=n>socket</span><span class=o>.</span><span class=n>getaddrinfo</span><span class=p>(</span><span class=n>ip_address</span><span class=p>,</span> <span class=n>port</span><span class=p>)[</span><span class=mi>0</span><span class=p>][</span><span class=o>-</span><span class=mi>1</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>    <span class=n>s</span> <span class=o>=</span> <span class=n>socket</span><span class=o>.</span><span class=n>socket</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>s</span><span class=o>.</span><span class=n>setsockopt</span><span class=p>(</span><span class=n>socket</span><span class=o>.</span><span class=n>SOL_SOCKET</span><span class=p>,</span> <span class=n>socket</span><span class=o>.</span><span class=n>SO_REUSEADDR</span><span class=p>,</span> <span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>s</span><span class=o>.</span><span class=n>bind</span><span class=p>(</span><span class=n>addr</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>s</span><span class=o>.</span><span class=n>listen</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;HTTP服务器已启动，监听地址: http://</span><span class=si>{</span><span class=n>ip_address</span><span class=si>}</span><span class=s1>:</span><span class=si>{</span><span class=n>port</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>display_text_on_tft</span><span class=p>(</span><span class=n>tft</span><span class=p>,</span> <span class=sa>f</span><span class=s2>&#34;HTTP Server</span><span class=se>\n</span><span class=s2>Listening on </span><span class=si>{</span><span class=n>ip_address</span><span class=si>}</span><span class=s2>:</span><span class=si>{</span><span class=n>port</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=k>while</span> <span class=kc>True</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=k>try</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>conn</span><span class=p>,</span> <span class=n>addr</span> <span class=o>=</span> <span class=n>s</span><span class=o>.</span><span class=n>accept</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s1>&#39;客户端连接来自: </span><span class=si>{</span><span class=n>addr</span><span class=si>}</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>handle_request</span><span class=p>(</span><span class=n>tft</span><span class=p>,</span> <span class=n>conn</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>except</span> <span class=ne>KeyboardInterrupt</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;服务器停止&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=k>break</span>
+</span></span><span class=line><span class=cl>        <span class=k>except</span> <span class=ne>Exception</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;服务器错误: </span><span class=si>{</span><span class=n>e</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    
+</span></span><span class=line><span class=cl>    <span class=n>s</span><span class=o>.</span><span class=n>close</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=主函数---屏幕初始化--适配高度宽度>主函数 -> 屏幕初始化 + 适配高度、宽度</h2><ul><li>main.py</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>import</span> <span class=nn>network</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>time</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>socket</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>machine</span> <span class=kn>import</span> <span class=n>Pin</span><span class=p>,</span> <span class=n>SPI</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>vga1_8x8</span> <span class=k>as</span> <span class=nn>font</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>st7789</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>show_text</span> <span class=kn>import</span> <span class=n>display_text_on_tft</span>
+</span></span><span class=line><span class=cl><span class=kn>from</span> <span class=nn>http_server</span> <span class=kn>import</span> <span class=n>connect_to_available_wifi</span><span class=p>,</span> <span class=n>handle_request</span><span class=p>,</span> <span class=n>start_http_server</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># --------------------------</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># --- ST7789 显示屏引脚定义 ---</span>
+</span></span><span class=line><span class=cl><span class=c1># 你的接线: SCL、SDA、RST、DC、CS -&gt; GPI002、GPI003、GPI010、GPI006、GPI007</span>
+</span></span><span class=line><span class=cl><span class=n>SCK_PIN</span>  <span class=o>=</span> <span class=mi>2</span>   <span class=c1># SCL 引脚 (时钟) -&gt; GPI002</span>
+</span></span><span class=line><span class=cl><span class=n>MOSI_PIN</span> <span class=o>=</span> <span class=mi>3</span>   <span class=c1># SDA 引脚 (数据) -&gt; GPI003  </span>
+</span></span><span class=line><span class=cl><span class=n>RST_PIN</span>  <span class=o>=</span> <span class=mi>10</span>  <span class=c1># RST 引脚 (复位) -&gt; GPI010</span>
+</span></span><span class=line><span class=cl><span class=n>DC_PIN</span>   <span class=o>=</span> <span class=mi>6</span>   <span class=c1># DC 引脚 (数据/命令) -&gt; GPI006</span>
+</span></span><span class=line><span class=cl><span class=n>CS_PIN</span>   <span class=o>=</span> <span class=mi>7</span>   <span class=c1># CS 引脚 (片选) -&gt; GPI007</span>
+</span></span><span class=line><span class=cl><span class=c1># -------------`--------------</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 初始化TFT对象</span>
+</span></span><span class=line><span class=cl><span class=n>spi</span> <span class=o>=</span> <span class=n>SPI</span><span class=p>(</span><span class=mi>1</span><span class=p>,</span> <span class=n>baudrate</span><span class=o>=</span><span class=mi>10000000</span><span class=p>,</span> <span class=n>polarity</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>phase</span><span class=o>=</span><span class=mi>0</span><span class=p>,</span> <span class=n>sck</span><span class=o>=</span><span class=n>Pin</span><span class=p>(</span><span class=n>SCK_PIN</span><span class=p>),</span> <span class=n>mosi</span><span class=o>=</span><span class=n>Pin</span><span class=p>(</span><span class=n>MOSI_PIN</span><span class=p>))</span>
+</span></span><span class=line><span class=cl><span class=n>dc</span> <span class=o>=</span> <span class=n>Pin</span><span class=p>(</span><span class=n>DC_PIN</span><span class=p>,</span> <span class=n>Pin</span><span class=o>.</span><span class=n>OUT</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>rst</span> <span class=o>=</span> <span class=n>Pin</span><span class=p>(</span><span class=n>RST_PIN</span><span class=p>,</span> <span class=n>Pin</span><span class=o>.</span><span class=n>OUT</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>cs</span> <span class=o>=</span> <span class=n>Pin</span><span class=p>(</span><span class=n>CS_PIN</span><span class=p>,</span> <span class=n>Pin</span><span class=o>.</span><span class=n>OUT</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 确保CS引脚初始状态</span>
+</span></span><span class=line><span class=cl><span class=n>cs</span><span class=o>.</span><span class=n>value</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mf>0.01</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 硬件复位序列</span>
+</span></span><span class=line><span class=cl><span class=n>rst</span><span class=o>.</span><span class=n>value</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mf>0.01</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>rst</span><span class=o>.</span><span class=n>value</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mf>0.01</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>rst</span><span class=o>.</span><span class=n>value</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl><span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mf>0.12</span><span class=p>)</span>  <span class=c1># 等待复位完成</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>test_display_basic</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;基础显示测试函数&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;开始基础显示测试...&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># 手动发送基础命令测试</span>
+</span></span><span class=line><span class=cl>    <span class=k>def</span> <span class=nf>send_command</span><span class=p>(</span><span class=n>cmd</span><span class=p>,</span> <span class=n>data</span><span class=o>=</span><span class=kc>None</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>        <span class=n>cs</span><span class=o>.</span><span class=n>value</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>dc</span><span class=o>.</span><span class=n>value</span><span class=p>(</span><span class=mi>0</span><span class=p>)</span>  <span class=c1># 命令模式</span>
+</span></span><span class=line><span class=cl>        <span class=n>spi</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=n>cmd</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>data</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>dc</span><span class=o>.</span><span class=n>value</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>  <span class=c1># 数据模式</span>
+</span></span><span class=line><span class=cl>            <span class=n>spi</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=n>data</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>cs</span><span class=o>.</span><span class=n>value</span><span class=p>(</span><span class=mi>1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mf>0.01</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;发送基础初始化命令...&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>send_command</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x01</span><span class=s1>&#39;</span><span class=p>)</span>  <span class=c1># 软件复位</span>
+</span></span><span class=line><span class=cl>    <span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mf>0.15</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>send_command</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x11</span><span class=s1>&#39;</span><span class=p>)</span>  <span class=c1># 退出睡眠</span>
+</span></span><span class=line><span class=cl>    <span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mf>0.12</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>send_command</span><span class=p>(</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x29</span><span class=s1>&#39;</span><span class=p>)</span>  <span class=c1># 显示开启</span>
+</span></span><span class=line><span class=cl>    <span class=n>time</span><span class=o>.</span><span class=n>sleep</span><span class=p>(</span><span class=mf>0.1</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;基础测试完成&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>init_st7789_display</span><span class=p>(</span><span class=n>st_width</span><span class=p>,</span> <span class=n>st_height</span><span class=p>,</span> <span class=n>rotation</span><span class=o>=</span><span class=mi>1</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;初始化 ST7789 显示屏&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;初始化 ST7789 显示屏: </span><span class=si>{</span><span class=n>st_width</span><span class=si>}</span><span class=s2>x</span><span class=si>{</span><span class=n>st_height</span><span class=si>}</span><span class=s2>, 旋转: </span><span class=si>{</span><span class=n>rotation</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>tft</span> <span class=o>=</span> <span class=n>st7789</span><span class=o>.</span><span class=n>ST7789</span><span class=p>(</span><span class=n>spi</span><span class=p>,</span> <span class=n>st_width</span><span class=p>,</span> <span class=n>st_height</span><span class=p>,</span> <span class=n>reset</span><span class=o>=</span><span class=n>rst</span><span class=p>,</span> <span class=n>cs</span><span class=o>=</span><span class=n>cs</span><span class=p>,</span> <span class=n>dc</span><span class=o>=</span><span class=n>dc</span><span class=p>,</span> <span class=n>rotation</span><span class=o>=</span><span class=n>rotation</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># rotation 对应 MADCTL 的 x36 寄存器值</span>
+</span></span><span class=line><span class=cl>    <span class=n>rotation_to_x36</span> <span class=o>=</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=mi>0</span><span class=p>:</span> <span class=mh>0x00</span><span class=p>,</span>  <span class=c1># 默认竖屏</span>
+</span></span><span class=line><span class=cl>        <span class=mi>1</span><span class=p>:</span> <span class=mh>0x60</span><span class=p>,</span>  <span class=c1># 顺时针90度，横屏</span>
+</span></span><span class=line><span class=cl>        <span class=mi>2</span><span class=p>:</span> <span class=mh>0xC0</span><span class=p>,</span>  <span class=c1># 180度旋转</span>
+</span></span><span class=line><span class=cl>        <span class=mi>3</span><span class=p>:</span> <span class=mh>0xA0</span><span class=p>,</span>  <span class=c1># 顺时针270度</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=n>x36_value</span> <span class=o>=</span> <span class=n>rotation_to_x36</span><span class=o>.</span><span class=n>get</span><span class=p>(</span><span class=n>rotation</span><span class=p>,</span> <span class=mh>0x00</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;内存访问控制值: </span><span class=si>{</span><span class=n>x36_value</span><span class=si>:</span><span class=s2>#04x</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># 根据 rotation 选择列地址和行地址范围</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=n>rotation</span> <span class=o>%</span> <span class=mi>2</span> <span class=o>==</span> <span class=mi>0</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>col_start</span><span class=p>,</span> <span class=n>col_end</span> <span class=o>=</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>75</span>    <span class=c1># width - 1</span>
+</span></span><span class=line><span class=cl>        <span class=n>row_start</span><span class=p>,</span> <span class=n>row_end</span> <span class=o>=</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>283</span>   <span class=c1># height - 1</span>
+</span></span><span class=line><span class=cl>    <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>col_start</span><span class=p>,</span> <span class=n>col_end</span> <span class=o>=</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>283</span>
+</span></span><span class=line><span class=cl>        <span class=n>row_start</span><span class=p>,</span> <span class=n>row_end</span> <span class=o>=</span> <span class=mi>0</span><span class=p>,</span> <span class=mi>75</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>init_commands</span> <span class=o>=</span> <span class=p>[</span>
+</span></span><span class=line><span class=cl>        <span class=p>(</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x01</span><span class=s1>&#39;</span><span class=p>,</span> <span class=kc>None</span><span class=p>,</span> <span class=mi>150</span><span class=p>),</span>  <span class=c1># 软件复位</span>
+</span></span><span class=line><span class=cl>        <span class=p>(</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x11</span><span class=s1>&#39;</span><span class=p>,</span> <span class=kc>None</span><span class=p>,</span> <span class=mi>120</span><span class=p>),</span>  <span class=c1># 退出睡眠模式</span>
+</span></span><span class=line><span class=cl>        <span class=p>(</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x3A</span><span class=s1>&#39;</span><span class=p>,</span> <span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x05</span><span class=s1>&#39;</span><span class=p>,</span> <span class=mi>10</span><span class=p>),</span>  <span class=c1># 设置像素格式 RGB565</span>
+</span></span><span class=line><span class=cl>        <span class=p>(</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x36</span><span class=s1>&#39;</span><span class=p>,</span> <span class=nb>bytes</span><span class=p>([</span><span class=n>x36_value</span><span class=p>]),</span> <span class=mi>10</span><span class=p>),</span>  <span class=c1># 内存访问控制</span>
+</span></span><span class=line><span class=cl>        <span class=p>(</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x2A</span><span class=s1>&#39;</span><span class=p>,</span> <span class=n>col_start</span><span class=o>.</span><span class=n>to_bytes</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=s1>&#39;big&#39;</span><span class=p>)</span> <span class=o>+</span> <span class=n>col_end</span><span class=o>.</span><span class=n>to_bytes</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=s1>&#39;big&#39;</span><span class=p>),</span> <span class=mi>10</span><span class=p>),</span>  <span class=c1># 列地址设置</span>
+</span></span><span class=line><span class=cl>        <span class=p>(</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x2B</span><span class=s1>&#39;</span><span class=p>,</span> <span class=n>row_start</span><span class=o>.</span><span class=n>to_bytes</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=s1>&#39;big&#39;</span><span class=p>)</span> <span class=o>+</span> <span class=n>row_end</span><span class=o>.</span><span class=n>to_bytes</span><span class=p>(</span><span class=mi>2</span><span class=p>,</span> <span class=s1>&#39;big&#39;</span><span class=p>),</span> <span class=mi>10</span><span class=p>),</span>  <span class=c1># 行地址设置</span>
+</span></span><span class=line><span class=cl>        <span class=p>(</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x21</span><span class=s1>&#39;</span><span class=p>,</span> <span class=kc>None</span><span class=p>,</span> <span class=mi>10</span><span class=p>),</span>  <span class=c1># 显示反转</span>
+</span></span><span class=line><span class=cl>        <span class=p>(</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x13</span><span class=s1>&#39;</span><span class=p>,</span> <span class=kc>None</span><span class=p>,</span> <span class=mi>10</span><span class=p>),</span>  <span class=c1># 正常显示</span>
+</span></span><span class=line><span class=cl>        <span class=p>(</span><span class=sa>b</span><span class=s1>&#39;</span><span class=se>\x29</span><span class=s1>&#39;</span><span class=p>,</span> <span class=kc>None</span><span class=p>,</span> <span class=mi>100</span><span class=p>),</span>  <span class=c1># 显示开启</span>
+</span></span><span class=line><span class=cl>    <span class=p>]</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>tft</span><span class=o>.</span><span class=n>init</span><span class=p>(</span><span class=n>init_commands</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;init_commands finished&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>test_display_basic</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># 测试像素显示</span>
+</span></span><span class=line><span class=cl>    <span class=k>try</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=n>tft</span><span class=o>.</span><span class=n>pixel</span><span class=p>(</span><span class=mi>0</span><span class=p>,</span> <span class=mi>0</span><span class=p>,</span> <span class=mh>0xFFFF</span><span class=p>)</span>  <span class=c1># 左上角</span>
+</span></span><span class=line><span class=cl>        <span class=n>tft</span><span class=o>.</span><span class=n>pixel</span><span class=p>(</span><span class=n>st_width</span> <span class=o>//</span> <span class=mi>2</span><span class=p>,</span> <span class=n>st_height</span> <span class=o>//</span> <span class=mi>2</span><span class=p>,</span> <span class=mh>0xF800</span><span class=p>)</span>  <span class=c1># 中心点红色</span>
+</span></span><span class=line><span class=cl>        <span class=n>tft</span><span class=o>.</span><span class=n>pixel</span><span class=p>(</span><span class=n>st_width</span> <span class=o>-</span> <span class=mi>1</span><span class=p>,</span> <span class=n>st_height</span> <span class=o>-</span> <span class=mi>1</span><span class=p>,</span> <span class=mh>0xFFFF</span><span class=p>)</span>  <span class=c1># 右下角</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;</span><span class=si>{</span><span class=n>st_width</span><span class=si>}</span><span class=s2>x</span><span class=si>{</span><span class=n>st_height</span><span class=si>}</span><span class=s2> 显示区域设置成功&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>tft</span>
+</span></span><span class=line><span class=cl>    <span class=k>except</span> <span class=ne>Exception</span> <span class=k>as</span> <span class=n>e</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;显示测试失败: </span><span class=si>{</span><span class=n>e</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=kc>None</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 135 x 240 显示屏的初始化</span>
+</span></span><span class=line><span class=cl><span class=c1># 这里假设你使用的是 ST7789 显示屏，分辨率为 135x240</span>
+</span></span><span class=line><span class=cl><span class=c1># 如果你使用的是其他型号，请根据实际情况调整参数</span>
+</span></span><span class=line><span class=cl><span class=n>ST_WIDTH</span> <span class=o>=</span> <span class=mi>240</span>  <span class=c1># 驱动内部理解为 width，但实际在横屏时变成了 height</span>
+</span></span><span class=line><span class=cl><span class=n>ST_HEIGHT</span> <span class=o>=</span> <span class=mi>320</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># 初始化TFT对象</span>
+</span></span><span class=line><span class=cl><span class=n>tft</span> <span class=o>=</span> <span class=n>init_st7789_display</span><span class=p>(</span><span class=n>ST_WIDTH</span><span class=p>,</span> <span class=n>ST_HEIGHT</span><span class=p>,</span> <span class=mi>3</span><span class=p>)</span>  <span class=c1># 旋转 3 表示顺时针 270 度</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>main</span><span class=p>():</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;主程序入口&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;--- ESP32-C3 ---&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>tft</span><span class=o>.</span><span class=n>fill</span><span class=p>(</span><span class=n>st7789</span><span class=o>.</span><span class=n>BLACK</span><span class=p>)</span>  <span class=c1># 黑色背景</span>
+</span></span><span class=line><span class=cl>    <span class=n>display_text_on_tft</span><span class=p>(</span><span class=n>tft</span><span class=p>,</span> <span class=s2>&#34;ESP32-C3 TFT Display</span><span class=se>\n</span><span class=s2>Ready to receive text...&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>ip_address</span> <span class=o>=</span> <span class=n>connect_to_available_wifi</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>    <span class=n>start_http_server</span><span class=p>(</span><span class=n>tft</span><span class=p>,</span> <span class=n>ip_address</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>if</span> <span class=vm>__name__</span> <span class=o>==</span> <span class=s2>&#34;__main__&#34;</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>    <span class=n>main</span><span class=p>()</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=多行文本显示>多行文本显示</h2><ul><li>show_text.py</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=kn>from</span> <span class=nn>machine</span> <span class=kn>import</span> <span class=n>Pin</span><span class=p>,</span> <span class=n>SPI</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>vga1_8x8</span> <span class=k>as</span> <span class=nn>font</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>st7789</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>display_text_on_tft</span><span class=p>(</span><span class=n>tft</span><span class=p>,</span> <span class=n>text_content</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;在 TFT 显示屏上显示文本内容（5行，35字符限制，行起点x=20）&#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=k>if</span> <span class=ow>not</span> <span class=n>tft</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=nb>print</span><span class=p>(</span><span class=s2>&#34;错误: TFT 显示屏未初始化。&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>tft</span><span class=o>.</span><span class=n>fill</span><span class=p>(</span><span class=n>st7789</span><span class=o>.</span><span class=n>BLACK</span><span class=p>)</span>  <span class=c1># 黑底</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1># 标题栏</span>
+</span></span><span class=line><span class=cl>    <span class=n>tft</span><span class=o>.</span><span class=n>text</span><span class=p>(</span><span class=n>font</span><span class=p>,</span> <span class=s2>&#34;Received Text:&#34;</span><span class=p>,</span> <span class=mi>20</span><span class=p>,</span> <span class=mi>2</span><span class=p>,</span> <span class=mh>0x07FF</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>tft</span><span class=o>.</span><span class=n>text</span><span class=p>(</span><span class=n>font</span><span class=p>,</span> <span class=s2>&#34;-&#34;</span> <span class=o>*</span> <span class=mi>35</span><span class=p>,</span> <span class=mi>20</span><span class=p>,</span> <span class=mi>12</span><span class=p>,</span> <span class=mh>0x07FF</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>x_offset</span> <span class=o>=</span> <span class=mi>20</span>  <span class=c1># 每行起点x坐标修改为20</span>
+</span></span><span class=line><span class=cl>    <span class=n>max_chars_per_line</span> <span class=o>=</span> <span class=mi>35</span>
+</span></span><span class=line><span class=cl>    <span class=n>y_start</span> <span class=o>=</span> <span class=mi>85</span>  <span class=c1># 每行起点y坐标修改为85</span>
+</span></span><span class=line><span class=cl>    <span class=n>line_height</span> <span class=o>=</span> <span class=n>font</span><span class=o>.</span><span class=n>HEIGHT</span> <span class=o>+</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>    <span class=n>max_lines</span> <span class=o>=</span> <span class=mi>5</span>  <span class=c1># 只显示5行</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=n>lines</span> <span class=o>=</span> <span class=n>text_content</span><span class=o>.</span><span class=n>split</span><span class=p>(</span><span class=s1>&#39;</span><span class=se>\n</span><span class=s1>&#39;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=n>line_count</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=k>for</span> <span class=n>line</span> <span class=ow>in</span> <span class=n>lines</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=k>while</span> <span class=nb>len</span><span class=p>(</span><span class=n>line</span><span class=p>)</span> <span class=o>&gt;</span> <span class=n>max_chars_per_line</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>line_count</span> <span class=o>&lt;</span> <span class=n>max_lines</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=n>y_offset</span> <span class=o>=</span> <span class=n>y_start</span> <span class=o>+</span> <span class=n>line_count</span> <span class=o>*</span> <span class=n>line_height</span>
+</span></span><span class=line><span class=cl>                <span class=n>line_text</span> <span class=o>=</span> <span class=n>line</span><span class=p>[:</span><span class=n>max_chars_per_line</span><span class=p>]</span>
+</span></span><span class=line><span class=cl>                <span class=nb>print</span><span class=p>(</span><span class=sa>f</span><span class=s2>&#34;显示行: </span><span class=si>{</span><span class=n>line_text</span><span class=si>}</span><span class=s2> at y=</span><span class=si>{</span><span class=n>y_offset</span><span class=si>}</span><span class=s2>&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=n>tft</span><span class=o>.</span><span class=n>text</span><span class=p>(</span><span class=n>font</span><span class=p>,</span> <span class=n>line_text</span><span class=p>,</span> <span class=n>x_offset</span><span class=p>,</span> <span class=n>y_offset</span><span class=p>,</span> <span class=n>st7789</span><span class=o>.</span><span class=n>WHITE</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=n>line</span> <span class=o>=</span> <span class=n>line</span><span class=p>[</span><span class=n>max_chars_per_line</span><span class=p>:]</span>
+</span></span><span class=line><span class=cl>                <span class=n>line_count</span> <span class=o>+=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>            <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=c1># 行数用完，显示提示</span>
+</span></span><span class=line><span class=cl>                <span class=n>tft</span><span class=o>.</span><span class=n>text</span><span class=p>(</span><span class=n>font</span><span class=p>,</span> <span class=s2>&#34;... (more)&#34;</span><span class=p>,</span> <span class=n>x_offset</span><span class=p>,</span> <span class=n>y_start</span> <span class=o>+</span> <span class=p>(</span><span class=n>max_lines</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span> <span class=o>*</span> <span class=n>line_height</span><span class=p>,</span> <span class=mh>0xF800</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=k>if</span> <span class=n>line_count</span> <span class=o>&lt;</span> <span class=n>max_lines</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>tft</span><span class=o>.</span><span class=n>text</span><span class=p>(</span><span class=n>font</span><span class=p>,</span> <span class=n>line</span><span class=p>,</span> <span class=n>x_offset</span><span class=p>,</span> <span class=n>y_start</span> <span class=o>+</span> <span class=n>line_count</span> <span class=o>*</span> <span class=n>line_height</span><span class=p>,</span> <span class=n>st7789</span><span class=o>.</span><span class=n>WHITE</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>line_count</span> <span class=o>+=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>        <span class=k>else</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=n>tft</span><span class=o>.</span><span class=n>text</span><span class=p>(</span><span class=n>font</span><span class=p>,</span> <span class=s2>&#34;... (more)&#34;</span><span class=p>,</span> <span class=n>x_offset</span><span class=p>,</span> <span class=n>y_start</span> <span class=o>+</span> <span class=p>(</span><span class=n>max_lines</span> <span class=o>-</span> <span class=mi>1</span><span class=p>)</span> <span class=o>*</span> <span class=n>line_height</span><span class=p>,</span> <span class=mh>0xF800</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span>
+</span></span></code></pre></td></tr></table></div></div><p>最终效果</p><p>装回去之后发现显示反了，安装位置没法改了，直接改下代码算了。</p><p><img src=/img/post/esp32-diy/xiaoguo1.png loading=lazy alt=显示效果>
+<img src=/img/post/esp32-diy/xiaoguo2.jpg loading=lazy alt=显示效果></p><p>内部走线</p><p><img src=/img/post/esp32-diy/neibu.jpg loading=lazy alt=显示效果></p><p>塞了个USB线进去，供电+数据传输</p><h2 id=总结>总结</h2><p>因为屏幕尺寸和驱动支持的尺寸不那么匹配，最后采用的方案是代码逻辑上实现裁剪。</p><p>又因为屏幕尺寸翻转的时候需要更改内存地址，折腾这个搞了很久。</p><p>其他的代码倒都是不断试错验证，没太大的问题。</p><h2 id=后记---友情忠告>后记 -> “友情忠告”</h2><p>该设备组装是靠着固体胶水和卡扣，</p><p>不存在后期拆装的可能。</p><p>一切的拆装都基于暴力和破坏。</p><p>所以：</p><p>这玩意的拆卸是“有损方案”，不存在无损拆装改造。</p><p>这玩意的拆卸是“有损方案”，不存在无损拆装改造。</p><p>这玩意的拆卸是“有损方案”，不存在无损拆装改造。</p><p>内部屏幕没找到适配的IC驱动板，</p><p>左右两侧一共四个电源线焊接不那么牢固，</p><p>拆装过程很容易断开，</p><p>正常情况下很难复用这玩意</p><p>（有朋友有方案可以滴滴我。</p><p>电池拆装有起火风险，请谨慎操作。</p><p>电池拆装有起火风险，请谨慎操作。</p><p>电池拆装有起火风险，请谨慎操作。</p><p>最后。</p><p>祝玩得开心~</p><p>资料连接：</p><ul><li><a class=link href=https://github.com/russhughes/st7789py_mpy/ target=_blank rel=noopener>https://github.com/russhughes/st7789py_mpy/</a></li></ul></section><footer class=article-footer><section class=article-tags><a href=/tags/2025/>2025</a>
+<a href=/tags/esp32/>ESP32</a>
+<a href=/tags/%E7%A7%98%E9%92%A5/>秘钥</a>
+<a href=/tags/%E4%BA%92%E8%81%94%E7%BD%91%E4%B8%BB%E6%9C%BA/>互联网主机</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section><section class=article-lastmod><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<span>最后更新于 Jul 30, 2025 23:36 UTC</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>相关文章</h2><div class=related-content><div class="flex article-list--tile"><article class=has-image><a href=/p/bite-up-website/><div class=article-image><img src=/p/bite-up-website/cover.25dd5e4b7fe9580ae01a5d698de67e3a_hu_574a1b317dd505e0.png width=250 height=150 loading=lazy alt="Featured image of post 寻味阿婆：跟着 Up 主吃吃喝喝~" data-key=bite-up-website data-hash="md5-Jd1eS3/pWArgGl1pjeZ+Og=="></div><div class=article-details><h2 class=article-title>寻味阿婆：跟着 Up 主吃吃喝喝~</h2></div></a></article><article><a href=/p/wechat-backup/><div class=article-details><h2 class=article-title>macOS无损迁移PC微信聊天记录</h2></div></a></article><article class=has-image><a href=/p/tingling-world/><div class=article-image><img src=/p/tingling-world/logo.be98a8c952b8d99738458233989bb8ca_hu_2379f234b4819ac2.png width=250 height=150 loading=lazy alt="Featured image of post 亭林镇“往事”" data-key=tingling-world data-hash="md5-vpioyVK42Zc4RYIzmJu4yg=="></div><div class=article-details><h2 class=article-title>亭林镇“往事”</h2></div></a></article></div></div></aside><script src=https://utteranc.es/client.js repo=liguobao/liguobao.github.io issue-term=title crossorigin=anonymous async></script><style>.utterances{max-width:unset}</style><script>let utterancesLoaded=!1;function setUtterancesTheme(e){let t=document.querySelector(".utterances iframe");t&&t.contentWindow.postMessage({type:"set-theme",theme:`github-${e}`},"https://utteranc.es")}addEventListener("message",e=>{if(e.origin!=="https://utteranc.es")return;utterancesLoaded=!0,setUtterancesTheme(document.documentElement.dataset.scheme)}),window.addEventListener("onColorSchemeChange",e=>{if(!utterancesLoaded)return;setUtterancesTheme(e.detail)})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2025 人生删除指南</section><section class=powerby>使用 <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a> 构建<br>主题 <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.30.0>Stack</a></b> 由 <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a> 设计</section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>
