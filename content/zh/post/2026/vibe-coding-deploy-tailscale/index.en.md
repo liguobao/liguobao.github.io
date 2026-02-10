@@ -2,8 +2,8 @@
 title: Who Doesn't Want Their Own Tailscale Private Network?
 description: This article explains how to deploy Tailscale using Vibe Coding to achieve cross-LAN routing, enabling convenient remote access and device management.
 slug: vibe-coding-deploy-tailscale
-date: 2026-02-10 08:00:00+0000
-# image: girl.png
+date: 2026-02-09 08:00:00+0000
+image: logo.png
 categories:
   - linux
 tags:
