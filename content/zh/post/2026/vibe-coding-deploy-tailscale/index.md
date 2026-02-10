@@ -1,5 +1,5 @@
 ---
-title: 谁不想要自己的Tailscale内网路由呢~
+title: 谁不想要自己的Tailscale内网呢~
 description: 本文介绍如何使用Vibe Coding在部署Tailscale，实现跨内网路由，方便远程访问和管理设备。
 slug: vibe-coding-deploy-tailscale
 date: 2026-02-10 08:00:00+0000
