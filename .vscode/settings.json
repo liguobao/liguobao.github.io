@@ -1,3 +1,7 @@
 {
-  "cSpell.words": ["Fastboot", "playload"]
+  "cSpell.words": ["Fastboot", "playload"],
+  "cSpell.enabled": false,
+  "cSpell.enableFiletypes": {
+    "markdown": false
+  }
 }
