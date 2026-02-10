@@ -3,7 +3,7 @@ title: "Unitree G1 Portable Development Guide: Raspberry Pi-based Development En
 description: This document explains how to perform portable development for the Unitree G1 robot on a Raspberry Pi, covering environment setup, obtaining the code, and basic operation steps.
 slug: unitree-g1-develop-on-raspberry-pi
 date: 2026-01-24 08:00:00+0000
-image: logo.jpg
+image: logo.png
 categories:
   - linux
 tags:
