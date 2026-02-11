@@ -47,15 +47,4 @@ jobs:
                   folder: public
                   clean: true
                   single-commit: true
-            - name: rsync code-lover-link
-              uses: burnett01/rsync-deployments@4.1
-              with:
-              # 这里是 rsync 的参数 switches: -avzh --delete --exclude="" --include="" --filter=""
-                switches: -avzh
-                path: ./public/*
-                remote_path: /data/www/code-lover-blog/
-                remote_host: codelover.link
-                remote_port: 22
-                remote_user: root
-                remote_key: ${{ secrets.LGB_HOME }}
   
