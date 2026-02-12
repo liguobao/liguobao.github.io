@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Github on 人生删除指南</title><link>https://liguobao.github.io/zh/categories/github/</link><description>Recent content in Github on 人生删除指南</description><generator>Hugo -- gohugo.io</generator><language>zh</language><lastBuildDate>Tue, 19 Dec 2023 13:34:08 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/zh/categories/github/index.xml" rel="self" type="application/rss+xml"/><item><title>如何配置Github Page页面</title><link>https://liguobao.github.io/zh/p/how-to-set-github-page/</link><pubDate>Tue, 19 Dec 2023 13:34:08 +0000</pubDate><guid>https://liguobao.github.io/zh/p/how-to-set-github-page/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/how-to-set-github-page/cover.png" alt="Featured image of post 如何配置Github Page页面" /&gt;&lt;p&gt;具体教程：&lt;a class="link" href="https://docs.github.com/zh/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener"
+&gt;配置 GitHub Pages 站点的发布源&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;重点是：&lt;/p&gt;
+&lt;p&gt;设置对应仓库的分支。&lt;/p&gt;
+&lt;p&gt;一般我们使用Hugo之类的模板，&lt;/p&gt;
+&lt;p&gt;都是生成了一个public 静态文件夹的。&lt;/p&gt;
+&lt;p&gt;然后使用Github Action生成静态文件，&lt;/p&gt;
+&lt;p&gt;一般是发布到当前任务的独立分支。&lt;/p&gt;
+&lt;h2 id="我的例子"&gt;我的例子
+&lt;/h2&gt;&lt;p&gt;我的仓库是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/liguobao/liguobao.github.io" target="_blank" rel="noopener"
+&gt;iguobao/liguobao.github.io&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;主分支 &lt;a class="link" href="https://github.com/liguobao/liguobao.github.io" target="_blank" rel="noopener"
+&gt;master&lt;/a&gt; 就是我的配置和文章，&lt;/p&gt;
+&lt;p&gt;静态文件分支是：&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://github.com/liguobao/liguobao.github.io/tree/gh-pages" target="_blank" rel="noopener"
+&gt;liguobao.github.io/tree/gh-pages&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这个时候，就需要在&lt;/p&gt;
+&lt;p&gt;Github 项目中 settings/pages 设置我的 &amp;ldquo;Your GitHub Pages site&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;分支为 gh-pages&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://liguobao.github.io/zh/p/how-to-set-github-page/cover.png"
+width="2402"
+height="1400"
+srcset="https://liguobao.github.io/zh/p/how-to-set-github-page/cover_hu_5edf6d8284d1030a.png 480w, https://liguobao.github.io/zh/p/how-to-set-github-page/cover_hu_2772a3d9c5fa417a.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="171"
+data-flex-basis="411px"
+&gt;&lt;/p&gt;
+&lt;p&gt;然后。&lt;/p&gt;
+&lt;p&gt;完事。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Photo by &lt;a class="link" href="https://unsplash.com/@pawel_czerwinski" target="_blank" rel="noopener"
+&gt;Pawel Czerwinski&lt;/a&gt; on &lt;a class="link" href="https://unsplash.com/" target="_blank" rel="noopener"
+&gt;Unsplash&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;</description></item></channel></rss>

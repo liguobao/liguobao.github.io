@@ -1,0 +1,249 @@
+<!doctype html><html lang=zh dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="年轻人的第一个OAuth2.0 Server:hydra hydra 是什么呢?\nOpenID Connect certified OAuth2 Server - cloud native, security-first, open source API security for your infrastructure. Written in Go. SDKs for any language. 讲人话的话就是一个OAuth2.0的服务端框架咯,开箱即用.\nOAuth是撒? QQ互联知道么?微信授权登录知道么?\n扩展阅读:理解OAuth 2.0:阮一峰\n开源地址:https://github.com/ory/hydra\n文档地址:https://www.ory.sh/docs/guides/master/hydra/\n本文结束&mldr;\n开始手把手教你跑hydra server 全程Docker部署,请自行准备相关环境. 准备PostgreSQL 数据库/MySQL数据库 hydra支持PostgreSQL/MySQL,任君选择.\n官网指导教程使用的是PostgreSQL,下面我也抄过来了,同时提供MySQL的相关操作.\n启动数据库啦!!!\n哦,启动之前先创建一个docker 网络.\n1 docker network create hydraguide 启动 PostgreSQL,如下\n1 2 3 4 5 6 7 docker run \\ --network hydraguide \\ --name ory-hydra-example--postgres \\ -e POSTGRES_USER=hydra \\ -e POSTGRES_PASSWORD=secret \\ -e POSTGRES_DB=hydra \\ -d postgres:9.6 或者启动MySQL\n"><title>每周开源项目分享-年轻人的第一个OAuth2.0 Server:hydra</title><link rel=canonical href=https://liguobao.github.io/zh/p/%E6%AF%8F%E5%91%A8%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%88%86%E4%BA%AB-%E5%B9%B4%E8%BD%BB%E4%BA%BA%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAoauth2.0-serverhydra/><link rel=stylesheet href=/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css><meta property='og:title' content="每周开源项目分享-年轻人的第一个OAuth2.0 Server:hydra"><meta property='og:description' content="年轻人的第一个OAuth2.0 Server:hydra hydra 是什么呢?\nOpenID Connect certified OAuth2 Server - cloud native, security-first, open source API security for your infrastructure. Written in Go. SDKs for any language. 讲人话的话就是一个OAuth2.0的服务端框架咯,开箱即用.\nOAuth是撒? QQ互联知道么?微信授权登录知道么?\n扩展阅读:理解OAuth 2.0:阮一峰\n开源地址:https://github.com/ory/hydra\n文档地址:https://www.ory.sh/docs/guides/master/hydra/\n本文结束&mldr;\n开始手把手教你跑hydra server 全程Docker部署,请自行准备相关环境. 准备PostgreSQL 数据库/MySQL数据库 hydra支持PostgreSQL/MySQL,任君选择.\n官网指导教程使用的是PostgreSQL,下面我也抄过来了,同时提供MySQL的相关操作.\n启动数据库啦!!!\n哦,启动之前先创建一个docker 网络.\n1 docker network create hydraguide 启动 PostgreSQL,如下\n1 2 3 4 5 6 7 docker run \\ --network hydraguide \\ --name ory-hydra-example--postgres \\ -e POSTGRES_USER=hydra \\ -e POSTGRES_PASSWORD=secret \\ -e POSTGRES_DB=hydra \\ -d postgres:9.6 或者启动MySQL\n"><meta property='og:url' content='https://liguobao.github.io/zh/p/%E6%AF%8F%E5%91%A8%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%88%86%E4%BA%AB-%E5%B9%B4%E8%BD%BB%E4%BA%BA%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAoauth2.0-serverhydra/'><meta property='og:site_name' content='人生删除指南'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='Github'><meta property='article:tag' content='Open Source'><meta property='article:tag' content='hydra'><meta property='article:tag' content='每周开源项目分享'><meta property='article:published_time' content='2018-07-28T00:00:00+00:00'><meta property='article:modified_time' content='2018-07-28T00:00:00+00:00'><meta name=twitter:title content="每周开源项目分享-年轻人的第一个OAuth2.0 Server:hydra"><meta name=twitter:description content="年轻人的第一个OAuth2.0 Server:hydra hydra 是什么呢?\nOpenID Connect certified OAuth2 Server - cloud native, security-first, open source API security for your infrastructure. Written in Go. SDKs for any language. 讲人话的话就是一个OAuth2.0的服务端框架咯,开箱即用.\nOAuth是撒? QQ互联知道么?微信授权登录知道么?\n扩展阅读:理解OAuth 2.0:阮一峰\n开源地址:https://github.com/ory/hydra\n文档地址:https://www.ory.sh/docs/guides/master/hydra/\n本文结束&mldr;\n开始手把手教你跑hydra server 全程Docker部署,请自行准备相关环境. 准备PostgreSQL 数据库/MySQL数据库 hydra支持PostgreSQL/MySQL,任君选择.\n官网指导教程使用的是PostgreSQL,下面我也抄过来了,同时提供MySQL的相关操作.\n启动数据库啦!!!\n哦,启动之前先创建一个docker 网络.\n1 docker network create hydraguide 启动 PostgreSQL,如下\n1 2 3 4 5 6 7 docker run \\ --network hydraguide \\ --name ory-hydra-example--postgres \\ -e POSTGRES_USER=hydra \\ -e POSTGRES_PASSWORD=secret \\ -e POSTGRES_DB=hydra \\ -d postgres:9.6 或者启动MySQL\n"><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/zh/><img src=/img/zhihu-lgb_hu_2ad0a9defe137384.png width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/zh>人生删除指南</a></h1><h2 class=site-description>liguobao</h2></div></header><ol class=menu-social><li><a href=https://github.com/liguobao target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://x.com/Liguobao2049 target=_blank title=Twitter rel=me><svg class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li><li><a href=https://www.zhihu.com/people/codelover target=_blank title=知乎 rel=me><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/zh/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/zh/liguobao-resume/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>About</span></a></li><li><a href=/zh/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/zh/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://liguobao.github.io/zh/ selected>简体中文</option><option value=https://liguobao.github.io/>English</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#开始手把手教你跑hydra-server>开始手把手教你跑hydra server</a></li><li><a href=#准备postgresql-数据库mysql数据库>准备PostgreSQL 数据库/MySQL数据库</a></li><li><a href=#准备hydra相关环境变量>准备hydra相关环境变量</a></li><li><a href=#执行迁移数据库脚本>执行迁移数据库脚本</a></li><li><a href=#启动hydra-服务端>启动hydra 服务端</a></li><li><a href=#登录授权样例网站启动>登录/授权样例网站启动</a></li><li><a href=#创建oauth-client-客户端>创建oauth client 客户端</a></li><li><a href=#测试hydra-oauth整体授权流程>测试hydra oauth整体授权流程</a></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><div class=article-title-wrapper><h2 class=article-title><a href=/zh/p/%E6%AF%8F%E5%91%A8%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%88%86%E4%BA%AB-%E5%B9%B4%E8%BD%BB%E4%BA%BA%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAoauth2.0-serverhydra/>每周开源项目分享-年轻人的第一个OAuth2.0 Server:hydra</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>7月 28, 2018</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>4 minute read</time></div></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://liguobao.github.io/p/weekly-open-source-hydra-oauth2/openid-connect-server/ class=link>English</a></div></footer></div></header><section class=article-content><h1 id=年轻人的第一个oauth20-serverhydra>年轻人的第一个OAuth2.0 Server:hydra</h1><p><a class=link href=https://github.com/ory/hydra target=_blank rel=noopener>hydra</a> 是什么呢?</p><ul><li>OpenID Connect certified OAuth2 Server - cloud native, security-first, open source API security for your infrastructure. Written in Go. SDKs for any language.</li></ul><p>讲人话的话就是一个OAuth2.0的服务端框架咯,开箱即用.</p><p>OAuth是撒? QQ互联知道么?微信授权登录知道么?</p><p>扩展阅读:<a class=link href=http://www.ruanyifeng.com/blog/2014/05/oauth_2_0.html target=_blank rel=noopener>理解OAuth 2.0:阮一峰</a></p><p>开源地址:<a class=link href=https://github.com/ory/hydra target=_blank rel=noopener>https://github.com/ory/hydra</a></p><p>文档地址:<a class=link href=https://www.ory.sh/docs/guides/master/hydra/ target=_blank rel=noopener>https://www.ory.sh/docs/guides/master/hydra/</a></p><p>本文结束&mldr;</p></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br></br><h2 id=开始手把手教你跑hydra-server>开始手把手教你跑hydra server</h2><ul><li>全程Docker部署,请自行准备相关环境.</li></ul><h2 id=准备postgresql-数据库mysql数据库>准备PostgreSQL 数据库/MySQL数据库</h2><p>hydra支持PostgreSQL/MySQL,任君选择.</p><p>官网指导教程使用的是PostgreSQL,下面我也抄过来了,同时提供MySQL的相关操作.</p><p>启动数据库啦!!!</p><p>哦,启动之前先创建一个docker 网络.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>docker network create hydraguide
+</span></span></code></pre></td></tr></table></div></div><p>启动 PostgreSQL,如下</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>docker run <span class=se>\
+</span></span></span><span class=line><span class=cl>  --network hydraguide <span class=se>\
+</span></span></span><span class=line><span class=cl>  --name ory-hydra-example--postgres <span class=se>\
+</span></span></span><span class=line><span class=cl>  -e <span class=nv>POSTGRES_USER</span><span class=o>=</span>hydra <span class=se>\
+</span></span></span><span class=line><span class=cl>  -e <span class=nv>POSTGRES_PASSWORD</span><span class=o>=</span>secret <span class=se>\
+</span></span></span><span class=line><span class=cl>  -e <span class=nv>POSTGRES_DB</span><span class=o>=</span>hydra <span class=se>\
+</span></span></span><span class=line><span class=cl>  -d postgres:9.6
+</span></span></code></pre></td></tr></table></div></div><p>或者启动MySQL</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>docker run -p 3306:3306 <span class=se>\
+</span></span></span><span class=line><span class=cl> --network hydraguide <span class=se>\
+</span></span></span><span class=line><span class=cl> --name hydra-mysql --restart<span class=o>=</span>always <span class=se>\
+</span></span></span><span class=line><span class=cl> -v ~/docker-data/hydra-mysql/data/:/var/lib/mysql <span class=se>\
+</span></span></span><span class=line><span class=cl> -e <span class=nv>MYSQL_ROOT_PASSWORD</span><span class=o>=</span><span class=m>123</span> -d mysql:5.7
+</span></span></code></pre></td></tr></table></div></div><p>启动好了自行验证一下数据库是不是正确启动和能连接上去了.</p><h2 id=准备hydra相关环境变量>准备hydra相关环境变量</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl><span class=c1># The system secret can only be set against a fresh database. Key rotation is currently not supported. This</span>
+</span></span><span class=line><span class=cl><span class=c1># secret is used to encrypt the database and needs to be set to the same value every time the process (re-)starts.</span>
+</span></span><span class=line><span class=cl><span class=c1># You can use /dev/urandom to generate a secret. But make sure that the secret must be the same anytime you define it.</span>
+</span></span><span class=line><span class=cl><span class=c1># You could, for example, store the value somewhere.</span>
+</span></span><span class=line><span class=cl>$ <span class=nb>export</span> <span class=nv>SYSTEM_SECRET</span><span class=o>=</span><span class=k>$(</span><span class=nb>export</span> <span class=nv>LC_CTYPE</span><span class=o>=</span>C<span class=p>;</span> cat /dev/urandom <span class=p>|</span> tr -dc <span class=s1>&#39;a-zA-Z0-9&#39;</span> <span class=p>|</span> fold -w <span class=m>32</span> <span class=p>|</span> head -n 1<span class=k>)</span>
+</span></span><span class=line><span class=cl><span class=c1>#</span>
+</span></span><span class=line><span class=cl><span class=c1># Alternatively you can obviously just set a secret:</span>
+</span></span><span class=line><span class=cl><span class=c1># $ export SYSTEM_SECRET=this_needs_to_be_the_same_always_and_also_very_$3cuR3-._</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># The database url points us at the postgres instance. This could also be an ephermal in-memory database (`export DATABASE_URL=memory`)</span>
+</span></span><span class=line><span class=cl><span class=c1># or a MySQL URI.</span>
+</span></span><span class=line><span class=cl>$ <span class=nb>export</span> <span class=nv>DATABASE_URL</span><span class=o>=</span>postgres://hydra:secret@ory-hydra-example--postgres:5432/hydra?sslmode<span class=o>=</span>disable
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c1># MySQL的配置,host.docker.internal为宿主机IP,mysql容器的内部IP或者hydra-mysql也可以用</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>$ <span class=nb>export</span> <span class=nv>DATABASE_URL</span><span class=o>=</span>mysql://root:123@tcp<span class=o>(</span>host.docker.internal/mysql容器的内部IP/hydra-mysql:3306<span class=o>)</span>/hydra?parseTime<span class=o>=</span><span class=nb>true</span>
+</span></span></code></pre></td></tr></table></div></div><ul><li><p>SYSTEM_SECRET 是hydra启动时加密数据库使用的,Mac/Linux直接使用上面的方法设置即可,windows环境下设置一下环境变量?大概是这样.</p></li><li><p>DATABASE_URL 是数据库连接配置,postgres和mysql 二选一即可.</p></li></ul><h2 id=执行迁移数据库脚本>执行迁移数据库脚本</h2><p>hydra自带的,直接执行即可.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>docker run -it --rm <span class=se>\
+</span></span></span><span class=line><span class=cl>  --network hydraguide <span class=se>\
+</span></span></span><span class=line><span class=cl>  oryd/hydra:v1.0.0-beta.5 <span class=se>\
+</span></span></span><span class=line><span class=cl>  migrate sql <span class=nv>$DATABASE_URL</span>
+</span></span></code></pre></td></tr></table></div></div><p>正常执行的话,应该如下:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-mysql data-lang=mysql><span class=line><span class=cl><span class=n>Applying</span><span class=w> </span><span class=o>`</span><span class=n>client</span><span class=o>`</span><span class=w> </span><span class=k>SQL</span><span class=w> </span><span class=n>migrations</span><span class=p>...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>Applied</span><span class=w> </span><span class=mi>0</span><span class=w> </span><span class=o>`</span><span class=n>client</span><span class=o>`</span><span class=w> </span><span class=k>SQL</span><span class=w> </span><span class=n>migrations</span><span class=p>.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>Applying</span><span class=w> </span><span class=o>`</span><span class=n>oauth2</span><span class=o>`</span><span class=w> </span><span class=k>SQL</span><span class=w> </span><span class=n>migrations</span><span class=p>...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>Applied</span><span class=w> </span><span class=mi>0</span><span class=w> </span><span class=o>`</span><span class=n>oauth2</span><span class=o>`</span><span class=w> </span><span class=k>SQL</span><span class=w> </span><span class=n>migrations</span><span class=p>.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>Applying</span><span class=w> </span><span class=o>`</span><span class=n>jwk</span><span class=o>`</span><span class=w> </span><span class=k>SQL</span><span class=w> </span><span class=n>migrations</span><span class=p>...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>Applied</span><span class=w> </span><span class=mi>0</span><span class=w> </span><span class=o>`</span><span class=n>jwk</span><span class=o>`</span><span class=w> </span><span class=k>SQL</span><span class=w> </span><span class=n>migrations</span><span class=p>.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>Applying</span><span class=w> </span><span class=o>`</span><span class=n>consent</span><span class=o>`</span><span class=w> </span><span class=k>SQL</span><span class=w> </span><span class=n>migrations</span><span class=p>...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>Applied</span><span class=w> </span><span class=mi>0</span><span class=w> </span><span class=o>`</span><span class=n>consent</span><span class=o>`</span><span class=w> </span><span class=k>SQL</span><span class=w> </span><span class=n>migrations</span><span class=p>.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>Migration</span><span class=w> </span><span class=n>successful</span><span class=o>!</span><span class=w> </span><span class=n>Applied</span><span class=w> </span><span class=n>a</span><span class=w> </span><span class=n>total</span><span class=w> </span><span class=n>of</span><span class=w> </span><span class=mi>0</span><span class=w> </span><span class=k>SQL</span><span class=w> </span><span class=n>migrations</span><span class=p>.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=n>Migration</span><span class=w> </span><span class=n>successful</span><span class=o>!</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>数据库好了,我们现在可以开始搞服务端了.</p><h2 id=启动hydra-服务端>启动hydra 服务端</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>docker run -d <span class=se>\
+</span></span></span><span class=line><span class=cl>  --name ory-hydra-example--hydra <span class=se>\
+</span></span></span><span class=line><span class=cl>  --network hydraguide <span class=se>\
+</span></span></span><span class=line><span class=cl>  -p 9000:4444 <span class=se>\
+</span></span></span><span class=line><span class=cl>  -e <span class=nv>SYSTEM_SECRET</span><span class=o>=</span><span class=nv>$SYSTEM_SECRET</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  -e <span class=nv>DATABASE_URL</span><span class=o>=</span><span class=nv>$DATABASE_URL</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  -e <span class=nv>OAUTH2_ISSUER_URL</span><span class=o>=</span>https://localhost:9000/ <span class=se>\
+</span></span></span><span class=line><span class=cl>  -e <span class=nv>OAUTH2_CONSENT_URL</span><span class=o>=</span>http://localhost:9020/consent <span class=se>\
+</span></span></span><span class=line><span class=cl>  -e <span class=nv>OAUTH2_LOGIN_URL</span><span class=o>=</span>http://localhost:9020/login <span class=se>\
+</span></span></span><span class=line><span class=cl>  oryd/hydra:v1.0.0-beta.5 serve
+</span></span></code></pre></td></tr></table></div></div><p>这里我们留意几个传入给容器的环境变量.</p><ul><li><p>OAUTH2_ISSUER_URL hydra所在的地址</p></li><li><p>OAUTH2_CONSENT_URL 授权页面地址</p></li><li><p>OAUTH2_LOGIN_URL 登录页面地址</p></li></ul><p>假装大家都了解OAuth2.0的流程的情况下,其实这里就流程基本就是:</p><p>XX应用请求授权</p><p>-> 跳转到OAUTH2_LOGIN_URL地址</p><p>-> 登录成功</p><p>->跳转到OAUTH2_CONSENT_URL授权页面</p><p>-> 授权成功</p><p>->回调XX应用地址并且返回相关授权code/token</p><p>-> XX应用使用code/token获取用户信息或者其他操作</p><p>启动之后看一下logs是不是hydra是不是正常启动.</p><p>常见问题:&ldquo;Could not fetch private signing key for OpenID Connect - did you forget to run "hydra migrate sql" or forget to set the SYSTEM_SECRET?&rdquo; error=&ldquo;unexpected end of JSON input&rdquo;</p><p>确认一下SYSTEM_SECRET有没有正常设置呀,实在不行直接在docker run的时候带入.</p><p>正常启动的话,日志如下:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Thank you for using ORY Hydra!
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Take security seriously and subscribe to the ORY newsletter. Stay on top of new patches and security insights.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>&gt;&gt; Subscribe now: http://eepurl.com/di390P &lt;&lt;
+</span></span><span class=line><span class=cl>time=&#34;2018-08-09T10:23:50Z&#34; level=info msg=&#34;Connected to SQL!&#34;
+</span></span><span class=line><span class=cl>time=&#34;2018-08-09T10:23:50Z&#34; level=info msg=&#34;JSON Web Key Set hydra.openid.id-token does not exist yet, generating new key pair...&#34;
+</span></span><span class=line><span class=cl>time=&#34;2018-08-09T10:23:51Z&#34; level=info msg=&#34;Setting up Prometheus middleware&#34;
+</span></span><span class=line><span class=cl>time=&#34;2018-08-09T10:23:51Z&#34; level=info msg=&#34;Transmission of telemetry data is enabled, to learn more go to: https://www.ory.sh/docs/guides/latest/telemetry/&#34;
+</span></span><span class=line><span class=cl>time=&#34;2018-08-09T10:23:51Z&#34; level=info msg=&#34;Detected local environment, skipping telemetry commit&#34;
+</span></span><span class=line><span class=cl>time=&#34;2018-08-09T10:23:51Z&#34; level=info msg=&#34;Detected local environment, skipping telemetry commit&#34;
+</span></span><span class=line><span class=cl>time=&#34;2018-08-09T10:23:51Z&#34; level=info msg=&#34;JSON Web Key Set hydra.https-tls does not exist yet, generating new key pair...&#34;
+</span></span><span class=line><span class=cl>time=&#34;2018-08-09T10:23:55Z&#34; level=info msg=&#34;Setting up http server on :4444&#34;
+</span></span></code></pre></td></tr></table></div></div><p>这时候去访问:<a class=link href=https://localhost:9000/.well-known/jwks.json target=_blank rel=noopener>https://localhost:9000/.well-known/jwks.json</a></p><p>理论上是能正常输出结果的.</p><p>这个时候说明我们的hydra已经正常跑起来了.</p><h2 id=登录授权样例网站启动>登录/授权样例网站启动</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>docker run -d <span class=se>\
+</span></span></span><span class=line><span class=cl>  --name ory-hydra-example--consent <span class=se>\
+</span></span></span><span class=line><span class=cl>  -p 9020:3000 <span class=se>\
+</span></span></span><span class=line><span class=cl>  --network hydraguide <span class=se>\
+</span></span></span><span class=line><span class=cl>  -e <span class=nv>HYDRA_URL</span><span class=o>=</span>https://ory-hydra-example--hydra:4444 <span class=se>\
+</span></span></span><span class=line><span class=cl>  -e <span class=nv>NODE_TLS_REJECT_UNAUTHORIZED</span><span class=o>=</span><span class=m>0</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  oryd/hydra-login-consent-node:v1.0.0-beta.5
+</span></span></code></pre></td></tr></table></div></div><p>在上面我们提过,XX应用请求授权的时候,首先是跳转到统一登录页面,</p><p>这个本质是是一个统一用户中心的应用,需要我们自行开发的.</p><p>hydra官方提供一个样例给我们来测试用,node.js写的.</p><p>项目地址:<a class=link href=https://github.com/ory/hydra-login-consent-node target=_blank rel=noopener>https://github.com/ory/hydra-login-consent-node</a></p><p>这里就是在启动这个登录/授权样例网站了.</p><p>PS:我用dotnet core也实现了一套完整的用户中心授权网站,过几天空了整理一下开源发出来.</p><h2 id=创建oauth-client-客户端>创建oauth client 客户端</h2><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>docker run --rm -it <span class=se>\
+</span></span></span><span class=line><span class=cl>  -e <span class=nv>HYDRA_URL</span><span class=o>=</span>https://ory-hydra-example--hydra:4444 <span class=se>\
+</span></span></span><span class=line><span class=cl>  --network hydraguide <span class=se>\
+</span></span></span><span class=line><span class=cl>  oryd/hydra:v1.0.0-beta.5 <span class=se>\
+</span></span></span><span class=line><span class=cl>  clients create --skip-tls-verify <span class=se>\
+</span></span></span><span class=line><span class=cl>    --id facebook-photo-backup <span class=se>\
+</span></span></span><span class=line><span class=cl>    --secret some-secret <span class=se>\
+</span></span></span><span class=line><span class=cl>    --grant-types authorization_code,refresh_token,client_credentials,implicit <span class=se>\
+</span></span></span><span class=line><span class=cl>    --response-types token,code,id_token <span class=se>\
+</span></span></span><span class=line><span class=cl>    --scope openid,offline,photos.read <span class=se>\
+</span></span></span><span class=line><span class=cl>    --callbacks http://127.0.0.1:9010/callback
+</span></span></code></pre></td></tr></table></div></div><p>没什么说的,留意一下callbacks地址即可.</p><p>其实就是XX互联里面的XX应用的一些信息.</p><h2 id=测试hydra-oauth整体授权流程>测试hydra oauth整体授权流程</h2><p>启动一个请求授权的APP,如下:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>docker run --rm -it <span class=se>\
+</span></span></span><span class=line><span class=cl>  --network hydraguide <span class=se>\
+</span></span></span><span class=line><span class=cl>  -p 9010:9010 <span class=se>\
+</span></span></span><span class=line><span class=cl>  oryd/hydra:v1.0.0-beta.5 <span class=se>\
+</span></span></span><span class=line><span class=cl>  token user --skip-tls-verify <span class=se>\
+</span></span></span><span class=line><span class=cl>    --port <span class=m>9010</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>    --auth-url https://localhost:9000/oauth2/auth <span class=se>\
+</span></span></span><span class=line><span class=cl>    --token-url https://ory-hydra-example--hydra:4444/oauth2/token <span class=se>\
+</span></span></span><span class=line><span class=cl>    --client-id facebook-photo-backup <span class=se>\
+</span></span></span><span class=line><span class=cl>    --client-secret some-secret <span class=se>\
+</span></span></span><span class=line><span class=cl>    --scope openid,offline,photos.read
+</span></span></code></pre></td></tr></table></div></div><p>启动之后访问<a class=link href=http://127.0.0.1:9010/ target=_blank rel=noopener>http://127.0.0.1:9010/</a></p><p>大概会看到:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Welcome to the example OAuth 2.0 Consumer
+</span></span><span class=line><span class=cl>This example requests an OAuth 2.0 Access, Refresh, and OpenID Connect ID Token from the OAuth 2.0 Server (ORY Hydra). To initiate the flow, click the &#34;Authorize Application&#34; button.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Authorize application
+</span></span></code></pre></td></tr></table></div></div><p>点击 Authorize application 立即调整到登录页面.</p><p>登录页其实就是我们上面启动的node.js的的登录页面,即:<a class=link href="http://localhost:9020/login?login_challenge=XXX" target=_blank rel=noopener>http://localhost:9020/login?login_challenge=XXX</a></p><p>输入账号密码之后会跳到授权页面,即:<a class=link href="http://localhost:9020/consent?consent_challenge=XXXX" target=_blank rel=noopener>http://localhost:9020/consent?consent_challenge=XXXX</a></p><p>授权选好了之后点击"" 允许授权,立即跳转回到回调地址,同时显示access token相关信息.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-txt data-lang=txt><span class=line><span class=cl>Access Token: SwMfFOSHEFpiChmBvRtFLTeaPzCh-TNEXtxTfibgmdw.AgqJrWyn1VlH4FouUucBJSDsmcwOGDI3cHpuy2sDrpI
+</span></span><span class=line><span class=cl>Refresh Token: 48pXaTrBoXl9JxkweFgQV6frEYPwrkE6BaY8U5mymbo.ZuZe68sqX6wtRTk9k1cKBNPJxQzEBEb0G86tT_WVzCg
+</span></span><span class=line><span class=cl>Expires in: 2018-08-09 11:46:14.9905228 +0000 UTC m=+3843.912315001
+</span></span><span class=line><span class=cl>ID Token: eyJhbGciOiJSUzI1NiIsImtpZCI6InB1YmxpYzo3MzBhZDc4ZC04ODJmLTQzNzItYTRhMi05NTE2NDdlNTk0ZTciLCJ0eXAiOiJKV1QifQ.eyJhdWQiOlsiZmFjZWJvb2stcGhvdG8tYmFja3VwIl0sImF1dGhfdGltZSI6MTUzMzgxMTUyMSwiZXhwIjoxNTMzODE1MTc1LCJpYXQiOjE1MzM4MTE1NzUsImlzcyI6Imh0dHBzOi8vbG9jYWxob3N0OjkwMDAvIiwianRpIjoiOGFkMWE2ZTYtZWY3NC00MTM2LThmODUtMGU0N2FhYWYxZjY1Iiwibm9uY2UiOiJkcXBrcXlkaG1iZXZhdXNtYXJzdWxjcW0iLCJyYXQiOjE1MzM4MTE0MTMsInN1YiI6ImZvb0BiYXIuY29tIn0.euqVspiSeYvMonrwHSPxhfXaCOoYtfP5S5_dJLg6zeQ-Kw6rRJfQRh2ddMiaZBOHdRrQLGHouNSd5SCWP4DgKjr6eA4YKmiTNvDKt0ktIBfTROs5HKOIp9NHLSCL636m10lEVAGJEnL2jwVn5JeNjYmn4nRqOqPBfAxmqFYu-RuHk3HP4w9cKAK2tUBvwUkjH7PBkZ4MZI3AgvK985iPxZWkiyJAn4QPSAidenlQqQJXc7kpYpvP6wauk-nWxid6p0GRL1MozEV1Kok6Nqiw5BtEhuuC3Saijezr-G7Va6SwgTe731huzM6xRH_ovh2x4gayQu-qFX6bT8gjvLh6otQbqEa11nNc0gXIauKds2FF8mD65k9-tnFvbs3T7fJS6wu3LOm9VAtCB78CiTH92E7sbGXaQRC9nsB6LCCteoBPYa8e-dYZxXZHPdWP9tDNc3t2Zr1Lg5bljpWXmFcLllO6gSTqhKiT0otQaQgLDm9GvSeobEaCYRmgk50FdGz4z4Sngek6JJBWHNDo16zuJMScLxIdUfhK9LtLpIsL7w7F01GRMkcriowloRM85qO3V-Dq6REY6VzAe3OkT3_0bxsbU_fzFEIbpDcXdq8hchkEq3aAp48dqXb0WE4R7Iwl4JhjDKiQFxP4-Wk5rPqRyRs7rWiDUxS9v29c88pXd6E
+</span></span></code></pre></td></tr></table></div></div><p>这个时候我们使用Access Token去调用userinfo API,即可正常获取到用户信息.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>curl -X GET <span class=se>\
+</span></span></span><span class=line><span class=cl>  https://localhost:9000/userinfo <span class=se>\
+</span></span></span><span class=line><span class=cl>  -H <span class=s1>&#39;authorization: Bearer SwMfFOSHEFpiChmBvRtFLTeaPzCh-TNEXtxTfibgmdw.AgqJrWyn1VlH4FouUucBJSDsmcwOGDI3cHpuy2sDrpI&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  -H <span class=s1>&#39;cache-control: no-cache&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  -H <span class=s1>&#39;content-type: application/json&#39;</span> <span class=se>\
+</span></span></span><span class=line><span class=cl>  -H <span class=s1>&#39;postman-token: fecb7032-db0a-bb1b-a61b-de22add7e5bc&#39;</span>
+</span></span></code></pre></td></tr></table></div></div><p>用户信息如下:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&#34;sub&#34;</span><span class=p>:</span> <span class=s2>&#34;foo@bar.com&#34;</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>为什么这里用户信息只有一个sub呢?</p><p>因为他们实现ory-hydra-example&ndash;consent的时候什么都没加进去,</p><p>具体应该怎么做等我下次分享dotnet core实现 login-consent再说了..</p><p>嗯,本文结束.</p></section><footer class=article-footer><section class=article-tags><a href=/zh/tags/github/>Github</a>
+<a href=/zh/tags/open-source/>Open Source</a>
+<a href=/zh/tags/hydra/>Hydra</a>
+<a href=/zh/tags/%E6%AF%8F%E5%91%A8%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%88%86%E4%BA%AB/>每周开源项目分享</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>Related content</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/zh/p/%E6%AF%8F%E5%91%A8%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%88%86%E4%BA%AB-%E5%B9%B4%E8%BD%BB%E4%BA%BA%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AAapm%E4%B9%8Bskywalking/><div class=article-details><h2 class=article-title>每周开源项目分享-年轻人的第一个APM之Skywalking</h2></div></a></article><article class=has-image><a href=/zh/p/open-source-web-camera/><div class=article-image><img src=/zh/p/open-source-web-camera/web-c.0bd5a544da7b3bdc5d68d1904df36cf4_hu_d97fabd1e353bbef.png width=250 height=150 loading=lazy alt="Featured image of post WebCamera 基于WebRTC的点对点网络摄像头" data-key=open-source-web-camera data-hash="md5-C9WlRNp7O9xdaNGQTfNs9A=="></div><div class=article-details><h2 class=article-title>WebCamera 基于WebRTC的点对点网络摄像头</h2></div></a></article><article><a href=/zh/p/%E6%AF%8F%E5%91%A8%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE%E5%88%86%E4%BA%AB-dotnet-core-%E7%AE%80%E6%98%93%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E6%A1%86%E6%9E%B6timejob/><div class=article-details><h2 class=article-title>每周开源项目分享-dotnet core 简易定时任务框架TimeJob</h2></div></a></article></div></div></aside><script src=https://utteranc.es/client.js repo=liguobao/liguobao.github.io issue-term=title crossorigin=anonymous async></script><style>.utterances{max-width:unset}</style><script>let utterancesLoaded=!1;function setUtterancesTheme(e){let t=document.querySelector(".utterances iframe");t&&t.contentWindow.postMessage({type:"set-theme",theme:`github-${e}`},"https://utteranc.es")}addEventListener("message",e=>{if(e.origin!=="https://utteranc.es")return;utterancesLoaded=!0,setUtterancesTheme(document.documentElement.dataset.scheme)}),window.addEventListener("onColorSchemeChange",e=>{if(!utterancesLoaded)return;setUtterancesTheme(e.detail)})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2026 人生删除指南</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.30.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

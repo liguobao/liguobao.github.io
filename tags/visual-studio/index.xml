@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Visual Studio on Life Deletion Guide</title><link>https://liguobao.github.io/tags/visual-studio/</link><description>Recent content in Visual Studio on Life Deletion Guide</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 17 Mar 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/visual-studio/index.xml" rel="self" type="application/rss+xml"/><item><title>Debug PHP with Visual Studio Code on Windows</title><link>https://liguobao.github.io/p/debug-php-with-visual-studio-code-on-windows/</link><pubDate>Fri, 17 Mar 2017 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/debug-php-with-visual-studio-code-on-windows/</guid><description>&lt;h1 id="debugging-php-in-vs-code-windows"&gt;Debugging PHP in VS Code (Windows)
+&lt;/h1&gt;&lt;p&gt;macOS guide: &lt;a class="link" href="https://zhuanlan.zhihu.com/p/37128419" target="_blank" rel="noopener"
+&gt;https://zhuanlan.zhihu.com/p/37128419&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Stack: VS Code + PHP Debug extension + phpStudy + Xdebug.&lt;/p&gt;
+&lt;h2 id="install-vs-code"&gt;Install VS Code
+&lt;/h2&gt;&lt;p&gt;Download from &lt;a class="link" href="https://code.visualstudio.com/" target="_blank" rel="noopener"
+&gt;https://code.visualstudio.com/&lt;/a&gt; and install.&lt;/p&gt;
+&lt;h2 id="install-php-debug-extension"&gt;Install PHP Debug extension
+&lt;/h2&gt;&lt;p&gt;Search for “PHP Debug” in the Marketplace and install it.&lt;/p&gt;
+&lt;h2 id="phpstudy"&gt;phpStudy
+&lt;/h2&gt;&lt;p&gt;Use phpStudy for a quick PHP + Apache + MySQL stack. Switch PHP versions as needed.&lt;/p&gt;
+&lt;p&gt;Verify phpMyAdmin opens and connects locally. Then pick your target PHP version.&lt;/p&gt;
+&lt;h2 id="enable-xdebug"&gt;Enable Xdebug
+&lt;/h2&gt;&lt;p&gt;phpStudy ships with Xdebug. Open php.ini (Other options → Open config file → php-ini) and add:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;xdebug.remote_enable = 1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;xdebug.remote_autostart = 1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;zend_extension=&amp;#34;C:\\phpStudy\\php\\php-5.5.38\\ext\\php_xdebug.dll&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Restart phpStudy services.&lt;/p&gt;
+&lt;h2 id="vs-code-settings-and-launch-config"&gt;VS Code settings and launch config
+&lt;/h2&gt;&lt;p&gt;Set &lt;code&gt;php.validate.executablePath&lt;/code&gt; to your php.exe path (from phpStudy). Then add a PHP debug configuration (Listen for Xdebug) in launch.json.&lt;/p&gt;
+&lt;p&gt;Start debugging, set breakpoints, and hit the target page — VS Code should break into the PHP code. Use F10/F11/F5 as usual.&lt;/p&gt;
+&lt;p&gt;Notes for other stacks: configure php.ini, install the matching Xdebug DLL, and set &lt;code&gt;php.validate.executablePath&lt;/code&gt; correctly.&lt;/p&gt;</description></item><item><title>Visual Studio Shortcuts</title><link>https://liguobao.github.io/p/visual-studio-shortcuts/</link><pubDate>Fri, 14 Oct 2016 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/visual-studio-shortcuts/</guid><description>&lt;p&gt;Commonly used Visual Studio shortcuts:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Ctrl+S — Save (the all‑time #1)&lt;/li&gt;
+&lt;li&gt;Ctrl+Shift+S — Save all open files&lt;/li&gt;
+&lt;li&gt;Ctrl+O — Open file&lt;/li&gt;
+&lt;li&gt;Ctrl+Shift+O — Open project&lt;/li&gt;
+&lt;li&gt;Ctrl+Shift+A — Add new item to current project&lt;/li&gt;
+&lt;li&gt;Ctrl+F4 — Close current tab&lt;/li&gt;
+&lt;li&gt;Ctrl+F6 — Next tab&lt;/li&gt;
+&lt;li&gt;Ctrl+Shift+F6 — Previous tab&lt;/li&gt;
+&lt;li&gt;F12 — Go to definition (functions/variables)&lt;/li&gt;
+&lt;li&gt;Ctrl+– — Navigate back&lt;/li&gt;
+&lt;li&gt;Shift+Ctrl+– — Navigate forward&lt;/li&gt;
+&lt;li&gt;Ctrl+Tab — Switch tabs&lt;/li&gt;
+&lt;li&gt;Ctrl+F — Find&lt;/li&gt;
+&lt;li&gt;Ctrl+F3 — Find selection&lt;/li&gt;
+&lt;li&gt;Ctrl+K, Ctrl+D — Format document&lt;/li&gt;
+&lt;li&gt;Ctrl+K, Ctrl+F — Format selection&lt;/li&gt;
+&lt;li&gt;Ctrl+K, Ctrl+C — Comment selection&lt;/li&gt;
+&lt;li&gt;Ctrl+K, Ctrl+U — Uncomment selection&lt;/li&gt;
+&lt;li&gt;Ctrl+L — Delete line / selection&lt;/li&gt;
+&lt;li&gt;Shift+Alt+Enter — Toggle full screen for editor&lt;/li&gt;
+&lt;li&gt;Ctrl+M, Ctrl+M — Toggle outlining (collapse/expand)&lt;/li&gt;
+&lt;li&gt;Ctrl+Space — IntelliSense&lt;/li&gt;
+&lt;li&gt;Ctrl+Enter — Insert line above&lt;/li&gt;
+&lt;li&gt;Ctrl+Shift+Enter — Insert line below&lt;/li&gt;
+&lt;li&gt;Shift+F12 — Find all references&lt;/li&gt;
+&lt;li&gt;Ctrl+G — Go to line&lt;/li&gt;
+&lt;li&gt;Ctrl+Shift+Up — Previous reference&lt;/li&gt;
+&lt;li&gt;Ctrl+Shift+Down — Next reference&lt;/li&gt;
+&lt;li&gt;Shift+Alt+Up — Column select upward&lt;/li&gt;
+&lt;li&gt;Shift+Alt+Down — Column select downward&lt;/li&gt;
+&lt;li&gt;Shift+Up — Extend selection up&lt;/li&gt;
+&lt;li&gt;Shift+Down — Extend selection down&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

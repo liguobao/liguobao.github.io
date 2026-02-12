@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Rm on Life Deletion Guide</title><link>https://liguobao.github.io/tags/rm/</link><description>Recent content in Rm on Life Deletion Guide</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 20 Nov 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/rm/index.xml" rel="self" type="application/rss+xml"/><item><title>Ops Tale The Day rm -rf /* Took My Box</title><link>https://liguobao.github.io/p/ops-tale-the-day-rm-rf-/-took-my-box/</link><pubDate>Tue, 20 Nov 2018 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/ops-tale-the-day-rm-rf-/-took-my-box/</guid><description>&lt;h1 id="ops-tale-the-day-rm--rf--took-my-box"&gt;Ops Tale: The Day rm -rf /* Took My Box
+&lt;/h1&gt;&lt;h2 id="the-trigger"&gt;The Trigger
+&lt;/h2&gt;&lt;p&gt;Users reported mobile web showing a blank page. On desktop: same — HTML loads, but a core JS fails. Error: “We’re sorry but house doesn’t work properly without JavaScript enabled…”. Another network error: &lt;code&gt;ERR_INCOMPLETE_CHUNKED_ENCODING&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Tried the usual:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Restart the Docker container — no luck&lt;/li&gt;
+&lt;li&gt;Roll back build — no luck&lt;/li&gt;
+&lt;li&gt;Restart nginx — no luck&lt;/li&gt;
+&lt;li&gt;Nginx logs — nothing helpful&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Lightbulb: maybe disk full. &lt;code&gt;df -h&lt;/code&gt;: 99.99% used. One Docker container using 34G — probably Elasticsearch. Killed it, cleared data, restarted nginx — back to normal. Problem solved… for now.&lt;/p&gt;
+&lt;p&gt;But ES needs to come back. Let’s attach and mount a separate data disk.&lt;/p&gt;
+&lt;h2 id="the-mistake"&gt;The Mistake
+&lt;/h2&gt;&lt;p&gt;Followed the cloud console to attach a disk, partitioned, and attempted to mount. Saw a warning, tried another device, mounted again, then “clean up the disk” — and ran:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rm -rf ./*
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Suddenly some files were “busy”, then &lt;code&gt;ls&lt;/code&gt; vanished, &lt;code&gt;cat&lt;/code&gt; vanished, &lt;code&gt;cp&lt;/code&gt; failed… only &lt;code&gt;cd&lt;/code&gt; still worked. Yep — I had mounted the system disk path and wiped it.&lt;/p&gt;
+&lt;h2 id="postmortem"&gt;Postmortem
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Didn’t format before mounting; first mount failed&lt;/li&gt;
+&lt;li&gt;Didn’t check why; tried another mount blindly&lt;/li&gt;
+&lt;li&gt;Mounted the system disk path and deleted blindly&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;rm -rf ./*&lt;/code&gt; — game over&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="recovery-attempt"&gt;Recovery Attempt
+&lt;/h2&gt;&lt;p&gt;Services still running via Docker; images kept in registry, so recoverable. But configs/certs lived on the host. With most tools gone, not much to read. A teammate suggested checking for snapshots — I had a system image from two weeks earlier.&lt;/p&gt;
+&lt;p&gt;Restored from image, updated service images — back online.&lt;/p&gt;
+&lt;h2 id="takeaways"&gt;Takeaways
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Separate data and system disks; don’t let app data kill the OS&lt;/li&gt;
+&lt;li&gt;Enable snapshot policy if budget allows; at worst you roll back a week&lt;/li&gt;
+&lt;li&gt;Before destructive ops, create a system image — a literal lifesaver&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

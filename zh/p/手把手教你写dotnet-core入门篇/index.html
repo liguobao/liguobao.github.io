@@ -1,0 +1,330 @@
+<!doctype html><html lang=zh dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="dotnet core(入门篇) 开发环境准备 dotnet core最低开发环境要求就是一个.NET SDK,在这里可以下载的到最新版本的SDK,各个平台都有.\n理论上有了SDK什么事都能做了.\n安装SDK的步骤参考上面的连接就OK,这部分我们跳过.\n简单讲一下不同操作系统的开发工具选择.\nWindows平台下首选Visual Studio 2017,安装的时候选择 .NET Core部分即可,安装下来估计占用磁盘空间5G,同时会帮你装好SDK的,好用,很好用.\nMacOS/Linux平台选择 SDK + Visual Studio Code + Debug插件 + Nuget插件,很不错,完全生产级别\n备选方案 Jetbrains家的rider,暂时没用过,resharper一直好评如潮\n今天我这边主要是是以VS Code + Debug插件 + 命令行来进来讲解.\n装好dotnet core SDK之后,打开命令行界面,输入dotnet看看.\nWindows中为CMD或者Powershell,MacOS/Linux为终端 1 2 3 4 5 6 7 8 9 Usage: dotnet [options] Usage: dotnet [path-to-application] Options: -h|--help Display help. --version Display version. path-to-application: 再输入dotnet &ndash;version查看一下当前版本,我这边显示2.1.4.\n输入dotnet help\n"><title>手把手教你写dotnet core(入门篇)</title><link rel=canonical href=https://liguobao.github.io/zh/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-core%E5%85%A5%E9%97%A8%E7%AF%87/><link rel=stylesheet href=/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css><meta property='og:title' content="手把手教你写dotnet core(入门篇)"><meta property='og:description' content="dotnet core(入门篇) 开发环境准备 dotnet core最低开发环境要求就是一个.NET SDK,在这里可以下载的到最新版本的SDK,各个平台都有.\n理论上有了SDK什么事都能做了.\n安装SDK的步骤参考上面的连接就OK,这部分我们跳过.\n简单讲一下不同操作系统的开发工具选择.\nWindows平台下首选Visual Studio 2017,安装的时候选择 .NET Core部分即可,安装下来估计占用磁盘空间5G,同时会帮你装好SDK的,好用,很好用.\nMacOS/Linux平台选择 SDK + Visual Studio Code + Debug插件 + Nuget插件,很不错,完全生产级别\n备选方案 Jetbrains家的rider,暂时没用过,resharper一直好评如潮\n今天我这边主要是是以VS Code + Debug插件 + 命令行来进来讲解.\n装好dotnet core SDK之后,打开命令行界面,输入dotnet看看.\nWindows中为CMD或者Powershell,MacOS/Linux为终端 1 2 3 4 5 6 7 8 9 Usage: dotnet [options] Usage: dotnet [path-to-application] Options: -h|--help Display help. --version Display version. path-to-application: 再输入dotnet &ndash;version查看一下当前版本,我这边显示2.1.4.\n输入dotnet help\n"><meta property='og:url' content='https://liguobao.github.io/zh/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-core%E5%85%A5%E9%97%A8%E7%AF%87/'><meta property='og:site_name' content='人生删除指南'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='dotnet core'><meta property='article:tag' content='docker'><meta property='article:published_time' content='2018-05-29T00:00:00+00:00'><meta property='article:modified_time' content='2018-05-29T00:00:00+00:00'><meta name=twitter:title content="手把手教你写dotnet core(入门篇)"><meta name=twitter:description content="dotnet core(入门篇) 开发环境准备 dotnet core最低开发环境要求就是一个.NET SDK,在这里可以下载的到最新版本的SDK,各个平台都有.\n理论上有了SDK什么事都能做了.\n安装SDK的步骤参考上面的连接就OK,这部分我们跳过.\n简单讲一下不同操作系统的开发工具选择.\nWindows平台下首选Visual Studio 2017,安装的时候选择 .NET Core部分即可,安装下来估计占用磁盘空间5G,同时会帮你装好SDK的,好用,很好用.\nMacOS/Linux平台选择 SDK + Visual Studio Code + Debug插件 + Nuget插件,很不错,完全生产级别\n备选方案 Jetbrains家的rider,暂时没用过,resharper一直好评如潮\n今天我这边主要是是以VS Code + Debug插件 + 命令行来进来讲解.\n装好dotnet core SDK之后,打开命令行界面,输入dotnet看看.\nWindows中为CMD或者Powershell,MacOS/Linux为终端 1 2 3 4 5 6 7 8 9 Usage: dotnet [options] Usage: dotnet [path-to-application] Options: -h|--help Display help. --version Display version. path-to-application: 再输入dotnet &ndash;version查看一下当前版本,我这边显示2.1.4.\n输入dotnet help\n"><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/zh/><img src=/img/zhihu-lgb_hu_2ad0a9defe137384.png width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/zh>人生删除指南</a></h1><h2 class=site-description>liguobao</h2></div></header><ol class=menu-social><li><a href=https://github.com/liguobao target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://x.com/Liguobao2049 target=_blank title=Twitter rel=me><svg class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li><li><a href=https://www.zhihu.com/people/codelover target=_blank title=知乎 rel=me><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/zh/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/zh/liguobao-resume/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>About</span></a></li><li><a href=/zh/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/zh/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://liguobao.github.io/zh/ selected>简体中文</option><option value=https://liguobao.github.io/>English</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#开发环境准备>开发环境准备</a></li><li><a href=#创建-dotnet-core程序>创建 dotnet core程序</a><ol><li><a href=#dotnet-run>dotnet run</a></li><li><a href=#vs-code-debug>VS Code debug</a></li><li><a href=#写个累加程序试试水>写个累加程序试试水</a></li></ol></li><li><a href=#骗你的这里还有>骗你的,这里还有</a></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><div class=article-title-wrapper><h2 class=article-title><a href=/zh/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-core%E5%85%A5%E9%97%A8%E7%AF%87/>手把手教你写dotnet core(入门篇)</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>5月 29, 2018</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>5 minute read</time></div></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://liguobao.github.io/p/.net-core-hands-on-part-1-getting-started/ class=link>English</a></div></footer></div></header><section class=article-content><h1 id=dotnet-core入门篇>dotnet core(入门篇)</h1><h2 id=开发环境准备>开发环境准备</h2><p>dotnet core最低开发环境要求就是一个<a class=link href=https://www.microsoft.com/net/learn/get-started/ target=_blank rel=noopener>.NET SDK</a>,在这里可以下载的到最新版本的SDK,各个平台都有.</p><p>理论上有了SDK什么事都能做了.</p><p>安装SDK的步骤参考上面的连接就OK,这部分我们跳过.</p><p>简单讲一下不同操作系统的开发工具选择.</p><ul><li><p>Windows平台下首选Visual Studio 2017,安装的时候选择 .NET Core部分即可,安装下来估计占用磁盘空间5G,同时会帮你装好SDK的,好用,很好用.</p></li><li><p>MacOS/Linux平台选择 SDK + Visual Studio Code + Debug插件 + Nuget插件,很不错,完全生产级别</p></li><li><p>备选方案 Jetbrains家的rider,暂时没用过,resharper一直好评如潮</p></li></ul><p>今天我这边主要是是以VS Code + Debug插件 + 命令行来进来讲解.</p><p>装好dotnet core SDK之后,打开命令行界面,输入dotnet看看.</p><ul><li>Windows中为CMD或者Powershell,MacOS/Linux为终端</li></ul><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Usage: dotnet [options]
+</span></span><span class=line><span class=cl>Usage: dotnet [path-to-application]
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Options:
+</span></span><span class=line><span class=cl>  -h|--help            Display help.
+</span></span><span class=line><span class=cl>  --version         Display version.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>path-to-application:
+</span></span></code></pre></td></tr></table></div></div><p>再输入dotnet &ndash;version查看一下当前版本,我这边显示2.1.4.</p><p>输入dotnet help</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>.NET Command Line Tools (2.1.4)
+</span></span><span class=line><span class=cl>Usage: dotnet [runtime-options] [path-to-application]
+</span></span><span class=line><span class=cl>Usage: dotnet [sdk-options] [command] [arguments] [command-options]
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>path-to-application:
+</span></span><span class=line><span class=cl>  The path to an application .dll file to execute.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>SDK commands:
+</span></span><span class=line><span class=cl>  new              Initialize .NET projects.
+</span></span><span class=line><span class=cl>  restore          Restore dependencies specified in the .NET project.
+</span></span><span class=line><span class=cl>  run              Compiles and immediately executes a .NET project.
+</span></span><span class=line><span class=cl>  build            Builds a .NET project.
+</span></span><span class=line><span class=cl>  publish          Publishes a .NET project for deployment (including the runtime).
+</span></span><span class=line><span class=cl>  test             Runs unit tests using the test runner specified in the project.
+</span></span><span class=line><span class=cl>  pack             Creates a NuGet package.
+</span></span><span class=line><span class=cl>  migrate          Migrates a project.json based project to a msbuild based project.
+</span></span><span class=line><span class=cl>  clean            Clean build output(s).
+</span></span><span class=line><span class=cl>  sln              Modify solution (SLN) files.
+</span></span><span class=line><span class=cl>  add              Add reference to the project.
+</span></span><span class=line><span class=cl>  remove           Remove reference from the project.
+</span></span><span class=line><span class=cl>  list             List reference in the project.
+</span></span><span class=line><span class=cl>  nuget            Provides additional NuGet commands.
+</span></span><span class=line><span class=cl>  msbuild          Runs Microsoft Build Engine (MSBuild).
+</span></span><span class=line><span class=cl>  vstest           Runs Microsoft Test Execution Command Line Tool.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Common options:
+</span></span><span class=line><span class=cl>  -v|--verbosity        Set the verbosity level of the command. Allowed values are q[uiet], m[inimal], n[ormal], d[etailed], and diag[nostic].
+</span></span><span class=line><span class=cl>  -h|--help             Show help.
+</span></span></code></pre></td></tr></table></div></div><p>有类似的这些信息,说明我们的SDK安装以及完成了.</p><p>Visual Studio 和Visual Studio Code的安装就不多说了.</p><h2 id=创建-dotnet-core程序>创建 dotnet core程序</h2><p>我这边只有SDK + VS Code环境,创建程序直接使用命令行了.</p><p>dotnet core SDK中已经有很多现成的APP模板,我们直接使用dotnet new命令就可以创建对应的程序.</p><p>命令行输入 " dotnet new &ldquo;, 显示如下:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>Usage: new [options]
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Options:
+</span></span><span class=line><span class=cl>  -h, --help          Displays help for this command.
+</span></span><span class=line><span class=cl>  -l, --list          Lists templates containing the specified name. If no name is specified, lists all templates.
+</span></span><span class=line><span class=cl>  -n, --name          The name for the output being created. If no name is specified, the name of the current directory is used.
+</span></span><span class=line><span class=cl>  -o, --output        Location to place the generated output.
+</span></span><span class=line><span class=cl>  -i, --install       Installs a source or a template pack.
+</span></span><span class=line><span class=cl>  -u, --uninstall     Uninstalls a source or a template pack.
+</span></span><span class=line><span class=cl>  --type              Filters templates based on available types. Predefined values are &#34;project&#34;, &#34;item&#34; or &#34;other&#34;.
+</span></span><span class=line><span class=cl>  --force             Forces content to be generated even if it would change existing files.
+</span></span><span class=line><span class=cl>  -lang, --language   Specifies the language of the template to create.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Templates                                         Short Name       Language          Tags
+</span></span><span class=line><span class=cl>--------------------------------------------------------------------------------------------------------
+</span></span><span class=line><span class=cl>Console Application                               console          [C#], F#, VB      Common/Console
+</span></span><span class=line><span class=cl>Class library                                     classlib         [C#], F#, VB      Common/Library
+</span></span><span class=line><span class=cl>Unit Test Project                                 mstest           [C#], F#, VB      Test/MSTest
+</span></span><span class=line><span class=cl>xUnit Test Project                                xunit            [C#], F#, VB      Test/xUnit
+</span></span><span class=line><span class=cl>ASP.NET Core Empty                                web              [C#], F#          Web/Empty
+</span></span><span class=line><span class=cl>ASP.NET Core Web App (Model-View-Controller)      mvc              [C#], F#          Web/MVC
+</span></span><span class=line><span class=cl>ASP.NET Core Web App                              razor            [C#]              Web/MVC/Razor Pages
+</span></span><span class=line><span class=cl>ASP.NET Core with Angular                         angular          [C#]              Web/MVC/SPA
+</span></span><span class=line><span class=cl>ASP.NET Core with React.js                        react            [C#]              Web/MVC/SPA
+</span></span><span class=line><span class=cl>ASP.NET Core with React.js and Redux              reactredux       [C#]              Web/MVC/SPA
+</span></span><span class=line><span class=cl>ASP.NET Core Web API                              webapi           [C#], F#          Web/WebAPI
+</span></span><span class=line><span class=cl>global.json file                                  globaljson                         Config
+</span></span><span class=line><span class=cl>NuGet Config                                      nugetconfig                        Config
+</span></span><span class=line><span class=cl>Web Config                                        webconfig                          Config
+</span></span><span class=line><span class=cl>Solution File                                     sln                                Solution
+</span></span><span class=line><span class=cl>Razor Page                                        page                               Web/ASP.NET
+</span></span><span class=line><span class=cl>MVC ViewImports                                   viewimports                        Web/ASP.NET
+</span></span><span class=line><span class=cl>MVC ViewStart                                     viewstart                          Web/ASP.NET
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Examples:
+</span></span><span class=line><span class=cl>    dotnet new mvc --auth Individual
+</span></span><span class=line><span class=cl>    dotnet new viewimports --namespace
+</span></span><span class=line><span class=cl>    dotnet new --help
+</span></span></code></pre></td></tr></table></div></div><p>既然是手把手教程,肯定从最原始的Console Application 开始咯,在命令行中输入命令"dotnet new console -n FirstApplication&rdquo;,创建一个名为FirstApplication的命令行程序</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>dotnet new console -n FirstApplication<span class=p>;</span>
+</span></span><span class=line><span class=cl>cd FirstApplication<span class=p>;</span>
+</span></span><span class=line><span class=cl>ls FirstApplication<span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=c1>#✗ cd FirstApplication</span>
+</span></span><span class=line><span class=cl><span class=c1># FirstApplication git:(master) ✗ ls</span>
+</span></span><span class=line><span class=cl><span class=c1># FirstApplication.csproj  Program.cs  obj/</span>
+</span></span></code></pre></td></tr></table></div></div><p>我们切换到FirstApplication文件中,可以看到现在已经有三个文件.简单讲解一下:</p><ul><li><p>FirstApplication.csproj .csproj为项目构建文件(C Sharp Project”),对应maven中的pom.xml或者是gradle中的build.gradle</p></li><li><p>Program.cs 为程序的主入口, 有一个静态的Main方法</p></li><li><p>obj用于存放编译过程中生成的中间临时文件,一般不用管</p></li></ul><p>我们使用VS Code打开这个文件夹看看.</p><p>首次在VS Code中打开带有.csproj文件的文件夹,VS Code会提示是否需要安装相关插件,直接选择是即可.</p><p>我们这里要用到的插件主要是"C# for Visual Studio Code (powered by OmniSharp)",直接在插件仓库搜C#基本就能看到.</p><p>直接看下Program.cs的代码:</p><p><img src=http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8810.51.02.png loading=lazy alt=代码1></p><p>一句话输出"Hello World!"&mldr;</p><p>我们试着运行一下看看.</p><p>有两种方式:</p><ul><li><p>直接在对应项目文件夹位置的命令行中执行dotner run;</p></li><li><p>VS Code debug启动</p></li></ul><h3 id=dotnet-run>dotnet run</h3><p>&ldquo;VS Code-查看-集成终端"可以直接调出终端,并且切到当前项目文件路径,执行 dotnet run输出如下:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>➜  FirstApplication git:(master) ✗ dotnet run
+</span></span><span class=line><span class=cl>Hello World!
+</span></span></code></pre></td></tr></table></div></div><h3 id=vs-code-debug>VS Code debug</h3><p>VS Code左侧切到debug(一只虫子的图标),点击调试旁边的绿色按钮开始启动.</p><p><img src=http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8810.57.46.png loading=lazy alt=debug></p><p>终端输出:</p><p><img src=http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8810.59.51.png loading=lazy alt=终端></p><p>调试控制台输出:</p><p><img src=http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8811.00.51.png loading=lazy alt=控制台></p><p>都说了Debug了,我们简单也做个debug断点调试.</p><p>点击代码文件左侧黑色边栏,鼠标左键单击在第8,9行,对应位置出现断点(小红点),
+如下图:
+<img src=http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8811.02.09.png loading=lazy alt=断点></p><p>再次Debug运行程序.</p><p>第8行位置出现黄色条纹,程序处于debug默认等待下一步操作.</p><p><img src=http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8811.04.41.png loading=lazy alt=debug></p><p>左侧可查看相关变量当前值,正上方有debug相关操作(F5继续,F10单步跳过,F11单步调试&mldr;)</p><p>F5按一下,黄色条纹往下走一步到第9行(上一步也下了断点).此时尚未输出任何的信息.</p><p>F5下一步执行Console.WriteLine(&ldquo;Hello World!&rdquo;);输出"Hello World!&rdquo;</p><h3 id=写个累加程序试试水>写个累加程序试试水</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C# data-lang=C#><span class=line><span class=cl><span class=k>using</span> <span class=nn>System</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>namespace</span> <span class=nn>FirstApplication</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>class</span> <span class=nc>Program</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kd>static</span> <span class=k>void</span> <span class=n>Main</span><span class=p>(</span><span class=kt>string</span><span class=p>[]</span> <span class=n>args</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=kt>var</span> <span class=n>sum</span> <span class=p>=</span> <span class=m>0</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>for</span> <span class=p>(</span><span class=kt>var</span> <span class=n>i</span> <span class=p>=</span> <span class=m>0</span><span class=p>;</span> <span class=n>i</span> <span class=p>&lt;</span> <span class=m>10</span><span class=p>;</span> <span class=n>i</span><span class=p>++)</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>sum</span> <span class=p>=</span> <span class=n>sum</span> <span class=p>+</span> <span class=n>i</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=n>Console</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=s>$&#34;当前i值为:{i},sum:{sum}&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=cm>/*
+</span></span></span><span class=line><span class=cl><span class=cm>Loaded &#39;/usr/local/share/dotnet/shared/Microsoft.NETCore.App/2.0.5/System.Runtime.Extensions.dll&#39;. Skipped loading symbols. Module is optimized and the debugger option &#39;Just My Code&#39; is enabled.
+</span></span></span><span class=line><span class=cl><span class=cm>当前i值为:0,sum:0
+</span></span></span><span class=line><span class=cl><span class=cm>当前i值为:1,sum:1
+</span></span></span><span class=line><span class=cl><span class=cm>当前i值为:2,sum:3
+</span></span></span><span class=line><span class=cl><span class=cm>当前i值为:3,sum:6
+</span></span></span><span class=line><span class=cl><span class=cm>当前i值为:4,sum:10
+</span></span></span><span class=line><span class=cl><span class=cm>当前i值为:5,sum:15
+</span></span></span><span class=line><span class=cl><span class=cm>当前i值为:6,sum:21
+</span></span></span><span class=line><span class=cl><span class=cm>当前i值为:7,sum:28
+</span></span></span><span class=line><span class=cl><span class=cm>当前i值为:8,sum:36
+</span></span></span><span class=line><span class=cl><span class=cm>当前i值为:9,sum:45
+</span></span></span><span class=line><span class=cl><span class=cm>The program &#39;[32086] FirstApplication.dll&#39; has exited with code 0 (0x0).
+</span></span></span><span class=line><span class=cl><span class=cm>*/</span>
+</span></span></code></pre></td></tr></table></div></div><p>在循环里面打个断点看看i的值和sum的值.</p><p><img src=http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8811.17.06.png loading=lazy alt=i+sum></p><p>鼠标移动到对应变量上.
+<img src=http://qiniu.house2048.cn/%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202018-05-29%20%E4%B8%8B%E5%8D%8811.17.49.png loading=lazy alt=鼠标移上去></p><p>到这里,第一个dotnet core程序基本已经完成了,本教程结束&mldr;.</p><h2 id=骗你的这里还有>骗你的,这里还有</h2><p>还记得我们上面看到的FirstApplication.csproj吗?</p><p>我们直接在VS Code中打开看看.(VS用户随便找个文件编辑器打开)</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;Project</span> <span class=na>Sdk=</span><span class=s>&#34;Microsoft.NET.Sdk&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;PropertyGroup&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;OutputType&gt;</span>Exe<span class=nt>&lt;/OutputType&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;TargetFramework&gt;</span>netcoreapp2.0<span class=nt>&lt;/TargetFramework&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;/PropertyGroup&gt;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/Project&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>这里就指定了SDK版本和程序版本,没有其他多余的东西了.</p><p>暂时没什么看的,我们找个web项目的来看看.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=line><span class=cl><span class=nt>&lt;Project</span> <span class=na>Sdk=</span><span class=s>&#34;Microsoft.NET.Sdk.Web&#34;</span><span class=nt>&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;PropertyGroup&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;TargetFramework&gt;</span>netcoreapp2.0<span class=nt>&lt;/TargetFramework&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;/PropertyGroup&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;ItemGroup&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;Folder</span> <span class=na>Include=</span><span class=s>&#34;wwwroot\&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;/ItemGroup&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;ItemGroup&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;Dapper&#34;</span> <span class=na>Version=</span><span class=s>&#34;1.50.4&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;Microsoft.ApplicationInsights.AspNetCore&#34;</span> <span class=na>Version=</span><span class=s>&#34;2.2.1&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;Microsoft.AspNetCore&#34;</span> <span class=na>Version=</span><span class=s>&#34;2.0.2&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;Microsoft.AspNetCore.Mvc&#34;</span> <span class=na>Version=</span><span class=s>&#34;2.0.3&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;Microsoft.AspNetCore.StaticFiles&#34;</span> <span class=na>Version=</span><span class=s>&#34;2.0.2&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;Microsoft.EntityFrameworkCore.Design&#34;</span> <span class=na>Version=</span><span class=s>&#34;2.0.2&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;Microsoft.Extensions.Logging.Debug&#34;</span> <span class=na>Version=</span><span class=s>&#34;2.0.1&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;Microsoft.VisualStudio.Web.BrowserLink&#34;</span> <span class=na>Version=</span><span class=s>&#34;2.0.2&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;Microsoft.VisualStudio.Web.CodeGeneration.Design&#34;</span> <span class=na>Version=</span><span class=s>&#34;2.0.3&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;Newtonsoft.Json&#34;</span> <span class=na>Version=</span><span class=s>&#34;11.0.2&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;StackExchange.Redis.StrongName&#34;</span> <span class=na>Version=</span><span class=s>&#34;1.2.6&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;System.Diagnostics.Tools&#34;</span> <span class=na>Version=</span><span class=s>&#34;4.3.0&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;System.Text.Encoding.CodePages&#34;</span> <span class=na>Version=</span><span class=s>&#34;4.4.0&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;System.ValueTuple&#34;</span> <span class=na>Version=</span><span class=s>&#34;*&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;Microsoft.Extensions.Configuration.Json&#34;</span> <span class=na>Version=</span><span class=s>&#34;2.1.0-rc1-final&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;Pomelo.AspNetCore.TimedJob&#34;</span> <span class=na>Version=</span><span class=s>&#34;2.0.0-rtm-10046&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;MySqlConnector&#34;</span> <span class=na>Version=</span><span class=s>&#34;0.40.3&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;MongoDB.Driver.Core&#34;</span> <span class=na>Version=</span><span class=s>&#34;2.7.0-beta0001&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>    <span class=nt>&lt;PackageReference</span> <span class=na>Include=</span><span class=s>&#34;MongoDB.Driver&#34;</span> <span class=na>Version=</span><span class=s>&#34;2.7.0-beta0001&#34;</span><span class=nt>/&gt;</span>
+</span></span><span class=line><span class=cl>  <span class=nt>&lt;/ItemGroup&gt;</span>
+</span></span><span class=line><span class=cl><span class=nt>&lt;/Project&gt;</span>
+</span></span></code></pre></td></tr></table></div></div><p>这边能看的东西就很多了.</p><ul><li><p>Project Sdk=&ldquo;Microsoft.NET.Sdk.Web&rdquo; SDk为Web</p></li><li><p>Folder Include=&ldquo;wwwroot" 包含 wwwroot静态文件</p></li><li><p>PackageReference Include=&ldquo;Dapper&rdquo; Version=&ldquo;1.50.4&rdquo; 引用了Dapper程序包(一个ORM框架)</p></li><li><p>PackageReference Include=&ldquo;Microsoft.AspNetCore.Mvc&rdquo; Version=&ldquo;2.0.3&rdquo; 引用了MVC框架</p></li><li><p>PackageReference Include=&ldquo;Newtonsoft.Json&rdquo; Version=&ldquo;11.0.2&rdquo; 引用了Newtonsoft.Json Json库</p></li></ul><p>这里我们先看看,具体内容在下一讲asp.net core 入门我们会详细讲解.</p><p>全文完&mldr;.</p></section><footer class=article-footer><section class=article-tags><a href=/zh/tags/dotnet-core/>Dotnet Core</a>
+<a href=/zh/tags/docker/>Docker</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><aside class=related-content--wrapper><h2 class=section-title>Related content</h2><div class=related-content><div class="flex article-list--tile"><article><a href=/zh/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-core%E8%AF%BB%E5%8F%96%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6/><div class=article-details><h2 class=article-title>手把手教你写dotnet core(读取配置文件)</h2></div></a></article><article><a href=/zh/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E5%86%99dotnet-coremvc/><div class=article-details><h2 class=article-title>手把手教你写dotnet core(MVC)</h2></div></a></article><article><a href=/zh/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E7%94%A8jenkins%E8%87%AA%E5%8A%A8%E5%8F%91%E5%B8%83dotnet-core%E7%BD%91%E7%AB%99/><div class=article-details><h2 class=article-title>手把手教你用Jenkins自动发布dotnet core网站</h2></div></a></article></div></div></aside><script src=https://utteranc.es/client.js repo=liguobao/liguobao.github.io issue-term=title crossorigin=anonymous async></script><style>.utterances{max-width:unset}</style><script>let utterancesLoaded=!1;function setUtterancesTheme(e){let t=document.querySelector(".utterances iframe");t&&t.contentWindow.postMessage({type:"set-theme",theme:`github-${e}`},"https://utteranc.es")}addEventListener("message",e=>{if(e.origin!=="https://utteranc.es")return;utterancesLoaded=!0,setUtterancesTheme(document.documentElement.dataset.scheme)}),window.addEventListener("onColorSchemeChange",e=>{if(!utterancesLoaded)return;setUtterancesTheme(e.detail)})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2026 人生删除指南</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.30.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>K3s on Life Deletion Guide</title><link>https://liguobao.github.io/tags/k3s/</link><description>Recent content in K3s on Life Deletion Guide</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sat, 07 Jun 2025 08:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/k3s/index.xml" rel="self" type="application/rss+xml"/><item><title>k3s Daily ImagePullError Memo</title><link>https://liguobao.github.io/p/k3s-image-pull-error/</link><pubDate>Sat, 07 Jun 2025 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/k3s-image-pull-error/</guid><description>&lt;p&gt;When doing things in China, you have to solve network issues daily.&lt;/p&gt;
+&lt;p&gt;It&amp;rsquo;s okay locally, but it&amp;rsquo;s a bit painful on the server.&lt;/p&gt;
+&lt;p&gt;Today when fiddling with the k3s cluster, I accidentally wiped out etcd.&lt;/p&gt;
+&lt;p&gt;So I started reinstalling the entire cluster.&lt;/p&gt;
+&lt;p&gt;Everything else is fine, the images are all on some cloud, but traefik is painful.&lt;/p&gt;
+&lt;p&gt;This thing uses docker hub source.&lt;/p&gt;
+&lt;p&gt;If it was a few years ago, it would be fine, there were so many mirror sources in China, just configure one and it&amp;rsquo;s done.&lt;/p&gt;
+&lt;p&gt;But after last year, the mirror sources died one by one.&lt;/p&gt;
+&lt;p&gt;Can&amp;rsquo;t give the server a scientific internet either.&lt;/p&gt;
+&lt;p&gt;And the premise of scientific internet is that you have to scientific internet first to download things.&lt;/p&gt;
+&lt;p&gt;Dead end.&lt;/p&gt;
+&lt;p&gt;After fiddling for several hours, I had a sudden idea.&lt;/p&gt;
+&lt;p&gt;Just export the image locally and import it, isn&amp;rsquo;t that done.&lt;/p&gt;
+&lt;p&gt;k3s although it doesn&amp;rsquo;t use docker runtime, but it has compatible commands.&lt;/p&gt;
+&lt;p&gt;Asked GPT, very simple.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;docker save docker.io/traefik:v3.4.1 -o traefik_v3.4.1.tar
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;scp traefik_v3.4.1.tar root@my-ip:~/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ctr -n k8s.io images import /root/traefik_v3.4.1.tar
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Done.&lt;/p&gt;
+&lt;p&gt;Yes. That&amp;rsquo;s how simple it is.&lt;/p&gt;
+&lt;p&gt;Everything is so harmonious.&lt;/p&gt;</description></item></channel></rss>

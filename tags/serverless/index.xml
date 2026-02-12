@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Serverless on Life Deletion Guide</title><link>https://liguobao.github.io/tags/serverless/</link><description>Recent content in Serverless on Life Deletion Guide</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 29 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/serverless/index.xml" rel="self" type="application/rss+xml"/><item><title>QCloud Serverless — Notes on Low‑Code &amp; Mini‑Program Cloud Dev</title><link>https://liguobao.github.io/p/qcloud-serverless-notes-on-lowcode-miniprogram-cloud-dev/</link><pubDate>Sun, 29 Nov 2020 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/qcloud-serverless-notes-on-lowcode-miniprogram-cloud-dev/</guid><description>&lt;h1 id="how-to-view-tencent-clouds-lowcode-offering-can-everyone-become-a-developer"&gt;How to view Tencent Cloud’s low‑code offering? Can “everyone” become a developer?
+&lt;/h1&gt;&lt;p&gt;Low‑code isn’t new; Tencent Cloud is late but has its approach. A quick arc:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;From VMs to functions — AWS Lambda popularized FaaS; Alibaba Cloud followed; Tencent Cloud’s Serverless capabilities round out the field.&lt;/li&gt;
+&lt;li&gt;Serverless improves over managed VMs/containers in ops burden and scale‑to‑zero; it changes dev patterns. Tencent’s edge is tighter ecosystem integration.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="whats-special-about-miniprogram-cloud-dev"&gt;What’s special about Mini‑Program Cloud Dev
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Built‑in cloud DB and storage are quite handy; competitors don’t ship this integrated (as far as I know).&lt;/li&gt;
+&lt;li&gt;WeChat + Tencent ecosystem integrations (payments, maps, auth) make “wiring things up” faster.&lt;/li&gt;
+&lt;li&gt;Tooling: VS Code extensions, WeChat DevTools, and ops integration.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="everyone-is-a-developer"&gt;“Everyone is a developer”?
+&lt;/h2&gt;&lt;p&gt;What is software development, and what do developers do? Cloud‑dev lowers the threshold (faster iteration, quick validation), but real products still need engineering and trade‑offs. Lowering barriers helps experimentation; complexity remains for robust systems.&lt;/p&gt;
+&lt;h1 id="followup-does-clouddev-lower-the-bar-how-to-assess-developer-value"&gt;Follow‑up: Does cloud‑dev lower the bar? How to assess developer value?
+&lt;/h1&gt;&lt;p&gt;First define the “bar”:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;What does it take to go from idea → online product? (requirements, data, UX, infra, security)&lt;/li&gt;
+&lt;li&gt;Where do core CS concepts matter in real projects?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Mini‑programs:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Critiques: walled garden; performance limits.&lt;/li&gt;
+&lt;li&gt;Pros: on‑demand usage; low entry; multi‑end unification; platform quality baseline.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Mini‑program Cloud Dev:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Deep integration with mini‑program stack&lt;/li&gt;
+&lt;li&gt;Provides DB + storage capabilities&lt;/li&gt;
+&lt;li&gt;Some scenarios need no/weak back‑ends or dedicated servers, lowering cost&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Value of developers:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Lowering the “build” bar and trial‑and‑error cost is good; turning an experiment into a stable product still needs engineering depth.&lt;/li&gt;
+&lt;li&gt;“Fast, good, cheap” requires judgment — where to apply theory, where to iterate quickly, how to keep quality.&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>地图搜租房 on 人生删除指南</title><link>https://liguobao.github.io/zh/tags/%E5%9C%B0%E5%9B%BE%E6%90%9C%E7%A7%9F%E6%88%BF/</link><description>Recent content in 地图搜租房 on 人生删除指南</description><generator>Hugo -- gohugo.io</generator><language>zh</language><lastBuildDate>Thu, 22 Mar 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/zh/tags/%E5%9C%B0%E5%9B%BE%E6%90%9C%E7%A7%9F%E6%88%BF/index.xml" rel="self" type="application/rss+xml"/><item><title>地图搜租房-小程序版本上线</title><link>https://liguobao.github.io/zh/p/%E5%9C%B0%E5%9B%BE%E6%90%9C%E7%A7%9F%E6%88%BF-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%89%88%E6%9C%AC%E4%B8%8A%E7%BA%BF/</link><pubDate>Thu, 22 Mar 2018 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/zh/p/%E5%9C%B0%E5%9B%BE%E6%90%9C%E7%A7%9F%E6%88%BF-%E5%B0%8F%E7%A8%8B%E5%BA%8F%E7%89%88%E6%9C%AC%E4%B8%8A%E7%BA%BF/</guid><description>&lt;p&gt;老早之前就在 v2ex 发过帖子介绍自己的工具啦。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://www.v2ex.com/t/530011" target="_blank" rel="noopener"
+&gt;老早之前做的&amp;quot;地图搜租房(https://house-map.cn)&amp;ldquo;上线了新交互，欢迎大家轻拍砖&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://www.v2ex.com/t/509447#reply8" target="_blank" rel="noopener"
+&gt;发现好多人都在&amp;quot;城市&amp;quot;这个主题下发转租/租房帖子,索性抓了一波到&amp;quot;地图搜租房&amp;quot;里面&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://www.v2ex.com/t/497674#reply4" target="_blank" rel="noopener"
+&gt;又是一个广告帖子+&amp;ldquo;地图搜租房&amp;quot;前端大改版 + 小程序上线了&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://house-map.cn/#/" target="_blank" rel="noopener"
+&gt;地图搜租房-多平台房源爬虫 + 高德地图强力驱动,帮助你迅速找到合适房源。&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="假新闻开始"&gt;假新闻开始
+&lt;/h2&gt;&lt;p&gt;PS：上面是个假新闻，这次来真的。&lt;/p&gt;
+&lt;p&gt;再之前的小程序因为资质的问题通过不了。&lt;/p&gt;
+&lt;p&gt;大概是年前拉着学弟一起来做这个“地图搜租房”小程序了。&lt;/p&gt;
+&lt;p&gt;大体做了下面的一些功能。&lt;/p&gt;
+&lt;h2 id="功能介绍"&gt;功能介绍
+&lt;/h2&gt;&lt;h3 id="城市房源"&gt;城市房源
+&lt;/h3&gt;&lt;p&gt;&lt;img src="http://img-cdn.woyaozufang.live/mini-1.png"
+loading="lazy"
+alt="城市房源"
+&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id="不同平台单独展示"&gt;不同平台单独展示
+&lt;/h3&gt;&lt;p&gt;&lt;img src="http://img-cdn.woyaozufang.live/mini-2.png"
+loading="lazy"
+&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id="条件过滤查询"&gt;条件过滤查询
+&lt;/h3&gt;&lt;p&gt;&lt;img src="http://img-cdn.woyaozufang.live/mini-3.png"
+loading="lazy"
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://img-cdn.woyaozufang.live/mini-4.png"
+loading="lazy"
+&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id="房源详情--地图"&gt;房源详情 + 地图
+&lt;/h3&gt;&lt;p&gt;&lt;img src="http://img-cdn.woyaozufang.live/mini-10.jpg"
+loading="lazy"
+&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id="收藏--反馈"&gt;收藏 + 反馈
+&lt;/h3&gt;&lt;p&gt;&lt;img src="http://img-cdn.woyaozufang.live/mini-7.jpg"
+loading="lazy"
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://img-cdn.woyaozufang.live/mini-8.jpg"
+loading="lazy"
+&gt;&lt;/p&gt;
+&lt;h3 id="神一样现在才写更新内容"&gt;神一样现在才写更新内容
+&lt;/h3&gt;&lt;p&gt;明显，现在 Beta9 嘛，凑和能用的程度。&lt;/p&gt;
+&lt;p&gt;更新列表：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;支持了城市的行政区筛选，没有行政区的直接归为当前城市&lt;/li&gt;
+&lt;li&gt;支持了 XX 天内的数据筛选&lt;/li&gt;
+&lt;li&gt;支持了房源类型的筛选&lt;/li&gt;
+&lt;li&gt;上面组合 + 价格筛选也做啦&lt;/li&gt;
+&lt;li&gt;列表页支持了房源发布时间，更加直观展示&lt;/li&gt;
+&lt;li&gt;一些 Bug 的修复和引入了新的 Bug&lt;/li&gt;
+&lt;li&gt;优化加载速度，新增数据缓存&lt;/li&gt;
+&lt;li&gt;加了“广告”位&amp;hellip;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="广告位的说明"&gt;广告位的说明
+&lt;/h3&gt;&lt;p&gt;&lt;img src="http://img-cdn.woyaozufang.live/%E5%B9%BF%E5%91%8A%E6%9D%A5%E6%BA%901.png"
+loading="lazy"
+&gt;
+&lt;img src="http://img-cdn.woyaozufang.live/%E5%B9%BF%E5%91%8A%E6%9D%A5%E6%BA%903.png"
+loading="lazy"
+&gt;&lt;/p&gt;
+&lt;p&gt;反正也收不到多少钱，&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://img-cdn.woyaozufang.live/%E5%B9%BF%E5%91%8A%E6%94%B6%E5%85%A5.png"
+loading="lazy"
+&gt;&lt;/p&gt;
+&lt;p&gt;这两三年的项目收入是-10000 左右。&lt;/p&gt;
+&lt;p&gt;2333&amp;hellip;&lt;/p&gt;
+&lt;p&gt;最后，献上地址。&lt;/p&gt;
+&lt;p&gt;微信公众号搜索“人生删除指南”&lt;/p&gt;
+&lt;p&gt;或者扫描下面的二维码都可以关注后获取微信小程序。&lt;/p&gt;
+&lt;p&gt;PS：当然是跪求关注啦。&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://img-cdn.woyaozufang.live/wechat.jpg"
+loading="lazy"
+alt="公众号"
+&gt;&lt;/p&gt;
+&lt;h3 id="小程序码"&gt;小程序码
+&lt;/h3&gt;&lt;p&gt;撒时候还套路 v2ex 老哥嘛。有必要吗？&lt;/p&gt;
+&lt;p&gt;拿去拿去！&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://img-cdn.woyaozufang.live/house-map-wechat-mini.jpg"
+loading="lazy"
+alt="小程序码"
+&gt;&lt;/p&gt;
+&lt;h3 id="最后说几句"&gt;最后说几句
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;小程序刚上线没多久，Bug 多多，多体谅体谅，李姐万岁！&lt;/li&gt;
+&lt;li&gt;有什么建议和想法欢迎公众号交流，邮件我也行！&lt;/li&gt;
+&lt;li&gt;求轻喷，别打脸&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

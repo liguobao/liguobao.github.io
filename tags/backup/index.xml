@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Backup on Life Deletion Guide</title><link>https://liguobao.github.io/tags/backup/</link><description>Recent content in Backup on Life Deletion Guide</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 27 Dec 2024 08:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/backup/index.xml" rel="self" type="application/rss+xml"/><item><title>Windows Full-Disk Backup and Migration — A Quick Guide</title><link>https://liguobao.github.io/p/windows-c-disk-move/</link><pubDate>Fri, 27 Dec 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/windows-c-disk-move/</guid><description>&lt;h2 id="windows-full-disk-backup-and-migration--a-quick-guide"&gt;Windows Full-Disk Backup and Migration — A Quick Guide
+&lt;/h2&gt;&lt;p&gt;A friend recently kept complaining that the laptop was running out of disk space.&lt;/p&gt;
+&lt;p&gt;After checking the model and confirming with Xiaomi support, this model has only one M.2 slot, with no extra expansion bay.&lt;/p&gt;
+&lt;p&gt;The SSD is not soldered, though, so replacing it is straightforward.&lt;/p&gt;
+&lt;p&gt;According to the teardown guides, you can swap the drive after removing the back cover screws.&lt;/p&gt;
+&lt;h3 id="what-you-need"&gt;What You Need
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;4 TB M.2 SSD&lt;/li&gt;
+&lt;li&gt;Precision screwdriver kit&lt;/li&gt;
+&lt;li&gt;SSD enclosure (USB)&lt;/li&gt;
+&lt;li&gt;Software: AOMEI Partition Assistant&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="workflow"&gt;Workflow
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Install the new SSD into the USB enclosure.&lt;/li&gt;
+&lt;li&gt;Use “Partition Assistant” to clone the entire disk to the new SSD.&lt;/li&gt;
+&lt;li&gt;Open the laptop, swap the original SSD with the new one.&lt;/li&gt;
+&lt;li&gt;Boot up and verify the system starts and runs normally.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="clone-the-entire-disk"&gt;Clone the Entire Disk
+&lt;/h2&gt;&lt;p&gt;This part is simple: open Partition Assistant, choose Disk Clone, select source and target disks, then start cloning.&lt;/p&gt;
+&lt;p&gt;With both drives being SSDs, the cloning finished in just over an hour for me.&lt;/p&gt;
+&lt;p&gt;Reference tutorials:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;No reinstall needed — migrate OS to SSD easily: &lt;a class="link" href="https://www.disktool.cn/content-center/migrate-os-to-ssd/transfer-os-to-ssd.html" target="_blank" rel="noopener"
+&gt;https://www.disktool.cn/content-center/migrate-os-to-ssd/transfer-os-to-ssd.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;How to quickly migrate your system to a new drive (3 methods): &lt;a class="link" href="https://www.disktool.cn/jiaocheng/migrate-system-drive.html" target="_blank" rel="noopener"
+&gt;https://www.disktool.cn/jiaocheng/migrate-system-drive.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The steps are very similar across guides, so I won’t repeat them.&lt;/p&gt;
+&lt;p&gt;After migration, open File Explorer and spot-check that the data looks right.&lt;/p&gt;
+&lt;h2 id="swap-the-drive"&gt;Swap the Drive
+&lt;/h2&gt;&lt;p&gt;This is basically unscrew, remove, replace, and screw back.&lt;/p&gt;
+&lt;p&gt;I sent my friend a teardown video; they handled it by themselves.&lt;/p&gt;
+&lt;p&gt;Yes — the entire process was DIY on their side, I only provided remote guidance.&lt;/p&gt;
+&lt;h2 id="issue-1-no-bootable-device"&gt;Issue #1: “No bootable device”
+&lt;/h2&gt;&lt;p&gt;After the swap, the laptop showed “No bootable device”.&lt;/p&gt;
+&lt;p&gt;First thought: maybe the drive wasn’t seated properly?&lt;/p&gt;
+&lt;p&gt;We rechecked — the drive was firmly connected.&lt;/p&gt;
+&lt;p&gt;Swapped the old SSD back in — boots fine.&lt;/p&gt;
+&lt;p&gt;Swapped the new SSD in again — still “No bootable device”.&lt;/p&gt;
+&lt;p&gt;They didn’t have a PE USB handy at night, so we paused and made one the next day.&lt;/p&gt;
+&lt;p&gt;Thinking about it in the morning — likely a bootloader issue: the new disk doesn’t have valid boot records.&lt;/p&gt;
+&lt;p&gt;With a WinPE USB prepared, we booted into PE and confirmed the new SSD was detected. Capacity and partitions matched the old drive.&lt;/p&gt;
+&lt;p&gt;We first tried the built‑in boot repair tool in PE.&lt;/p&gt;
+&lt;p&gt;Rebooted — same error.&lt;/p&gt;
+&lt;h2 id="issue-2-mbrboot-records-not-right"&gt;Issue #2: MBR/boot records not right?
+&lt;/h2&gt;&lt;p&gt;Back into PE, we used DiskGenius to manually repair the MBR/boot records.&lt;/p&gt;
+&lt;p&gt;Rebooted — still the same error.&lt;/p&gt;
+&lt;p&gt;Strange. What else could be missing?&lt;/p&gt;
+&lt;p&gt;Then it hit me: after disk migration, did we forget to convert the disk to GPT?&lt;/p&gt;
+&lt;p&gt;Back into PE, used DiskGenius to convert the new SSD to GPT.&lt;/p&gt;
+&lt;p&gt;Reboot — system starts normally.&lt;/p&gt;
+&lt;h2 id="takeaways"&gt;Takeaways
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Always have a WinPE toolkit ready when doing system migrations.&lt;/li&gt;
+&lt;li&gt;After replacing the drive, pay attention to the disk partition style (GPT vs MBR).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="references"&gt;References
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;How to repair disk boot with Laomaotao WinPE (Chinese): &lt;a class="link" href="https://www.laomaotao.net/winpe/2020/0313/8129.html" target="_blank" rel="noopener"
+&gt;https://www.laomaotao.net/winpe/2020/0313/8129.html&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;MBR (Master Boot Record) intro and repair (Chinese): &lt;a class="link" href="https://zhuanlan.zhihu.com/p/419605886" target="_blank" rel="noopener"
+&gt;https://zhuanlan.zhihu.com/p/419605886&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

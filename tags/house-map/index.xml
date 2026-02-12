@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>House Map on Life Deletion Guide</title><link>https://liguobao.github.io/tags/house-map/</link><description>Recent content in House Map on Life Deletion Guide</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 22 Mar 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/house-map/index.xml" rel="self" type="application/rss+xml"/><item><title>House‑Map Mini Program Launched</title><link>https://liguobao.github.io/p/housemap-mini-program-launched/</link><pubDate>Thu, 22 Mar 2018 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/housemap-mini-program-launched/</guid><description>&lt;p&gt;Previously I posted on V2EX about this tool:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;New interaction update for “Map‑based Rental Search”: &lt;a class="link" href="https://www.v2ex.com/t/530011" target="_blank" rel="noopener"
+&gt;https://www.v2ex.com/t/530011&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Scraped “City”‑tagged sublet/rental posts into the app: &lt;a class="link" href="https://www.v2ex.com/t/509447#reply8" target="_blank" rel="noopener"
+&gt;https://www.v2ex.com/t/509447#reply8&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Ad slot + major front‑end revamp + mini program live: &lt;a class="link" href="https://www.v2ex.com/t/497674#reply4" target="_blank" rel="noopener"
+&gt;https://www.v2ex.com/t/497674#reply4&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Map‑based rental search: &lt;a class="link" href="https://house-map.cn/#/" target="_blank" rel="noopener"
+&gt;https://house-map.cn/#/&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This time it’s for real. The earlier mini program failed qualification; later I teamed up with a classmate to ship it.&lt;/p&gt;
+&lt;h2 id="features"&gt;Features
+&lt;/h2&gt;&lt;h3 id="city-listings"&gt;City listings
+&lt;/h3&gt;&lt;p&gt;Screenshots show per‑city feeds and map overlays.&lt;/p&gt;
+&lt;h3 id="perplatform-views"&gt;Per‑platform views
+&lt;/h3&gt;&lt;p&gt;Group sources (e.g., different sites) with individual tabs.&lt;/p&gt;
+&lt;h3 id="filtered-search"&gt;Filtered search
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Filter by administrative district&lt;/li&gt;
+&lt;li&gt;Filter by “within N days” recency&lt;/li&gt;
+&lt;li&gt;Filter by listing type + price&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="listing-details--map"&gt;Listing details + map
+&lt;/h3&gt;&lt;p&gt;Detail pages include map view/location.&lt;/p&gt;
+&lt;h3 id="favorites--feedback"&gt;Favorites + feedback
+&lt;/h3&gt;&lt;p&gt;Star listings and submit feedback in‑app.&lt;/p&gt;
+&lt;h3 id="whats-new-beta-9"&gt;What’s new (Beta 9)
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;District filters; city‑only fallback when no district&lt;/li&gt;
+&lt;li&gt;“Within N days” filter&lt;/li&gt;
+&lt;li&gt;Listing type filter; combined with price&lt;/li&gt;
+&lt;li&gt;Show publish time in lists&lt;/li&gt;
+&lt;li&gt;Bug fixes + new bugs&lt;/li&gt;
+&lt;li&gt;Faster loads via caching&lt;/li&gt;
+&lt;li&gt;Added an “ad” slot&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="about-the-ad-slot"&gt;About the ad slot
+&lt;/h3&gt;&lt;p&gt;It doesn’t earn much; cumulative project income over 2–3 years is around −¥10,000. ¯\&lt;em&gt;(ツ)&lt;/em&gt;/¯&lt;/p&gt;
+&lt;p&gt;Follow the WeChat account “人生删除指南” to get the mini program, or scan the QR codes in the original post.&lt;/p&gt;
+&lt;p&gt;Notes&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Newly launched; expect bugs. Thanks for your patience!&lt;/li&gt;
+&lt;li&gt;Suggestions welcome via the account or email.&lt;/li&gt;
+&lt;li&gt;Be kind :-)&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

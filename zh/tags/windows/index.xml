@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Windows on 人生删除指南</title><link>https://liguobao.github.io/zh/tags/windows/</link><description>Recent content in Windows on 人生删除指南</description><generator>Hugo -- gohugo.io</generator><language>zh</language><lastBuildDate>Fri, 27 Dec 2024 08:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/zh/tags/windows/index.xml" rel="self" type="application/rss+xml"/><item><title>Windows 整盘备份迁移简易教程</title><link>https://liguobao.github.io/zh/p/windows-c-disk-move/</link><pubDate>Fri, 27 Dec 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/zh/p/windows-c-disk-move/</guid><description>&lt;h2 id="windows-整盘备份迁移简易教程"&gt;Windows 整盘备份迁移简易教程
+&lt;/h2&gt;&lt;p&gt;死党前阵子一直在抱怨电脑磁盘空间不够用了，&lt;/p&gt;
+&lt;p&gt;查了下他的笔记本型号，问了下小米客服确认，这个型号只有一个M.2插槽，没有预留扩展位。&lt;/p&gt;
+&lt;p&gt;不过SSD并没有焊死在主板上，拆装起来还是比较方便的。&lt;/p&gt;
+&lt;p&gt;查了一下拆机教程，背板螺丝拆下来之后就能换硬盘了。&lt;/p&gt;
+&lt;h3 id="准备工具"&gt;准备工具
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;4T M.2 SSD&lt;/li&gt;
+&lt;li&gt;维修螺丝刀套装&lt;/li&gt;
+&lt;li&gt;SSD 硬盘盒&lt;/li&gt;
+&lt;li&gt;软件：分区助手&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="操作流程"&gt;操作流程
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;把新硬盘装到SSD 硬盘盒&lt;/li&gt;
+&lt;li&gt;使用“分区助手” 克隆整个磁盘分区到新硬盘&lt;/li&gt;
+&lt;li&gt;拆笔记本后盖，替换原硬盘&lt;/li&gt;
+&lt;li&gt;开机确认系统正常启动运行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="克隆整个磁盘分区"&gt;克隆整个磁盘分区
+&lt;/h2&gt;&lt;p&gt;这个没什么太多需要讲的，打开分区助手，&lt;/p&gt;
+&lt;p&gt;选择磁盘克隆，选择源盘和目标盘，然后开始克隆。&lt;/p&gt;
+&lt;p&gt;看磁盘速度，都是SSD的情况，我这边一个多小时就跑完了。&lt;/p&gt;
+&lt;p&gt;教程可以参考：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.disktool.cn/content-center/migrate-os-to-ssd/transfer-os-to-ssd.html" target="_blank" rel="noopener"
+&gt;无需重装，轻松将系统迁移到固态硬盘!&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.disktool.cn/jiaocheng/migrate-system-drive.html" target="_blank" rel="noopener"
+&gt;如何快速将系统迁移到新硬盘？3种数据迁移方法！&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;操作流程大同小异，不再赘述。&lt;/p&gt;
+&lt;p&gt;迁移完成之后，可以打开文件夹，简单看一下数据是不是正常的。&lt;/p&gt;
+&lt;h2 id="拆装硬盘"&gt;拆装硬盘
+&lt;/h2&gt;&lt;p&gt;这个很简单，基本就是拧螺丝，拆下来，换上去。&lt;/p&gt;
+&lt;p&gt;我扔了一个操作视频给死党，他自己都搞掂了。&lt;/p&gt;
+&lt;p&gt;是的。本次操作全程他自己完成，我只能远程指导。&lt;/p&gt;
+&lt;h2 id="第一个问题no-bootable-device"&gt;第一个“问题”：No bootable device
+&lt;/h2&gt;&lt;p&gt;换好硬盘之后开机，直接显示 “No bootable device”。&lt;/p&gt;
+&lt;p&gt;迷糊，难道硬盘没插紧？&lt;/p&gt;
+&lt;p&gt;让老友再次检查了，确认硬盘确实接紧了。&lt;/p&gt;
+&lt;p&gt;让他换回老硬盘试试开机，一切正常。&lt;/p&gt;
+&lt;p&gt;再次换回新硬盘，还是显示 “No bootable device”。&lt;/p&gt;
+&lt;p&gt;奈何他手上没有PE U盘，夜里太晚了先不折腾了，白天搞个PE盘在试试。&lt;/p&gt;
+&lt;p&gt;白天想了下，这个问题应该是引导问题，新硬盘没有引导信息。&lt;/p&gt;
+&lt;p&gt;搞到了新PE盘之后，远程指导他进入PE系统，确认了新硬盘是正常识别的了，&lt;/p&gt;
+&lt;p&gt;容量和分区看起来和老硬盘是一致的。&lt;/p&gt;
+&lt;p&gt;先直接用PE自带的工具做了一次引导修复。&lt;/p&gt;
+&lt;p&gt;再次重启，依旧还是一样的错误。&lt;/p&gt;
+&lt;h2 id="第二个问题主引导记录不太对"&gt;第二个“问题”：主引导记录不太对？
+&lt;/h2&gt;&lt;p&gt;再次进入PE系统，使用 diskgenius 手动修复了一下主引导记录。&lt;/p&gt;
+&lt;p&gt;启动之后，还是一样的错误。&lt;/p&gt;
+&lt;p&gt;神奇了，还差个什么玩意呢。&lt;/p&gt;
+&lt;p&gt;突然想起了老早之前的操作，迁移了磁盘之后，是不是给这玩意磁盘转成GPT 格式。&lt;/p&gt;
+&lt;p&gt;再次进入 PE 系统，使用 diskgenius 将新硬盘转换为 GPT 格式。&lt;/p&gt;
+&lt;p&gt;重启，正常启动。&lt;/p&gt;
+&lt;h2 id="总结"&gt;总结
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;搞系统迁移，还是要备好PE工具在手。&lt;/li&gt;
+&lt;li&gt;硬盘迁移之后，要注意磁盘格式问题。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="参考资料"&gt;参考资料
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.laomaotao.net/winpe/2020/0313/8129.html" target="_blank" rel="noopener"
+&gt;如何使用老毛桃winpe进行磁盘分区引导修复?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://zhuanlan.zhihu.com/p/419605886" target="_blank" rel="noopener"
+&gt;MBR(主引导记录)介绍及修复&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

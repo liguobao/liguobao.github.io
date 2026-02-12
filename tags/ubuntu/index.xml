@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Ubuntu on Life Deletion Guide</title><link>https://liguobao.github.io/tags/ubuntu/</link><description>Recent content in Ubuntu on Life Deletion Guide</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Fri, 22 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/ubuntu/index.xml" rel="self" type="application/rss+xml"/><item><title>Ubuntu Ethernet Drops — Quick Reset Notes</title><link>https://liguobao.github.io/p/ubuntu-wifi-loss/</link><pubDate>Fri, 22 Sep 2023 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/ubuntu-wifi-loss/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/ubuntu-wifi-loss/xiaohei.png" alt="Featured image of post Ubuntu Ethernet Drops — Quick Reset Notes" /&gt;&lt;h2 id="the-odd-failure"&gt;The Odd Failure
+&lt;/h2&gt;&lt;p&gt;Desktop has two NICs: onboard Ethernet and a PCIe Wi‑Fi card. After reassembling hardware (P40 GPU tinkering) and rebooting, the wired NIC was “down”.&lt;/p&gt;
+&lt;p&gt;Previously I had fixed similar issues by deleting the old wired profile in Ubuntu and re‑adding it. This time I had no monitor available (TV too far for an Ethernet cable), so I limped along on Wi‑Fi for a while.&lt;/p&gt;
+&lt;p&gt;In theory, resetting the NIC should suffice. In &lt;code&gt;ifconfig&lt;/code&gt;, a normal NIC shows &lt;code&gt;inet&lt;/code&gt; fields; the broken one didn’t — the system wasn’t recognizing it properly.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;ifconfig down&lt;/code&gt;/&lt;code&gt;up&lt;/code&gt; didn’t help.&lt;/p&gt;
+&lt;h2 id="use-nmtui-networkmanager-tui"&gt;Use nmtui (NetworkManager TUI)
+&lt;/h2&gt;&lt;p&gt;&lt;code&gt;nmtui&lt;/code&gt; is a curses-based TUI for NetworkManager.&lt;/p&gt;
+&lt;p&gt;Run &lt;code&gt;nmtui&lt;/code&gt;, choose “Activate a connection”, then review the devices. In the problematic case the Device shows an invalid NIC id.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Delete the invalid connection&lt;/li&gt;
+&lt;li&gt;Add a new one, entering the NIC name you saw in &lt;code&gt;ifconfig&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Save and activate&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Done.&lt;/p&gt;
+&lt;h2 id="root-cause"&gt;Root Cause
+&lt;/h2&gt;&lt;p&gt;After hardware changes, the system reinitialized and assigned a new device id to the onboard NIC, while your saved network profile still referenced the old id. Resetting the device alone doesn’t fix that — you must recreate the connection profile so it binds to the new device id.&lt;/p&gt;</description></item></channel></rss>
