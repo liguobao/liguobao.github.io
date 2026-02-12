@@ -1,7 +1,7 @@
 ---
-title: "最佳边缘计算集群方案：Tailscale + K3s（2206版本）"
+title: "2206年最佳边缘计算集群方案：Tailscale + k3s"
 slug: k3s-tailscale-cluster-2026
-date: 2026-02-12 08:00:00+0000
+date: 2026-02-11 08:00:00+0000
 image: logo.png
 categories:
   - linux
