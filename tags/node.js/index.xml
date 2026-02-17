@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Node.js on Life Deletion Guide</title><link>https://liguobao.github.io/tags/node.js/</link><description>Recent content in Node.js on Life Deletion Guide</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Mon, 18 Jun 2018 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/node.js/index.xml" rel="self" type="application/rss+xml"/><item><title>Backend API Starter Guide</title><link>https://liguobao.github.io/p/backend-api-starter-guide/</link><pubDate>Mon, 18 Jun 2018 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/backend-api-starter-guide/</guid><description>&lt;h1 id="backend-api-starter-guide"&gt;Backend API Starter Guide
+&lt;/h1&gt;&lt;p&gt;Key concepts and references for building RESTful APIs in common stacks.&lt;/p&gt;
+&lt;h2 id="restful-api"&gt;RESTful API
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Understand HTTP and REST design&lt;/li&gt;
+&lt;li&gt;References:
+&lt;ul&gt;
+&lt;li&gt;Ruanyifeng: Understanding RESTful Architecture&lt;/li&gt;
+&lt;li&gt;Ruanyifeng: RESTful API Design Guide&lt;/li&gt;
+&lt;li&gt;RESTful API resources collection&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="dependency-injection-di"&gt;Dependency Injection (DI)
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Intro to DI and software architecture patterns&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="java"&gt;Java
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;JDK 1.8+&lt;/li&gt;
+&lt;li&gt;IDE: IntelliJ IDEA&lt;/li&gt;
+&lt;li&gt;DB: MySQL 5.7+, cache: Redis&lt;/li&gt;
+&lt;li&gt;Data layer: MyBatis (or JPA), build: Maven/Gradle&lt;/li&gt;
+&lt;li&gt;Framework: Spring Boot + Spring MVC&lt;/li&gt;
+&lt;li&gt;Goal: build CRUD Web APIs with Spring Boot&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="c-net"&gt;C# (.NET)
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;.NET: .NET Core 2.x&lt;/li&gt;
+&lt;li&gt;IDE: VS Code + SDK (or Visual Studio)&lt;/li&gt;
+&lt;li&gt;DB: MySQL 5.7+, cache: Redis&lt;/li&gt;
+&lt;li&gt;Data layer: Dapper&lt;/li&gt;
+&lt;li&gt;Framework: ASP.NET Core MVC with built‑in DI&lt;/li&gt;
+&lt;li&gt;Goal: build CRUD Web APIs with ASP.NET Core&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="python"&gt;Python
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Python 3.6+&lt;/li&gt;
+&lt;li&gt;IDE: VS Code (+ Python extension) or PyCharm&lt;/li&gt;
+&lt;li&gt;DB: MySQL 5.7+, cache: Redis&lt;/li&gt;
+&lt;li&gt;ORM: SQLAlchemy&lt;/li&gt;
+&lt;li&gt;Framework: Flask&lt;/li&gt;
+&lt;li&gt;Goal: build CRUD Web APIs with Flask&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="php"&gt;PHP
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;PHP 7.1+&lt;/li&gt;
+&lt;li&gt;IDE: VS Code (+ PHP Debug) + nginx + php‑fpm&lt;/li&gt;
+&lt;li&gt;DB: MySQL 5.7+, cache: Redis&lt;/li&gt;
+&lt;li&gt;Framework: Laravel; build: Composer&lt;/li&gt;
+&lt;li&gt;Goal: build CRUD Web APIs with Laravel&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="nodejs"&gt;Node.js
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Node.js 9+&lt;/li&gt;
+&lt;li&gt;IDE: VS Code&lt;/li&gt;
+&lt;li&gt;DB: MySQL 5.7+, cache: Redis&lt;/li&gt;
+&lt;li&gt;ORM: Sequelize (or orm2)&lt;/li&gt;
+&lt;li&gt;Build: npm&lt;/li&gt;
+&lt;li&gt;Framework: Express&lt;/li&gt;
+&lt;li&gt;Goal: build CRUD Web APIs with Express&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

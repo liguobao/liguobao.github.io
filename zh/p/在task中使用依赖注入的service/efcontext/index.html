@@ -1,0 +1,318 @@
+<!doctype html><html lang=zh dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content='C#:在Task中使用依赖注入的Service/EFContext dotnet core时代,依赖注入基本已经成为标配了,这就不多说了.\n前几天在做某个功能的时候遇到在Task中使用EF DbContext的问题,学艺不精的我被困扰了不短的一段时间,\n于是有了这个文章.\n先说一下代码结构和场景.\n首先有一个HouseDbContext,代码大概是下面这样:\n1 2 3 4 5 6 7 8 public class HouseDbContext : DbContext { public HouseDbContext(DbContextOptions<HouseDbContext> options) : base(options) { } public DbSet<Notice> Notices { get; set; } } 接着已经在StarUp.cs中初始化并注入了,注入代码是这样的:\n1 2 3 4 5 6 services.AddDbContextPool<HouseDbContext>(options => { options.UseLoggerFactory(loggerFactory); options.UseMySql(Configuration["MySQLString"].ToString()); }); 有一个NoticeService.cs 会用到HouseDbContext 进行增删查改\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 public class NoticeService { private readonly HouseDbContext _dataContext; public NoticeService(HouseDbContext dataContext) { _dataContext = dataContext; } public Notice FindNotice(long id) { var notice = _dataContext.Notices.FirstOrDefault(n =>n.Id == id); return notice; } } 当然我们也需要把NoticeService注入到容器中,类似这样\n'><title>在Task中使用依赖注入的Service/EFContext</title><link rel=canonical href=https://liguobao.github.io/zh/p/%E5%9C%A8task%E4%B8%AD%E4%BD%BF%E7%94%A8%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E7%9A%84service/efcontext/><link rel=stylesheet href=/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css><meta property='og:title' content="在Task中使用依赖注入的Service/EFContext"><meta property='og:description' content='C#:在Task中使用依赖注入的Service/EFContext dotnet core时代,依赖注入基本已经成为标配了,这就不多说了.\n前几天在做某个功能的时候遇到在Task中使用EF DbContext的问题,学艺不精的我被困扰了不短的一段时间,\n于是有了这个文章.\n先说一下代码结构和场景.\n首先有一个HouseDbContext,代码大概是下面这样:\n1 2 3 4 5 6 7 8 public class HouseDbContext : DbContext { public HouseDbContext(DbContextOptions<HouseDbContext> options) : base(options) { } public DbSet<Notice> Notices { get; set; } } 接着已经在StarUp.cs中初始化并注入了,注入代码是这样的:\n1 2 3 4 5 6 services.AddDbContextPool<HouseDbContext>(options => { options.UseLoggerFactory(loggerFactory); options.UseMySql(Configuration["MySQLString"].ToString()); }); 有一个NoticeService.cs 会用到HouseDbContext 进行增删查改\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 public class NoticeService { private readonly HouseDbContext _dataContext; public NoticeService(HouseDbContext dataContext) { _dataContext = dataContext; } public Notice FindNotice(long id) { var notice = _dataContext.Notices.FirstOrDefault(n =>n.Id == id); return notice; } } 当然我们也需要把NoticeService注入到容器中,类似这样\n'><meta property='og:url' content='https://liguobao.github.io/zh/p/%E5%9C%A8task%E4%B8%AD%E4%BD%BF%E7%94%A8%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E7%9A%84service/efcontext/'><meta property='og:site_name' content='人生删除指南'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='dotnet core'><meta property='article:tag' content='C#'><meta property='article:tag' content='EF Core'><meta property='article:published_time' content='2018-11-20T00:00:00+00:00'><meta property='article:modified_time' content='2018-11-20T00:00:00+00:00'><meta name=twitter:title content="在Task中使用依赖注入的Service/EFContext"><meta name=twitter:description content='C#:在Task中使用依赖注入的Service/EFContext dotnet core时代,依赖注入基本已经成为标配了,这就不多说了.\n前几天在做某个功能的时候遇到在Task中使用EF DbContext的问题,学艺不精的我被困扰了不短的一段时间,\n于是有了这个文章.\n先说一下代码结构和场景.\n首先有一个HouseDbContext,代码大概是下面这样:\n1 2 3 4 5 6 7 8 public class HouseDbContext : DbContext { public HouseDbContext(DbContextOptions<HouseDbContext> options) : base(options) { } public DbSet<Notice> Notices { get; set; } } 接着已经在StarUp.cs中初始化并注入了,注入代码是这样的:\n1 2 3 4 5 6 services.AddDbContextPool<HouseDbContext>(options => { options.UseLoggerFactory(loggerFactory); options.UseMySql(Configuration["MySQLString"].ToString()); }); 有一个NoticeService.cs 会用到HouseDbContext 进行增删查改\n1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 public class NoticeService { private readonly HouseDbContext _dataContext; public NoticeService(HouseDbContext dataContext) { _dataContext = dataContext; } public Notice FindNotice(long id) { var notice = _dataContext.Notices.FirstOrDefault(n =>n.Id == id); return notice; } } 当然我们也需要把NoticeService注入到容器中,类似这样\n'><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/zh/><img src=/img/zhihu-lgb_hu_2ad0a9defe137384.png width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/zh>人生删除指南</a></h1><h2 class=site-description>liguobao</h2></div></header><ol class=menu-social><li><a href=https://github.com/liguobao target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://x.com/Liguobao2049 target=_blank title=Twitter rel=me><svg class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li><li><a href=https://www.zhihu.com/people/codelover target=_blank title=知乎 rel=me><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/zh/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/zh/liguobao-resume/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>About</span></a></li><li><a href=/zh/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/zh/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://liguobao.github.io/zh/ selected>简体中文</option><option value=https://liguobao.github.io/>English</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span></li></ol></li></ol></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><div class=article-title-wrapper><h2 class=article-title><a href=/zh/p/%E5%9C%A8task%E4%B8%AD%E4%BD%BF%E7%94%A8%E4%BE%9D%E8%B5%96%E6%B3%A8%E5%85%A5%E7%9A%84service/efcontext/>在Task中使用依赖注入的Service/EFContext</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>11月 20, 2018</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>3 minute read</time></div></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://liguobao.github.io/p/using-ef-dbcontext-in-background-tasks-ihostedservice/ class=link>English</a></div></footer></div></header><section class=article-content><h1 id=c在task中使用依赖注入的serviceefcontext>C#:在Task中使用依赖注入的Service/EFContext</h1><p>dotnet core时代,依赖注入基本已经成为标配了,这就不多说了.</p><p>前几天在做某个功能的时候遇到在Task中使用EF DbContext的问题,学艺不精的我被困扰了不短的一段时间,</p><p>于是有了这个文章.</p><p>先说一下代码结构和场景.</p><p>首先有一个HouseDbContext,代码大概是下面这样:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C# data-lang=C#><span class=line><span class=cl><span class=kd>public</span> <span class=k>class</span> <span class=nc>HouseDbContext</span> <span class=p>:</span> <span class=n>DbContext</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>HouseDbContext</span><span class=p>(</span><span class=n>DbContextOptions</span><span class=p>&lt;</span><span class=n>HouseDbContext</span><span class=p>&gt;</span> <span class=n>options</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>:</span> <span class=k>base</span><span class=p>(</span><span class=n>options</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>DbSet</span><span class=p>&lt;</span><span class=n>Notice</span><span class=p>&gt;</span> <span class=n>Notices</span> <span class=p>{</span> <span class=k>get</span><span class=p>;</span> <span class=k>set</span><span class=p>;</span> <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>接着已经在StarUp.cs中初始化并注入了,注入代码是这样的:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C# data-lang=C#><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>services</span><span class=p>.</span><span class=n>AddDbContextPool</span><span class=p>&lt;</span><span class=n>HouseDbContext</span><span class=p>&gt;(</span><span class=n>options</span> <span class=p>=&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=n>options</span><span class=p>.</span><span class=n>UseLoggerFactory</span><span class=p>(</span><span class=n>loggerFactory</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>    <span class=n>options</span><span class=p>.</span><span class=n>UseMySql</span><span class=p>(</span><span class=n>Configuration</span><span class=p>[</span><span class=s>&#34;MySQLString&#34;</span><span class=p>].</span><span class=n>ToString</span><span class=p>());</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>有一个NoticeService.cs 会用到HouseDbContext 进行增删查改</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C# data-lang=C#><span class=line><span class=cl><span class=kd>public</span> <span class=k>class</span> <span class=nc>NoticeService</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kd>private</span> <span class=k>readonly</span> <span class=n>HouseDbContext</span> <span class=n>_dataContext</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>NoticeService</span><span class=p>(</span><span class=n>HouseDbContext</span> <span class=n>dataContext</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>_dataContext</span> <span class=p>=</span> <span class=n>dataContext</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>Notice</span> <span class=n>FindNotice</span><span class=p>(</span><span class=kt>long</span> <span class=n>id</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kt>var</span> <span class=n>notice</span> <span class=p>=</span> <span class=n>_dataContext</span><span class=p>.</span><span class=n>Notices</span><span class=p>.</span><span class=n>FirstOrDefault</span><span class=p>(</span><span class=n>n</span> <span class=p>=&gt;</span><span class=n>n</span><span class=p>.</span><span class=n>Id</span> <span class=p>==</span> <span class=n>id</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>notice</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>当然我们也需要把NoticeService注入到容器中,类似这样</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C# data-lang=C#><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>services</span><span class=p>.</span><span class=n>AddScoped</span><span class=p>&lt;</span><span class=n>NoticeService</span><span class=p>,</span><span class=n>NoticeService</span><span class=p>&gt;();</span>
+</span></span></code></pre></td></tr></table></div></div><p>现在一切都是很美好的,也能正常查询出Notice</p><p>然后某一天来了,有个需求是Update Notice之后需要把Notice同步到另外一个地方,例如Elasticsearch?</p><p>代码如下:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C# data-lang=C#><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=k>class</span> <span class=nc>NoticeService</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kd>private</span> <span class=k>readonly</span> <span class=n>HouseDbContext</span> <span class=n>_dataContext</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>NoticeService</span><span class=p>(</span><span class=n>HouseDbContext</span> <span class=n>dataContext</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>_dataContext</span> <span class=p>=</span> <span class=n>dataContext</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=n>Notice</span> <span class=n>FindNotice</span><span class=p>(</span><span class=kt>long</span> <span class=n>id</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kt>var</span> <span class=n>notice</span> <span class=p>=</span> <span class=n>_dataContext</span><span class=p>.</span><span class=n>Notices</span><span class=p>.</span><span class=n>FirstOrDefault</span><span class=p>(</span><span class=n>n</span> <span class=p>=&gt;</span><span class=n>n</span><span class=p>.</span><span class=n>Id</span> <span class=p>==</span> <span class=n>id</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>return</span> <span class=n>notice</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=k>void</span> <span class=n>Save</span><span class=p>(</span><span class=n>Notice</span> <span class=n>notice</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>_dataContext</span><span class=p>.</span><span class=n>Notices</span><span class=p>.</span><span class=n>Add</span><span class=p>(</span><span class=n>notice</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=n>_dataContext</span><span class=p>.</span><span class=n>SaveChanges</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>        <span class=n>Task</span><span class=p>.</span><span class=n>Run</span><span class=p>(()</span> <span class=p>=&gt;</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>try</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=kt>var</span> <span class=n>one</span> <span class=p>=</span> <span class=n>_dataContext</span><span class=p>.</span><span class=n>Notices</span><span class=p>.</span><span class=n>FirstOrDefault</span><span class=p>(</span><span class=n>n</span> <span class=p>=&gt;</span><span class=n>n</span><span class=p>.</span><span class=n>Id</span> <span class=p>==</span> <span class=n>notice</span><span class=p>.</span><span class=n>Id</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                <span class=c1>// write to other</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>            <span class=k>catch</span> <span class=p>(</span><span class=n>Exception</span> <span class=n>ex</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>Console</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>ToString</span><span class=p>());</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>});</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>然后一跑&mldr;</p><p>代码炸了&mldr;</p><p>恭喜你获得跨线程使用EF DbContext导致上下文不同步的异常.</p><p>错误大概长这样.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>System.ObjectDisposedException: Cannot access a disposed object. A common cause of this error is disposing a context that was resolved from dependency injection and then later trying to use the same context instance elsewhere in your application. This may occur if you are calling Dispose() on the context, or wrapping the context in a using statement. If you are using dependency injection, you should let the dependency injection container take care of disposing context instances.
+</span></span><span class=line><span class=cl>      Object name: &#39;HouseDbContext&#39;.
+</span></span></code></pre></td></tr></table></div></div><p>估计现在整个人都不好了.</p><p>这个撒意思呢?</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-txt data-lang=txt><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>无法访问被释放的对象。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>这种错误的一个常见原因是使用从依赖注入中解决的上下文，然后在应用程序的其他地方尝试使用相同的上下文实例。
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>如果您在上下文上调用Dispose()，或者在using语句中包装上下文，可能会发生这种情况。如果使用依赖项注入，则应该让依赖项注入容器处理上下文实例。
+</span></span></code></pre></td></tr></table></div></div><p>用人话来说是什么意思呢?</p><p>这里的HouseDbContext是依赖注入进来的,生命周期由容器本身管理;</p><p>在Task.Run中再次使用HouseDbContext实例中由于已经切换了线程了,</p><p>HouseDbContext实例已经被释放掉了,无法再继续使用同一个实例,我们应该自己初始化HouseDbContext来用.</p><p>到这里的话,上次我做的时候心生一计:</p><p>既然我们不能直接从构造函数注入的HouseDbContext实例的话,我们是不是可以直接从依赖注入容器中拿一个实例回来呢?</p><p>那在dotnet core里面可以用个什么从容器中取出实例呢?</p><p>答案是:IServiceProvider</p><p>代码如下:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C# data-lang=C#><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kd>public</span> <span class=k>class</span> <span class=nc>NoticeService</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kd>private</span> <span class=k>readonly</span> <span class=n>HouseDbContext</span> <span class=n>_dataContext</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kd>private</span> <span class=k>readonly</span> <span class=n>IServiceProvider</span> <span class=n>_serviceProvider</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=n>NoticeService</span><span class=p>(</span><span class=n>HouseDbContext</span> <span class=n>dataContext</span><span class=p>,</span><span class=n>IServiceProvider</span> <span class=n>serviceProvider</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>_dataContext</span> <span class=p>=</span> <span class=n>dataContext</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=n>_serviceProvider</span> <span class=p>=</span> <span class=n>serviceProvider</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=n>Notice</span> <span class=n>FindNotice</span><span class=p>(</span><span class=kt>long</span> <span class=n>id</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=kt>var</span> <span class=n>notice</span> <span class=p>=</span> <span class=n>_dataContext</span><span class=p>.</span><span class=n>Notices</span><span class=p>.</span><span class=n>FirstOrDefault</span><span class=p>(</span><span class=n>n</span> <span class=p>=&gt;</span> <span class=n>n</span><span class=p>.</span><span class=n>Id</span> <span class=p>==</span> <span class=n>id</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=n>Task</span><span class=p>.</span><span class=n>Run</span><span class=p>(()</span> <span class=p>=&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=k>try</span>
+</span></span><span class=line><span class=cl>                <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=kt>var</span> <span class=n>context</span> <span class=p>=</span> <span class=n>_serviceProvider</span><span class=p>.</span><span class=n>GetService</span><span class=p>&lt;</span><span class=n>HouseDbContext</span><span class=p>&gt;();</span>
+</span></span><span class=line><span class=cl>                    <span class=kt>var</span> <span class=n>one</span> <span class=p>=</span> <span class=n>context</span><span class=p>.</span><span class=n>Notices</span><span class=p>.</span><span class=n>FirstOrDefault</span><span class=p>(</span><span class=n>n</span> <span class=p>=&gt;</span> <span class=n>n</span><span class=p>.</span><span class=n>Id</span> <span class=p>==</span> <span class=n>notice</span><span class=p>.</span><span class=n>Id</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                    <span class=n>Console</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=n>notice</span><span class=p>.</span><span class=n>Id</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                    <span class=c1>// write to other</span>
+</span></span><span class=line><span class=cl>                <span class=p>}</span>
+</span></span><span class=line><span class=cl>                <span class=k>catch</span> <span class=p>(</span><span class=n>Exception</span> <span class=n>ex</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=n>Console</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>ToString</span><span class=p>());</span>
+</span></span><span class=line><span class=cl>                <span class=p>}</span>
+</span></span><span class=line><span class=cl>            <span class=p>});</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=n>notice</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=k>void</span> <span class=n>Save</span><span class=p>(</span><span class=n>Notice</span> <span class=n>notice</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=n>_dataContext</span><span class=p>.</span><span class=n>Notices</span><span class=p>.</span><span class=n>Add</span><span class=p>(</span><span class=n>notice</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=n>_dataContext</span><span class=p>.</span><span class=n>SaveChanges</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>            <span class=n>Task</span><span class=p>.</span><span class=n>Run</span><span class=p>(()</span> <span class=p>=&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=k>try</span>
+</span></span><span class=line><span class=cl>                <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=kt>var</span> <span class=n>one</span> <span class=p>=</span> <span class=n>_dataContext</span><span class=p>.</span><span class=n>Notices</span><span class=p>.</span><span class=n>FirstOrDefault</span><span class=p>(</span><span class=n>n</span> <span class=p>=&gt;</span> <span class=n>n</span><span class=p>.</span><span class=n>Id</span> <span class=p>==</span> <span class=n>notice</span><span class=p>.</span><span class=n>Id</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                    <span class=c1>// write to other</span>
+</span></span><span class=line><span class=cl>                <span class=p>}</span>
+</span></span><span class=line><span class=cl>                <span class=k>catch</span> <span class=p>(</span><span class=n>Exception</span> <span class=n>ex</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=n>Console</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>ToString</span><span class=p>());</span>
+</span></span><span class=line><span class=cl>                <span class=p>}</span>
+</span></span><span class=line><span class=cl>            <span class=p>});</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>跑一下看看&mldr;</p><p>然而事实告诉我,实例是能拿得到,然而还是会炸,错误是一样的.</p><p>原因其实还是一样的,这里已经不受依赖注入托管了,人家的上下文你别想用了.</p><p>那咋办呢&mldr;</p><p>在EF6,还可以直接new HouseDbContext 一个字符串进去初始化,在EF Core这里,已经不能这样玩了.</p><p>那可咋办呢?</p><p>翻了好多资料都没看到有人介绍过咋办,最后居然还是在官网教程里面找到了样例.</p><p>先看代码&mldr;</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C# data-lang=C#><span class=line><span class=cl> <span class=n>Task</span><span class=p>.</span><span class=n>Run</span><span class=p>(()</span> <span class=p>=&gt;</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=k>try</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=kt>var</span> <span class=n>optionsBuilder</span> <span class=p>=</span> <span class=k>new</span> <span class=n>DbContextOptionsBuilder</span><span class=p>&lt;</span><span class=n>HouseDbContext</span><span class=p>&gt;();</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// appConfiguration.MySQLString appConfiguration是配置类,MySQLString为连接字符串</span>
+</span></span><span class=line><span class=cl>        <span class=n>optionsBuilder</span><span class=p>.</span><span class=n>UseMySql</span><span class=p>(</span><span class=n>appConfiguration</span><span class=p>.</span><span class=n>MySQLString</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=k>using</span> <span class=p>(</span><span class=kt>var</span> <span class=n>context</span> <span class=p>=</span> <span class=k>new</span> <span class=n>HouseDbContext</span><span class=p>(</span><span class=n>optionsBuilder</span><span class=p>.</span><span class=n>Options</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=kt>var</span> <span class=n>one</span> <span class=p>=</span> <span class=n>context</span><span class=p>.</span><span class=n>Notices</span><span class=p>.</span><span class=n>FirstOrDefault</span><span class=p>(</span><span class=n>n</span> <span class=p>=&gt;</span> <span class=n>n</span><span class=p>.</span><span class=n>Id</span> <span class=p>==</span> <span class=n>notice</span><span class=p>.</span><span class=n>Id</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=c1>// 当然你也可以直接初始化其他的Service</span>
+</span></span><span class=line><span class=cl>            <span class=kt>var</span> <span class=n>nService</span> <span class=p>=</span> <span class=k>new</span> <span class=n>NoticeService</span><span class=p>(</span><span class=n>context</span><span class=p>,</span><span class=kc>null</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=kt>var</span> <span class=n>one</span> <span class=p>=</span><span class=n>nService</span><span class=p>.</span><span class=n>FindOne</span><span class=p>(</span><span class=n>notice</span><span class=p>.</span><span class=n>Id</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=p>}</span><span class=k>catch</span> <span class=p>(</span><span class=n>Exception</span> <span class=n>ex</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=n>Console</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>ToString</span><span class=p>());</span>
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl><span class=p>});</span>
+</span></span></code></pre></td></tr></table></div></div><p>教程代码在:<a class=link href=https://docs.microsoft.com/en-us/ef/core/miscellaneous/configuring-dbcontext target=_blank rel=noopener>Configuring a DbContext</a></p><p>大功告成&mldr;</p></section><footer class=article-footer><section class=article-tags><a href=/zh/tags/dotnet-core/>Dotnet Core</a>
+<a href=/zh/tags/c%23/>C#</a>
+<a href=/zh/tags/ef-core/>EF Core</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><script src=https://utteranc.es/client.js repo=liguobao/liguobao.github.io issue-term=title crossorigin=anonymous async></script><style>.utterances{max-width:unset}</style><script>let utterancesLoaded=!1;function setUtterancesTheme(e){let t=document.querySelector(".utterances iframe");t&&t.contentWindow.postMessage({type:"set-theme",theme:`github-${e}`},"https://utteranc.es")}addEventListener("message",e=>{if(e.origin!=="https://utteranc.es")return;utterancesLoaded=!0,setUtterancesTheme(document.documentElement.dataset.scheme)}),window.addEventListener("onColorSchemeChange",e=>{if(!utterancesLoaded)return;setUtterancesTheme(e.detail)})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2026 人生删除指南</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.30.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

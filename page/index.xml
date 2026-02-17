@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Pages on Life Deletion Guide</title><link>https://liguobao.github.io/page/</link><description>Recent content in Pages on Life Deletion Guide</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 06 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/page/index.xml" rel="self" type="application/rss+xml"/><item><title>Archives</title><link>https://liguobao.github.io/archives/</link><pubDate>Sun, 06 Mar 2022 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/archives/</guid><description/></item><item><title>About</title><link>https://liguobao.github.io/liguobao-resume/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/liguobao-resume/</guid><description>&lt;h2 id="关于我"&gt;&lt;a class="link" href="https://hacknical.com/liguobao/resume" target="_blank" rel="noopener"
+&gt;关于我&lt;/a&gt;
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;全干工程师，既是 “要什么自行车” 践行者，又不间断 “代码洁癖强迫症” 发作&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;前端 Vue.js 和 React 没有不敢抄的代码，Android、iOS 也能跑下，不过 CSS 真不会&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Mysql/Mongodb/Redis/LevelDB/TiDB/PG 从安装到 “跑路” 都搞过&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;容器技术追随者，从 k8s 到边缘计算集群都搭过，看着就好玩&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;半个 RESTful 的践行者，半个 GraphQL 观望者&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;详细经历请参考: &lt;a class="link" href="https://hacknical.com/liguobao/resume" target="_blank" rel="noopener"
+&gt;hacknical.com/liguobao&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="联系我"&gt;联系我
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://github.com/liguobao" target="_blank" rel="noopener"
+&gt;GitHub:liguobao&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://www.zhihu.com/people/codelover" target="_blank" rel="noopener"
+&gt;知乎:李国宝&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;公众号： 人生删除指南&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="项目"&gt;项目
+&lt;/h2&gt;&lt;h3 id="地图搜租房"&gt;&lt;a class="link" href="https://web.house2048.cn" target="_blank" rel="noopener"
+&gt;地图搜租房&lt;/a&gt;
+&lt;/h3&gt;&lt;p&gt;满大街找租房心力交瘁？试试换个方式直接在地图上搜租房!&lt;/p&gt;
+&lt;p&gt;多平台房源爬虫 + 地图强力驱动,帮助你迅速找到合适房源。&lt;/p&gt;
+&lt;p&gt;微信小程序&amp;quot;地图搜租房&amp;quot;已上线，欢迎关注【人生删除指南】微信公众号体验反馈。&lt;/p&gt;
+&lt;h3 id="知乎-copilot"&gt;知乎 Copilot
+&lt;/h3&gt;&lt;p&gt;自动刷新收件箱未读消息数&lt;/p&gt;
+&lt;p&gt;支持导出回答、文章、想法&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://oss.r2049.cn/zhihu-copilot" target="_blank" rel="noopener"
+&gt;zhihu-copilot&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="gpt2077"&gt;&lt;a class="link" href="https://chat.r2049.cn/user/login" target="_blank" rel="noopener"
+&gt;GPT2077&lt;/a&gt;
+&lt;/h3&gt;&lt;p&gt;国内高速，免梯子，安全高效。&lt;/p&gt;
+&lt;p&gt;支持 GPT3.5、GPT4、论文润色，按量付费。&lt;/p&gt;
+&lt;p&gt;GPT 2077强力驱动~&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-txt" data-lang="txt"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;欢迎使用我的邀请码【9NBE3XJ9】注册GPT2077，
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;立即获得50W Token奖励（GPT4、3.5模型通用）。
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;点击链接注册：https://chat.r2049.cn/user/login?inviteCode=9NBE3XJ9
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Links</title><link>https://liguobao.github.io/links/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/links/</guid><description>&lt;h2 id="友情链接"&gt;友情链接
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://soulteary.com/" target="_blank" rel="noopener"
+&gt;苏洋: 为了不折腾而折腾&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://yehuo.github.io/" target="_blank" rel="noopener"
+&gt;Sitong&amp;rsquo;s Blog:Graduated from Beijing Institute of Technology, master at Software Engineering&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://mp.weixin.qq.com/s/4nC2zZm2a6Tn4LL7H-oC8w?poc_token=HIyRtmWjVEi3VvkbLmrA_rAIxqQfWOzfTl-rWZo6" target="_blank" rel="noopener"
+&gt;人生删除指南&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="http://virjar.com/" target="_blank" rel="noopener"
+&gt;virjar blog&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://web.house2048.cn/" target="_blank" rel="noopener"
+&gt;地图搜租房&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://zhuanlan.zhihu.com/codelover" target="_blank" rel="noopener"
+&gt;知乎专栏：编程技术向北，人生删除指南&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://biteup.r2049.cn/" target="_blank" rel="noopener"
+&gt;寻味阿婆&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="https://hacknical.com/" target="_blank" rel="noopener"
+&gt;Hacknical: Hacknical, hacker &amp;amp; technical. A website for GitHub user to make a better resume.&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Search</title><link>https://liguobao.github.io/search/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/search/</guid><description/></item></channel></rss>

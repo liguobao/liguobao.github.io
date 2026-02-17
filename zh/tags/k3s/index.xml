@@ -1,0 +1,705 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>K3s on 人生删除指南</title><link>https://liguobao.github.io/zh/tags/k3s/</link><description>Recent content in K3s on 人生删除指南</description><generator>Hugo -- gohugo.io</generator><language>zh</language><lastBuildDate>Wed, 11 Feb 2026 08:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/zh/tags/k3s/index.xml" rel="self" type="application/rss+xml"/><item><title>2206年最佳边缘计算集群方案：Tailscale + k3s</title><link>https://liguobao.github.io/zh/p/k3s-tailscale-cluster-2026/</link><pubDate>Wed, 11 Feb 2026 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/zh/p/k3s-tailscale-cluster-2026/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/k3s-tailscale-cluster-2026/logo.png" alt="Featured image of post 2206年最佳边缘计算集群方案：Tailscale + k3s" /&gt;&lt;blockquote&gt;
+&lt;p&gt;PS：马上放假了，再折腾一下！！！&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;手动狗头~&lt;/p&gt;
+&lt;p&gt;【编程技术专区劝退提示】&lt;/p&gt;
+&lt;p&gt;上一篇 k3s 文章已经是 2025 年了，当时用的是 WireGuard 做跨云组网。&lt;/p&gt;
+&lt;p&gt;一年过去了，WireGuard 配置搞来搞去还是太累了&lt;/p&gt;
+&lt;p&gt;——每加一台机器都得手动改配置、互加 Peer、调路由……&lt;/p&gt;
+&lt;p&gt;于是今年决定把底层网络全换成 Tailscale。&lt;/p&gt;
+&lt;p&gt;更具体一点——自建 Headscale 控制面，不依赖官方 SaaS。&lt;/p&gt;
+&lt;p&gt;这样一来，整个内网想加多少节点就加多少节点，&lt;/p&gt;
+&lt;p&gt;一行命令入网，不用再手动管 WireGuard Peer 配置了。&lt;/p&gt;
+&lt;p&gt;同时，k3s 集群从 2 节点寒酸版，&lt;/p&gt;
+&lt;p&gt;升级到了 &lt;strong&gt;4 Master + 4 Edge 的 8 节点 HA 集群&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;麻雀虽小，五脏俱全。&lt;/p&gt;
+&lt;p&gt;直接干。&lt;/p&gt;
+&lt;h2 id="整体架构"&gt;整体架构
+&lt;/h2&gt;&lt;p&gt;先放一张架构图，全局概览：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;span class="lnt"&gt;21
+&lt;/span&gt;&lt;span class="lnt"&gt;22
+&lt;/span&gt;&lt;span class="lnt"&gt;23
+&lt;/span&gt;&lt;span class="lnt"&gt;24
+&lt;/span&gt;&lt;span class="lnt"&gt;25
+&lt;/span&gt;&lt;span class="lnt"&gt;26
+&lt;/span&gt;&lt;span class="lnt"&gt;27
+&lt;/span&gt;&lt;span class="lnt"&gt;28
+&lt;/span&gt;&lt;span class="lnt"&gt;29
+&lt;/span&gt;&lt;span class="lnt"&gt;30
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; 互联网
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ┌─────────────┼─────────────┐
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │ │ │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; [腾讯云] [Rainyun] [本地]
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; (国内多台) (海外新加坡) (家庭/办公)
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │ │ │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; └─────────────┼─────────────┘
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Tailscale VPN (100.64.0.0/10)
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Headscale 自建控制面 (ts.example.com)
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Authentik OIDC 登录 (auth.example.com)
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ┌──────────┬──────────┬──────────┐
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │ │ │ │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; [control1] [control2] [control3] [control4]
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; vm-0-8 vm-16-12 vm-28-17 vm-0-15
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; 100.64.0.6 100.64.0.5 100.64.0.7 100.64.0.10
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; (Primary) (Member) (Member) (TS控制面)
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │ │ │ │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; └──────────┴──────────┴──────────┘
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; K3S HA 集群 (Flannel VXLAN over Tailscale)
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Pod: 10.42.0.0/16 | Service: 10.43.0.0/16
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ┌─────────┬─────────┬─────────┐
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │ │ │ │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; [haru] [lgb-amd] [rainyun] [hc1]
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; 国内 本地 海外 国内
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Ready ✅ Ready ✅ Ready ✅ Ready ✅
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;当前集群实际状态：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;节点名称&lt;/th&gt;
+&lt;th&gt;角色&lt;/th&gt;
+&lt;th&gt;Tailscale IP&lt;/th&gt;
+&lt;th&gt;状态&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;vm-0-8-ubuntu-new&lt;/td&gt;
+&lt;td&gt;Master&lt;/td&gt;
+&lt;td&gt;100.64.0.6&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;初始 Master, &amp;ndash;cluster-init&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;vm-16-12-ubuntu&lt;/td&gt;
+&lt;td&gt;Master&lt;/td&gt;
+&lt;td&gt;100.64.0.5&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;HA Master&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;vm-28-17-ubuntu&lt;/td&gt;
+&lt;td&gt;Master&lt;/td&gt;
+&lt;td&gt;100.64.0.7&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;HA Master&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;vm-0-15-ubuntu&lt;/td&gt;
+&lt;td&gt;Master&lt;/td&gt;
+&lt;td&gt;100.64.0.10&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;Headscale 控制面节点, NoSchedule&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;haru&lt;/td&gt;
+&lt;td&gt;Edge&lt;/td&gt;
+&lt;td&gt;100.64.0.3&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;国内节点&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;lgb-amd-3700&lt;/td&gt;
+&lt;td&gt;Edge&lt;/td&gt;
+&lt;td&gt;100.64.0.4&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;本地 AMD 主机, 16GB&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;rainyun-ssh7pavp&lt;/td&gt;
+&lt;td&gt;Edge&lt;/td&gt;
+&lt;td&gt;100.64.0.12&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;海外新加坡节点&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;hc1&lt;/td&gt;
+&lt;td&gt;Edge&lt;/td&gt;
+&lt;td&gt;100.64.0.9&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;国内节点&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;8 个节点的集群，跑着十几个服务，稳得一比。&lt;/p&gt;
+&lt;h2 id="一先搞-tailscale云端内网集群"&gt;一、先搞 Tailscale：云端内网集群
+&lt;/h2&gt;&lt;h3 id="为什么不用-wireguard-手动组网了"&gt;为什么不用 WireGuard 手动组网了？
+&lt;/h3&gt;&lt;p&gt;2025 年写的那篇文章里，我用的是 WireGuard 原生方案 + k3s Flannel &lt;code&gt;wireguard-native&lt;/code&gt; 模式。&lt;/p&gt;
+&lt;p&gt;说实话，WireGuard 本身很稳，性能也好。但手动管理 Peer 这件事，在节点多了之后简直是噩梦：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;每加一个节点，其他节点的 WireGuard 配置都要改&lt;/li&gt;
+&lt;li&gt;公钥交换、IP 分配全靠手动&lt;/li&gt;
+&lt;li&gt;某台机器换了公网 IP，所有 Peer 都得更新&lt;/li&gt;
+&lt;li&gt;没有统一的管理界面&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以，这次直接上 Tailscale。&lt;/p&gt;
+&lt;h3 id="为什么自建-headscale"&gt;为什么自建 Headscale？
+&lt;/h3&gt;&lt;p&gt;Tailscale 官方的 SaaS 服务当然好用，个人版现在支持最多 100 台设备，数量上完全够用。但有几个问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;登录需要外网&lt;/strong&gt;——Tailscale 的登录认证走的是 Google/Microsoft/GitHub OAuth，国内裸连基本没戏，每次 &lt;code&gt;tailscale up&lt;/code&gt; 都得先翻墙授权，服务器端更是麻烦&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据控制&lt;/strong&gt;——所有节点信息都在别人那，心里不踏实&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;国内访问&lt;/strong&gt;——Tailscale 官方的协调服务器（coordination server）在海外，国内节点连接不太稳定，偶尔会出现节点间建连慢的问题&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;所以我选择了 &lt;a class="link" href="https://github.com/juanfont/headscale" target="_blank" rel="noopener"
+&gt;Headscale&lt;/a&gt;——开源的 Tailscale 控制面实现。&lt;/p&gt;
+&lt;p&gt;配合 &lt;a class="link" href="https://goauthentik.io/" target="_blank" rel="noopener"
+&gt;Authentik&lt;/a&gt; 做 OIDC 登录，体验和官方 Tailscale 几乎一致，甚至更灵活。&lt;/p&gt;
+&lt;h3 id="headscale-部署"&gt;Headscale 部署
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;服务器要求&lt;/strong&gt;：一台 2C2G 的小机器就够了，我用的是腾讯云轻量 Ubuntu 24.04。&lt;/p&gt;
+&lt;p&gt;核心就是一个 &lt;code&gt;docker-compose.yml&lt;/code&gt;，包含：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;组件&lt;/th&gt;
+&lt;th&gt;说明&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Headscale v0.28.0&lt;/td&gt;
+&lt;td&gt;Tailscale 控制面&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Authentik 2025.2.4&lt;/td&gt;
+&lt;td&gt;OIDC 账号密码登录&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PostgreSQL 16&lt;/td&gt;
+&lt;td&gt;Authentik 数据库&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Redis&lt;/td&gt;
+&lt;td&gt;Authentik 缓存&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nginx&lt;/td&gt;
+&lt;td&gt;HTTPS 反向代理&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;部署完之后，两个域名就位：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;https://ts.example.com&lt;/code&gt; → Headscale 控制面&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;https://auth.example.com&lt;/code&gt; → Authentik 登录管理&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;详细的部署流程这里不展开了（那是另一篇文章的事），核心要点：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;HTTPS 用 acme.sh + Nginx&lt;/strong&gt;，别搞 Traefik 那些花里胡哨的&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Headscale 配置 OIDC&lt;/strong&gt;，Issuer 指向 Authentik&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;IP 段用 &lt;code&gt;100.64.0.0/10&lt;/code&gt;&lt;/strong&gt;，这是 CGNAT 地址段，不会和内网冲突&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="节点入网"&gt;节点入网
+&lt;/h3&gt;&lt;p&gt;装好 Headscale 之后，任何一台机器入网就是一行命令的事：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 安装 Tailscale 客户端&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -fsSL https://tailscale.com/install.sh &lt;span class="p"&gt;|&lt;/span&gt; sh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 连接到自建控制面&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;tailscale up --login-server&lt;span class="o"&gt;=&lt;/span&gt;https://ts.example.com --hostname&lt;span class="o"&gt;=&lt;/span&gt;你的主机名 --accept-dns&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;false&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;终端会吐出一个链接，浏览器打开，跳到 Authentik 登录页，输入账号密码，授权完成——节点入网。&lt;/p&gt;
+&lt;p&gt;就这么简单。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;关键建议&lt;/strong&gt;：&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;不要依赖公有云内网！&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;即使你的 Master 节点在同一个云，也建议统一走 Tailscale 通信。&lt;/p&gt;
+&lt;p&gt;原因很简单：公有云内网是个黑盒，哪天换个机器、换个可用区，内网 IP 就变了。
+而 Tailscale IP 是你自己分配的，不会变。&lt;/p&gt;
+&lt;p&gt;所有节点，不管是云端、本地、还是其他云平台，统一用 Tailscale 接入，网络架构干净利落。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;当前我的 Tailscale 网络长这样：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.2 lgb-macbookair-m4 macOS ← 我的开发机
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.3 haru linux ← Edge 节点
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.4 lgb-amd-3700 linux ← 本地 Edge 节点
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.5 vm-16-12-ubuntu linux ← K3s Master
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.6 vm-0-8-ubuntu-new linux ← K3s Master (Primary)
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.7 vm-28-17-ubuntu linux ← K3s Master
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.8 rainyun-vja2g92e linux ← 海外节点
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.9 hc1 linux ← Edge 节点
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.10 ts-headscale linux ← Headscale 控制面 + K3s Master
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.12 ipv6radar linux ← 海外节点
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.13 localhost android ← 手机也能入网（摸鱼用）
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;不管在哪，&lt;code&gt;ping 100.64.0.6&lt;/code&gt; 就能通。这才是正确的内网体验。&lt;/p&gt;
+&lt;h2 id="二k3s-集群搭建基于-tailscale-网络"&gt;二、K3s 集群搭建：基于 Tailscale 网络
+&lt;/h2&gt;&lt;h3 id="核心原则"&gt;核心原则
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Master 节点全部放在云端同一家云&lt;/strong&gt;——我的 4 台 Master 都在腾讯云，etcd 同步延迟低&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Master 之间也用 Tailscale IP 通信&lt;/strong&gt;——不依赖云内网&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Edge 节点随意&lt;/strong&gt;——家里的台式机、海外的 VPS、公司的工作站，只要 Tailscale 能通就行&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;网关节点用大流量机器&lt;/strong&gt;——Ingress 跑在轻量云上，流量够用&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="安装-master"&gt;安装 Master
+&lt;/h3&gt;&lt;p&gt;安装其实没什么花活，看官方文档就好：&lt;a class="link" href="https://docs.k3s.io/zh/quick-start" target="_blank" rel="noopener"
+&gt;https://docs.k3s.io/zh/quick-start&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;但有几个&lt;strong&gt;关键参数&lt;/strong&gt;必须注意。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;第一个 Master（初始化集群）&lt;/strong&gt;：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;INSTALL_K3S_MIRROR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;cn &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; sh -s - server &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --cluster-init &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --flannel-iface&lt;span class="o"&gt;=&lt;/span&gt;tailscale0 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-ip&lt;span class="o"&gt;=&lt;/span&gt;100.64.0.6 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --tls-san&lt;span class="o"&gt;=&lt;/span&gt;100.64.0.6
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;后续 Master 加入集群&lt;/strong&gt;：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;INSTALL_K3S_MIRROR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;cn &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;K3S_TOKEN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;你的Token&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; sh -s - server &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --server https://100.64.0.6:6443 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --flannel-iface&lt;span class="o"&gt;=&lt;/span&gt;tailscale0 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-ip&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;tailscale ip -4&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --tls-san&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;tailscale ip -4&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;核心参数说明&lt;/strong&gt;：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;参数&lt;/th&gt;
+&lt;th&gt;为什么必须&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;--cluster-init&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;第一个 Master 用，启用嵌入式 etcd HA&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;--flannel-iface=tailscale0&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;最关键！&lt;/strong&gt; 让 Flannel VXLAN 走 Tailscale 网卡，不是物理网卡&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;--node-ip=$(tailscale ip -4)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;节点 IP 用 Tailscale IP，保证跨云通信&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;--tls-san=&amp;lt;ip&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;API Server 证书包含 Tailscale IP&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;INSTALL_K3S_MIRROR=cn&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;国内镜像加速，海外节点不需要&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;code&gt;--flannel-iface=tailscale0&lt;/code&gt; 这个参数是踩了无数坑之后的血泪教训。&lt;/p&gt;
+&lt;p&gt;如果不加这个参数，Flannel 会默认用物理网卡的 IP（比如公网 IP 或者云内网 IP）来建 VXLAN 隧道。结果就是——&lt;strong&gt;同云的节点能通，跨云的节点 Pod 全部不通&lt;/strong&gt;。&lt;/p&gt;
+&lt;p&gt;加了这个参数之后，Flannel 的 VXLAN 隧道全部走 Tailscale 虚拟网卡，跨云 Pod 通信完美。&lt;/p&gt;
+&lt;h3 id="安装-edge-节点"&gt;安装 Edge 节点
+&lt;/h3&gt;&lt;p&gt;Edge 节点就是 Agent，更简单。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;国内节点&lt;/strong&gt;：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;K3S_URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;https://100.64.0.6:6443&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;K3S_TOKEN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;你的Token&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;INSTALL_K3S_MIRROR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;cn &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; sh -s - agent &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-ip&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;tailscale ip -4&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --flannel-iface&lt;span class="o"&gt;=&lt;/span&gt;tailscale0 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-label&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;node.kubernetes.io/role=edge&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;海外节点&lt;/strong&gt;：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -sfL https://get.k3s.io &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;K3S_URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;https://100.64.0.6:6443&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;K3S_TOKEN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;你的Token&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; sh -s - agent &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-ip&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;tailscale ip -4&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --flannel-iface&lt;span class="o"&gt;=&lt;/span&gt;tailscale0 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-label&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;node.kubernetes.io/role=edge&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;差别就是国内用 &lt;code&gt;rancher-mirror.rancher.cn&lt;/code&gt;，海外用官方 &lt;code&gt;get.k3s.io&lt;/code&gt;。&lt;/p&gt;
+&lt;h3 id="国内-docker-镜像拉取问题"&gt;国内 Docker 镜像拉取问题
+&lt;/h3&gt;&lt;p&gt;这里要特别提一下：&lt;strong&gt;国内环境下 Docker / containerd 拉取镜像是个大麻烦。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Docker Hub、ghcr.io、gcr.io 这些镜像源在国内基本处于半墙状态，k3s 内置的一些系统组件镜像（比如 &lt;code&gt;pause&lt;/code&gt;、&lt;code&gt;coredns&lt;/code&gt;、&lt;code&gt;metrics-server&lt;/code&gt;）可能拉不下来，导致节点一直 NotReady。&lt;/p&gt;
+&lt;p&gt;几个解决思路：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;配置镜像加速器&lt;/strong&gt;——在 &lt;code&gt;/etc/rancher/k3s/registries.yaml&lt;/code&gt; 中配置国内可用的 mirror（如果你还能找到活着的）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;本地导出再导入（推荐）&lt;/strong&gt;——在海外节点或者能正常拉取的机器上先把镜像拉下来，导出后传到国内节点导入：
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 在海外节点导出&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ctr -n k8s.io images &lt;span class="nb"&gt;export&lt;/span&gt; pause.tar registry.k8s.io/pause:3.9
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 传到国内节点&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;scp pause.tar root@&amp;lt;国内节点IP&amp;gt;:/tmp/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 在国内节点导入&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ctr -n k8s.io images import /tmp/pause.tar
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;自建 Harbor 镜像仓库&lt;/strong&gt;——如果节点多，建议搞一个私有镜像仓库做 proxy cache，一劳永逸&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;我的做法是在海外节点上提前拉好需要的镜像，然后 &lt;code&gt;ctr images export&lt;/code&gt; 导出，通过 Tailscale 内网传到国内节点再 &lt;code&gt;ctr images import&lt;/code&gt; 导入。虽然笨了点，但胜在稳定可靠。&lt;/p&gt;
+&lt;p&gt;Token 在第一个 Master 上获取：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cat /var/lib/rancher/k3s/server/node-token
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;没什么问题的话，几秒钟后就能看到新节点上线：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ kubectl get nodes -o wide
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;NAME STATUS ROLES AGE VERSION
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;vm-0-8-ubuntu-new Ready control-plane,etcd,master 30d v1.34.3+k3s3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;vm-16-12-ubuntu Ready control-plane,etcd,master 30d v1.34.3+k3s3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;vm-28-17-ubuntu Ready control-plane,etcd,master 30d v1.34.3+k3s3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;vm-0-15-ubuntu Ready control-plane,etcd,master 1d v1.34.3+k3s3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;haru Ready &amp;lt;none&amp;gt; 20d v1.34.3+k3s3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;lgb-amd-3700 Ready &amp;lt;none&amp;gt; 15d v1.34.3+k3s3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rainyun-ssh7pavp Ready &amp;lt;none&amp;gt; 10d v1.34.3+k3s3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;hc1 Ready &amp;lt;none&amp;gt; 5d v1.34.3+k3s3
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;8 个节点全部 Ready。&lt;/p&gt;
+&lt;p&gt;美。&lt;/p&gt;
+&lt;h3 id="关于网关节点"&gt;关于网关节点
+&lt;/h3&gt;&lt;p&gt;Ingress 流量入口需要公网 IP + 足够的带宽。&lt;/p&gt;
+&lt;p&gt;我的做法是：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;网关节点用轻量云服务器&lt;/strong&gt;——腾讯云轻量、阿里云轻量之类的，月付几十块，流量包够用&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;k3s 自带的 Traefik Ingress&lt;/strong&gt; 默认会跑在所有节点上（DaemonSet），但实际对外暴露的只需要一两个节点&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;域名 DNS 解析到这些轻量云的公网 IP&lt;/strong&gt; 就行&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;流量路径：&lt;code&gt;用户请求 → 轻量云公网IP → Traefik Ingress → Service → Pod（可能在任意节点上）&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Pod 在海外节点上也没关系，Flannel over Tailscale 会把流量打通。&lt;/p&gt;
+&lt;h2 id="三踩坑实录"&gt;三、踩坑实录
+&lt;/h2&gt;&lt;h3 id="坑-1flannel-用错网卡血泪教训"&gt;坑 1：Flannel 用错网卡（血泪教训）
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;症状&lt;/strong&gt;：Edge 节点 Ready 了，但跨节点 Pod 通信全挂。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;原因&lt;/strong&gt;：没加 &lt;code&gt;--flannel-iface=tailscale0&lt;/code&gt;，Flannel 默认选了公网网卡。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;诊断&lt;/strong&gt;：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl describe node rainyun-ssh7pavp &lt;span class="p"&gt;|&lt;/span&gt; grep flannel
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 看到 flannel.alpha.coreos.com/public-ip 用的是公网 IP 而不是 100.64.0.x&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;解决&lt;/strong&gt;：卸载 k3s agent，重装时加上 &lt;code&gt;--flannel-iface=tailscale0&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;这个参数真的太重要了，说三遍：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;--flannel-iface=tailscale0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--flannel-iface=tailscale0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--flannel-iface=tailscale0&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="坑-2tailscale-连接不稳定"&gt;坑 2：Tailscale 连接不稳定
+&lt;/h3&gt;&lt;p&gt;某台 Vultr 的 VPS，Tailscale 连接三天两头断。&lt;/p&gt;
+&lt;p&gt;节点在 Ready 和 NotReady 之间反复横跳，kubelet 疯狂报 &lt;code&gt;unable to update node status&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;排查下来发现是 VPN 链路问题，跟 K3s 没关系。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;解决方案&lt;/strong&gt;：先用 taint 隔离，后面直接换掉了这台机器。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl taint nodes vultr.guest node-problem&lt;span class="o"&gt;=&lt;/span&gt;true:NoSchedule --overwrite
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl taint nodes vultr.guest node-problem&lt;span class="o"&gt;=&lt;/span&gt;true:NoExecute --overwrite
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;教训：&lt;strong&gt;不稳定的节点宁可不要，别死磕。&lt;/strong&gt; 换一台新机器比排查网络问题快得多。&lt;/p&gt;
+&lt;h3 id="坑-3低配-master-别跑业务-pod"&gt;坑 3：低配 Master 别跑业务 Pod
+&lt;/h3&gt;&lt;p&gt;我的第四台 Master（vm-0-15-ubuntu）只有 2G 内存，同时还跑着 Headscale 控制面。&lt;/p&gt;
+&lt;p&gt;如果让它跑业务 Pod，分分钟 OOM。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;解决&lt;/strong&gt;：加 NoSchedule taint，只跑控制平面组件 + etcd。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl taint nodes vm-0-15-ubuntu node-role.kubernetes.io/control-plane&lt;span class="o"&gt;=&lt;/span&gt;:NoSchedule
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;2G 内存跑 k3s control-plane + etcd + Headscale 全家桶，CPU 和内存占用大约 60%，稳得住。&lt;/p&gt;
+&lt;h2 id="四故障排查速查"&gt;四、故障排查速查
+&lt;/h2&gt;&lt;p&gt;节点加完之后出问题？按这个顺序查：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 1. 看节点状态&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl get nodes -o wide
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 2. 看节点事件&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl describe node &amp;lt;节点名&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 3. 看 Tailscale 连通性&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;tailscale ping &amp;lt;目标节点Tailscale IP&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 4. 看 Flannel 配置对不对&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl describe node &amp;lt;节点名&amp;gt; &lt;span class="p"&gt;|&lt;/span&gt; grep flannel
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 5. 看 kubelet 日志&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssh root@&amp;lt;节点IP&amp;gt; &lt;span class="s2"&gt;&amp;#34;journalctl -u k3s-agent -n 50&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 6. 测试跨节点 Pod 通信&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl run &lt;span class="nb"&gt;test&lt;/span&gt; --image&lt;span class="o"&gt;=&lt;/span&gt;busybox --rm -it -- wget -qO- http://&amp;lt;其他节点PodIP&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;90% 的问题都是前 4 步能查出来的。&lt;/p&gt;
+&lt;h2 id="五总结"&gt;五、总结
+&lt;/h2&gt;&lt;p&gt;对比 2025 年的方案，这次升级的核心变化：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;项目&lt;/th&gt;
+&lt;th&gt;2025 年&lt;/th&gt;
+&lt;th&gt;2026 年&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;组网方案&lt;/td&gt;
+&lt;td&gt;WireGuard 手动配置&lt;/td&gt;
+&lt;td&gt;Tailscale (Headscale 自建)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;控制面&lt;/td&gt;
+&lt;td&gt;官方 Tailscale / 手动 WG&lt;/td&gt;
+&lt;td&gt;自建 Headscale + OIDC&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Master 数量&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;4 (HA)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Edge 节点&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;总节点数&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;新节点接入&lt;/td&gt;
+&lt;td&gt;改一堆配置&lt;/td&gt;
+&lt;td&gt;一行命令&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;跨云通信&lt;/td&gt;
+&lt;td&gt;Flannel wireguard-native&lt;/td&gt;
+&lt;td&gt;Flannel VXLAN over Tailscale&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;管理复杂度&lt;/td&gt;
+&lt;td&gt;高&lt;/td&gt;
+&lt;td&gt;低&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;一句话总结方案&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;用 Tailscale（Headscale 自建）做底层网络&lt;/strong&gt;——所有节点统一接入，不依赖任何公有云内网&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;K3s Master 放在同一家云的同一地域&lt;/strong&gt;——etcd 延迟低，控制平面稳定&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Edge 节点随便加&lt;/strong&gt;——家里的机器、海外的 VPS、办公室的工作站，只要 Tailscale 能通就行&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;网关节点用轻量云&lt;/strong&gt;——便宜、带宽够、公网 IP 固定&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;整个集群跑了一个月，稳如老狗。&lt;/p&gt;
+&lt;p&gt;8/8 节点全部可用（之前有 1 台 Vultr 网络不行，已经换掉了）。&lt;/p&gt;
+&lt;p&gt;完事。&lt;/p&gt;
+&lt;p&gt;全文在凌晨的书房里完成，祝大家新年快乐~&lt;/p&gt;
+&lt;p&gt;手动狗头~&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;相关链接：&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;K3s 官方文档：&lt;a class="link" href="https://docs.k3s.io/zh/" target="_blank" rel="noopener"
+&gt;https://docs.k3s.io/zh/&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Headscale：&lt;a class="link" href="https://github.com/juanfont/headscale" target="_blank" rel="noopener"
+&gt;https://github.com/juanfont/headscale&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Authentik：&lt;a class="link" href="https://goauthentik.io/" target="_blank" rel="noopener"
+&gt;https://goauthentik.io/&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;上一篇：&lt;a class="link" href="https://liguobao.github.io/p/k3s-edge-computing-cluster/" target="_blank" rel="noopener"
+&gt;【k3s】年度最佳边缘计算集群方案&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;本文使用 AI 辅助写作。&lt;/em&gt;&lt;/p&gt;</description></item><item><title>k3s日常ImagePullError备忘录</title><link>https://liguobao.github.io/zh/p/k3s-image-pull-error/</link><pubDate>Sat, 07 Jun 2025 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/zh/p/k3s-image-pull-error/</guid><description>&lt;p&gt;在国内搞事情嘛，日常得解决网络问题。&lt;/p&gt;
+&lt;p&gt;在本地倒好说，在服务器就有点蛋疼了。&lt;/p&gt;
+&lt;p&gt;今天折腾k3s集群的时候，不小心把etcd干没了。&lt;/p&gt;
+&lt;p&gt;于是开始重装整个集群。&lt;/p&gt;
+&lt;p&gt;别的都好说，反正镜像都在某云，然鹅traefik就蛋疼了。&lt;/p&gt;
+&lt;p&gt;这玩意用的是docker hub源。&lt;/p&gt;
+&lt;p&gt;如果是早些年也好说，国内那么多的镜像源，随便配一个也就完事了&lt;/p&gt;
+&lt;p&gt;但是去年之后，镜像源死得七七八八了。&lt;/p&gt;
+&lt;p&gt;总不能给服务器也挂个科学上网吧。&lt;/p&gt;
+&lt;p&gt;而且科学上网的前提是你还得先科学上网出去下载东西。&lt;/p&gt;
+&lt;p&gt;死局。&lt;/p&gt;
+&lt;p&gt;折腾了几个小时之后突发奇想。&lt;/p&gt;
+&lt;p&gt;直接在本地导出镜像再导入不就完事了。&lt;/p&gt;
+&lt;p&gt;k3s 虽然用的不是docker运行时，但也有兼容的命令啊。&lt;/p&gt;
+&lt;p&gt;问了下GPT，很简单。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;docker save docker.io/traefik:v3.4.1 -o traefik_v3.4.1.tar
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;scp traefik_v3.4.1.tar root@my-ip:~/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ctr -n k8s.io images import /root/traefik_v3.4.1.tar
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;完事了。&lt;/p&gt;
+&lt;p&gt;对。就这么简单完事了。&lt;/p&gt;
+&lt;p&gt;一切都那么和谐。&lt;/p&gt;</description></item></channel></rss>

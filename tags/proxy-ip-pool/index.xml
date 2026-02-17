@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Proxy IP Pool on Life Deletion Guide</title><link>https://liguobao.github.io/tags/proxy-ip-pool/</link><description>Recent content in Proxy IP Pool on Life Deletion Guide</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 17 Sep 2025 08:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/proxy-ip-pool/index.xml" rel="self" type="application/rss+xml"/><item><title>How to Build Your IP Proxy Pool 2025 Edition</title><link>https://liguobao.github.io/p/how-to-build-your-ip-proxy-en/</link><pubDate>Wed, 17 Sep 2025 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/how-to-build-your-ip-proxy-en/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/how-to-build-your-ip-proxy/logo.png" alt="Featured image of post How to Build Your IP Proxy Pool 2025 Edition" /&gt;&lt;p&gt;When performing tasks such as web crawling or data collection, using an IP proxy pool can effectively hide your real IP and avoid being banned by target websites.&lt;/p&gt;
+&lt;p&gt;This article will introduce how to build a simple IP proxy pool.&lt;/p&gt;
+&lt;h2 id="1-preparation"&gt;1. Preparation
+&lt;/h2&gt;&lt;p&gt;Before starting, ensure you have a dial-up VPS (Virtual Private Server).&lt;/p&gt;
+&lt;p&gt;The price of dial-up VPS is basically from dozens to hundreds of yuan, and the optional systems are Windows or Linux.&lt;/p&gt;
+&lt;p&gt;VPS service providers basically help you configure the dial-up environment before delivery, and you can simply use the pppoe command to redial.&lt;/p&gt;
+&lt;h2 id="2-building-the-proxy-server"&gt;2. Building the Proxy Server
+&lt;/h2&gt;&lt;p&gt;Generally, we won&amp;rsquo;t directly expose the proxy service on the VPS because it basically doesn&amp;rsquo;t give you a public IP.&lt;/p&gt;
+&lt;p&gt;Therefore, we need a proxy server to relay traffic.&lt;/p&gt;
+&lt;p&gt;At the same time, we need a set of &amp;ldquo;proxy server software&amp;rdquo; to connect to the dial-up VPS internally and provide proxy services externally.&lt;/p&gt;
+&lt;p&gt;Here we use &lt;a class="link" href="https://github.com/yint-tech/majora-open" target="_blank" rel="noopener"
+&gt;majora3 proxy server&lt;/a&gt; to build our proxy server.&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;Majora is a complete proxy IP construction cluster solution for the proxy IP pool supply chain system.&lt;/p&gt;
+&lt;p&gt;If you have a large number of network devices that can access the internet (VPS servers, router devices, mobile phones, etc.),&lt;/p&gt;
+&lt;p&gt;Then you can use these network devices to conveniently build your proxy IP pool.&lt;/p&gt;
+&lt;p&gt;Majora can meet the following application scenarios:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;If you are a proxy IP supplier with a large number of VPS nodes, you can quickly build your proxy IP pool through Majora&lt;/li&gt;
+&lt;li&gt;You can flash the Majora terminal program into router and other network devices, so you can build your home IP resource pool or ADSL IP resource pool through Majora&lt;/li&gt;
+&lt;li&gt;You can install Majora&amp;rsquo;s apk, or use Majora&amp;rsquo;s SDK integrated into mobile programs, so you can quickly build your mobile outlet IP resource pool through Majora (if your phone is rooted, you can also have the function of timed redial)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="majora-features"&gt;Majora Features
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Easy to use: All terminal nodes are one-click installation to access the proxy IP cluster, no need for complex parameter configuration on the server&lt;/li&gt;
+&lt;li&gt;Multi-supplier and purchaser concept: You can let multiple suppliers holding network devices access the Majora system at the same time, and also let multiple IP users access Majora&amp;rsquo;s IP resources. Majora records the detailed billing statements of each supplier and consumer, and you can settle fees with suppliers and purchasers based on the statements&lt;/li&gt;
+&lt;li&gt;Complete protocol: The system fully supports http/https/socks5 proxy protocols, and all proxy ports automatically identify the proxy protocol. No need for users to manually select ports&lt;/li&gt;
+&lt;li&gt;IP quality reliability: Majora exposes port ranges and provides services in the form of tunnel proxies. And provides memory-level IP resource failure routing function. Except for very few cases (links interrupted in the request), Majora guarantees that each proxy port on the supply side can provide equivalent stable proxy services. There will never be situations where the proxy cannot be connected or connected but cannot be used&lt;/li&gt;
+&lt;li&gt;Multi-network device support: Supports servers (VPS), mobile phones, routers, PCs (ordinary Windows or Mac computers)&lt;/li&gt;
+&lt;li&gt;High concurrency and high bandwidth: NIO framework naturally supports very high throughput, and Majora&amp;rsquo;s predecessor system (Rogue) has undergone single-node 100M bandwidth pressure&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="majora3-server-installation"&gt;majora3 server installation
+&lt;/h2&gt;&lt;h3 id="docker-installation-method"&gt;Docker installation method
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Install docker&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;yum install -y docker
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Download image:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;docker pull registry.cn-beijing.aliyuncs.com/iinti/majora3:all-in-one
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Start majora server&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;docker run -d --network host -v ~/majora3-mysql-data:/var/lib/mysql registry.cn-beijing.aliyuncs.com/iinti/majora3:all-in-one
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## The all-in-one image contains majora3 server and mysql database, data is saved in the host&amp;#39;s ~/majora3-mysql-data directory&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="test-if-deployment-is-successful"&gt;Test if deployment is successful
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl http://127.0.0.1:6879/
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Visit the website: http://your IP:Web service port such as &lt;a class="link" href="http://127.0.0.1:6879/" target="_blank" rel="noopener"
+&gt;http://127.0.0.1:6879/&lt;/a&gt;,&lt;/p&gt;
+&lt;p&gt;For the first time opening the website, please register an account, the first registered account will become the administrator,&lt;/p&gt;
+&lt;p&gt;After registration, remember to set the &amp;ldquo;proxy authentication account password&amp;rdquo;, such as admin/admin&lt;/p&gt;
+&lt;p&gt;If you can successfully open the website and complete account registration, it means the deployment is complete&lt;/p&gt;
+&lt;h3 id="production-environment-deployment"&gt;Production environment deployment
+&lt;/h3&gt;&lt;p&gt;Production environment data generally uses cloud RDS and other databases to avoid single point of failure.&lt;/p&gt;
+&lt;p&gt;Majora is developed using Java and uses MySQL as the database,&lt;/p&gt;
+&lt;p&gt;If you want to manually deploy Majora, you need to manually complete the installation of Java and MySQL, and then perform related configuration&lt;/p&gt;
+&lt;h4 id="installation-preparation"&gt;Installation preparation
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/yint-tech/majora-open/releases" target="_blank" rel="noopener"
+&gt;Download installation package&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Install jdk17&lt;/li&gt;
+&lt;li&gt;Install MySQL, or purchase MySQL service&lt;/li&gt;
+&lt;li&gt;Configuration and initialization&lt;/li&gt;
+&lt;li&gt;Unzip the installation package&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Database configuration initialization configuration in: assets/ddl.sql, please build the table initialization according to this SQL file&lt;/p&gt;
+&lt;p&gt;Conf folder related configuration&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The project uses springboot, and the project optional configuration is in conf/application.properties, please configure your database connection information here (the database is the MySQL installation and database configuration you completed in the previous step)&lt;/li&gt;
+&lt;li&gt;conf/static/* is the front-end resources, if you want to replace the front-end web skin, you can replace the content here, majora front-end is open source, supports secondary development&lt;/li&gt;
+&lt;li&gt;conf/static/majora-doc/* is the document resources, if you want to modify the document content, you can edit here&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="run"&gt;Run
+&lt;/h4&gt;&lt;p&gt;Execute bin/startup.sh (if it&amp;rsquo;s Windows, execute xxx.bat)&lt;/p&gt;
+&lt;p&gt;Observe if the log is normal&lt;/p&gt;
+&lt;h3 id="3-majora-client-access-vps"&gt;3. majora client access VPS
+&lt;/h3&gt;&lt;p&gt;After logging into the majora admin backend, select &amp;ldquo;Terminal Download&amp;rdquo; in the right menu, and download the corresponding version terminal.&lt;/p&gt;
+&lt;p&gt;Currently supported versions include:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Windows version (windows_amd64_v3)&lt;/li&gt;
+&lt;li&gt;Linux version (linux_amd64_v3)&lt;/li&gt;
+&lt;li&gt;Android version (android_all)&lt;/li&gt;
+&lt;li&gt;Router version (linux_mipsle_softfloat)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Choose to download according to different chip architecture versions.&lt;/p&gt;
+&lt;p&gt;Below we take the Linux version as an example.&lt;/p&gt;
+&lt;p&gt;Download &lt;a class="link" href="https://majora3.iinti.cn/client/go/majora3_linux_amd64_v3.tar.gz" target="_blank" rel="noopener"
+&gt;majora3_linux_amd64_v3.tar.gz&lt;/a&gt; to local, unzip.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Modify the tunnel_addr address in the majora.toml configuration file to your majora3 server address,&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Modify client_id to your terminal unique ID (can be seen in the &amp;ldquo;Terminal Management&amp;rdquo; in the majora admin backend)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-toml" data-lang="toml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;group&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;majora3&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;extra&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;zone_de&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;client_id&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;helloworld&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;tunnel_addr&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;majora3.iinti.cn:6879&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;#tunnel_addr = &amp;#34;majora3.iinti.cn:6879&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# trace/debug/info/error/fatal/disabled&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;log_level&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;info&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nx"&gt;redial&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# Execute script shell bash/ash/cmd&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;command&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;bash&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c"&gt;# Script full path&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nx"&gt;exec_path&lt;/span&gt; &lt;span class="p"&gt;=&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;/root/majora3/ppp.sh&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Repackage into majora3_linux_amd64_v3.tar.gz, then upload to your VPS.&lt;/p&gt;
+&lt;p&gt;Log in to the VPS directly, unzip and execute systemd.sh, automatically install as systemd service&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;tar zxvf majora3_linux_amd64_v3.tar.gz
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;cd&lt;/span&gt; majora3_linux_amd64_v3
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;./systemd.sh
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;If there is no problem, the majora client will connect to the majora server, and you can see your terminal in &amp;ldquo;Terminal Management&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;At the same time, the program will automatically take over the device pppoe dial-up, timed redial.&lt;/p&gt;
+&lt;h3 id="4-using-proxy-ip"&gt;4. Using Proxy IP
+&lt;/h3&gt;&lt;p&gt;After completing the above steps, your proxy IP pool is built.&lt;/p&gt;
+&lt;p&gt;At this time, you need to create an IP pool in majora admin and add VPS devices to the pool.&lt;/p&gt;
+&lt;p&gt;IP Pool List&lt;/p&gt;
+&lt;p&gt;-&amp;gt; Create IP Pool&lt;/p&gt;
+&lt;p&gt;-&amp;gt; Select &amp;ldquo;IP Pool Type&amp;rdquo; + Set Port&lt;/p&gt;
+&lt;p&gt;-&amp;gt; Device List&lt;/p&gt;
+&lt;p&gt;-&amp;gt; Add Device&lt;/p&gt;
+&lt;p&gt;-&amp;gt; Save&lt;/p&gt;
+&lt;p&gt;After creation, you can see the IP pool you created in the &amp;ldquo;IP Pool List&amp;rdquo;.&lt;/p&gt;
+&lt;p&gt;Then use the set port for testing.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -x majora:majora3@majora3.iinti.cn:6879 https://www.baidu.com/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -x majora:majora3@majora3.iinti.cn:6879 https://myip.ipip.net
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>

@@ -1,0 +1,670 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Kubernetes on Life Deletion Guide</title><link>https://liguobao.github.io/tags/kubernetes/</link><description>Recent content in Kubernetes on Life Deletion Guide</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Thu, 12 Feb 2026 08:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/kubernetes/index.xml" rel="self" type="application/rss+xml"/><item><title>Best Edge Computing Cluster Solution: Tailscale + K3s (2026 Edition)</title><link>https://liguobao.github.io/p/k3s-tailscale-cluster-2026/</link><pubDate>Thu, 12 Feb 2026 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/k3s-tailscale-cluster-2026/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/k3s-tailscale-cluster-2026/logo.png" alt="Featured image of post Best Edge Computing Cluster Solution: Tailscale + K3s (2026 Edition)" /&gt;&lt;blockquote&gt;
+&lt;p&gt;PS: Holiday&amp;rsquo;s coming, time for more tinkering!!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;em&gt;Manual dog head emoji&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;【Programming Tech Zone Disclaimer】&lt;/p&gt;
+&lt;p&gt;My last k3s article was written in 2025, using WireGuard for cross-cloud networking.&lt;/p&gt;
+&lt;p&gt;A year has passed, and WireGuard configuration is still too tedious.&lt;/p&gt;
+&lt;p&gt;—Every time you add a machine, you have to manually edit configs, add peers, adjust routes&amp;hellip;&lt;/p&gt;
+&lt;p&gt;So this year, I decided to switch the underlying network entirely to Tailscale.&lt;/p&gt;
+&lt;p&gt;More specifically—self-hosting a Headscale control plane, without relying on the official SaaS.&lt;/p&gt;
+&lt;p&gt;This way, you can add as many nodes to the internal network as you want,&lt;/p&gt;
+&lt;p&gt;with a one-line command to join the network, no more manual WireGuard Peer configuration management.&lt;/p&gt;
+&lt;p&gt;At the same time, the k3s cluster has been upgraded from a humble 2-node version,&lt;/p&gt;
+&lt;p&gt;to an &lt;strong&gt;8-node HA cluster with 4 Masters + 4 Edges&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Small but complete.&lt;/p&gt;
+&lt;p&gt;Let&amp;rsquo;s get to it.&lt;/p&gt;
+&lt;h2 id="overall-architecture"&gt;Overall Architecture
+&lt;/h2&gt;&lt;p&gt;First, here&amp;rsquo;s an architecture diagram for a global overview:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;span class="lnt"&gt;21
+&lt;/span&gt;&lt;span class="lnt"&gt;22
+&lt;/span&gt;&lt;span class="lnt"&gt;23
+&lt;/span&gt;&lt;span class="lnt"&gt;24
+&lt;/span&gt;&lt;span class="lnt"&gt;25
+&lt;/span&gt;&lt;span class="lnt"&gt;26
+&lt;/span&gt;&lt;span class="lnt"&gt;27
+&lt;/span&gt;&lt;span class="lnt"&gt;28
+&lt;/span&gt;&lt;span class="lnt"&gt;29
+&lt;/span&gt;&lt;span class="lnt"&gt;30
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Internet
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ┌─────────────┼─────────────┐
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │ │ │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; [Tencent Cloud] [Rainyun] [Local]
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; (Domestic) (Singapore) (Home/Office)
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │ │ │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; └─────────────┼─────────────┘
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Tailscale VPN (100.64.0.0/10)
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Headscale Self-hosted (ts.example.com)
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Authentik OIDC Login (auth.example.com)
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ┌──────────┬──────────┬──────────┐
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │ │ │ │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; [control1] [control2] [control3] [control4]
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; vm-0-8 vm-16-12 vm-28-17 vm-0-15
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; 100.64.0.6 100.64.0.5 100.64.0.7 100.64.0.10
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; (Primary) (Member) (Member) (TS Control)
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │ │ │ │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; └──────────┴──────────┴──────────┘
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; K3S HA Cluster (Flannel VXLAN over Tailscale)
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Pod: 10.42.0.0/16 | Service: 10.43.0.0/16
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; ┌─────────┬─────────┬─────────┐
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; │ │ │ │
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; [haru] [lgb-amd] [rainyun] [hc1]
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Domestic Local Overseas Domestic
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Ready ✅ Ready ✅ Ready ✅ Ready ✅
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Current cluster state:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Node Name&lt;/th&gt;
+&lt;th&gt;Role&lt;/th&gt;
+&lt;th&gt;Tailscale IP&lt;/th&gt;
+&lt;th&gt;Status&lt;/th&gt;
+&lt;th&gt;Notes&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;vm-0-8-ubuntu-new&lt;/td&gt;
+&lt;td&gt;Master&lt;/td&gt;
+&lt;td&gt;100.64.0.6&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;Initial Master, &amp;ndash;cluster-init&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;vm-16-12-ubuntu&lt;/td&gt;
+&lt;td&gt;Master&lt;/td&gt;
+&lt;td&gt;100.64.0.5&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;HA Master&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;vm-28-17-ubuntu&lt;/td&gt;
+&lt;td&gt;Master&lt;/td&gt;
+&lt;td&gt;100.64.0.7&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;HA Master&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;vm-0-15-ubuntu&lt;/td&gt;
+&lt;td&gt;Master&lt;/td&gt;
+&lt;td&gt;100.64.0.10&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;Headscale control plane node, NoSchedule&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;haru&lt;/td&gt;
+&lt;td&gt;Edge&lt;/td&gt;
+&lt;td&gt;100.64.0.3&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;Domestic node&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;lgb-amd-3700&lt;/td&gt;
+&lt;td&gt;Edge&lt;/td&gt;
+&lt;td&gt;100.64.0.4&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;Local AMD host, 16GB&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;rainyun-ssh7pavp&lt;/td&gt;
+&lt;td&gt;Edge&lt;/td&gt;
+&lt;td&gt;100.64.0.12&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;Overseas Singapore node&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;hc1&lt;/td&gt;
+&lt;td&gt;Edge&lt;/td&gt;
+&lt;td&gt;100.64.0.9&lt;/td&gt;
+&lt;td&gt;Ready ✅&lt;/td&gt;
+&lt;td&gt;Domestic node&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;8-node cluster running dozens of services, stable as a rock.&lt;/p&gt;
+&lt;h2 id="part-i-setting-up-tailscale---cloud-internal-network-cluster"&gt;Part I: Setting up Tailscale - Cloud Internal Network Cluster
+&lt;/h2&gt;&lt;h3 id="why-not-manually-configure-wireguard-anymore"&gt;Why Not Manually Configure WireGuard Anymore?
+&lt;/h3&gt;&lt;p&gt;In the 2025 article, I used the native WireGuard solution + k3s Flannel &lt;code&gt;wireguard-native&lt;/code&gt; mode.&lt;/p&gt;
+&lt;p&gt;To be honest, WireGuard itself is very stable with good performance. But manually managing peers becomes a nightmare when you have multiple nodes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Every time you add a node, you need to update WireGuard configs on all other nodes&lt;/li&gt;
+&lt;li&gt;Public key exchange and IP allocation are all manual&lt;/li&gt;
+&lt;li&gt;If a machine&amp;rsquo;s public IP changes, all peers need to be updated&lt;/li&gt;
+&lt;li&gt;No unified management interface&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;So this time, I went straight to Tailscale.&lt;/p&gt;
+&lt;h3 id="why-self-host-headscale"&gt;Why Self-host Headscale?
+&lt;/h3&gt;&lt;p&gt;Tailscale&amp;rsquo;s official SaaS service is certainly convenient, and the personal plan now supports up to 100 devices, which is more than enough. But there are a few issues:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Login requires external network&lt;/strong&gt;—Tailscale login authentication uses Google/Microsoft/GitHub OAuth, basically unusable from mainland China without VPN, especially troublesome on servers&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Data control&lt;/strong&gt;—All node information is on someone else&amp;rsquo;s servers, not reassuring&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Domestic access&lt;/strong&gt;—Tailscale&amp;rsquo;s official coordination server is overseas, domestic nodes have unstable connections, occasionally slow to establish connections between nodes&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;So I chose &lt;a class="link" href="https://github.com/juanfont/headscale" target="_blank" rel="noopener"
+&gt;Headscale&lt;/a&gt;—an open-source Tailscale control plane implementation.&lt;/p&gt;
+&lt;p&gt;Combined with &lt;a class="link" href="https://goauthentik.io/" target="_blank" rel="noopener"
+&gt;Authentik&lt;/a&gt; for OIDC login, the experience is almost identical to official Tailscale, even more flexible.&lt;/p&gt;
+&lt;h3 id="headscale-deployment"&gt;Headscale Deployment
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Server requirements&lt;/strong&gt;: A small 2C2G machine is enough, I&amp;rsquo;m using Tencent Cloud Lighthouse Ubuntu 24.04.&lt;/p&gt;
+&lt;p&gt;The core is a &lt;code&gt;docker-compose.yml&lt;/code&gt; containing:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Component&lt;/th&gt;
+&lt;th&gt;Description&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Headscale v0.28.0&lt;/td&gt;
+&lt;td&gt;Tailscale control plane&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Authentik 2025.2.4&lt;/td&gt;
+&lt;td&gt;OIDC username/password login&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;PostgreSQL 16&lt;/td&gt;
+&lt;td&gt;Authentik database&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Redis&lt;/td&gt;
+&lt;td&gt;Authentik cache&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Nginx&lt;/td&gt;
+&lt;td&gt;HTTPS reverse proxy&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;After deployment, two domains are ready:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;https://ts.example.com&lt;/code&gt; → Headscale control plane&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;https://auth.example.com&lt;/code&gt; → Authentik login management&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I won&amp;rsquo;t expand on the detailed deployment process here (that&amp;rsquo;s for another article), but the key points are:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Use acme.sh + Nginx for HTTPS&lt;/strong&gt;, don&amp;rsquo;t mess with fancy Traefik stuff&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Configure OIDC in Headscale&lt;/strong&gt;, with Issuer pointing to Authentik&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Use &lt;code&gt;100.64.0.0/10&lt;/code&gt; IP range&lt;/strong&gt;, this is the CGNAT address range that won&amp;rsquo;t conflict with internal networks&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="node-onboarding"&gt;Node Onboarding
+&lt;/h3&gt;&lt;p&gt;After setting up Headscale, getting any machine on the network is a one-line command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Install Tailscale client&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -fsSL https://tailscale.com/install.sh &lt;span class="p"&gt;|&lt;/span&gt; sh
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Connect to self-hosted control plane&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;tailscale up --login-server&lt;span class="o"&gt;=&lt;/span&gt;https://ts.example.com --hostname&lt;span class="o"&gt;=&lt;/span&gt;your-hostname --accept-dns&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nb"&gt;false&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The terminal will output a link, open it in a browser, it jumps to the Authentik login page, enter username and password, authorize—node is on the network.&lt;/p&gt;
+&lt;p&gt;That simple.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Key recommendation&lt;/strong&gt;:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;Don&amp;rsquo;t rely on public cloud internal networks!&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Even if your Master nodes are in the same cloud, it&amp;rsquo;s recommended to communicate uniformly through Tailscale.&lt;/p&gt;
+&lt;p&gt;The reason is simple: public cloud internal networks are black boxes. When you change machines or availability zones, internal IPs change.
+While Tailscale IPs are allocated by you and won&amp;rsquo;t change.&lt;/p&gt;
+&lt;p&gt;All nodes, whether cloud-based, local, or on other cloud platforms, should uniformly access via Tailscale for a clean network architecture.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;My current Tailscale network looks like this:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.2 lgb-macbookair-m4 macOS ← My dev machine
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.3 haru linux ← Edge node
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.4 lgb-amd-3700 linux ← Local Edge node
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.5 vm-16-12-ubuntu linux ← K3s Master
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.6 vm-0-8-ubuntu-new linux ← K3s Master (Primary)
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.7 vm-28-17-ubuntu linux ← K3s Master
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.8 rainyun-vja2g92e linux ← Overseas node
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.9 hc1 linux ← Edge node
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.10 ts-headscale linux ← Headscale control plane + K3s Master
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.12 ipv6radar linux ← Overseas node
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;100.64.0.13 localhost android ← Phone can join too (for slacking off)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;No matter where you are, &lt;code&gt;ping 100.64.0.6&lt;/code&gt; works. This is what a proper internal network experience should be.&lt;/p&gt;
+&lt;h2 id="part-ii-k3s-cluster-setup---based-on-tailscale-network"&gt;Part II: K3s Cluster Setup - Based on Tailscale Network
+&lt;/h2&gt;&lt;h3 id="core-principles"&gt;Core Principles
+&lt;/h3&gt;&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;All Master nodes in the same cloud region&lt;/strong&gt;—My 4 Masters are all in Tencent Cloud, low etcd sync latency&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Masters communicate using Tailscale IPs&lt;/strong&gt;—Don&amp;rsquo;t rely on cloud internal network&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Edge nodes anywhere&lt;/strong&gt;—Home desktop, overseas VPS, office workstation, as long as Tailscale can reach&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Gateway nodes on high-bandwidth machines&lt;/strong&gt;—Ingress runs on lightweight cloud with sufficient traffic&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="installing-masters"&gt;Installing Masters
+&lt;/h3&gt;&lt;p&gt;Installation is actually straightforward, just follow the official docs: &lt;a class="link" href="https://docs.k3s.io/quick-start" target="_blank" rel="noopener"
+&gt;https://docs.k3s.io/quick-start&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;But there are a few &lt;strong&gt;critical parameters&lt;/strong&gt; you must pay attention to.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;First Master (initialize cluster)&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;INSTALL_K3S_MIRROR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;cn &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; sh -s - server &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --cluster-init &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --flannel-iface&lt;span class="o"&gt;=&lt;/span&gt;tailscale0 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-ip&lt;span class="o"&gt;=&lt;/span&gt;100.64.0.6 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --tls-san&lt;span class="o"&gt;=&lt;/span&gt;100.64.0.6
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Subsequent Masters joining cluster&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;INSTALL_K3S_MIRROR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;cn &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;K3S_TOKEN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;your-token&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; sh -s - server &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --server https://100.64.0.6:6443 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --flannel-iface&lt;span class="o"&gt;=&lt;/span&gt;tailscale0 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-ip&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;tailscale ip -4&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --tls-san&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;tailscale ip -4&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Core parameter explanation&lt;/strong&gt;:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Parameter&lt;/th&gt;
+&lt;th&gt;Why it&amp;rsquo;s necessary&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;--cluster-init&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;First Master uses this, enables embedded etcd HA&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;--flannel-iface=tailscale0&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;&lt;strong&gt;Most critical!&lt;/strong&gt; Makes Flannel VXLAN use Tailscale NIC, not physical NIC&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;--node-ip=$(tailscale ip -4)&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Node IP uses Tailscale IP, ensures cross-cloud communication&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;--tls-san=&amp;lt;ip&amp;gt;&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;API Server certificate includes Tailscale IP&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;INSTALL_K3S_MIRROR=cn&lt;/code&gt;&lt;/td&gt;
+&lt;td&gt;Domestic mirror acceleration, overseas nodes don&amp;rsquo;t need&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;code&gt;--flannel-iface=tailscale0&lt;/code&gt; is the hard-learned lesson after countless pitfalls.&lt;/p&gt;
+&lt;p&gt;Without this parameter, Flannel will default to using the physical NIC&amp;rsquo;s IP (like public IP or cloud internal IP) to build VXLAN tunnels. The result is—&lt;strong&gt;same-cloud nodes can communicate, cross-cloud nodes have complete Pod communication failure&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;With this parameter, Flannel&amp;rsquo;s VXLAN tunnels all go through the Tailscale virtual NIC, cross-cloud Pod communication is perfect.&lt;/p&gt;
+&lt;h3 id="installing-edge-nodes"&gt;Installing Edge Nodes
+&lt;/h3&gt;&lt;p&gt;Edge nodes are Agents, even simpler.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Domestic nodes&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;K3S_URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;https://100.64.0.6:6443&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;K3S_TOKEN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;your-token&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;INSTALL_K3S_MIRROR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;cn &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; sh -s - agent &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-ip&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;tailscale ip -4&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --flannel-iface&lt;span class="o"&gt;=&lt;/span&gt;tailscale0 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-label&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;node.kubernetes.io/role=edge&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Overseas nodes&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -sfL https://get.k3s.io &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;K3S_URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;https://100.64.0.6:6443&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;K3S_TOKEN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;your-token&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; sh -s - agent &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-ip&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;tailscale ip -4&lt;span class="k"&gt;)&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --flannel-iface&lt;span class="o"&gt;=&lt;/span&gt;tailscale0 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-label&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;node.kubernetes.io/role=edge&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;The difference is domestic uses &lt;code&gt;rancher-mirror.rancher.cn&lt;/code&gt;, overseas uses official &lt;code&gt;get.k3s.io&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id="domestic-docker-image-pulling-issues"&gt;Domestic Docker Image Pulling Issues
+&lt;/h3&gt;&lt;p&gt;I need to specifically mention: &lt;strong&gt;Docker/containerd image pulling in domestic environments is a big hassle.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Docker Hub, ghcr.io, gcr.io and other image sources are basically semi-blocked in China. Some k3s built-in system component images (like &lt;code&gt;pause&lt;/code&gt;, &lt;code&gt;coredns&lt;/code&gt;, &lt;code&gt;metrics-server&lt;/code&gt;) might not be pullable, causing nodes to stay NotReady.&lt;/p&gt;
+&lt;p&gt;Several solutions:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Configure image accelerators&lt;/strong&gt;—Configure available domestic mirrors in &lt;code&gt;/etc/rancher/k3s/registries.yaml&lt;/code&gt; (if you can still find live ones)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Local export then import (recommended)&lt;/strong&gt;—Pull images on overseas nodes or machines that can pull normally, export and transfer to domestic nodes for import:
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Export on overseas node&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ctr -n k8s.io images &lt;span class="nb"&gt;export&lt;/span&gt; pause.tar registry.k8s.io/pause:3.9
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Transfer to domestic node&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;scp pause.tar root@&amp;lt;domestic-node-IP&amp;gt;:/tmp/
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Import on domestic node&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ctr -n k8s.io images import /tmp/pause.tar
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Self-host Harbor image registry&lt;/strong&gt;—If you have many nodes, it&amp;rsquo;s recommended to set up a private image registry as a proxy cache, once and for all&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;My approach is to pre-pull needed images on overseas nodes, then &lt;code&gt;ctr images export&lt;/code&gt; to export, transfer through Tailscale internal network to domestic nodes, and &lt;code&gt;ctr images import&lt;/code&gt; to import. Though crude, it&amp;rsquo;s stable and reliable.&lt;/p&gt;
+&lt;p&gt;Get the token on the first Master:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;cat /var/lib/rancher/k3s/server/node-token
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;If everything&amp;rsquo;s fine, you&amp;rsquo;ll see new nodes online within seconds:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;$ kubectl get nodes -o wide
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;NAME STATUS ROLES AGE VERSION
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;vm-0-8-ubuntu-new Ready control-plane,etcd,master 30d v1.32.3+k3s1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;vm-16-12-ubuntu Ready control-plane,etcd,master 30d v1.32.3+k3s1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;vm-28-17-ubuntu Ready control-plane,etcd,master 30d v1.32.3+k3s1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;vm-0-15-ubuntu Ready control-plane,etcd,master 1d v1.32.3+k3s1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;haru Ready &amp;lt;none&amp;gt; 20d v1.32.3+k3s1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;lgb-amd-3700 Ready &amp;lt;none&amp;gt; 15d v1.32.3+k3s1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;rainyun-ssh7pavp Ready &amp;lt;none&amp;gt; 10d v1.32.3+k3s1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;hc1 Ready &amp;lt;none&amp;gt; 5d v1.32.3+k3s1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;All 8 nodes Ready.&lt;/p&gt;
+&lt;p&gt;Beautiful.&lt;/p&gt;
+&lt;h3 id="about-gateway-nodes"&gt;About Gateway Nodes
+&lt;/h3&gt;&lt;p&gt;Ingress traffic entry requires public IP + sufficient bandwidth.&lt;/p&gt;
+&lt;p&gt;My approach:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Gateway nodes use lightweight cloud servers&lt;/strong&gt;—Tencent Cloud Lighthouse, Alibaba Cloud Lighthouse, etc., monthly payment of tens of yuan, traffic package is sufficient&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;k3s built-in Traefik Ingress&lt;/strong&gt; runs on all nodes by default (DaemonSet), but only one or two nodes need to be exposed externally&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Domain DNS resolves to these lightweight cloud public IPs&lt;/strong&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Traffic path: &lt;code&gt;User request → Lightweight cloud public IP → Traefik Ingress → Service → Pod (can be on any node)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Even if the Pod is on an overseas node, no problem—Flannel over Tailscale will route the traffic.&lt;/p&gt;
+&lt;h2 id="part-iii-pitfall-chronicles"&gt;Part III: Pitfall Chronicles
+&lt;/h2&gt;&lt;h3 id="pitfall-1-flannel-using-wrong-nic-hard-learned-lesson"&gt;Pitfall 1: Flannel Using Wrong NIC (Hard-learned Lesson)
+&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;Symptom&lt;/strong&gt;: Edge node is Ready, but cross-node Pod communication fails completely.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Cause&lt;/strong&gt;: Didn&amp;rsquo;t add &lt;code&gt;--flannel-iface=tailscale0&lt;/code&gt;, Flannel defaulted to public network NIC.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Diagnosis&lt;/strong&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl describe node rainyun-ssh7pavp &lt;span class="p"&gt;|&lt;/span&gt; grep flannel
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# See flannel.alpha.coreos.com/public-ip using public IP instead of 100.64.0.x&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Solution&lt;/strong&gt;: Uninstall k3s agent, reinstall with &lt;code&gt;--flannel-iface=tailscale0&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;This parameter is so important, say it three times:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;--flannel-iface=tailscale0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--flannel-iface=tailscale0&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--flannel-iface=tailscale0&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="pitfall-2-unstable-tailscale-connection"&gt;Pitfall 2: Unstable Tailscale Connection
+&lt;/h3&gt;&lt;p&gt;A Vultr VPS had Tailscale connections dropping every few days.&lt;/p&gt;
+&lt;p&gt;Node kept bouncing between Ready and NotReady, kubelet frantically reporting &lt;code&gt;unable to update node status&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Investigation revealed it was a VPN link issue, nothing to do with K3s.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Solution&lt;/strong&gt;: First use taint to isolate, later just replaced the machine.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl taint nodes vultr.guest node-problem&lt;span class="o"&gt;=&lt;/span&gt;true:NoSchedule --overwrite
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl taint nodes vultr.guest node-problem&lt;span class="o"&gt;=&lt;/span&gt;true:NoExecute --overwrite
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Lesson: &lt;strong&gt;Better to remove unstable nodes than struggle.&lt;/strong&gt; Replacing with a new machine is faster than troubleshooting network issues.&lt;/p&gt;
+&lt;h3 id="pitfall-3-dont-run-business-pods-on-low-spec-masters"&gt;Pitfall 3: Don&amp;rsquo;t Run Business Pods on Low-spec Masters
+&lt;/h3&gt;&lt;p&gt;My fourth Master (vm-0-15-ubuntu) only has 2G memory and also runs the Headscale control plane.&lt;/p&gt;
+&lt;p&gt;If you let it run business Pods, it&amp;rsquo;ll OOM in minutes.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Solution&lt;/strong&gt;: Add NoSchedule taint, only run control plane components + etcd.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl taint nodes vm-0-15-ubuntu node-role.kubernetes.io/control-plane&lt;span class="o"&gt;=&lt;/span&gt;:NoSchedule
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;2G memory running k3s control-plane + etcd + Headscale full stack, CPU and memory usage around 60%, holds up fine.&lt;/p&gt;
+&lt;h2 id="part-iv-troubleshooting-quick-reference"&gt;Part IV: Troubleshooting Quick Reference
+&lt;/h2&gt;&lt;p&gt;Node added but having issues? Check in this order:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 1. Check node status&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl get nodes -o wide
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 2. Check node events&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl describe node &amp;lt;node-name&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 3. Check Tailscale connectivity&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;tailscale ping &amp;lt;target-node-tailscale-IP&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 4. Check Flannel configuration&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl describe node &amp;lt;node-name&amp;gt; &lt;span class="p"&gt;|&lt;/span&gt; grep flannel
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 5. Check kubelet logs&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;ssh root@&amp;lt;node-IP&amp;gt; &lt;span class="s2"&gt;&amp;#34;journalctl -u k3s-agent -n 50&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# 6. Test cross-node Pod communication&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;kubectl run &lt;span class="nb"&gt;test&lt;/span&gt; --image&lt;span class="o"&gt;=&lt;/span&gt;busybox --rm -it -- wget -qO- http://&amp;lt;other-node-PodIP&amp;gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;90% of issues can be found in the first 4 steps.&lt;/p&gt;
+&lt;h2 id="part-v-summary"&gt;Part V: Summary
+&lt;/h2&gt;&lt;p&gt;Compared to the 2025 solution, key changes in this upgrade:&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Item&lt;/th&gt;
+&lt;th&gt;2025&lt;/th&gt;
+&lt;th&gt;2026&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Networking&lt;/td&gt;
+&lt;td&gt;WireGuard manual config&lt;/td&gt;
+&lt;td&gt;Tailscale (Headscale self-hosted)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Control plane&lt;/td&gt;
+&lt;td&gt;Official Tailscale / manual WG&lt;/td&gt;
+&lt;td&gt;Self-hosted Headscale + OIDC&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Master count&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;4 (HA)&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Edge nodes&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Total nodes&lt;/td&gt;
+&lt;td&gt;2&lt;/td&gt;
+&lt;td&gt;8&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;New node onboarding&lt;/td&gt;
+&lt;td&gt;Change lots of configs&lt;/td&gt;
+&lt;td&gt;One-line command&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Cross-cloud communication&lt;/td&gt;
+&lt;td&gt;Flannel wireguard-native&lt;/td&gt;
+&lt;td&gt;Flannel VXLAN over Tailscale&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Management complexity&lt;/td&gt;
+&lt;td&gt;High&lt;/td&gt;
+&lt;td&gt;Low&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;One-sentence solution summary&lt;/strong&gt;:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Use Tailscale (Headscale self-hosted) for underlying network&lt;/strong&gt;—All nodes uniformly join, don&amp;rsquo;t rely on any public cloud internal network&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;K3s Masters in same cloud region&lt;/strong&gt;—Low etcd latency, stable control plane&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Edge nodes add freely&lt;/strong&gt;—Home machines, overseas VPS, office workstations, as long as Tailscale can reach&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Gateway nodes use lightweight cloud&lt;/strong&gt;—Cheap, sufficient bandwidth, fixed public IP&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The entire cluster has been running for a month, stable as an old dog.&lt;/p&gt;
+&lt;p&gt;8/8 nodes all available (previously had 1 Vultr with network issues, already replaced).&lt;/p&gt;
+&lt;p&gt;Done.&lt;/p&gt;
+&lt;p&gt;Entire article completed in the study at dawn, Happy New Year everyone~&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Manual dog head emoji&lt;/em&gt;&lt;/p&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;Related links:&lt;/em&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;K3s Official Docs: &lt;a class="link" href="https://docs.k3s.io/" target="_blank" rel="noopener"
+&gt;https://docs.k3s.io/&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Headscale: &lt;a class="link" href="https://github.com/juanfont/headscale" target="_blank" rel="noopener"
+&gt;https://github.com/juanfont/headscale&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Authentik: &lt;a class="link" href="https://goauthentik.io/" target="_blank" rel="noopener"
+&gt;https://goauthentik.io/&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;Previous article: &lt;a class="link" href="https://liguobao.github.io/p/k3s-edge-computing-cluster/" target="_blank" rel="noopener"
+&gt;Best Edge Computing Cluster Solution&lt;/a&gt;&lt;/em&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;hr&gt;
+&lt;p&gt;&lt;em&gt;This article was written with AI assistance.&lt;/em&gt;&lt;/p&gt;</description></item></channel></rss>

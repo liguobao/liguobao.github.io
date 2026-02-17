@@ -1,0 +1,577 @@
+<!doctype html><html lang=zh dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="##写在前面\n做爬虫的小伙伴一般都绕不过代理IP这个问题.\nPS:如果还没遇到被封IP的场景，要不就是你量太小人家懒得理你，要不就是人家压根不在乎&mldr;\n爬虫用户自己是没有能力维护一系列的代理服务器和代理IP的，这个成本实在有点高了。 所以公用代理服务器应运而生,现在几大云服务商家都提供代理IP服务，一般论个买&mldr;\n同时网上也有很多代理IP共享网站，会把一些免费的代理IP放出来给大家用。 大家都是做爬虫的，那么，是不是可以先把代理IP网站的数据爬一遍？ 所以可以看到不少的爬代理IP的爬虫，如突破反爬虫的利器——开源IP代理池之类的项目。 这些项目都能达到抓取代理IP数据的目的，很多时候也够用了。\n然而在使用过程中我们发现了一些问题：\n网站公布的代理IP不一定是可用的。可能代理服务器挂了，可能IP无效了&mldr;等等之类的。 代理IP是部分可用的。某代理IP可用代理访问百度，但是代理访问谷歌的时候就GG了。 代理连通性是好的，但是已经被访问站识别为代理IP返回验证码或者辣鸡数据。 proxyipcenter的解决方案 出于以上种种的原因，按耐不住的dalao(@virjar)开始自己动手撸了。\n于是，proxyipcenter出来了。\n这个项目做了什么东西呢？ dalao是这样写的：\nDungProxy是一个代理IP服务,他包括一个代理IP资源server端和一系列适配中心IP资源得客户端。\nserver负责代理IP资源的收集维护。\nclient则是一系列方便用户使用得API,他屏蔽了代理IP下载、代理IP选取、IP绑定、IP切换等比较复杂逻辑。用户只需要引入client即可方便使用代理IP服务\n简单来说：\nserver是一个代理IP爬虫，同时负责简单的数据清洗。\nclient本质是一个代理IP池，获取数据源之后，基于需要代理访问的网站在本地维护一个代理IP池供爬虫使用。\n以下内容转载自http://git.oschina.net/virjar/proxyipcenter, 并已获得相关授权。(PS:dalao写的太好了，我都懒得重新写一遍了&mldr;问过dalao之后直接转载过来算了。)\nproxyipcenter server DrungProxy的代理IP都是从互联网收集,他是架设在一个高度不可用的资源上面的服务。server会负责对这些资源进行清洗、校验、打分,最终输出可以被客户端使用的IP资源。IP资源从入库到最终判定可用生命流程如下\nIP抓取 server监听了很多代理IP网站,这些网站包括国内外十几家,有意思的是drungProxy的IP爬虫是一系列网站模版。五六行配置即可实现一个简单的网站模版,然后我们有一个上层调度模块将会负责调起模版进行数据抓取。 IP消重 需要消重的原因是程序运行到一定时间之后,大量IP都是数据库里面已经存在的了,这个时候如果在数据库进行消重逻辑将会导致大量数据库读写,实际上我们的服务器是一个1块钱的腾讯云(曾经是),看起来是撑不住这么大的请求的(平均每天可以有10K量级)。最后在入库前设置了一个bloomFilter消重模块,能够高效的检测资源是否被入库过。 位置信息完善 这个逻辑不大,通过taobaoIp接口获取地址信息,完善IP资源元数据。taobaoIP IP验证 IP验证分为好几个步骤。我们的IP总资源有80W,检验一个IP是否可用一般来说需要20秒左右的时间,因为代理IP本身响应比较慢,我们会把超时时间设置得比较长。所以可以计算一下80W数据走一轮将要消耗得时间,即使在多线程并行环境下时间也是很多的。为了在一定资源下完成校验,我们设计了如下步骤 端口开启校验,在进行可用性校验前,首先需要检查IP端口是否开启。调研发现大量资源其实端口都不通,所以专门设计一个任务验证端口是否开启,端口开启验证超时时间为5秒。由于大多数资源端口都没有开启,所以大部分资源的校验时间下降到5秒了。 可用性校验,进行可用性校验的需要先进行端口开启校验,系统中端口开启的资源大概3W,所以校验可用性的总资源有3W左右。可用性校验存在如下问题,很多代理IP其实不是代理网站,想他发送请求最终不是我们预期的数据,比如他返回给我们一个代理IP认证网页。所以我们不能根据是否能够请求到数据来判定IP是否可用。我们的做法是在公网放置一个API接口,然后控制代理IP访问我们自己的接口,如果能够拿到符合我们接口的预期数据,那么认为IP可用。 domain可用该校验,可用性校验通过之后IP还不是真正可用,悲伤的发现代理IP是和域名相关的。所以同一个IP在不同域名下表现可能不一样。所以我们维护了一个域名IP池,这里面存储各个域名下可用IP IP分发 IP分发是根据客户请求分配可用IP。分发逻辑现在还没有完全完善,但是已经实现了最迫切和有校的分发方案。分发逻辑设计是:先尝试查询domainIP池,再根据其他请求参数做条件匹配,再查询系统可用IP,再随机选择可用填充。四个步骤如果有一个步骤得到的IP超过请求参数期待数目,则不进行接下来的动作。 IP验证模型 再IP验证的时候,我们设计了一个模型用来确定哪些IP应该优先验证。模型描述如下:长期可用IP检测频率低,长期不可用IP检测评率低。不稳定IP和刚加入的IP检测频率高。我们使用优先队列来实现这个逻辑,所有IP根据分值放在不同优先队列中,每次校验的时候再不同优先队列中拿出一定资源进行校验(不同优先级拿出的资源数目不一样,高优先级的对象拿出更多资源),对于同一个优先队列,我们根据最后验证时间排序。使上次更新时间最久的资源被优先选择。\n分发去重 分发资源的时候,设计去重问题,也就是根据相同条件,每次分发得到的IP很大可能会重复。为了规避这个问题,每次分发都会相应的下发一个资源签名,他会记录分发过的IP。在下次请求的时候,客户端需要带上这个签名,服务器会根据签名过滤,同时会重新对新分发的IP资源做再次签名.\nserver部署 server端使用java编写,使用maven管理项目,使用mysql作为数据库。相关技术包括springMVC,spring,tomcat,mybatis,guava,fastjson,httpclient等。 运行server的方式很简单\n在项目根目录执行maven命令(需要提前安装maven,maven安装方式略)mvn install -Dmaven.test.skip=true 在server目录执行maven命令 mvn tomcat7:run server配置 直接运行项目使用的是我们的默认数据库,同时使用的是默认配置。实际上server存在一些配置用来设置运行参数。合理的运行参数能够合理使用机器资源以及达到更好的运行效果。 项目主要有两个配置文件需要配置:\nmysql.properties 用来配置数据库信息 config.properties 配置其他启动参数,主要需要关注里面几个url地址,还有 system.thread.的参数项。system.thread用于指定某一种类型的任务执行的线程数,如果数据小于1,则这个模块不会启动。但是如果这个模块接收到了任务请求,那么他会转发到其他服务器上面(也就是上面的两个forward相关的url,没办法服务器都是腊鸡服务器 ) 其他的应该没有了把,哦对了,项目存在多个profile,也就是resources.local,resources.beta,resources.prod等。他们叫做profile,是maven里面的概念,默认是resources.local生效的。如果想使用其他profile下面的配置,则增加 -Pprofile参数,如运行server mvn -Pskyee clean tomcat7:run\n"><title>可能是一份没什么用的爬虫代理IP指南</title><link rel=canonical href=https://liguobao.github.io/zh/p/%E5%8F%AF%E8%83%BD%E6%98%AF%E4%B8%80%E4%BB%BD%E6%B2%A1%E4%BB%80%E4%B9%88%E7%94%A8%E7%9A%84%E7%88%AC%E8%99%AB%E4%BB%A3%E7%90%86ip%E6%8C%87%E5%8D%97/><link rel=stylesheet href=/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css><meta property='og:title' content="可能是一份没什么用的爬虫代理IP指南"><meta property='og:description' content="##写在前面\n做爬虫的小伙伴一般都绕不过代理IP这个问题.\nPS:如果还没遇到被封IP的场景，要不就是你量太小人家懒得理你，要不就是人家压根不在乎&mldr;\n爬虫用户自己是没有能力维护一系列的代理服务器和代理IP的，这个成本实在有点高了。 所以公用代理服务器应运而生,现在几大云服务商家都提供代理IP服务，一般论个买&mldr;\n同时网上也有很多代理IP共享网站，会把一些免费的代理IP放出来给大家用。 大家都是做爬虫的，那么，是不是可以先把代理IP网站的数据爬一遍？ 所以可以看到不少的爬代理IP的爬虫，如突破反爬虫的利器——开源IP代理池之类的项目。 这些项目都能达到抓取代理IP数据的目的，很多时候也够用了。\n然而在使用过程中我们发现了一些问题：\n网站公布的代理IP不一定是可用的。可能代理服务器挂了，可能IP无效了&mldr;等等之类的。 代理IP是部分可用的。某代理IP可用代理访问百度，但是代理访问谷歌的时候就GG了。 代理连通性是好的，但是已经被访问站识别为代理IP返回验证码或者辣鸡数据。 proxyipcenter的解决方案 出于以上种种的原因，按耐不住的dalao(@virjar)开始自己动手撸了。\n于是，proxyipcenter出来了。\n这个项目做了什么东西呢？ dalao是这样写的：\nDungProxy是一个代理IP服务,他包括一个代理IP资源server端和一系列适配中心IP资源得客户端。\nserver负责代理IP资源的收集维护。\nclient则是一系列方便用户使用得API,他屏蔽了代理IP下载、代理IP选取、IP绑定、IP切换等比较复杂逻辑。用户只需要引入client即可方便使用代理IP服务\n简单来说：\nserver是一个代理IP爬虫，同时负责简单的数据清洗。\nclient本质是一个代理IP池，获取数据源之后，基于需要代理访问的网站在本地维护一个代理IP池供爬虫使用。\n以下内容转载自http://git.oschina.net/virjar/proxyipcenter, 并已获得相关授权。(PS:dalao写的太好了，我都懒得重新写一遍了&mldr;问过dalao之后直接转载过来算了。)\nproxyipcenter server DrungProxy的代理IP都是从互联网收集,他是架设在一个高度不可用的资源上面的服务。server会负责对这些资源进行清洗、校验、打分,最终输出可以被客户端使用的IP资源。IP资源从入库到最终判定可用生命流程如下\nIP抓取 server监听了很多代理IP网站,这些网站包括国内外十几家,有意思的是drungProxy的IP爬虫是一系列网站模版。五六行配置即可实现一个简单的网站模版,然后我们有一个上层调度模块将会负责调起模版进行数据抓取。 IP消重 需要消重的原因是程序运行到一定时间之后,大量IP都是数据库里面已经存在的了,这个时候如果在数据库进行消重逻辑将会导致大量数据库读写,实际上我们的服务器是一个1块钱的腾讯云(曾经是),看起来是撑不住这么大的请求的(平均每天可以有10K量级)。最后在入库前设置了一个bloomFilter消重模块,能够高效的检测资源是否被入库过。 位置信息完善 这个逻辑不大,通过taobaoIp接口获取地址信息,完善IP资源元数据。taobaoIP IP验证 IP验证分为好几个步骤。我们的IP总资源有80W,检验一个IP是否可用一般来说需要20秒左右的时间,因为代理IP本身响应比较慢,我们会把超时时间设置得比较长。所以可以计算一下80W数据走一轮将要消耗得时间,即使在多线程并行环境下时间也是很多的。为了在一定资源下完成校验,我们设计了如下步骤 端口开启校验,在进行可用性校验前,首先需要检查IP端口是否开启。调研发现大量资源其实端口都不通,所以专门设计一个任务验证端口是否开启,端口开启验证超时时间为5秒。由于大多数资源端口都没有开启,所以大部分资源的校验时间下降到5秒了。 可用性校验,进行可用性校验的需要先进行端口开启校验,系统中端口开启的资源大概3W,所以校验可用性的总资源有3W左右。可用性校验存在如下问题,很多代理IP其实不是代理网站,想他发送请求最终不是我们预期的数据,比如他返回给我们一个代理IP认证网页。所以我们不能根据是否能够请求到数据来判定IP是否可用。我们的做法是在公网放置一个API接口,然后控制代理IP访问我们自己的接口,如果能够拿到符合我们接口的预期数据,那么认为IP可用。 domain可用该校验,可用性校验通过之后IP还不是真正可用,悲伤的发现代理IP是和域名相关的。所以同一个IP在不同域名下表现可能不一样。所以我们维护了一个域名IP池,这里面存储各个域名下可用IP IP分发 IP分发是根据客户请求分配可用IP。分发逻辑现在还没有完全完善,但是已经实现了最迫切和有校的分发方案。分发逻辑设计是:先尝试查询domainIP池,再根据其他请求参数做条件匹配,再查询系统可用IP,再随机选择可用填充。四个步骤如果有一个步骤得到的IP超过请求参数期待数目,则不进行接下来的动作。 IP验证模型 再IP验证的时候,我们设计了一个模型用来确定哪些IP应该优先验证。模型描述如下:长期可用IP检测频率低,长期不可用IP检测评率低。不稳定IP和刚加入的IP检测频率高。我们使用优先队列来实现这个逻辑,所有IP根据分值放在不同优先队列中,每次校验的时候再不同优先队列中拿出一定资源进行校验(不同优先级拿出的资源数目不一样,高优先级的对象拿出更多资源),对于同一个优先队列,我们根据最后验证时间排序。使上次更新时间最久的资源被优先选择。\n分发去重 分发资源的时候,设计去重问题,也就是根据相同条件,每次分发得到的IP很大可能会重复。为了规避这个问题,每次分发都会相应的下发一个资源签名,他会记录分发过的IP。在下次请求的时候,客户端需要带上这个签名,服务器会根据签名过滤,同时会重新对新分发的IP资源做再次签名.\nserver部署 server端使用java编写,使用maven管理项目,使用mysql作为数据库。相关技术包括springMVC,spring,tomcat,mybatis,guava,fastjson,httpclient等。 运行server的方式很简单\n在项目根目录执行maven命令(需要提前安装maven,maven安装方式略)mvn install -Dmaven.test.skip=true 在server目录执行maven命令 mvn tomcat7:run server配置 直接运行项目使用的是我们的默认数据库,同时使用的是默认配置。实际上server存在一些配置用来设置运行参数。合理的运行参数能够合理使用机器资源以及达到更好的运行效果。 项目主要有两个配置文件需要配置:\nmysql.properties 用来配置数据库信息 config.properties 配置其他启动参数,主要需要关注里面几个url地址,还有 system.thread.的参数项。system.thread用于指定某一种类型的任务执行的线程数,如果数据小于1,则这个模块不会启动。但是如果这个模块接收到了任务请求,那么他会转发到其他服务器上面(也就是上面的两个forward相关的url,没办法服务器都是腊鸡服务器 ) 其他的应该没有了把,哦对了,项目存在多个profile,也就是resources.local,resources.beta,resources.prod等。他们叫做profile,是maven里面的概念,默认是resources.local生效的。如果想使用其他profile下面的配置,则增加 -Pprofile参数,如运行server mvn -Pskyee clean tomcat7:run\n"><meta property='og:url' content='https://liguobao.github.io/zh/p/%E5%8F%AF%E8%83%BD%E6%98%AF%E4%B8%80%E4%BB%BD%E6%B2%A1%E4%BB%80%E4%B9%88%E7%94%A8%E7%9A%84%E7%88%AC%E8%99%AB%E4%BB%A3%E7%90%86ip%E6%8C%87%E5%8D%97/'><meta property='og:site_name' content='人生删除指南'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='Java'><meta property='article:tag' content='开源'><meta property='article:published_time' content='2016-10-04T00:00:00+00:00'><meta property='article:modified_time' content='2016-10-04T00:00:00+00:00'><meta name=twitter:title content="可能是一份没什么用的爬虫代理IP指南"><meta name=twitter:description content="##写在前面\n做爬虫的小伙伴一般都绕不过代理IP这个问题.\nPS:如果还没遇到被封IP的场景，要不就是你量太小人家懒得理你，要不就是人家压根不在乎&mldr;\n爬虫用户自己是没有能力维护一系列的代理服务器和代理IP的，这个成本实在有点高了。 所以公用代理服务器应运而生,现在几大云服务商家都提供代理IP服务，一般论个买&mldr;\n同时网上也有很多代理IP共享网站，会把一些免费的代理IP放出来给大家用。 大家都是做爬虫的，那么，是不是可以先把代理IP网站的数据爬一遍？ 所以可以看到不少的爬代理IP的爬虫，如突破反爬虫的利器——开源IP代理池之类的项目。 这些项目都能达到抓取代理IP数据的目的，很多时候也够用了。\n然而在使用过程中我们发现了一些问题：\n网站公布的代理IP不一定是可用的。可能代理服务器挂了，可能IP无效了&mldr;等等之类的。 代理IP是部分可用的。某代理IP可用代理访问百度，但是代理访问谷歌的时候就GG了。 代理连通性是好的，但是已经被访问站识别为代理IP返回验证码或者辣鸡数据。 proxyipcenter的解决方案 出于以上种种的原因，按耐不住的dalao(@virjar)开始自己动手撸了。\n于是，proxyipcenter出来了。\n这个项目做了什么东西呢？ dalao是这样写的：\nDungProxy是一个代理IP服务,他包括一个代理IP资源server端和一系列适配中心IP资源得客户端。\nserver负责代理IP资源的收集维护。\nclient则是一系列方便用户使用得API,他屏蔽了代理IP下载、代理IP选取、IP绑定、IP切换等比较复杂逻辑。用户只需要引入client即可方便使用代理IP服务\n简单来说：\nserver是一个代理IP爬虫，同时负责简单的数据清洗。\nclient本质是一个代理IP池，获取数据源之后，基于需要代理访问的网站在本地维护一个代理IP池供爬虫使用。\n以下内容转载自http://git.oschina.net/virjar/proxyipcenter, 并已获得相关授权。(PS:dalao写的太好了，我都懒得重新写一遍了&mldr;问过dalao之后直接转载过来算了。)\nproxyipcenter server DrungProxy的代理IP都是从互联网收集,他是架设在一个高度不可用的资源上面的服务。server会负责对这些资源进行清洗、校验、打分,最终输出可以被客户端使用的IP资源。IP资源从入库到最终判定可用生命流程如下\nIP抓取 server监听了很多代理IP网站,这些网站包括国内外十几家,有意思的是drungProxy的IP爬虫是一系列网站模版。五六行配置即可实现一个简单的网站模版,然后我们有一个上层调度模块将会负责调起模版进行数据抓取。 IP消重 需要消重的原因是程序运行到一定时间之后,大量IP都是数据库里面已经存在的了,这个时候如果在数据库进行消重逻辑将会导致大量数据库读写,实际上我们的服务器是一个1块钱的腾讯云(曾经是),看起来是撑不住这么大的请求的(平均每天可以有10K量级)。最后在入库前设置了一个bloomFilter消重模块,能够高效的检测资源是否被入库过。 位置信息完善 这个逻辑不大,通过taobaoIp接口获取地址信息,完善IP资源元数据。taobaoIP IP验证 IP验证分为好几个步骤。我们的IP总资源有80W,检验一个IP是否可用一般来说需要20秒左右的时间,因为代理IP本身响应比较慢,我们会把超时时间设置得比较长。所以可以计算一下80W数据走一轮将要消耗得时间,即使在多线程并行环境下时间也是很多的。为了在一定资源下完成校验,我们设计了如下步骤 端口开启校验,在进行可用性校验前,首先需要检查IP端口是否开启。调研发现大量资源其实端口都不通,所以专门设计一个任务验证端口是否开启,端口开启验证超时时间为5秒。由于大多数资源端口都没有开启,所以大部分资源的校验时间下降到5秒了。 可用性校验,进行可用性校验的需要先进行端口开启校验,系统中端口开启的资源大概3W,所以校验可用性的总资源有3W左右。可用性校验存在如下问题,很多代理IP其实不是代理网站,想他发送请求最终不是我们预期的数据,比如他返回给我们一个代理IP认证网页。所以我们不能根据是否能够请求到数据来判定IP是否可用。我们的做法是在公网放置一个API接口,然后控制代理IP访问我们自己的接口,如果能够拿到符合我们接口的预期数据,那么认为IP可用。 domain可用该校验,可用性校验通过之后IP还不是真正可用,悲伤的发现代理IP是和域名相关的。所以同一个IP在不同域名下表现可能不一样。所以我们维护了一个域名IP池,这里面存储各个域名下可用IP IP分发 IP分发是根据客户请求分配可用IP。分发逻辑现在还没有完全完善,但是已经实现了最迫切和有校的分发方案。分发逻辑设计是:先尝试查询domainIP池,再根据其他请求参数做条件匹配,再查询系统可用IP,再随机选择可用填充。四个步骤如果有一个步骤得到的IP超过请求参数期待数目,则不进行接下来的动作。 IP验证模型 再IP验证的时候,我们设计了一个模型用来确定哪些IP应该优先验证。模型描述如下:长期可用IP检测频率低,长期不可用IP检测评率低。不稳定IP和刚加入的IP检测频率高。我们使用优先队列来实现这个逻辑,所有IP根据分值放在不同优先队列中,每次校验的时候再不同优先队列中拿出一定资源进行校验(不同优先级拿出的资源数目不一样,高优先级的对象拿出更多资源),对于同一个优先队列,我们根据最后验证时间排序。使上次更新时间最久的资源被优先选择。\n分发去重 分发资源的时候,设计去重问题,也就是根据相同条件,每次分发得到的IP很大可能会重复。为了规避这个问题,每次分发都会相应的下发一个资源签名,他会记录分发过的IP。在下次请求的时候,客户端需要带上这个签名,服务器会根据签名过滤,同时会重新对新分发的IP资源做再次签名.\nserver部署 server端使用java编写,使用maven管理项目,使用mysql作为数据库。相关技术包括springMVC,spring,tomcat,mybatis,guava,fastjson,httpclient等。 运行server的方式很简单\n在项目根目录执行maven命令(需要提前安装maven,maven安装方式略)mvn install -Dmaven.test.skip=true 在server目录执行maven命令 mvn tomcat7:run server配置 直接运行项目使用的是我们的默认数据库,同时使用的是默认配置。实际上server存在一些配置用来设置运行参数。合理的运行参数能够合理使用机器资源以及达到更好的运行效果。 项目主要有两个配置文件需要配置:\nmysql.properties 用来配置数据库信息 config.properties 配置其他启动参数,主要需要关注里面几个url地址,还有 system.thread.的参数项。system.thread用于指定某一种类型的任务执行的线程数,如果数据小于1,则这个模块不会启动。但是如果这个模块接收到了任务请求,那么他会转发到其他服务器上面(也就是上面的两个forward相关的url,没办法服务器都是腊鸡服务器 ) 其他的应该没有了把,哦对了,项目存在多个profile,也就是resources.local,resources.beta,resources.prod等。他们叫做profile,是maven里面的概念,默认是resources.local生效的。如果想使用其他profile下面的配置,则增加 -Pprofile参数,如运行server mvn -Pskyee clean tomcat7:run\n"><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/zh/><img src=/img/zhihu-lgb_hu_2ad0a9defe137384.png width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/zh>人生删除指南</a></h1><h2 class=site-description>liguobao</h2></div></header><ol class=menu-social><li><a href=https://github.com/liguobao target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://x.com/Liguobao2049 target=_blank title=Twitter rel=me><svg class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li><li><a href=https://www.zhihu.com/people/codelover target=_blank title=知乎 rel=me><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/zh/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/zh/liguobao-resume/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>About</span></a></li><li><a href=/zh/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/zh/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://liguobao.github.io/zh/ selected>简体中文</option><option value=https://liguobao.github.io/>English</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#proxyipcenter的解决方案>proxyipcenter的解决方案</a></li><li><a href=#proxyipcenter-server>proxyipcenter server</a><ol><li><a href=#ip验证模型>IP验证模型</a></li><li><a href=#分发去重>分发去重</a></li></ol></li><li><a href=#server部署>server部署</a><ol><li><a href=#server配置>server配置</a></li><li><a href=#server接口事例>server接口事例</a></li></ol></li><li><a href=#proxyipcenter-client>proxyipcenter client</a><ol><li><a href=#client-设计文档>client 设计文档</a></li><li><a href=#client-使用文档>client 使用文档</a></li></ol></li><li><a href=#使用ippoolapi获取ip资源>使用IpPoolAPI获取IP资源</a><ol><li><a href=#获取ip>获取IP</a></li><li><a href=#记录ip使用>记录IP使用</a></li><li><a href=#记录ip使用失败>记录IP使用失败</a></li><li><a href=#ip下线>IP下线</a></li><li><a href=#销毁ip池实例>销毁IP池实例</a></li><li><a href=#其他>其他</a></li></ol></li><li><a href=#todo-几个主流语言的客户端>TODO 几个主流语言的客户端</a></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><div class=article-title-wrapper><h2 class=article-title><a href=/zh/p/%E5%8F%AF%E8%83%BD%E6%98%AF%E4%B8%80%E4%BB%BD%E6%B2%A1%E4%BB%80%E4%B9%88%E7%94%A8%E7%9A%84%E7%88%AC%E8%99%AB%E4%BB%A3%E7%90%86ip%E6%8C%87%E5%8D%97/>可能是一份没什么用的爬虫代理IP指南</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>10月 04, 2016</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>5 minute read</time></div></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://liguobao.github.io/p/a-pragmatic-guide-to-proxy-ips-for-crawlers/ class=link>English</a></div></footer></div></header><section class=article-content><p>##写在前面</p><p>做爬虫的小伙伴一般都绕不过代理IP这个问题.</p><p>PS:如果还没遇到被封IP的场景，要不就是你量太小人家懒得理你，要不就是人家压根不在乎&mldr;</p><p>爬虫用户自己是没有能力维护一系列的代理服务器和代理IP的，这个成本实在有点高了。
+所以公用代理服务器应运而生,现在几大云服务商家都提供代理IP服务，一般论个买&mldr;</p><p>同时网上也有很多代理IP共享网站，会把一些免费的代理IP放出来给大家用。
+大家都是做爬虫的，那么，是不是可以先把代理IP网站的数据爬一遍？
+所以可以看到不少的爬代理IP的爬虫，如<a class=link href=https://zhuanlan.zhihu.com/p/23928595 target=_blank rel=noopener>突破反爬虫的利器——开源IP代理池</a>之类的项目。
+这些项目都能达到抓取代理IP数据的目的，很多时候也够用了。</p><p>然而在使用过程中我们发现了一些问题：</p><ol><li>网站公布的代理IP不一定是可用的。可能代理服务器挂了，可能IP无效了&mldr;等等之类的。</li><li>代理IP是部分可用的。某代理IP可用代理访问百度，但是代理访问谷歌的时候就GG了。</li><li>代理连通性是好的，但是已经被访问站识别为代理IP返回验证码或者辣鸡数据。</li></ol><h2 id=proxyipcenter的解决方案>proxyipcenter的解决方案</h2><p>出于以上种种的原因，按耐不住的dalao(@<a class=link href=https://www.zhihu.com/people/virjar target=_blank rel=noopener>virjar</a>)开始自己动手撸了。</p><p>于是，<a class=link href=http://git.oschina.net/virjar/proxyipcenter target=_blank rel=noopener>proxyipcenter</a>出来了。</p><p>这个项目做了什么东西呢？
+dalao是这样写的：</p><blockquote><p>DungProxy是一个代理IP服务,他包括一个代理IP资源server端和一系列适配中心IP资源得客户端。</p><p>server负责代理IP资源的收集维护。</p><p>client则是一系列方便用户使用得API,他屏蔽了代理IP下载、代理IP选取、IP绑定、IP切换等比较复杂逻辑。用户只需要引入client即可方便使用代理IP服务</p></blockquote><p>简单来说：</p><p>server是一个代理IP爬虫，同时负责简单的数据清洗。</p><p>client本质是一个代理IP池，获取数据源之后，基于需要代理访问的网站在本地维护一个代理IP池供爬虫使用。</p><p>以下内容转载自<a class=link href=http://git.oschina.net/virjar/proxyipcenter/edit/master/doc/server/deploy/README.md target=_blank rel=noopener>http://git.oschina.net/virjar/proxyipcenter</a>,
+并已获得相关授权。(PS:dalao写的太好了，我都懒得重新写一遍了&mldr;问过dalao之后直接转载过来算了。)</p><h2 id=proxyipcenter-server>proxyipcenter server</h2><p>DrungProxy的代理IP都是从互联网收集,他是架设在一个高度不可用的资源上面的服务。server会负责对这些资源进行清洗、校验、打分,最终输出可以被客户端使用的IP资源。IP资源从入库到最终判定可用生命流程如下</p><ol><li>IP抓取
+server监听了很多代理IP网站,这些网站包括国内外十几家,有意思的是drungProxy的IP爬虫是一系列网站模版。五六行配置即可实现一个简单的网站模版,然后我们有一个上层调度模块将会负责调起模版进行数据抓取。</li><li>IP消重
+需要消重的原因是程序运行到一定时间之后,大量IP都是数据库里面已经存在的了,这个时候如果在数据库进行消重逻辑将会导致大量数据库读写,实际上我们的服务器是一个1块钱的腾讯云(曾经是),看起来是撑不住这么大的请求的(平均每天可以有10K量级)。最后在入库前设置了一个bloomFilter消重模块,能够高效的检测资源是否被入库过。</li><li>位置信息完善
+这个逻辑不大,通过taobaoIp接口获取地址信息,完善IP资源元数据。<a class=link href=http://ip.taobao.com/ target=_blank rel=noopener>taobaoIP</a></li><li>IP验证
+IP验证分为好几个步骤。我们的IP总资源有80W,检验一个IP是否可用一般来说需要20秒左右的时间,因为代理IP本身响应比较慢,我们会把超时时间设置得比较长。所以可以计算一下80W数据走一轮将要消耗得时间,即使在多线程并行环境下时间也是很多的。为了在一定资源下完成校验,我们设计了如下步骤</li></ol><ul><li>端口开启校验,在进行可用性校验前,首先需要检查IP端口是否开启。调研发现大量资源其实端口都不通,所以专门设计一个任务验证端口是否开启,端口开启验证超时时间为5秒。由于大多数资源端口都没有开启,所以大部分资源的校验时间下降到5秒了。</li><li>可用性校验,进行可用性校验的需要先进行端口开启校验,系统中端口开启的资源大概3W,所以校验可用性的总资源有3W左右。可用性校验存在如下问题,很多代理IP其实不是代理网站,想他发送请求最终不是我们预期的数据,比如他返回给我们一个代理IP认证网页。所以我们不能根据是否能够请求到数据来判定IP是否可用。我们的做法是在公网放置一个API接口,然后控制代理IP访问我们自己的接口,如果能够拿到符合我们接口的预期数据,那么认为IP可用。</li><li>domain可用该校验,可用性校验通过之后IP还不是真正可用,悲伤的发现代理IP是和域名相关的。所以同一个IP在不同域名下表现可能不一样。所以我们维护了一个域名IP池,这里面存储各个域名下可用IP</li></ul><ol start=5><li>IP分发
+IP分发是根据客户请求分配可用IP。分发逻辑现在还没有完全完善,但是已经实现了最迫切和有校的分发方案。分发逻辑设计是:先尝试查询domainIP池,再根据其他请求参数做条件匹配,再查询系统可用IP,再随机选择可用填充。四个步骤如果有一个步骤得到的IP超过请求参数期待数目,则不进行接下来的动作。</li></ol><h3 id=ip验证模型>IP验证模型</h3><p>再IP验证的时候,我们设计了一个模型用来确定哪些IP应该优先验证。模型描述如下:长期可用IP检测频率低,长期不可用IP检测评率低。不稳定IP和刚加入的IP检测频率高。我们使用优先队列来实现这个逻辑,所有IP根据分值放在不同优先队列中,每次校验的时候再不同优先队列中拿出一定资源进行校验(不同优先级拿出的资源数目不一样,高优先级的对象拿出更多资源),对于同一个优先队列,我们根据最后验证时间排序。使上次更新时间最久的资源被优先选择。</p><h3 id=分发去重>分发去重</h3><p>分发资源的时候,设计去重问题,也就是根据相同条件,每次分发得到的IP很大可能会重复。为了规避这个问题,每次分发都会相应的下发一个资源签名,他会记录分发过的IP。在下次请求的时候,客户端需要带上这个签名,服务器会根据签名过滤,同时会重新对新分发的IP资源做再次签名.</p><h2 id=server部署>server部署</h2><p>server端使用java编写,使用maven管理项目,使用mysql作为数据库。相关技术包括springMVC,spring,tomcat,mybatis,guava,fastjson,httpclient等。
+运行server的方式很简单</p><ol><li>在项目根目录执行maven命令(需要提前安装maven,maven安装方式略)<code>mvn install -Dmaven.test.skip=true</code></li><li>在server目录执行maven命令 <code>mvn tomcat7:run</code></li></ol><h3 id=server配置>server配置</h3><p>直接运行项目使用的是我们的默认数据库,同时使用的是默认配置。实际上server存在一些配置用来设置运行参数。合理的运行参数能够合理使用机器资源以及达到更好的运行效果。
+项目主要有两个配置文件需要配置:</p><ol><li>mysql.properties 用来配置数据库信息</li><li>config.properties 配置其他启动参数,主要需要关注里面几个url地址,还有 system.thread.<em>的参数项。system.thread</em>用于指定某一种类型的任务执行的线程数,如果数据小于1,则这个模块不会启动。但是如果这个模块接收到了任务请求,那么他会转发到其他服务器上面(也就是上面的两个forward相关的url,没办法服务器都是腊鸡服务器 )</li></ol><p>其他的应该没有了把,哦对了,项目存在多个profile,也就是resources.local,resources.beta,resources.prod等。他们叫做profile,是maven里面的概念,默认是resources.local生效的。如果想使用其他profile下面的配置,则增加 -Pprofile参数,如运行server <code>mvn -Pskyee clean tomcat7:run</code></p><h3 id=server接口事例>server接口事例</h3><p><a class=link href="http://115.159.40.202:8080/proxyipcenter/av?usedSign=&amp;checkUrl=http%3A%2F%2Ffree-proxy-list.net%2F&amp;domain=free-proxy-list.net&amp;num=10" target=_blank rel=noopener>http://115.159.40.202:8080/proxyipcenter/av?usedSign=&amp;checkUrl=http%3A%2F%2Ffree-proxy-list.net%2F&amp;domain=free-proxy-list.net&amp;num=10</a></p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span><span class=lnt>171
+</span><span class=lnt>172
+</span><span class=lnt>173
+</span><span class=lnt>174
+</span><span class=lnt>175
+</span><span class=lnt>176
+</span><span class=lnt>177
+</span><span class=lnt>178
+</span><span class=lnt>179
+</span><span class=lnt>180
+</span><span class=lnt>181
+</span><span class=lnt>182
+</span><span class=lnt>183
+</span><span class=lnt>184
+</span><span class=lnt>185
+</span><span class=lnt>186
+</span><span class=lnt>187
+</span><span class=lnt>188
+</span><span class=lnt>189
+</span><span class=lnt>190
+</span><span class=lnt>191
+</span><span class=lnt>192
+</span><span class=lnt>193
+</span><span class=lnt>194
+</span><span class=lnt>195
+</span><span class=lnt>196
+</span><span class=lnt>197
+</span><span class=lnt>198
+</span><span class=lnt>199
+</span><span class=lnt>200
+</span><span class=lnt>201
+</span><span class=lnt>202
+</span><span class=lnt>203
+</span><span class=lnt>204
+</span><span class=lnt>205
+</span><span class=lnt>206
+</span><span class=lnt>207
+</span><span class=lnt>208
+</span><span class=lnt>209
+</span><span class=lnt>210
+</span><span class=lnt>211
+</span><span class=lnt>212
+</span><span class=lnt>213
+</span><span class=lnt>214
+</span><span class=lnt>215
+</span><span class=lnt>216
+</span><span class=lnt>217
+</span><span class=lnt>218
+</span><span class=lnt>219
+</span><span class=lnt>220
+</span><span class=lnt>221
+</span><span class=lnt>222
+</span><span class=lnt>223
+</span><span class=lnt>224
+</span><span class=lnt>225
+</span><span class=lnt>226
+</span><span class=lnt>227
+</span><span class=lnt>228
+</span><span class=lnt>229
+</span><span class=lnt>230
+</span><span class=lnt>231
+</span><span class=lnt>232
+</span><span class=lnt>233
+</span><span class=lnt>234
+</span><span class=lnt>235
+</span><span class=lnt>236
+</span><span class=lnt>237
+</span><span class=lnt>238
+</span><span class=lnt>239
+</span><span class=lnt>240
+</span><span class=lnt>241
+</span><span class=lnt>242
+</span><span class=lnt>243
+</span><span class=lnt>244
+</span><span class=lnt>245
+</span><span class=lnt>246
+</span><span class=lnt>247
+</span><span class=lnt>248
+</span><span class=lnt>249
+</span><span class=lnt>250
+</span><span class=lnt>251
+</span><span class=lnt>252
+</span><span class=lnt>253
+</span><span class=lnt>254
+</span><span class=lnt>255
+</span><span class=lnt>256
+</span><span class=lnt>257
+</span><span class=lnt>258
+</span><span class=lnt>259
+</span><span class=lnt>260
+</span><span class=lnt>261
+</span><span class=lnt>262
+</span><span class=lnt>263
+</span><span class=lnt>264
+</span><span class=lnt>265
+</span><span class=lnt>266
+</span><span class=lnt>267
+</span><span class=lnt>268
+</span><span class=lnt>269
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>{
+</span></span><span class=line><span class=cl>     &#34;data&#34;: {
+</span></span><span class=line><span class=cl>         &#34;data&#34;: [
+</span></span><span class=line><span class=cl>             {
+</span></span><span class=line><span class=cl>                 &#34;id&#34;: 257,
+</span></span><span class=line><span class=cl>                 &#34;ip&#34;: &#34;203.192.12.148&#34;,
+</span></span><span class=line><span class=cl>                 &#34;proxyIp&#34;: &#34;203.192.12.149&#34;,
+</span></span><span class=line><span class=cl>                 &#34;port&#34;: 80,
+</span></span><span class=line><span class=cl>                 &#34;ipValue&#34;: 3418360980,
+</span></span><span class=line><span class=cl>                 &#34;country&#34;: &#34;中国&#34;,
+</span></span><span class=line><span class=cl>                 &#34;area&#34;: &#34;华北&#34;,
+</span></span><span class=line><span class=cl>                 &#34;region&#34;: &#34;北京市&#34;,
+</span></span><span class=line><span class=cl>                 &#34;city&#34;: &#34;北京市&#34;,
+</span></span><span class=line><span class=cl>                 &#34;isp&#34;: &#34;&#34;,
+</span></span><span class=line><span class=cl>                 &#34;countryId&#34;: &#34;CN&#34;,
+</span></span><span class=line><span class=cl>                 &#34;areaId&#34;: &#34;100000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;regionId&#34;: &#34;110000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;cityId&#34;: &#34;110100&#34;,
+</span></span><span class=line><span class=cl>                 &#34;ispId&#34;: &#34;-1&#34;,
+</span></span><span class=line><span class=cl>                 &#34;transperent&#34;: 2,
+</span></span><span class=line><span class=cl>                 &#34;speed&#34;: 104,
+</span></span><span class=line><span class=cl>                 &#34;type&#34;: 1,
+</span></span><span class=line><span class=cl>                 &#34;connectionScore&#34;: 1310,
+</span></span><span class=line><span class=cl>                 &#34;availbelScore&#34;: 8,
+</span></span><span class=line><span class=cl>                 &#34;connectionScoreDate&#34;: 1475641264000,
+</span></span><span class=line><span class=cl>                 &#34;availbelScoreDate&#34;: 1475646860000,
+</span></span><span class=line><span class=cl>                 &#34;createtime&#34;: 1473840886000,
+</span></span><span class=line><span class=cl>                 &#34;lostheader&#34;: false
+</span></span><span class=line><span class=cl>             },
+</span></span><span class=line><span class=cl>             {
+</span></span><span class=line><span class=cl>                 &#34;id&#34;: 654,
+</span></span><span class=line><span class=cl>                 &#34;ip&#34;: &#34;120.55.245.47&#34;,
+</span></span><span class=line><span class=cl>                 &#34;proxyIp&#34;: &#34;112.124.119.21&#34;,
+</span></span><span class=line><span class=cl>                 &#34;port&#34;: 80,
+</span></span><span class=line><span class=cl>                 &#34;ipValue&#34;: 2016933167,
+</span></span><span class=line><span class=cl>                 &#34;country&#34;: &#34;中国&#34;,
+</span></span><span class=line><span class=cl>                 &#34;area&#34;: &#34;华东&#34;,
+</span></span><span class=line><span class=cl>                 &#34;region&#34;: &#34;浙江省&#34;,
+</span></span><span class=line><span class=cl>                 &#34;city&#34;: &#34;杭州市&#34;,
+</span></span><span class=line><span class=cl>                 &#34;isp&#34;: &#34;阿里云&#34;,
+</span></span><span class=line><span class=cl>                 &#34;countryId&#34;: &#34;CN&#34;,
+</span></span><span class=line><span class=cl>                 &#34;areaId&#34;: &#34;300000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;regionId&#34;: &#34;330000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;cityId&#34;: &#34;330100&#34;,
+</span></span><span class=line><span class=cl>                 &#34;ispId&#34;: &#34;1000323&#34;,
+</span></span><span class=line><span class=cl>                 &#34;transperent&#34;: 2,
+</span></span><span class=line><span class=cl>                 &#34;speed&#34;: 83,
+</span></span><span class=line><span class=cl>                 &#34;type&#34;: 1,
+</span></span><span class=line><span class=cl>                 &#34;connectionScore&#34;: 1429,
+</span></span><span class=line><span class=cl>                 &#34;availbelScore&#34;: 2,
+</span></span><span class=line><span class=cl>                 &#34;connectionScoreDate&#34;: 1475659905000,
+</span></span><span class=line><span class=cl>                 &#34;availbelScoreDate&#34;: 1475630273000,
+</span></span><span class=line><span class=cl>                 &#34;createtime&#34;: 1473840884000,
+</span></span><span class=line><span class=cl>                 &#34;lostheader&#34;: false
+</span></span><span class=line><span class=cl>             },
+</span></span><span class=line><span class=cl>             {
+</span></span><span class=line><span class=cl>                 &#34;id&#34;: 2489,
+</span></span><span class=line><span class=cl>                 &#34;ip&#34;: &#34;124.193.33.233&#34;,
+</span></span><span class=line><span class=cl>                 &#34;proxyIp&#34;: &#34;124.193.33.233&#34;,
+</span></span><span class=line><span class=cl>                 &#34;port&#34;: 3128,
+</span></span><span class=line><span class=cl>                 &#34;ipValue&#34;: 2093031913,
+</span></span><span class=line><span class=cl>                 &#34;country&#34;: &#34;中国&#34;,
+</span></span><span class=line><span class=cl>                 &#34;area&#34;: &#34;华北&#34;,
+</span></span><span class=line><span class=cl>                 &#34;region&#34;: &#34;北京市&#34;,
+</span></span><span class=line><span class=cl>                 &#34;city&#34;: &#34;北京市&#34;,
+</span></span><span class=line><span class=cl>                 &#34;isp&#34;: &#34;鹏博士&#34;,
+</span></span><span class=line><span class=cl>                 &#34;countryId&#34;: &#34;CN&#34;,
+</span></span><span class=line><span class=cl>                 &#34;areaId&#34;: &#34;100000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;regionId&#34;: &#34;110000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;cityId&#34;: &#34;110100&#34;,
+</span></span><span class=line><span class=cl>                 &#34;ispId&#34;: &#34;1000143&#34;,
+</span></span><span class=line><span class=cl>                 &#34;transperent&#34;: 2,
+</span></span><span class=line><span class=cl>                 &#34;speed&#34;: 3390,
+</span></span><span class=line><span class=cl>                 &#34;type&#34;: 1,
+</span></span><span class=line><span class=cl>                 &#34;connectionScore&#34;: 310,
+</span></span><span class=line><span class=cl>                 &#34;availbelScore&#34;: 2,
+</span></span><span class=line><span class=cl>                 &#34;connectionScoreDate&#34;: 1475657685000,
+</span></span><span class=line><span class=cl>                 &#34;availbelScoreDate&#34;: 1475661878000,
+</span></span><span class=line><span class=cl>                 &#34;createtime&#34;: 1473839334000,
+</span></span><span class=line><span class=cl>                 &#34;lostheader&#34;: false
+</span></span><span class=line><span class=cl>             },
+</span></span><span class=line><span class=cl>             {
+</span></span><span class=line><span class=cl>                 &#34;id&#34;: 5004,
+</span></span><span class=line><span class=cl>                 &#34;ip&#34;: &#34;203.192.12.146&#34;,
+</span></span><span class=line><span class=cl>                 &#34;proxyIp&#34;: &#34;203.192.12.149&#34;,
+</span></span><span class=line><span class=cl>                 &#34;port&#34;: 80,
+</span></span><span class=line><span class=cl>                 &#34;ipValue&#34;: 3418360978,
+</span></span><span class=line><span class=cl>                 &#34;country&#34;: &#34;中国&#34;,
+</span></span><span class=line><span class=cl>                 &#34;area&#34;: &#34;华北&#34;,
+</span></span><span class=line><span class=cl>                 &#34;region&#34;: &#34;北京市&#34;,
+</span></span><span class=line><span class=cl>                 &#34;city&#34;: &#34;北京市&#34;,
+</span></span><span class=line><span class=cl>                 &#34;isp&#34;: &#34;&#34;,
+</span></span><span class=line><span class=cl>                 &#34;countryId&#34;: &#34;CN&#34;,
+</span></span><span class=line><span class=cl>                 &#34;areaId&#34;: &#34;100000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;regionId&#34;: &#34;110000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;cityId&#34;: &#34;110100&#34;,
+</span></span><span class=line><span class=cl>                 &#34;ispId&#34;: &#34;-1&#34;,
+</span></span><span class=line><span class=cl>                 &#34;transperent&#34;: 2,
+</span></span><span class=line><span class=cl>                 &#34;speed&#34;: 161,
+</span></span><span class=line><span class=cl>                 &#34;type&#34;: 1,
+</span></span><span class=line><span class=cl>                 &#34;connectionScore&#34;: 1291,
+</span></span><span class=line><span class=cl>                 &#34;availbelScore&#34;: 10,
+</span></span><span class=line><span class=cl>                 &#34;connectionScoreDate&#34;: 1475638336000,
+</span></span><span class=line><span class=cl>                 &#34;availbelScoreDate&#34;: 1475636727000,
+</span></span><span class=line><span class=cl>                 &#34;createtime&#34;: 1473840882000,
+</span></span><span class=line><span class=cl>                 &#34;lostheader&#34;: false
+</span></span><span class=line><span class=cl>             },
+</span></span><span class=line><span class=cl>             {
+</span></span><span class=line><span class=cl>                 &#34;id&#34;: 5421,
+</span></span><span class=line><span class=cl>                 &#34;ip&#34;: &#34;221.237.155.64&#34;,
+</span></span><span class=line><span class=cl>                 &#34;proxyIp&#34;: &#34;221.237.155.64&#34;,
+</span></span><span class=line><span class=cl>                 &#34;port&#34;: 9797,
+</span></span><span class=line><span class=cl>                 &#34;ipValue&#34;: 3723336512,
+</span></span><span class=line><span class=cl>                 &#34;country&#34;: &#34;中国&#34;,
+</span></span><span class=line><span class=cl>                 &#34;area&#34;: &#34;西南&#34;,
+</span></span><span class=line><span class=cl>                 &#34;region&#34;: &#34;四川省&#34;,
+</span></span><span class=line><span class=cl>                 &#34;city&#34;: &#34;成都市&#34;,
+</span></span><span class=line><span class=cl>                 &#34;isp&#34;: &#34;电信&#34;,
+</span></span><span class=line><span class=cl>                 &#34;countryId&#34;: &#34;CN&#34;,
+</span></span><span class=line><span class=cl>                 &#34;areaId&#34;: &#34;500000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;regionId&#34;: &#34;510000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;cityId&#34;: &#34;510100&#34;,
+</span></span><span class=line><span class=cl>                 &#34;ispId&#34;: &#34;100017&#34;,
+</span></span><span class=line><span class=cl>                 &#34;transperent&#34;: 2,
+</span></span><span class=line><span class=cl>                 &#34;speed&#34;: 3238,
+</span></span><span class=line><span class=cl>                 &#34;type&#34;: 1,
+</span></span><span class=line><span class=cl>                 &#34;connectionScore&#34;: 119,
+</span></span><span class=line><span class=cl>                 &#34;availbelScore&#34;: -1,
+</span></span><span class=line><span class=cl>                 &#34;connectionScoreDate&#34;: 1475611973000,
+</span></span><span class=line><span class=cl>                 &#34;availbelScoreDate&#34;: 1475629954000,
+</span></span><span class=line><span class=cl>                 &#34;createtime&#34;: 1473840773000,
+</span></span><span class=line><span class=cl>                 &#34;lostheader&#34;: false
+</span></span><span class=line><span class=cl>             },
+</span></span><span class=line><span class=cl>             {
+</span></span><span class=line><span class=cl>                 &#34;id&#34;: 8722,
+</span></span><span class=line><span class=cl>                 &#34;ip&#34;: &#34;58.243.0.162&#34;,
+</span></span><span class=line><span class=cl>                 &#34;proxyIp&#34;: &#34;58.243.0.162&#34;,
+</span></span><span class=line><span class=cl>                 &#34;port&#34;: 9999,
+</span></span><span class=line><span class=cl>                 &#34;ipValue&#34;: 989003938,
+</span></span><span class=line><span class=cl>                 &#34;country&#34;: &#34;中国&#34;,
+</span></span><span class=line><span class=cl>                 &#34;area&#34;: &#34;华东&#34;,
+</span></span><span class=line><span class=cl>                 &#34;region&#34;: &#34;安徽省&#34;,
+</span></span><span class=line><span class=cl>                 &#34;city&#34;: &#34;安庆市&#34;,
+</span></span><span class=line><span class=cl>                 &#34;isp&#34;: &#34;联通&#34;,
+</span></span><span class=line><span class=cl>                 &#34;countryId&#34;: &#34;CN&#34;,
+</span></span><span class=line><span class=cl>                 &#34;areaId&#34;: &#34;300000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;regionId&#34;: &#34;340000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;cityId&#34;: &#34;340800&#34;,
+</span></span><span class=line><span class=cl>                 &#34;ispId&#34;: &#34;100026&#34;,
+</span></span><span class=line><span class=cl>                 &#34;transperent&#34;: 2,
+</span></span><span class=line><span class=cl>                 &#34;speed&#34;: 5143,
+</span></span><span class=line><span class=cl>                 &#34;type&#34;: 1,
+</span></span><span class=line><span class=cl>                 &#34;connectionScore&#34;: 154,
+</span></span><span class=line><span class=cl>                 &#34;availbelScore&#34;: -3,
+</span></span><span class=line><span class=cl>                 &#34;connectionScoreDate&#34;: 1475665673000,
+</span></span><span class=line><span class=cl>                 &#34;availbelScoreDate&#34;: 1475614147000,
+</span></span><span class=line><span class=cl>                 &#34;createtime&#34;: 1473839836000,
+</span></span><span class=line><span class=cl>                 &#34;lostheader&#34;: false
+</span></span><span class=line><span class=cl>             },
+</span></span><span class=line><span class=cl>             {
+</span></span><span class=line><span class=cl>                 &#34;id&#34;: 11698,
+</span></span><span class=line><span class=cl>                 &#34;ip&#34;: &#34;218.7.170.190&#34;,
+</span></span><span class=line><span class=cl>                 &#34;proxyIp&#34;: &#34;218.7.170.190&#34;,
+</span></span><span class=line><span class=cl>                 &#34;port&#34;: 3128,
+</span></span><span class=line><span class=cl>                 &#34;ipValue&#34;: 3657935550,
+</span></span><span class=line><span class=cl>                 &#34;country&#34;: &#34;中国&#34;,
+</span></span><span class=line><span class=cl>                 &#34;area&#34;: &#34;东北&#34;,
+</span></span><span class=line><span class=cl>                 &#34;region&#34;: &#34;黑龙江省&#34;,
+</span></span><span class=line><span class=cl>                 &#34;city&#34;: &#34;绥化市&#34;,
+</span></span><span class=line><span class=cl>                 &#34;isp&#34;: &#34;联通&#34;,
+</span></span><span class=line><span class=cl>                 &#34;countryId&#34;: &#34;CN&#34;,
+</span></span><span class=line><span class=cl>                 &#34;areaId&#34;: &#34;200000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;regionId&#34;: &#34;230000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;cityId&#34;: &#34;231200&#34;,
+</span></span><span class=line><span class=cl>                 &#34;ispId&#34;: &#34;100026&#34;,
+</span></span><span class=line><span class=cl>                 &#34;transperent&#34;: 2,
+</span></span><span class=line><span class=cl>                 &#34;speed&#34;: 3145,
+</span></span><span class=line><span class=cl>                 &#34;type&#34;: 1,
+</span></span><span class=line><span class=cl>                 &#34;connectionScore&#34;: 317,
+</span></span><span class=line><span class=cl>                 &#34;availbelScore&#34;: -1,
+</span></span><span class=line><span class=cl>                 &#34;connectionScoreDate&#34;: 1475642001000,
+</span></span><span class=line><span class=cl>                 &#34;availbelScoreDate&#34;: 1475524810000,
+</span></span><span class=line><span class=cl>                 &#34;createtime&#34;: 1473839128000,
+</span></span><span class=line><span class=cl>                 &#34;lostheader&#34;: false
+</span></span><span class=line><span class=cl>             },
+</span></span><span class=line><span class=cl>             {
+</span></span><span class=line><span class=cl>                 &#34;id&#34;: 13318,
+</span></span><span class=line><span class=cl>                 &#34;ip&#34;: &#34;220.249.185.178&#34;,
+</span></span><span class=line><span class=cl>                 &#34;proxyIp&#34;: &#34;220.249.185.178&#34;,
+</span></span><span class=line><span class=cl>                 &#34;port&#34;: 9999,
+</span></span><span class=line><span class=cl>                 &#34;ipValue&#34;: 3707353522,
+</span></span><span class=line><span class=cl>                 &#34;country&#34;: &#34;中国&#34;,
+</span></span><span class=line><span class=cl>                 &#34;area&#34;: &#34;华东&#34;,
+</span></span><span class=line><span class=cl>                 &#34;region&#34;: &#34;福建省&#34;,
+</span></span><span class=line><span class=cl>                 &#34;city&#34;: &#34;福州市&#34;,
+</span></span><span class=line><span class=cl>                 &#34;isp&#34;: &#34;联通&#34;,
+</span></span><span class=line><span class=cl>                 &#34;countryId&#34;: &#34;CN&#34;,
+</span></span><span class=line><span class=cl>                 &#34;areaId&#34;: &#34;300000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;regionId&#34;: &#34;350000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;cityId&#34;: &#34;350100&#34;,
+</span></span><span class=line><span class=cl>                 &#34;ispId&#34;: &#34;100026&#34;,
+</span></span><span class=line><span class=cl>                 &#34;transperent&#34;: 2,
+</span></span><span class=line><span class=cl>                 &#34;speed&#34;: 5094,
+</span></span><span class=line><span class=cl>                 &#34;type&#34;: 1,
+</span></span><span class=line><span class=cl>                 &#34;connectionScore&#34;: 129,
+</span></span><span class=line><span class=cl>                 &#34;availbelScore&#34;: -1,
+</span></span><span class=line><span class=cl>                 &#34;connectionScoreDate&#34;: 1475615670000,
+</span></span><span class=line><span class=cl>                 &#34;availbelScoreDate&#34;: 1475585178000,
+</span></span><span class=line><span class=cl>                 &#34;createtime&#34;: 1473840539000,
+</span></span><span class=line><span class=cl>                 &#34;lostheader&#34;: false
+</span></span><span class=line><span class=cl>             },
+</span></span><span class=line><span class=cl>             {
+</span></span><span class=line><span class=cl>                 &#34;id&#34;: 57033,
+</span></span><span class=line><span class=cl>                 &#34;ip&#34;: &#34;210.245.25.228&#34;,
+</span></span><span class=line><span class=cl>                 &#34;proxyIp&#34;: &#34;210.245.25.228&#34;,
+</span></span><span class=line><span class=cl>                 &#34;port&#34;: 3128,
+</span></span><span class=line><span class=cl>                 &#34;ipValue&#34;: 3539278308,
+</span></span><span class=line><span class=cl>                 &#34;country&#34;: &#34;越南&#34;,
+</span></span><span class=line><span class=cl>                 &#34;area&#34;: &#34;&#34;,
+</span></span><span class=line><span class=cl>                 &#34;region&#34;: &#34;&#34;,
+</span></span><span class=line><span class=cl>                 &#34;city&#34;: &#34;&#34;,
+</span></span><span class=line><span class=cl>                 &#34;isp&#34;: &#34;&#34;,
+</span></span><span class=line><span class=cl>                 &#34;countryId&#34;: &#34;VN&#34;,
+</span></span><span class=line><span class=cl>                 &#34;areaId&#34;: &#34;&#34;,
+</span></span><span class=line><span class=cl>                 &#34;regionId&#34;: &#34;&#34;,
+</span></span><span class=line><span class=cl>                 &#34;cityId&#34;: &#34;&#34;,
+</span></span><span class=line><span class=cl>                 &#34;ispId&#34;: &#34;&#34;,
+</span></span><span class=line><span class=cl>                 &#34;transperent&#34;: 2,
+</span></span><span class=line><span class=cl>                 &#34;speed&#34;: 1024,
+</span></span><span class=line><span class=cl>                 &#34;type&#34;: 1,
+</span></span><span class=line><span class=cl>                 &#34;connectionScore&#34;: 488,
+</span></span><span class=line><span class=cl>                 &#34;availbelScore&#34;: 36,
+</span></span><span class=line><span class=cl>                 &#34;connectionScoreDate&#34;: 1475635386000,
+</span></span><span class=line><span class=cl>                 &#34;availbelScoreDate&#34;: 1475630473000,
+</span></span><span class=line><span class=cl>                 &#34;createtime&#34;: 1473836572000,
+</span></span><span class=line><span class=cl>                 &#34;lostheader&#34;: false
+</span></span><span class=line><span class=cl>             },
+</span></span><span class=line><span class=cl>             {
+</span></span><span class=line><span class=cl>                 &#34;id&#34;: 124334,
+</span></span><span class=line><span class=cl>                 &#34;ip&#34;: &#34;60.194.72.253&#34;,
+</span></span><span class=line><span class=cl>                 &#34;proxyIp&#34;: &#34;60.194.72.253&#34;,
+</span></span><span class=line><span class=cl>                 &#34;port&#34;: 3128,
+</span></span><span class=line><span class=cl>                 &#34;ipValue&#34;: 1019365629,
+</span></span><span class=line><span class=cl>                 &#34;country&#34;: &#34;中国&#34;,
+</span></span><span class=line><span class=cl>                 &#34;area&#34;: &#34;华北&#34;,
+</span></span><span class=line><span class=cl>                 &#34;region&#34;: &#34;北京市&#34;,
+</span></span><span class=line><span class=cl>                 &#34;city&#34;: &#34;北京市&#34;,
+</span></span><span class=line><span class=cl>                 &#34;isp&#34;: &#34;鹏博士&#34;,
+</span></span><span class=line><span class=cl>                 &#34;countryId&#34;: &#34;CN&#34;,
+</span></span><span class=line><span class=cl>                 &#34;areaId&#34;: &#34;100000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;regionId&#34;: &#34;110000&#34;,
+</span></span><span class=line><span class=cl>                 &#34;cityId&#34;: &#34;110100&#34;,
+</span></span><span class=line><span class=cl>                 &#34;ispId&#34;: &#34;1000143&#34;,
+</span></span><span class=line><span class=cl>                 &#34;transperent&#34;: 2,
+</span></span><span class=line><span class=cl>                 &#34;speed&#34;: 2366,
+</span></span><span class=line><span class=cl>                 &#34;type&#34;: 1,
+</span></span><span class=line><span class=cl>                 &#34;connectionScore&#34;: 610,
+</span></span><span class=line><span class=cl>                 &#34;availbelScore&#34;: 16,
+</span></span><span class=line><span class=cl>                 &#34;connectionScoreDate&#34;: 1475643516000,
+</span></span><span class=line><span class=cl>                 &#34;availbelScoreDate&#34;: 1475631080000,
+</span></span><span class=line><span class=cl>                 &#34;createtime&#34;: 1473839561000,
+</span></span><span class=line><span class=cl>                 &#34;lostheader&#34;: false
+</span></span><span class=line><span class=cl>             }
+</span></span><span class=line><span class=cl>         ],
+</span></span><span class=line><span class=cl>         &#34;num&#34;: 10,
+</span></span><span class=line><span class=cl>         &#34;sign&#34;: &#34;9999#C99+999#9B99B99999##Y9999+9999999999999999999999t9999s99999999s9999999999999999999999999999#99999999999999GB999999999G9999s9s99999#9999999999Y9+999##99999999+99999999999999+999999999999B999+Y9999G9+99999999999YB99999999999999999999999+99Y999999999B9999G999s99G999999999#99999#9Y999s999999999#B99999999999999999999+999999Y9999999Y9999999999999Y9999Y999999999999999&#34;
+</span></span><span class=line><span class=cl>     },
+</span></span><span class=line><span class=cl>     &#34;status&#34;: true
+</span></span><span class=line><span class=cl> }
+</span></span></code></pre></td></tr></table></div></div><h2 id=proxyipcenter-client>proxyipcenter client</h2><h3 id=client-设计文档><a class=link href=http://git.oschina.net/virjar/proxyipcenter/blob/master/doc/client/design/README.md target=_blank rel=noopener>client 设计文档</a></h3><h3 id=client-使用文档><a class=link href=http://git.oschina.net/virjar/proxyipcenter/blob/master/doc/client/userGuide/README.md target=_blank rel=noopener>client 使用文档</a></h3><p>client运行原理
+这里讲述IP池的设计相关,如果您仅仅是为了使用dunproxy-client,则不必关心本文内容</p><p>client就是一个代理IP池的实现,IP池的设计基于两个点:</p><ol><li><p>代理IP都是不稳定的,不可靠的,需要一个机制来切换IP,尽可能使用高质量IP。</p></li><li><p>IP和环境关系很大,同一个IP在不同的机器下访问不同的目标网站,其可用性表现都是不一样的</p></li></ol><h2 id=使用ippoolapi获取ip资源>使用IpPoolAPI获取IP资源</h2><h3 id=获取ip>获取IP</h3><p>获取一个IP的方式是这样的 <code>IpPool.getInstance().bind(domain, accessUrl);</code></p><ul><li>第一个参数是域名,可以传递null,传递null提取accessUrl schema里面的host</li><li>第二个参数是你当前需要访问的url, 可以为null,为null时domain不能为空</li></ul><p>曾经有一个绑定用户的功能,使得同一个账户每次获取的IP相同,后来觉得是过度设计,因为对于抓取场景,切换IP是很普通的需求,而且貌似没有多少server会检查常用IP。就算有也是小众需求,本框架不必支持</p><h3 id=记录ip使用>记录IP使用</h3><p>每当使用IP的时候,需要记录一次IP使用,也就是将IP实例的使用次数加一,用于打分机制计算IP的使用分值,评估IP可用性
+方式如下:<code>com.virjar.dungproxy.client.model.AvProxy.recordUsage</code></p><h3 id=记录ip使用失败>记录IP使用失败</h3><p>每当IP使用失败的时候,需要记录IP使用失败,也就是将IP实例的失败次数加一,用于打分机制计算IP的使用分值,评估IP可用性
+方式如下:<code>com.virjar.dungproxy.client.model.AvProxy.recordFailed()</code></p><h3 id=ip下线>IP下线</h3><p>IP下线很简单,拿到IP实例,这样调用<code>com.virjar.dungproxy.client.model.AvProxy.offline()</code>。
+一般情况不建议这么做,因为IP池会自动检查IP是否应该下线,IP池可以定制各种策略。当时,有些时候IP池的检查机制比较缓慢,而上层业务可以明确知道本IP不可用,这个时候可以使用本API强制下线</p><h3 id=销毁ip池实例>销毁IP池实例</h3><p>IP池是单例的,同时里面维护了两个任务线程,在业务完成的时候,需要销毁IP池才能终止内部线程。同时也会执行一些收尾工作,如将可用IP dump。
+销毁方式是:<code>com.virjar.dungproxy.client.ippool.IpPool.destroy</code></p><h3 id=其他>其他</h3><p>IP池有其他很多扩展点,但是目前接口没有开发完成,待后续完善</p><h2 id=todo-几个主流语言的客户端>TODO 几个主流语言的客户端</h2><ol><li>.NET/.NET core client (辣鸡楼主还没动手&mldr;)</li><li>Python client(另外一个大佬好像忘了这事了&mldr;)</li><li>Golang client(可能还是辣鸡楼主动手&mldr;)</li></ol></section><footer class=article-footer><section class=article-tags><a href=/zh/tags/java/>Java</a>
+<a href=/zh/tags/%E5%BC%80%E6%BA%90/>开源</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><script src=https://utteranc.es/client.js repo=liguobao/liguobao.github.io issue-term=title crossorigin=anonymous async></script><style>.utterances{max-width:unset}</style><script>let utterancesLoaded=!1;function setUtterancesTheme(e){let t=document.querySelector(".utterances iframe");t&&t.contentWindow.postMessage({type:"set-theme",theme:`github-${e}`},"https://utteranc.es")}addEventListener("message",e=>{if(e.origin!=="https://utteranc.es")return;utterancesLoaded=!0,setUtterancesTheme(document.documentElement.dataset.scheme)}),window.addEventListener("onColorSchemeChange",e=>{if(!utterancesLoaded)return;setUtterancesTheme(e.detail)})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2026 人生删除指南</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.30.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

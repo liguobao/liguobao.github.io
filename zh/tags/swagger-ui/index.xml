@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Swagger UI on 人生删除指南</title><link>https://liguobao.github.io/zh/tags/swagger-ui/</link><description>Recent content in Swagger UI on 人生删除指南</description><generator>Hugo -- gohugo.io</generator><language>zh</language><lastBuildDate>Sun, 05 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/zh/tags/swagger-ui/index.xml" rel="self" type="application/rss+xml"/><item><title>Python Flask：一、项目初始化</title><link>https://liguobao.github.io/zh/p/python-flask%E4%B8%80%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/</link><pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/zh/p/python-flask%E4%B8%80%E9%A1%B9%E7%9B%AE%E5%88%9D%E5%A7%8B%E5%8C%96/</guid><description>&lt;h1 id="python-flask最佳实践一项目初始化"&gt;Python Flask最佳实践：一、项目初始化
+&lt;/h1&gt;&lt;h2 id="前言"&gt;前言
+&lt;/h2&gt;&lt;p&gt;Python Flask 是一个很简单方便的Web框架，&lt;/p&gt;
+&lt;p&gt;轻轻松松就可以完成一个Web 或者纯Web API。&lt;/p&gt;
+&lt;p&gt;前阵子需要起一个简单的Web + 脚本项目，折腾flask的时候发现没找到比较顺手的脚手架教程。&lt;/p&gt;
+&lt;p&gt;摸索了好一些知识，踩了一下坑什么的，&lt;/p&gt;
+&lt;p&gt;最后站在巨人肩膀上更新个教程。&lt;/p&gt;
+&lt;h2 id="代码项目结构"&gt;代码项目结构
+&lt;/h2&gt;&lt;p&gt;正儿八经一个项目工程，遵循 三层架构 + MVC模型 对项目代码有严格的划分，&lt;/p&gt;
+&lt;p&gt;对这两个概念不太了解的朋友可以自行课后补习一下。&lt;/p&gt;
+&lt;p&gt;说明如下:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;src 所有的项目代码文件&lt;/li&gt;
+&lt;li&gt;src/service 逻辑层代码&lt;/li&gt;
+&lt;li&gt;src/model 业务实体&lt;/li&gt;
+&lt;li&gt;src/db 数据库相关，包括model定义和dao SQL查询&lt;/li&gt;
+&lt;li&gt;src/sdk 依赖的外部接口&lt;/li&gt;
+&lt;li&gt;src/job 后台进程启动的Job，一般都是通过API启动的后台任务&lt;/li&gt;
+&lt;li&gt;src/utils 工具类，config 配置类也在里面&lt;/li&gt;
+&lt;li&gt;src/app.py flask app 启动项&lt;/li&gt;
+&lt;li&gt;manage.py flask.cli 启动入口 api + job&lt;/li&gt;
+&lt;li&gt;Dockerfile Docker打包流程&lt;/li&gt;
+&lt;li&gt;debug.py 本地debug 启动入口&lt;/li&gt;
+&lt;li&gt;requirements.txt 所有的依赖包&lt;/li&gt;
+&lt;li&gt;.vscode/launch.json vs code debug 配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="开搞"&gt;开搞
+&lt;/h2&gt;&lt;p&gt;废话多说两句，我比较喜欢requirements这种包组织方式，其他的就看自己了。&lt;/p&gt;
+&lt;h3 id="requirementstxt"&gt;requirements.txt
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-txt" data-lang="txt"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;flask
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;flask-swagger
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;flask-swagger-ui
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;flask-bootstrap
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;SQLAlchemy
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;pymysql
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;pydantic
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;requests
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;loguru
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;gunicorn
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;简单说明&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;flask是核心包，flask-swagger + flask-swagger-ui 是用来做Swagger UI的，flask-bootstrap 用来乱糊 HTML页面的&lt;/li&gt;
+&lt;li&gt;SQLAlchemy + pymysql + 一个是数据库ORM框架，一个是数据库驱动&lt;/li&gt;
+&lt;li&gt;pydantic 用来配合SQLAlchemy完成Model数据转换，解决一些奇怪的序列化反序列化问题&lt;/li&gt;
+&lt;li&gt;requests 用来对接外部HTTP接口或者写爬虫脚本&lt;/li&gt;
+&lt;li&gt;loguru 简易日志框架，from loguru import logger 就完事了&lt;/li&gt;
+&lt;li&gt;gunicorn 多进程部署&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>

@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Android on Life Deletion Guide</title><link>https://liguobao.github.io/tags/android/</link><description>Recent content in Android on Life Deletion Guide</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 24 Jun 2025 23:36:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/android/index.xml" rel="self" type="application/rss+xml"/><item><title>Android Boot Image Extraction Memo</title><link>https://liguobao.github.io/p/android-boot-image-extraction/</link><pubDate>Tue, 24 Jun 2025 23:36:00 +0000</pubDate><guid>https://liguobao.github.io/p/android-boot-image-extraction/</guid><description>&lt;h2 id="extract-bootimg-from-rom-package"&gt;Extract boot.img from ROM package
+&lt;/h2&gt;&lt;p&gt;If you have a ROM package, directly extract the &lt;code&gt;boot.img&lt;/code&gt; file from the ROM package&amp;rsquo;s payload.bin.&lt;/p&gt;
+&lt;p&gt;Generally use FastbootEnhance, graphical interface click click and done.&lt;/p&gt;
+&lt;p&gt;Many times we may not have the ROM package, or the ROM package is several GB, troublesome to download.&lt;/p&gt;
+&lt;p&gt;At this time, you can try using dsu-sideloader + system-squeak-arm64-ab-vanilla.img&lt;/p&gt;
+&lt;p&gt;Enter sideload system mode, use adb shell to extract boot.img.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/VegaBobo/DSU-Sideloader" target="_blank" rel="noopener"
+&gt;DSU-Sideloader&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;dsu-sideloader is a tool or service component in Android system for &lt;strong&gt;Dynamic System Updates (DSU)&lt;/strong&gt; mechanism, it allows users to temporarily load and run an alternative system image without affecting the current system. This is an official mechanism for developers to debug or test GSI (Generic System Image).&lt;/p&gt;
+&lt;p&gt;🔍 What is DSU (Dynamic System Updates)?&lt;/p&gt;
+&lt;p&gt;DSU is a feature introduced by Google from Android 10, allowing loading a system image (usually GSI) into dynamic partition for testing on supported devices, without destroying the current device&amp;rsquo;s actual system (userdata/system partitions).&lt;/p&gt;
+&lt;h2 id="extract-bootimg-from-running-android-system"&gt;Extract boot.img from running Android system
+&lt;/h2&gt;&lt;p&gt;After installing dsu + system-squeak-arm64-ab-vanilla.img, enter sideload system mode.&lt;/p&gt;
+&lt;p&gt;In the sideload system, use the following script to extract &lt;code&gt;boot.img&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;span class="lnt"&gt;21
+&lt;/span&gt;&lt;span class="lnt"&gt;22
+&lt;/span&gt;&lt;span class="lnt"&gt;23
+&lt;/span&gt;&lt;span class="lnt"&gt;24
+&lt;/span&gt;&lt;span class="lnt"&gt;25
+&lt;/span&gt;&lt;span class="lnt"&gt;26
+&lt;/span&gt;&lt;span class="lnt"&gt;27
+&lt;/span&gt;&lt;span class="lnt"&gt;28
+&lt;/span&gt;&lt;span class="lnt"&gt;29
+&lt;/span&gt;&lt;span class="lnt"&gt;30
+&lt;/span&gt;&lt;span class="lnt"&gt;31
+&lt;/span&gt;&lt;span class="lnt"&gt;32
+&lt;/span&gt;&lt;span class="lnt"&gt;33
+&lt;/span&gt;&lt;span class="lnt"&gt;34
+&lt;/span&gt;&lt;span class="lnt"&gt;35
+&lt;/span&gt;&lt;span class="lnt"&gt;36
+&lt;/span&gt;&lt;span class="lnt"&gt;37
+&lt;/span&gt;&lt;span class="lnt"&gt;38
+&lt;/span&gt;&lt;span class="lnt"&gt;39
+&lt;/span&gt;&lt;span class="lnt"&gt;40
+&lt;/span&gt;&lt;span class="lnt"&gt;41
+&lt;/span&gt;&lt;span class="lnt"&gt;42
+&lt;/span&gt;&lt;span class="lnt"&gt;43
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="cp"&gt;#!/bin/bash
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;set&lt;/span&gt; -e
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Get current slot&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;slot&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;adb shell getprop ro.boot.slot_suffix &lt;span class="p"&gt;|&lt;/span&gt; tr -d &lt;span class="s1"&gt;&amp;#39;\r&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; -z &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$slot&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;❌ Unable to get slot_suffix&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;🔍 Current boot slot: &lt;/span&gt;&lt;span class="nv"&gt;$slot&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Get boot partition real path (use adb shell su to enter root then ls -l)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;boot_dev&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;adb shell &lt;span class="s"&gt;&amp;lt;&amp;lt;EOF
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;su
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;ls -l /dev/block/by-name/boot$slot | awk &amp;#39;{print \$NF}&amp;#39;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;exit
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;boot_dev&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$boot_dev&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; tr -d &lt;span class="s1"&gt;&amp;#39;\r&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; tail -n 1&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="o"&gt;[[&lt;/span&gt; -z &lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="nv"&gt;$boot_dev&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;]]&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;❌ Unable to resolve boot&lt;/span&gt;&lt;span class="nv"&gt;$slot&lt;/span&gt;&lt;span class="s2"&gt; partition path&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;fi&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;📍 Resolved boot&lt;/span&gt;&lt;span class="nv"&gt;$slot&lt;/span&gt;&lt;span class="s2"&gt; real path: &lt;/span&gt;&lt;span class="nv"&gt;$boot_dev&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Execute dd to extract boot.img&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell &lt;span class="s"&gt;&amp;lt;&amp;lt;EOF
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;su
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;dd if=$boot_dev of=/sdcard/boot.img
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;exit
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="s"&gt;EOF&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Pull to local&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;📥 Pulling boot.img to local...&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb pull /sdcard/boot.img
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;✅ Extraction completed! boot.img saved to current directory.&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Start Your Android Tinkering Journey with Magisk</title><link>https://liguobao.github.io/p/android-magisk-install/</link><pubDate>Fri, 05 Jul 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/android-magisk-install/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/android-magisk-install/logo.png" alt="Featured image of post Start Your Android Tinkering Journey with Magisk" /&gt;&lt;h2 id="preface"&gt;Preface
+&lt;/h2&gt;&lt;p&gt;Don&amp;rsquo;t ask why to do this. If you&amp;rsquo;re reading this article and interested in continuing, then you have this need too.&lt;/p&gt;
+&lt;h2 id="what-is-magisk"&gt;What is Magisk
+&lt;/h2&gt;&lt;h3 id="introduction"&gt;Introduction
+&lt;/h3&gt;&lt;p&gt;Magisk is a suite of open source software for customizing Android, supporting devices higher than Android 6.0.&lt;/p&gt;
+&lt;p&gt;Some highlight features:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MagiskSU: Provide root access for applications&lt;/li&gt;
+&lt;li&gt;Magisk Modules: Modify read-only partitions by installing modules&lt;/li&gt;
+&lt;li&gt;MagiskBoot: The most complete tool for unpacking and repacking Android boot images&lt;/li&gt;
+&lt;li&gt;Zygisk: Run code in every Android applications&amp;rsquo; processes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Powered by &lt;a class="link" href="https://github.com/topjohnwu/Magisk" target="_blank" rel="noopener"
+&gt;Magisk&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="operation-steps-preview"&gt;Operation Steps Preview
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Unlock BL&lt;/li&gt;
+&lt;li&gt;Install Magisk App&lt;/li&gt;
+&lt;li&gt;Download corresponding system version ROM package and extract boot.img&lt;/li&gt;
+&lt;li&gt;Use Magisk to modify boot.img&lt;/li&gt;
+&lt;li&gt;Flash the modified boot.img&lt;/li&gt;
+&lt;li&gt;Install Magisk modules&lt;/li&gt;
+&lt;li&gt;Enjoy the &amp;ldquo;free new world&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="unlock-bl"&gt;Unlock BL
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Each has its own way, handle it yourself.&lt;/li&gt;
+&lt;li&gt;Xiaomi devices can refer to &lt;a class="link" href="https://www.miui.com/unlock/" target="_blank" rel="noopener"
+&gt;Xiaomi Unlock BL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;OnePlus devices can refer to &lt;a class="link" href="https://www.oneplus.com/cn/developer" target="_blank" rel="noopener"
+&gt;OnePlus Amu&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Other devices please search yourself&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In 2024, the best device to unlock is OnePlus. Others are inferior.&lt;/p&gt;
+&lt;p&gt;(Originally considered buying Xiaomi 14, but BL lock deterred a 10-year Xiaomi fan)&lt;/p&gt;
+&lt;h2 id="install-magisk-app"&gt;Install Magisk App
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Download &lt;a class="link" href="https://github.com/topjohnwu/Magisk/releases" target="_blank" rel="noopener"
+&gt;Magisk/releases&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;After downloading, install on your phone.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb install Magisk-v26.4.apk
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="extract-bootimg"&gt;Extract boot.img
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Download corresponding system version ROM package and extract boot.img&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If it&amp;rsquo;s a flash package, directly unzip and find boot.img&lt;/p&gt;
+&lt;p&gt;If it&amp;rsquo;s a line brush package, unzip to get payload.bin, need to use tools to extract.&lt;/p&gt;
+&lt;p&gt;On Windows, use FastbootEnhance tool; on Mac/Linux, use payload_dumper tool.&lt;/p&gt;
+&lt;p&gt;Basically similar.&lt;/p&gt;
+&lt;h2 id="use-magisk-to-generate-patched-bootimg"&gt;Use Magisk to Generate Patched boot.img
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Magisk App -&amp;gt; Install -&amp;gt; Install -&amp;gt; Select and Patch a File -&amp;gt; Select boot.img&lt;/li&gt;
+&lt;li&gt;Wait for patched boot.img to be generated, automatically saved to /sdcard/Download/magisk_patched-xxx.img&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="flash-the-modified-bootimg"&gt;Flash the Modified boot.img
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Phone enters Fastboot mode, connect to computer&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Check if device is connected successfully&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;fastboot devices
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Flash the modified boot.img&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;fastboot flash boot /sdcard/Download/magisk_patched-xxx.img
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;After flashing, reboot phone.&lt;/p&gt;
+&lt;h2 id="activate-magisk"&gt;Activate Magisk
+&lt;/h2&gt;&lt;p&gt;After rebooting, reopen Magisk App, first time should prompt to start repair.&lt;/p&gt;
+&lt;p&gt;Normally, after repair completes, phone will reboot, and after reboot, it&amp;rsquo;s done.&lt;/p&gt;
+&lt;h2 id="install-magisk-modules"&gt;Install Magisk Modules
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Download Magisk modules, install locally.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The general process is basically this.&lt;/p&gt;
+&lt;h2 id="common-commands-list"&gt;Common Commands List
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Enter Fastboot mode&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb reboot bootloader
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Check if fastboot device is connected successfully&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;fastboot devices
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Unlock&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;fastboot oem unlock
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Unlock BL for other devices&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;fastboot flashing unlock
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Flash boot.img&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;fastboot flash boot ./Download/magisk_patched-xxx.img
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Reboot&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;fastboot reboot
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="lineageos-build-archive-download"&gt;LineageOS Build Archive Download
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://lineage-archive.timschumi.net/" target="_blank" rel="noopener"
+&gt;LineageOS Old Versions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://download.lineageos.org/devices/sagit/builds" target="_blank" rel="noopener"
+&gt;LineageOS Latest Versions&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="lineageos-set-network-detection-address"&gt;LineageOS Set Network Detection Address
+&lt;/h2&gt;&lt;p&gt;Change captive connection verification server&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell settings delete global captive_portal_https_url
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell settings delete global captive_portal_http_url
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell settings put global captive_portal_https_url https://connect.rom.miui.com/generate_204
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell settings put global captive_portal_http_url http://connect.rom.miui.com/generate_204
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item></channel></rss>

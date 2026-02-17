@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Visual Studio on 人生删除指南</title><link>https://liguobao.github.io/zh/tags/visual-studio/</link><description>Recent content in Visual Studio on 人生删除指南</description><generator>Hugo -- gohugo.io</generator><language>zh</language><lastBuildDate>Fri, 17 Mar 2017 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/zh/tags/visual-studio/index.xml" rel="self" type="application/rss+xml"/><item><title>用Visual Studio Code Debug世界上最好的语言</title><link>https://liguobao.github.io/zh/p/%E7%94%A8visual-studio-code-debug%E4%B8%96%E7%95%8C%E4%B8%8A%E6%9C%80%E5%A5%BD%E7%9A%84%E8%AF%AD%E8%A8%80/</link><pubDate>Fri, 17 Mar 2017 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/zh/p/%E7%94%A8visual-studio-code-debug%E4%B8%96%E7%95%8C%E4%B8%8A%E6%9C%80%E5%A5%BD%E7%9A%84%E8%AF%AD%E8%A8%80/</guid><description>&lt;h1 id="用visual-studio-code-debug世界上最好的语言"&gt;用Visual Studio Code Debug世界上最好的语言
+&lt;/h1&gt;&lt;p&gt;Mac用户看这里:&lt;a class="link" href="https://zhuanlan.zhihu.com/p/37128419" target="_blank" rel="noopener"
+&gt;用Visual Studio Code Debug世界上最好的语言(Mac篇)&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="前言"&gt;前言
+&lt;/h2&gt;&lt;p&gt;这阵子因缘巧合接手了一个辣鸡项目，是用世界上最好的拍黄片写的，项目基本是另一个小伙伴在撸码，我就兼职打杂和发布做点运维的工作。&lt;/p&gt;
+&lt;p&gt;然后昨天项目上了测试版之后，一用起来Error满天飞了。让小伙伴查了很久都没有头绪，实在尴尬，只好自己动手了&amp;hellip;&lt;/p&gt;
+&lt;p&gt;作为一个后端狗，虽然知道PHP大体原理和框架，看着项目的业务逻辑也大体知道个所以然，在此之前还是没撸过代码的。&lt;/p&gt;
+&lt;p&gt;看代码基本是Visual Studio Code或者HBuilder工具，本地跑代码很白痴的在用phpStudy。&lt;/p&gt;
+&lt;p&gt;Error出来了，第一反应就是debug咯&amp;hellip;然后问了下小伙伴他以前怎么玩的，答曰：echo。&lt;/p&gt;
+&lt;p&gt;一口老血都&amp;hellip;&lt;/p&gt;
+&lt;p&gt;查了下谷歌发现，Visual Studio Code + 插件是完全可以用来调试PHP的，所以就撸起了。&lt;/p&gt;
+&lt;h2 id="visual-studio-code--php-debug插件--phpstudy--xdebug"&gt;Visual Studio Code + php-debug插件 + phpStudy + xdebug
+&lt;/h2&gt;&lt;h3 id="安装visual-studio-code"&gt;安装Visual Studio Code
+&lt;/h3&gt;&lt;p&gt;首先肯定是先下载&lt;a class="link" href="http://code.visualstudio.com/" target="_blank" rel="noopener"
+&gt;Visual Studio Code&lt;/a&gt; 咯。&lt;/p&gt;
+&lt;p&gt;安装好之后，随便在一个文件夹内鼠标“右键”，都能看到Open with code，打开之后如下图：&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://7xread.com1.z0.glb.clouddn.com/b1cee12e-6215-4f04-9dea-3721400e238b"
+loading="lazy"
+alt="Open with code"
+&gt;&lt;/p&gt;
+&lt;h3 id="安装visual-studio-code-php-debug插件"&gt;安装Visual Studio Code php-debug插件
+&lt;/h3&gt;&lt;p&gt;装好VS Code之后，接下来是安装一下PHP-Debug插件了。我们在插件商城搜索一下php，排名第二的PHP Debug就是我们要的插件了。
+如下图：
+&lt;img src="http://7xread.com1.z0.glb.clouddn.com/3f798ea9-bba9-4768-9f58-14257ddc1999"
+loading="lazy"
+alt="PHP-Debug"
+&gt;&lt;/p&gt;
+&lt;p&gt;装好了之后重启一下vs code即可。&lt;/p&gt;
+&lt;h3 id="phpstudy"&gt;phpStudy
+&lt;/h3&gt;&lt;p&gt;对于我这种懒人来说，去配置什么PHP运行环境肯定是不愿意的，那么类似的集成环境有么？&lt;/p&gt;
+&lt;p&gt;小伙伴和我说，你下个&lt;a class="link" href="http://www.phpstudy.net/" target="_blank" rel="noopener"
+&gt;phpStudy&lt;/a&gt;撸就算了，别去倒腾什么版本了。&lt;/p&gt;
+&lt;p&gt;然后&amp;hellip;&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://7xread.com1.z0.glb.clouddn.com/6c8ea274-9da5-4168-ba80-f6a0f6e173c3"
+loading="lazy"
+alt="phpStudy"
+&gt;&lt;/p&gt;
+&lt;p&gt;下载好了安装完了，打开程序如下图：&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://7xread.com1.z0.glb.clouddn.com/7d2d12e2-783f-4402-8900-0315905c6948"
+loading="lazy"
+alt="phpStudy"
+&gt;&lt;/p&gt;
+&lt;p&gt;看了下功能，其实这个软件就是集成了各种版本的PHP，可以方便切换PHP版本；同时自带一个Apache和MySQL，各种配置管理起来也挺方便的。
+（感觉dalao们应该不怎么会用这么白痴的东西，233&amp;hellip;&lt;/p&gt;
+&lt;p&gt;装好之后，启动一下服务，点击一下phpMyAdmin，看看它打开的网站是否能登录到本地的MySQL数据库。&lt;/p&gt;
+&lt;p&gt;如果可以，说明PHP环境应该是正常的了；如果有问题，请自行谷歌了&amp;hellip;&lt;/p&gt;
+&lt;p&gt;接着切换PHP版本到意向版本，点击一下运行模式旁边的“切换版本”就可以选择版本了。&lt;/p&gt;
+&lt;h3 id="xdebug设置"&gt;xdebug设置
+&lt;/h3&gt;&lt;p&gt;&lt;a class="link" href="https://xdebug.org/" target="_blank" rel="noopener"
+&gt;xdebug&lt;/a&gt;是什么呢？&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Xdebug作为PHP调试工具，提供了丰富的调试函数，
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;也可将Xdebug安装配置为zend studio、editplus调试PHP的第三方插件，
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;通过开启自动跟踪&lt;span class="o"&gt;(&lt;/span&gt;auto_trace&lt;span class="o"&gt;)&lt;/span&gt;和分析器功能，可以直观的看到PHP源代码的性能数据，
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;以便优化PHP代码。
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;引用自：&lt;span class="o"&gt;[&lt;/span&gt;PHP调试工具Xdebug安装配置教程&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;(&lt;/span&gt;http://www.cnblogs.com/qiantuwuliang/archive/2011/01/23/1942382.html&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;我们可以在&lt;a class="link" href="https://xdebug.org/" target="_blank" rel="noopener"
+&gt;xdebug.org&lt;/a&gt;（自备梯子）上面下载到PHP各个版本的xdebug dll使用。&lt;/p&gt;
+&lt;p&gt;不过当我打开phpStudy的php-ini打算手动开启debug的时候，非常高兴得发现已经phpStudy已自带了对应版本的xdebug，而且路径都配好了。&lt;/p&gt;
+&lt;p&gt;phpStudy的php.ini在“其他选项-打开配置文件-php-ini”，如下图：&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://7xread.com1.z0.glb.clouddn.com/76b103cd-399c-4bce-a716-098adbd4d212"
+loading="lazy"
+alt="php.ini"
+&gt;&lt;/p&gt;
+&lt;p&gt;把文档拉到最后，看得到xdebug的配置如下：&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://7xread.com1.z0.glb.clouddn.com/00285d82-f76f-4fd8-8ba6-f429de194809"
+loading="lazy"
+alt="xdebug"
+&gt;&lt;/p&gt;
+&lt;p&gt;phpStudy已经帮我们配置好xdebug dll的路径了，我们只需要手动在zend_extension上面添加远程调试和自动启动配置即可，代码如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;xdebug.remote_enable = 1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;xdebug.remote_autostart= 1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;完整配置如下：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-fallback" data-lang="fallback"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;[XDebug]
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;;xdebug.profiler_output_dir=&amp;#34;C:\phpStudy\tmp\xdebug&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;;xdebug.trace_output_dir=&amp;#34;C:\phpStudy\tmp\xdebug&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;xdebug.remote_enable = 1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;xdebug.remote_autostart= 1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;;你的PHP版本的php_xdebug.dll，phpStudy自动设置的
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;zend_extension=&amp;#34;C:\phpStudy\php\php-5.5.38\ext\php_xdebug.dll&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;保存文件，重启一下phpStudy服务。&lt;/p&gt;
+&lt;h4 id="visual-studio-code-设置用户配置和调试配置"&gt;Visual Studio Code 设置用户配置和调试配置
+&lt;/h4&gt;&lt;p&gt;这个时候，我们随便在PHP文件夹中打开vs code，vs code会自动提示我们：Cannot validate since no PHP executable is set. Use the setting &amp;lsquo;php.validate.executablePath&amp;rsquo; to configure the PHP executable.&lt;/p&gt;
+&lt;p&gt;嗯，没有设置PHP执行文件，可以通过设置php.validate.executablePath属性来配置它。&lt;/p&gt;
+&lt;p&gt;这个在哪配置呢？在“文件-首选项-设置”，打开之后如下图：&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://7xread.com1.z0.glb.clouddn.com/df4428e9-9ef2-435a-a5f5-ae8bade00a39"
+loading="lazy"
+alt="php.validate.executablePath"
+&gt;&lt;/p&gt;
+&lt;p&gt;这个php.validate.executablePath对应就是当前phpStudy中运行的php.exe的路径，可以在phpStudy-其他选项菜单-打开文件位置-PHP中找到此路径。&lt;/p&gt;
+&lt;p&gt;保存好了之后，回到Visual Studio Code界面，转到Debug，选择添加配置，之后选择PHP，生成如下图的launch.json：&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://7xread.com1.z0.glb.clouddn.com/e1b74467-9142-4a2f-bf5e-89aa2c2e0127"
+loading="lazy"
+alt="Listen for XDebug"
+&gt;&lt;/p&gt;
+&lt;p&gt;不用改任何东西，直接开撸&amp;hellip;&lt;/p&gt;
+&lt;h4 id="开启debug"&gt;开启Debug
+&lt;/h4&gt;&lt;p&gt;确保phpStudy启动了，网站也正常运行起来了,然后在Visual Studio Code中启动调试，打上要的断点，接着启动调试。&lt;/p&gt;
+&lt;p&gt;如下图：&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://7xread.com1.z0.glb.clouddn.com/7ac86cce-edc6-49a6-abb6-44f74c55a027"
+loading="lazy"
+alt="图片描述"
+&gt;&lt;/p&gt;
+&lt;p&gt;接着访问你要调试的页面对应的PHP代码，打上你的断点，华丽丽的Debug出来了&amp;hellip;&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://7xread.com1.z0.glb.clouddn.com/7f7739df-02d4-47e5-8e42-67b9bd9f75ee"
+loading="lazy"
+alt="异常"
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="http://7xread.com1.z0.glb.clouddn.com/41913030-362c-45cb-a187-08eed7728e8c"
+loading="lazy"
+alt="命中断点"
+&gt;&lt;/p&gt;
+&lt;p&gt;F10单步调试，F11跳入函数，F5直接运行之类的快捷键自己玩吧。&lt;/p&gt;
+&lt;h3 id="其他运行环境下的配置"&gt;其他运行环境下的配置
+&lt;/h3&gt;&lt;p&gt;基本没什么区别，配置php.ini，下载到对应版本的xdebug.dll，php.validate.executablePath配置正确就完事。&lt;/p&gt;
+&lt;p&gt;其他参考链接：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="http://blog.csdn.net/ruihanchen/article/details/7705842" target="_blank" rel="noopener"
+&gt; 如何使用XDebug调试php&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="http://www.chenxuanyi.cn/xampp-phpstorm-xdebug.html" target="_blank" rel="noopener"
+&gt;XAMPP环境下用phpStorm+XDebug进行断点调试的配置&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;a class="link" href="http://blog.csdn.net/dc_726/article/details/9905517" target="_blank" rel="noopener"
+&gt;PHPStorm下XDebug配置&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id="ps果然是世界上最好的语言逃"&gt;PS:果然是世界上最好的语言&amp;hellip;(逃
+&lt;/h4&gt;</description></item><item><title>VS快捷键</title><link>https://liguobao.github.io/zh/p/vs%E5%BF%AB%E6%8D%B7%E9%94%AE/</link><pubDate>Fri, 14 Oct 2016 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/zh/p/vs%E5%BF%AB%E6%8D%B7%E9%94%AE/</guid><description>&lt;p&gt;ctrl+s 保存（这个确实很简单，要说常用，这玩意绝对排名第一）&lt;/p&gt;
+&lt;p&gt;ctrl+Shift+S 保存所有VS中打开的所有文件&lt;/p&gt;
+&lt;p&gt;ctrl+O 打开新文件&lt;/p&gt;
+&lt;p&gt;ctrl+Shift+O 打开项目&lt;/p&gt;
+&lt;p&gt;ctrl+Shift+A 当前项目中添加新建项&lt;/p&gt;
+&lt;p&gt;ctrl+F4 关闭当前打开页&lt;/p&gt;
+&lt;p&gt;ctrl+F6 跳到下一个窗口&lt;/p&gt;
+&lt;p&gt;ctrl+Shift+F6 跳到前一个打开的窗口&lt;/p&gt;
+&lt;p&gt;F12 转到函数定义实现处，或者转到变量定义处（一堆代码中使用这个键确实逻辑会更清晰一点）&lt;/p&gt;
+&lt;p&gt;ctrl+- 这个相对来说跟F12是配套使用的，F12到函数定义，然后返回原代码中继续查看&lt;/p&gt;
+&lt;p&gt;shift+ctrl+- 相对于上一个步骤，这个可以再次转到函数定义的地方&lt;/p&gt;
+&lt;p&gt;ctrl+tab 页面切换，打开页面过多的话，切换用的还是比较多的&lt;/p&gt;
+&lt;p&gt;ctrl+F 搜索，查找，功能简单粗暴有的时候比很高效&lt;/p&gt;
+&lt;p&gt;ctrl+F3 在选中区域搜索&lt;/p&gt;
+&lt;p&gt;ctrl+K，ctrl+D 整个文档格式化&lt;/p&gt;
+&lt;p&gt;ctrl+K,ctrl+F 格式化选中部分代码&lt;/p&gt;
+&lt;p&gt;ctrl+K，ctrl+C 代码注释&lt;/p&gt;
+&lt;p&gt;ctrl+K，ctrl+U 取消代码注释&lt;/p&gt;
+&lt;p&gt;ctrl+L 删除，删除当前行或者删除选中行&lt;/p&gt;
+&lt;p&gt;Shift+Alt+Enter 当前代码区域全屏，再按一次取消全屏&lt;/p&gt;
+&lt;p&gt;ctrl+M，ctrl+M 写代码都喜欢折叠，折叠之后还是还要打开的，可以试试这个快捷键&lt;/p&gt;
+&lt;p&gt;ctrl+space 代码补全&lt;/p&gt;
+&lt;p&gt;ctrl+Enter 假如现在当前行上面添加代码光标跳到当前行的上一行&lt;/p&gt;
+&lt;p&gt;ctrl+Shift+Enter假如现在当前行下面添加代码光标跳到当前行的下一行&lt;/p&gt;
+&lt;p&gt;Shift+F12 查找函数或者变量的所有引用&lt;/p&gt;
+&lt;p&gt;ctrl+g 查找行，跳转到你想要跳转的行数&lt;/p&gt;
+&lt;p&gt;ctrl+Shift+↑ 向上查找引用&lt;/p&gt;
+&lt;p&gt;ctrl+Shift+↓ 向下查找引用&lt;/p&gt;
+&lt;p&gt;Shift+Alt+↑ 向上画一条直线，通常如果拷贝代码的时候有行号可以这样去除&lt;/p&gt;
+&lt;p&gt;Shift+Alt+↓ 向下画一条直线，同上&lt;/p&gt;
+&lt;p&gt;Shift+↑ 向上选中代码区域&lt;/p&gt;
+&lt;p&gt;Shift+↓ 向下选中代码区域&lt;/p&gt;</description></item></channel></rss>

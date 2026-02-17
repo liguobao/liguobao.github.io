@@ -1,0 +1,1665 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>2024 on Life Deletion Guide</title><link>https://liguobao.github.io/tags/2024/</link><description>Recent content in 2024 on Life Deletion Guide</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Wed, 07 Aug 2024 08:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/2024/index.xml" rel="self" type="application/rss+xml"/><item><title>Linux du Command</title><link>https://liguobao.github.io/p/linux-du/</link><pubDate>Wed, 07 Aug 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/linux-du/</guid><description>&lt;p&gt;On Linux or macOS, use &lt;code&gt;du&lt;/code&gt; to get the size of each first-level subdirectory in the current folder:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;du -h --max-depth&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-h&lt;/code&gt;: human-readable units (KB, MB, GB)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--max-depth=1&lt;/code&gt;: only list first-level subdirectories&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;To view only the total size of the current directory:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;du -sh .
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-s&lt;/code&gt;: show only the total summary&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;These commands help you quickly understand sizes of subfolders in the current directory.&lt;/p&gt;</description></item><item><title>npm.taobao.org Taobao Mirror Source Certificate Expiration Solution</title><link>https://liguobao.github.io/p/npm-taobao-org-exp/</link><pubDate>Tue, 06 Aug 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/npm-taobao-org-exp/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/npm-taobao-org-exp/npm.png" alt="Featured image of post npm.taobao.org Taobao Mirror Source Certificate Expiration Solution" /&gt;&lt;h2 id="npmtaobaoorg-https-certificate-expiration"&gt;npm.taobao.org https Certificate Expiration
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;This thing has been expired for more than a day or two, all who used this mirror source will directly report error.&lt;/li&gt;
+&lt;li&gt;Recently because of checking build failure issue, tinkered for several hours before realizing it&amp;rsquo;s certificate expired.&lt;/li&gt;
+&lt;li&gt;At first thought it was my network problem, later found it&amp;rsquo;s the source problem.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Although this domain has been CNAME to &lt;code&gt;registry.npmmirror.com&lt;/code&gt;, however when using npm, it won&amp;rsquo;t automatically jump to this new domain.&lt;/p&gt;
+&lt;p&gt;So, still build failure.&lt;/p&gt;
+&lt;h2 id="solution"&gt;Solution
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;npm config &lt;span class="nb"&gt;set&lt;/span&gt; registry registry.npmmirror.com
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;npm config &lt;span class="nb"&gt;set&lt;/span&gt; registry registry.npmjs.org
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;If project root has &lt;code&gt;.npmrc&lt;/code&gt; file, remember to change this file.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;registry&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;https://registry.npmmirror.com
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="remember"&gt;Remember
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Don&amp;rsquo;t overly rely on certain vendor&amp;rsquo;s services, especially domestic ones.&lt;/li&gt;
+&lt;li&gt;Sometimes, better to directly use official source.&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Zhihu Salon — 2024-07-28 Notes</title><link>https://liguobao.github.io/p/zhihu-salon-0728/</link><pubDate>Sun, 28 Jul 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/zhihu-salon-0728/</guid><description>&lt;h2 id="overall-strategy"&gt;Overall Strategy
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Answers first&lt;/li&gt;
+&lt;li&gt;Ops team at the core; product+engineering driven&lt;/li&gt;
+&lt;li&gt;Creator‑centric; creation is king&lt;/li&gt;
+&lt;li&gt;Zhihu positions as a deep‑content community&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="productengineering-focus"&gt;Product/Engineering Focus
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Treat moderators/answerers like community owners&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="recommendation-algorithm-updates"&gt;Recommendation Algorithm Updates
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Cold‑start optimization&lt;/li&gt;
+&lt;li&gt;Objective shift for ranking&lt;/li&gt;
+&lt;li&gt;Community governance (reduce flamebait/opposition; ~2% comments removed)&lt;/li&gt;
+&lt;li&gt;Health of the ecosystem; encourage professional verticals&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Past: PV/UV and traffic were king. Now: depth and interactions matter more.&lt;/p&gt;
+&lt;h3 id="hot-list-experience"&gt;Hot List Experience
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Reduce confrontational topics&lt;/li&gt;
+&lt;li&gt;Content ops strategy tweaks&lt;/li&gt;
+&lt;li&gt;Product: remove “collapse”, add “featured”&lt;/li&gt;
+&lt;li&gt;Question page ranking: suppress low quality; optimize TPR&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="true-positive-rate"&gt;True Positive Rate
+&lt;/h4&gt;&lt;p&gt;True Positive Rate (TPR, recall/sensitivity) measures how well a classifier identifies positives: TPR = TP / (TP + FN). TPR ranking compares configurations/models by their TPR to choose better settings. In contexts like screening or fraud detection, high TPR is crucial.&lt;/p&gt;
+&lt;h3 id="user-communication"&gt;User Communication
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Feedback loops&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="ai-content-stance"&gt;AI Content Stance
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Opinion extraction, similarity, quality, trust&lt;/li&gt;
+&lt;li&gt;Plagiarism detection and enforcement&lt;/li&gt;
+&lt;li&gt;Anti‑scraping (SEO shielding?)&lt;/li&gt;
+&lt;li&gt;AIGC/Spam detection&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Actions: restrict distribution; penalize malicious accounts. For Zhihu’s own “AI direct answers”: what sources were quoted to form the answer?&lt;/p&gt;
+&lt;h2 id="author-experience"&gt;Author Experience
+&lt;/h2&gt;&lt;h3 id="good-questions"&gt;Good Questions
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Asking is somewhat de‑emphasized&lt;/li&gt;
+&lt;li&gt;How are duplicates handled? Anti‑cheat for mass question spammers?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="notifications"&gt;Notifications
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Improvements to reminders&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="columns"&gt;Columns
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Upgrades, exposure, circulation, paid support&lt;/li&gt;
+&lt;li&gt;What about Zhihu Daily?&lt;/li&gt;
+&lt;li&gt;High SEO and content quality (reopen when?)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="ai-search--direct-answers"&gt;AI Search / Direct Answers
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;TBD&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Add Git Bash to Terminal in Visual Studio</title><link>https://liguobao.github.io/p/vs-git-bash/</link><pubDate>Sat, 27 Jul 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/vs-git-bash/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/vs-git-bash/bash.jpg" alt="Featured image of post Add Git Bash to Terminal in Visual Studio" /&gt;&lt;p&gt;Configuring Git Bash in Visual Studio 2022&lt;/p&gt;
+&lt;h2 id="no-need-for-more-words"&gt;No need for more words
+&lt;/h2&gt;&lt;p&gt;Reference: &lt;a class="link" href="https://stackoverflow.com/questions/62109412/how-can-i-use-a-git-bash-terminal-profile-in-visual-studio-2019" target="_blank" rel="noopener"
+&gt;https://stackoverflow.com/questions/62109412/how-can-i-use-a-git-bash-terminal-profile-in-visual-studio-2019&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Shell Location: C:\Program Files\Git\bin\sh.exe&lt;/p&gt;
+&lt;p&gt;Path:&lt;/p&gt;
+&lt;p&gt;C:\Program Files\Git\bin\sh.exe&lt;/p&gt;
+&lt;p&gt;If your installation directory is different, adjust accordingly.&lt;/p&gt;
+&lt;p&gt;Arguments:&lt;/p&gt;
+&lt;p&gt;&amp;ndash;login -i -l&lt;/p&gt;
+&lt;p&gt;Final result.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://liguobao.github.io/zh/p/vs-git-bash/img/exp.jpg"
+width="1920"
+height="1080"
+srcset="https://liguobao.github.io/zh/p/vs-git-bash/img/exp_hu_69bdaa9a0a0e836.jpg 480w, https://liguobao.github.io/zh/p/vs-git-bash/img/exp_hu_efc416e9ffd7f735.jpg 1024w"
+loading="lazy"
+alt="Git Bash terminal in Visual Studio"
+class="gallery-image"
+data-flex-grow="177"
+data-flex-basis="426px"
+&gt;&lt;/p&gt;</description></item><item><title>Start Your Android Tinkering Journey with Magisk</title><link>https://liguobao.github.io/p/android-magisk-install/</link><pubDate>Fri, 05 Jul 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/android-magisk-install/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/android-magisk-install/logo.png" alt="Featured image of post Start Your Android Tinkering Journey with Magisk" /&gt;&lt;h2 id="preface"&gt;Preface
+&lt;/h2&gt;&lt;p&gt;Don&amp;rsquo;t ask why to do this. If you&amp;rsquo;re reading this article and interested in continuing, then you have this need too.&lt;/p&gt;
+&lt;h2 id="what-is-magisk"&gt;What is Magisk
+&lt;/h2&gt;&lt;h3 id="introduction"&gt;Introduction
+&lt;/h3&gt;&lt;p&gt;Magisk is a suite of open source software for customizing Android, supporting devices higher than Android 6.0.&lt;/p&gt;
+&lt;p&gt;Some highlight features:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;MagiskSU: Provide root access for applications&lt;/li&gt;
+&lt;li&gt;Magisk Modules: Modify read-only partitions by installing modules&lt;/li&gt;
+&lt;li&gt;MagiskBoot: The most complete tool for unpacking and repacking Android boot images&lt;/li&gt;
+&lt;li&gt;Zygisk: Run code in every Android applications&amp;rsquo; processes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Powered by &lt;a class="link" href="https://github.com/topjohnwu/Magisk" target="_blank" rel="noopener"
+&gt;Magisk&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="operation-steps-preview"&gt;Operation Steps Preview
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Unlock BL&lt;/li&gt;
+&lt;li&gt;Install Magisk App&lt;/li&gt;
+&lt;li&gt;Download corresponding system version ROM package and extract boot.img&lt;/li&gt;
+&lt;li&gt;Use Magisk to modify boot.img&lt;/li&gt;
+&lt;li&gt;Flash the modified boot.img&lt;/li&gt;
+&lt;li&gt;Install Magisk modules&lt;/li&gt;
+&lt;li&gt;Enjoy the &amp;ldquo;free new world&amp;rdquo;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="unlock-bl"&gt;Unlock BL
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Each has its own way, handle it yourself.&lt;/li&gt;
+&lt;li&gt;Xiaomi devices can refer to &lt;a class="link" href="https://www.miui.com/unlock/" target="_blank" rel="noopener"
+&gt;Xiaomi Unlock BL&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;OnePlus devices can refer to &lt;a class="link" href="https://www.oneplus.com/cn/developer" target="_blank" rel="noopener"
+&gt;OnePlus Amu&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Other devices please search yourself&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In 2024, the best device to unlock is OnePlus. Others are inferior.&lt;/p&gt;
+&lt;p&gt;(Originally considered buying Xiaomi 14, but BL lock deterred a 10-year Xiaomi fan)&lt;/p&gt;
+&lt;h2 id="install-magisk-app"&gt;Install Magisk App
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Download &lt;a class="link" href="https://github.com/topjohnwu/Magisk/releases" target="_blank" rel="noopener"
+&gt;Magisk/releases&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;After downloading, install on your phone.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb install Magisk-v26.4.apk
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="extract-bootimg"&gt;Extract boot.img
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Download corresponding system version ROM package and extract boot.img&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;If it&amp;rsquo;s a flash package, directly unzip and find boot.img&lt;/p&gt;
+&lt;p&gt;If it&amp;rsquo;s a line brush package, unzip to get payload.bin, need to use tools to extract.&lt;/p&gt;
+&lt;p&gt;On Windows, use FastbootEnhance tool; on Mac/Linux, use payload_dumper tool.&lt;/p&gt;
+&lt;p&gt;Basically similar.&lt;/p&gt;
+&lt;h2 id="use-magisk-to-generate-patched-bootimg"&gt;Use Magisk to Generate Patched boot.img
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Magisk App -&amp;gt; Install -&amp;gt; Install -&amp;gt; Select and Patch a File -&amp;gt; Select boot.img&lt;/li&gt;
+&lt;li&gt;Wait for patched boot.img to be generated, automatically saved to /sdcard/Download/magisk_patched-xxx.img&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="flash-the-modified-bootimg"&gt;Flash the Modified boot.img
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Phone enters Fastboot mode, connect to computer&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Check if device is connected successfully&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;fastboot devices
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Flash the modified boot.img&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;fastboot flash boot /sdcard/Download/magisk_patched-xxx.img
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;After flashing, reboot phone.&lt;/p&gt;
+&lt;h2 id="activate-magisk"&gt;Activate Magisk
+&lt;/h2&gt;&lt;p&gt;After rebooting, reopen Magisk App, first time should prompt to start repair.&lt;/p&gt;
+&lt;p&gt;Normally, after repair completes, phone will reboot, and after reboot, it&amp;rsquo;s done.&lt;/p&gt;
+&lt;h2 id="install-magisk-modules"&gt;Install Magisk Modules
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Download Magisk modules, install locally.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The general process is basically this.&lt;/p&gt;
+&lt;h2 id="common-commands-list"&gt;Common Commands List
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Enter Fastboot mode&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb reboot bootloader
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Check if fastboot device is connected successfully&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;fastboot devices
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Unlock&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;fastboot oem unlock
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Unlock BL for other devices&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;fastboot flashing unlock
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Flash boot.img&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;fastboot flash boot ./Download/magisk_patched-xxx.img
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Reboot&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;fastboot reboot
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id="lineageos-build-archive-download"&gt;LineageOS Build Archive Download
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://lineage-archive.timschumi.net/" target="_blank" rel="noopener"
+&gt;LineageOS Old Versions&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://download.lineageos.org/devices/sagit/builds" target="_blank" rel="noopener"
+&gt;LineageOS Latest Versions&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="lineageos-set-network-detection-address"&gt;LineageOS Set Network Detection Address
+&lt;/h2&gt;&lt;p&gt;Change captive connection verification server&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell settings delete global captive_portal_https_url
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell settings delete global captive_portal_http_url
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell settings put global captive_portal_https_url https://connect.rom.miui.com/generate_204
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;adb shell settings put global captive_portal_http_url http://connect.rom.miui.com/generate_204
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>Control Your Mi Home Devices with One Line of Code</title><link>https://liguobao.github.io/p/one-line-code-control-mi-iot-diy/</link><pubDate>Thu, 27 Jun 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/one-line-code-control-mi-iot-diy/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/one-line-code-control-mi-iot-diy/mi-iot-diy.png" alt="Featured image of post Control Your Mi Home Devices with One Line of Code" /&gt;&lt;h2 id="preface"&gt;Preface
+&lt;/h2&gt;&lt;p&gt;Around last year or the year before, after switching phone to iOS, no Xiaoai classmate anymore, using Mi Home App to control Mi Home devices was really painful. So at that time, I tinkered with HomeAssistant solution, and wrote such an article.&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://zhuanlan.zhihu.com/p/444212384" target="_blank" rel="noopener"
+&gt;Zhihu Column: Home Assistant Smart Home System Setup Guide (Mi Home + Siri)&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This solution with HomePod speaker basically met my needs. Later, home basically had various devices, HomePod was basically the whole house central control.&lt;/p&gt;
+&lt;p&gt;Home Assistant running on home host 24/7, basically no issues, so didn&amp;rsquo;t tinker for a long time.&lt;/p&gt;
+&lt;h2 id="another-new-requirement"&gt;Another &amp;ldquo;New Requirement&amp;rdquo;
+&lt;/h2&gt;&lt;p&gt;At the beginning of the year, a big shot contacted me, asking if based on current Mi Home or other hardware devices, can do apartment smart home solution.&lt;/p&gt;
+&lt;p&gt;Based on the above experience, I gave some suggestions, but didn&amp;rsquo;t research deeply.&lt;/p&gt;
+&lt;p&gt;At that time, let a certain 20-year teacher tinker with DIY control Mi Home devices solution, this friend&amp;rsquo;s progress not ideal, finally no results.&lt;/p&gt;
+&lt;p&gt;Just at that time knew there is a &lt;a class="link" href="https://github.com/rytilahti/python-miio" target="_blank" rel="noopener"
+&gt;github.com/rytilahti/python-miio&lt;/a&gt; good tool.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Python library &amp;amp; console tool for controlling Xiaomi smart appliances&lt;/li&gt;
+&lt;li&gt;A Python library and console tool for controlling Xiaomi smart home devices&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Interesting, Mark it.&lt;/p&gt;
+&lt;h2 id="recent-practice"&gt;Recent Practice
+&lt;/h2&gt;&lt;p&gt;Recently, again because of some strange requirements, need to &amp;ldquo;seriously&amp;rdquo; tinker with Mi Home device control solution.&lt;/p&gt;
+&lt;p&gt;Earliest when doing solution verification, even used Appium to simulate operating Mi Home App, but lag, slow, unstable&amp;hellip;&lt;/p&gt;
+&lt;p&gt;To these two weeks entering formal practice stage, decided to use python-miio, although Hack, but definitely more stable than Appium.&lt;/p&gt;
+&lt;p&gt;So, let&amp;rsquo;s start.&lt;/p&gt;
+&lt;h2 id="getting-started-with-python-miio"&gt;Getting Started with python-miio
+&lt;/h2&gt;&lt;p&gt;First, install python-miio locally&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Remember, do not directly install pip install python-miio&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Default Release version is 0.5.12, 2022 version&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;pip install python-miio&lt;span class="o"&gt;==&lt;/span&gt;0.6.0.dev0
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Or directly install latest version from Github&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;pip install git+https://github.com/rytilahti/python-miio.git
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;After installing, local command line should have miiocli command line tool.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;➜ ~ miiocli --help
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Usage: miiocli &lt;span class="o"&gt;[&lt;/span&gt;OPTIONS&lt;span class="o"&gt;]&lt;/span&gt; COMMAND &lt;span class="o"&gt;[&lt;/span&gt;ARGS&lt;span class="o"&gt;]&lt;/span&gt;...
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Options:
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -d, --debug
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -o, --output &lt;span class="o"&gt;[&lt;/span&gt;default&lt;span class="p"&gt;|&lt;/span&gt;json&lt;span class="p"&gt;|&lt;/span&gt;json_pretty&lt;span class="o"&gt;]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --version Show the version and exit.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --help Show this message and exit.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Normally, we should be able to control our Mi Home devices through miiocli.&lt;/p&gt;
+&lt;p&gt;First, we need to find our device&amp;rsquo;s IP address and Token.&lt;/p&gt;
+&lt;p&gt;All subsequent operations are based on these two pieces of information.&lt;/p&gt;
+&lt;h3 id="get-device-ip-address-and-token"&gt;Get Device IP Address and Token
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;span class="lnt"&gt;21
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;➜ ~ miiocli cloud
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Username: your Xiaomi account
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Password: your &lt;span class="nv"&gt;password&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt; Xiaomi Smart Camera C400 &lt;span class="o"&gt;(&lt;/span&gt;Device online &lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Model: chuangmi.camera.039a01
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Token: XXX
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; IP: 192.168.31.170 &lt;span class="o"&gt;(&lt;/span&gt;mac: 94:F8:27:05:5B:AA&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; DID: &lt;span class="m"&gt;1029838640&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Locale: &lt;span class="nv"&gt;cn&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt; Xiaomi Smart Camera &lt;span class="o"&gt;(&lt;/span&gt;Device online &lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Model: chuangmi.camera.029a02
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Token: XXX
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; IP: 192.168.31.233 &lt;span class="o"&gt;(&lt;/span&gt;mac: 60:7E:A4:C0:E6:26&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; DID: &lt;span class="m"&gt;525571884&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Locale: &lt;span class="nv"&gt;cn&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;==&lt;/span&gt; Smart Plug-Ubuntu &lt;span class="o"&gt;(&lt;/span&gt;Device online &lt;span class="o"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Model: chuangmi.plug.212a01
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Token: XXX
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; IP: 192.168.31.141 &lt;span class="o"&gt;(&lt;/span&gt;mac: 58:B6:23:EB:11:EF&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; DID: &lt;span class="m"&gt;433609370&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Locale: cn
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Here basically can see devices under your account, then we can control these devices through miiocli commands.&lt;/p&gt;
+&lt;h2 id="control-devices"&gt;Control Devices
+&lt;/h2&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;span class="lnt"&gt;9
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# This is a camera device&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;➜ ~ miiocli device --ip 192.168.31.170 --token xxxx info
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Running &lt;span class="nb"&gt;command&lt;/span&gt; info
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Model: chuangmi.camera.039a01
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Hardware version: Linux
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Firmware version: 5.1.6_0420
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Supported using: GenericMiot
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Command: miiocli genericmiot --ip 192.168.31.170 --token xxxx
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Supported by genericmiot: True
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Here need to pay attention to Supported by genericmiot, if have this, basically can control this device through miiocli genericmiot.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-txt" data-lang="txt"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;# Supported by genericmiot: True
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Note that the command field which gives you the direct command to use for controlling the device.
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;If the device is supported by the genericmiot integration as stated in the output,
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;you can also use miiocli genericmiot for controlling it.
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;&lt;img src="https://liguobao.github.io/img/miiocli.png"
+loading="lazy"
+alt="miiocli screenshot"
+&gt;&lt;/p&gt;
+&lt;p&gt;The following documentation excerpted and translated from official docs.&lt;/p&gt;
+&lt;h3 id="control-modern-miot-devices"&gt;Control Modern (MIoT) Devices
+&lt;/h3&gt;&lt;p&gt;Most modern (MIoT) devices will automatically be supported by genericmiot integration.&lt;/p&gt;
+&lt;p&gt;Internally, it uses (&amp;ldquo;miot spec&amp;rdquo;) files to understand supported features like sensors, settings, and actions.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://home.miot-spec.com/spec/xiaomi.controller.86v1" target="_blank" rel="noopener"
+&gt;https://home.miot-spec.com/spec/xiaomi.controller.86v1&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://home.miot-spec.com/" target="_blank" rel="noopener"
+&gt;Mi Home Product Library (Unofficial)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This device model specific file will be downloaded (and cached locally) when you first use genericmiot integration.&lt;/p&gt;
+&lt;p&gt;All supported device features can be controlled using common commands: status (show device status), set (change settings), actions list available actions, and call execute actions.&lt;/p&gt;
+&lt;h3 id="device-status"&gt;Device Status
+&lt;/h3&gt;&lt;p&gt;Executing status will show current device status, and acceptable values for settings (marked with access RW):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;miiocli genericmiot --ip 127.0.0.1 --token &lt;span class="m"&gt;00000000000000000000000000000000&lt;/span&gt; status
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Service Light &lt;span class="o"&gt;(&lt;/span&gt;light&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Switch Status &lt;span class="o"&gt;(&lt;/span&gt;light:on, access: RW&lt;span class="o"&gt;)&lt;/span&gt;: False &lt;span class="o"&gt;(&lt;/span&gt;&amp;lt;class &lt;span class="s1"&gt;&amp;#39;bool&amp;#39;&lt;/span&gt;&amp;gt;, &lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Brightness &lt;span class="o"&gt;(&lt;/span&gt;light:brightness, access: RW&lt;span class="o"&gt;)&lt;/span&gt;: &lt;span class="m"&gt;60&lt;/span&gt; % &lt;span class="o"&gt;(&lt;/span&gt;&amp;lt;class &lt;span class="s1"&gt;&amp;#39;int&amp;#39;&lt;/span&gt;&amp;gt;, min: 1, max: 100, step: 1&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; Power Off Delay Time &lt;span class="o"&gt;(&lt;/span&gt;light:off-delay-time, access: RW&lt;span class="o"&gt;)&lt;/span&gt;: 1:47:00 &lt;span class="o"&gt;(&lt;/span&gt;&amp;lt;class &lt;span class="s1"&gt;&amp;#39;int&amp;#39;&lt;/span&gt;&amp;gt;, min: 0, max: 120, step: 1&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="change-settings"&gt;Change Settings
+&lt;/h3&gt;&lt;p&gt;To change settings, you need to provide the setting name (e.g., in the above example light:brightness):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-shell" data-lang="shell"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; miiocli genericmiot --ip 127.0.0.1 --token &lt;span class="m"&gt;00000000000000000000000000000000&lt;/span&gt; &lt;span class="nb"&gt;set&lt;/span&gt; light:brightness &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="o"&gt;[{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;did&amp;#39;&lt;/span&gt;: &lt;span class="s1"&gt;&amp;#39;light:brightness&amp;#39;&lt;/span&gt;, &lt;span class="s1"&gt;&amp;#39;siid&amp;#39;&lt;/span&gt;: 2, &lt;span class="s1"&gt;&amp;#39;piid&amp;#39;&lt;/span&gt;: 3, &lt;span class="s1"&gt;&amp;#39;code&amp;#39;&lt;/span&gt;: 0&lt;span class="o"&gt;}]&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="use-actions"&gt;Use Actions
+&lt;/h3&gt;&lt;p&gt;Most devices will also provide actions:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;miiocli genericmiot --ip 127.0.0.1 --token &lt;span class="m"&gt;00000000000000000000000000000000&lt;/span&gt; actions
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;Light &lt;span class="o"&gt;(&lt;/span&gt;light&lt;span class="o"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; light:toggle Toggle
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; light:brightness-down Brightness Down
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; light:brightness-up Brightness Up
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;These can be executed using the call command:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;miiocli genericmiot --ip 127.0.0.1 --token &lt;span class="m"&gt;00000000000000000000000000000000&lt;/span&gt; call light:toggle
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="o"&gt;{&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;code&amp;#39;&lt;/span&gt;: 0, &lt;span class="s1"&gt;&amp;#39;out&amp;#39;&lt;/span&gt;: &lt;span class="o"&gt;[]}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Use miiocli genericmiot &amp;ndash;help for more available commands.&lt;/p&gt;
+&lt;p&gt;Detailed docs here:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/rytilahti/python-miio?tab=readme-ov-file#controlling-modern-miot-devices" target="_blank" rel="noopener"
+&gt;https://github.com/rytilahti/python-miio?tab=readme-ov-file#controlling-modern-miot-devices&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="control-your-mi-home-devices-with-one-line-of-code"&gt;Control Your Mi Home Devices with One Line of Code
+&lt;/h2&gt;&lt;p&gt;Based on the above operations, this one line of code came out.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;span class="lnt"&gt;8
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Get executable commands&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;miiocli genericmiot --ip 192.168.31.170 --token xxxx actions
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## Execute action&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;miiocli genericmiot --ip 192.168.31.170 --token xxxx call camera:record-start
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;## Change property&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;miiocli genericmiot --ip 192.168.31.170 --token xxxx &lt;span class="nb"&gt;set&lt;/span&gt; camera:record-mode &lt;span class="m"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Of course if you need to write some code yourself, it&amp;rsquo;s like this.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;span class="lnt"&gt;21
+&lt;/span&gt;&lt;span class="lnt"&gt;22
+&lt;/span&gt;&lt;span class="lnt"&gt;23
+&lt;/span&gt;&lt;span class="lnt"&gt;24
+&lt;/span&gt;&lt;span class="lnt"&gt;25
+&lt;/span&gt;&lt;span class="lnt"&gt;26
+&lt;/span&gt;&lt;span class="lnt"&gt;27
+&lt;/span&gt;&lt;span class="lnt"&gt;28
+&lt;/span&gt;&lt;span class="lnt"&gt;29
+&lt;/span&gt;&lt;span class="lnt"&gt;30
+&lt;/span&gt;&lt;span class="lnt"&gt;31
+&lt;/span&gt;&lt;span class="lnt"&gt;32
+&lt;/span&gt;&lt;span class="lnt"&gt;33
+&lt;/span&gt;&lt;span class="lnt"&gt;34
+&lt;/span&gt;&lt;span class="lnt"&gt;35
+&lt;/span&gt;&lt;span class="lnt"&gt;36
+&lt;/span&gt;&lt;span class="lnt"&gt;37
+&lt;/span&gt;&lt;span class="lnt"&gt;38
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;miio&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;Device&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;DeviceFactory&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;DeviceStatus&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;loguru&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;logger&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="k"&gt;class&lt;/span&gt; &lt;span class="nc"&gt;MiIotDevice&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__init__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;device&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Device&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;DeviceFactory&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;create&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;device_info&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_info&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;Device: &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;ip&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;-&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;token&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; created&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;load_status&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;device&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;d_status&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;DeviceStatus&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;device&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;status&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;d_status&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;data&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;get_info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;ip&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;device&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;model&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;device&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;model&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;device_id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;nx_&amp;#34;&lt;/span&gt;&lt;span class="o"&gt;+&lt;/span&gt;&lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;device&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;device_id&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s2"&gt;&amp;#34;mi_device_id&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;device&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;device_id&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;call_action&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;device&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="ne"&gt;Exception&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;Device not ready&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;call_result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;device&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;call_action&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;call_action: &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;-&lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;args&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; result: &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;call_result&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;call_result&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;set_properties&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;properties&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;device&lt;/span&gt; &lt;span class="ow"&gt;is&lt;/span&gt; &lt;span class="kc"&gt;None&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;raise&lt;/span&gt; &lt;span class="ne"&gt;Exception&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;Device not ready&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;call_result&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;device&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;send&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;set_properties&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;properties&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="n"&gt;logger&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;info&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="sa"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;set_properties: &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;properties&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt; finish, result: &lt;/span&gt;&lt;span class="si"&gt;{&lt;/span&gt;&lt;span class="n"&gt;call_result&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;call_result&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Basically, as above.&lt;/p&gt;
+&lt;h2 id="summary"&gt;Summary
+&lt;/h2&gt;&lt;p&gt;python-miio is a good tool for controlling Mi Home devices&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Through miiocli can conveniently control devices&lt;/li&gt;
+&lt;li&gt;Through miiocli genericmiot can control modern devices&lt;/li&gt;
+&lt;li&gt;Through miiocli genericmiot actions can view device supported actions&lt;/li&gt;
+&lt;li&gt;Through miiocli genericmiot status can view device status&lt;/li&gt;
+&lt;li&gt;Through miiocli genericmiot set can change device properties&lt;/li&gt;
+&lt;li&gt;Through miiocli genericmiot call can execute device actions&lt;/li&gt;
+&lt;li&gt;Through miiocli genericmiot &amp;ndash;help can view more commands&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;At the same time can write code to tinker with specific devices, making some automation things also simple.&lt;/p&gt;
+&lt;p&gt;Wish everyone have fun~&lt;/p&gt;
+&lt;h2 id="references"&gt;References
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/rytilahti/python-miio" target="_blank" rel="noopener"
+&gt;python-miio&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://home.miot-spec.com/" target="_blank" rel="noopener"
+&gt;miot-spec Mi Home Device Properties Query (Unofficial)&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>VS Code Support for C# Solution Files</title><link>https://liguobao.github.io/p/vscode-support-csharp-sln/</link><pubDate>Mon, 10 Jun 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/vscode-support-csharp-sln/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/vscode-support-csharp-sln/code.png" alt="Featured image of post VS Code Support for C# Solution Files" /&gt;&lt;h2 id="the-c-plugin-in-vs-code-seems-abnormal"&gt;The C# plugin in VS Code seems abnormal
+&lt;/h2&gt;&lt;p&gt;Recently started a new C# project, thinking of dividing multiple projects by folders, putting a solution in the root directory. But when opening in VS Code, the reference information and hints in the project source code are not normal. Confused, I&amp;rsquo;ve always used it this way, shouldn&amp;rsquo;t there be any problem.&lt;/p&gt;
+&lt;p&gt;Searched and found that some friends also encountered similar problems.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://www.cnblogs.com/WikiChen/p/17061707.html" target="_blank" rel="noopener"
+&gt;[VS Code] Fix C# code F12 invalid&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a class="link" href="https://blog.csdn.net/s5260203/article/details/120012240" target="_blank" rel="noopener"
+&gt;VSCode C# Go to Definition (F12) and Ctrl+Left Click Invalid Solution&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Basically, the OmniSharp plugin is not working properly, need to specify manually. But&amp;hellip;&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://github.com/github/omnisharp-vscode" target="_blank" rel="noopener"
+&gt;omnisharp-vscode: This repository has been archived by the owner on Jun 22, 2023. It is now read-only.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Naturally, this method is useless.&lt;/p&gt;
+&lt;p&gt;However.&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://github.com/dotnet/vscode-csharp" target="_blank" rel="noopener"
+&gt;dotnet/vscode-csharp&lt;/a&gt; is now officially supported.&lt;/p&gt;
+&lt;p&gt;A Visual Studio Code extension that provides rich language support for C# and is shipped along with C# Dev Kit. Powered by a Language Server Protocol (LSP) server, this extension integrates with open source components like Roslyn and Razor to provide rich type information and a faster, more reliable C# experience.&lt;/p&gt;
+&lt;p&gt;So, does that mean I should install this thing?&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://marketplace.visualstudio.com/items?itemName=ms-dotnettools.csdevkit" target="_blank" rel="noopener"
+&gt;C# Dev Kit&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Finally verified, it&amp;rsquo;s indeed like this. The C# Dev Kit plugin supports loading sln, after installing, manually confirm which sln file. Everything back to normal.&lt;/p&gt;
+&lt;p&gt;Done.&lt;/p&gt;</description></item><item><title>Tencent Cloud API Gateway Sunset? Open-Source Cluster Replacement</title><link>https://liguobao.github.io/p/q-cloud-api-down-k3s-up/</link><pubDate>Mon, 03 Jun 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/q-cloud-api-down-k3s-up/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/q-cloud-api-down-k3s-up/qcloud.png" alt="Featured image of post Tencent Cloud API Gateway Sunset? Open-Source Cluster Replacement" /&gt;&lt;h2 id="background-api-gateway-is-going-away"&gt;Background: API Gateway Is Going Away
+&lt;/h2&gt;&lt;p&gt;&lt;img src="https://liguobao.github.io/zh/p/q-cloud-api-down-k3s-up/pics/api-gateway.png"
+width="1024"
+height="1024"
+srcset="https://liguobao.github.io/zh/p/q-cloud-api-down-k3s-up/pics/api-gateway_hu_b75984e0397e610a.png 480w, https://liguobao.github.io/zh/p/q-cloud-api-down-k3s-up/pics/api-gateway_hu_7072f0a19cdd6588.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="100"
+data-flex-basis="240px"
+&gt;&lt;/p&gt;
+&lt;p&gt;Heard Tencent Cloud’s API Gateway is being sunset. Some of our projects were (unfortunately) built on it. What to replace it with now?&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://cloud.tencent.com/document/product/628/106651" target="_blank" rel="noopener"
+&gt;Important: API Gateway product end-of-sale announcement&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Back when I was still using Tencent Cloud’s managed k8s masters for free, after one upgrade they switched our Services to API Gateway behind the scenes and started billing by usage.&lt;/p&gt;
+&lt;p&gt;So I began looking into how to remove and replace it — and today that work finally pays off.&lt;/p&gt;
+&lt;h2 id="option-1-tencent-cloud-k8s--nodeport"&gt;Option 1: Tencent Cloud k8s + NodePort
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Keep the same cluster; join your own machines as worker nodes.&lt;/li&gt;
+&lt;li&gt;Remove all Services bound to internal IPs; expose everything via NodePort.&lt;/li&gt;
+&lt;li&gt;Install NGINX on worker nodes and reverse-proxy traffic to NodePort.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This ran for about a year. Then the managed cluster itself started charging a “management fee”. A few dozen RMB per month, hundreds per year — not acceptable for us. Time to migrate again.&lt;/p&gt;
+&lt;h2 id="option-2-superedge-self-hosted-cluster--nodeport--nginx"&gt;Option 2: SuperEdge self-hosted cluster + NodePort + NGINX
+&lt;/h2&gt;&lt;p&gt;For a self-hosted cluster, use whatever is convenient.&lt;/p&gt;
+&lt;p&gt;I wrote these back then:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;SuperEdge first impressions (Chinese): &lt;a class="link" href="https://zhuanlan.zhihu.com/p/346084530" target="_blank" rel="noopener"
+&gt;https://zhuanlan.zhihu.com/p/346084530&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;SuperEdge + NFS (Chinese): &lt;a class="link" href="https://zhuanlan.zhihu.com/p/514678542" target="_blank" rel="noopener"
+&gt;https://zhuanlan.zhihu.com/p/514678542&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;I was basically an organic promoter for the project.&lt;/p&gt;
+&lt;p&gt;However… last year the old SuperEdge WeChat group was migrated; the new group seemed unmaintained. People I knew said the project moved into maintenance mode.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://liguobao.github.io/zh/p/q-cloud-api-down-k3s-up/pics/super-edge-bug-report.png"
+width="1420"
+height="1128"
+srcset="https://liguobao.github.io/zh/p/q-cloud-api-down-k3s-up/pics/super-edge-bug-report_hu_2b7373f2686aa24.png 480w, https://liguobao.github.io/zh/p/q-cloud-api-down-k3s-up/pics/super-edge-bug-report_hu_2cd5277c0a5ce2dd.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="125"
+data-flex-basis="302px"
+&gt;&lt;/p&gt;
+&lt;p&gt;The real problem: the certs expired and wouldn’t renew; my cluster broke.&lt;/p&gt;
+&lt;p&gt;Honestly, it’s tiring — many big-company open-source projects in CN end up tied to KPIs. Hard to get in, harder to keep running, and easy to get dropped.&lt;/p&gt;
+&lt;p&gt;So I started looking again, with these goals:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Still all‑in on k8s&lt;/li&gt;
+&lt;li&gt;Still self‑hosted&lt;/li&gt;
+&lt;li&gt;Still zero cost&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Then I found k3s — it’s great.&lt;/p&gt;
+&lt;h2 id="final-approach-k3s--ingress-nginx"&gt;Final Approach: k3s + ingress-nginx
+&lt;/h2&gt;&lt;p&gt;Deployment guide: &lt;a class="link" href="https://zhuanlan.zhihu.com/p/696737105" target="_blank" rel="noopener"
+&gt;https://zhuanlan.zhihu.com/p/696737105&lt;/a&gt; (Chinese)&lt;/p&gt;
+&lt;p&gt;Example node list:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;NAME STATUS ROLES AGE VERSION
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;aliyun-bj-199 Ready &amp;lt;none&amp;gt; 34d v1.29.4+k3s1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;haru Ready &amp;lt;none&amp;gt; 6d16h v1.29.4+k3s1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;t7610 Ready &amp;lt;none&amp;gt; 6d2h v1.29.4+k3s1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;vm-16-12-ubuntu Ready control-plane,etcd,master 75d v1.28.7+k3s1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;vm-28-17-ubuntu Ready,SchedulingDisabled control-plane,etcd,master 75d v1.28.7+k3s1
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;zj-hc1 Ready &amp;lt;none&amp;gt; 33d v1.29.4+k3s1
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;As you can see, there are two masters (vm-16-12-ubuntu and vm-28-17-ubuntu). They’re on cloud VMs, mutually reachable on the private network, and both have public IPs (important).&lt;/p&gt;
+&lt;p&gt;Other nodes are a mix of local, other clouds, and edge devices. They can talk over private network, but not all have public IPs.&lt;/p&gt;
+&lt;p&gt;Previously, we needed an API Gateway to forward traffic to worker nodes. That’s what Tencent Cloud’s API Gateway did, but we don’t have it anymore. Instead, we can use ingress-nginx.&lt;/p&gt;
+&lt;p&gt;In a k3s cluster, any node with a public IP can serve as an entry point.&lt;/p&gt;
+&lt;p&gt;We can configure ingress-nginx to forward traffic to services living on worker nodes.&lt;/p&gt;
+&lt;p&gt;All you need is to pass &lt;code&gt;--node-external-ip&lt;/code&gt; when starting the server/agent to set the public IP.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# server&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/local/bin/k3s &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; server &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-external-ip PUBLIC_IP &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --flannel-backend wireguard-native &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s1"&gt;&amp;#39;--tls-san&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s1"&gt;&amp;#39;PUBLIC_IP&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s1"&gt;&amp;#39;--node-name&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s1"&gt;&amp;#39;vm-16-12-ubuntu&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s1"&gt;&amp;#39;--server&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s1"&gt;&amp;#39;https://10.0.28.17:6443&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# agent&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/local/bin/k3s &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; agent --node-name zj-hc1 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --lb-server-port &lt;span class="m"&gt;5443&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-ip 10.42.4.1 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; -node-external-ip PUBLIC_IP &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --server https://server:6443 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --token&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;YOUR_TOKEN&amp;#34;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Now ports 80/443 on that node can accept external traffic (make sure your firewall allows it). Point your domain’s DNS A record(s) to that node’s public IP, and you’re good to go.&lt;/p&gt;
+&lt;h2 id="a-minimal-working-example"&gt;A Minimal Working Example
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Self-signed or ACME certs supported&lt;/li&gt;
+&lt;li&gt;Any node with a public IP can act as an entry point&lt;/li&gt;
+&lt;li&gt;For LB, add multiple A records or use DNS load balancing&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt; 10
+&lt;/span&gt;&lt;span class="lnt"&gt; 11
+&lt;/span&gt;&lt;span class="lnt"&gt; 12
+&lt;/span&gt;&lt;span class="lnt"&gt; 13
+&lt;/span&gt;&lt;span class="lnt"&gt; 14
+&lt;/span&gt;&lt;span class="lnt"&gt; 15
+&lt;/span&gt;&lt;span class="lnt"&gt; 16
+&lt;/span&gt;&lt;span class="lnt"&gt; 17
+&lt;/span&gt;&lt;span class="lnt"&gt; 18
+&lt;/span&gt;&lt;span class="lnt"&gt; 19
+&lt;/span&gt;&lt;span class="lnt"&gt; 20
+&lt;/span&gt;&lt;span class="lnt"&gt; 21
+&lt;/span&gt;&lt;span class="lnt"&gt; 22
+&lt;/span&gt;&lt;span class="lnt"&gt; 23
+&lt;/span&gt;&lt;span class="lnt"&gt; 24
+&lt;/span&gt;&lt;span class="lnt"&gt; 25
+&lt;/span&gt;&lt;span class="lnt"&gt; 26
+&lt;/span&gt;&lt;span class="lnt"&gt; 27
+&lt;/span&gt;&lt;span class="lnt"&gt; 28
+&lt;/span&gt;&lt;span class="lnt"&gt; 29
+&lt;/span&gt;&lt;span class="lnt"&gt; 30
+&lt;/span&gt;&lt;span class="lnt"&gt; 31
+&lt;/span&gt;&lt;span class="lnt"&gt; 32
+&lt;/span&gt;&lt;span class="lnt"&gt; 33
+&lt;/span&gt;&lt;span class="lnt"&gt; 34
+&lt;/span&gt;&lt;span class="lnt"&gt; 35
+&lt;/span&gt;&lt;span class="lnt"&gt; 36
+&lt;/span&gt;&lt;span class="lnt"&gt; 37
+&lt;/span&gt;&lt;span class="lnt"&gt; 38
+&lt;/span&gt;&lt;span class="lnt"&gt; 39
+&lt;/span&gt;&lt;span class="lnt"&gt; 40
+&lt;/span&gt;&lt;span class="lnt"&gt; 41
+&lt;/span&gt;&lt;span class="lnt"&gt; 42
+&lt;/span&gt;&lt;span class="lnt"&gt; 43
+&lt;/span&gt;&lt;span class="lnt"&gt; 44
+&lt;/span&gt;&lt;span class="lnt"&gt; 45
+&lt;/span&gt;&lt;span class="lnt"&gt; 46
+&lt;/span&gt;&lt;span class="lnt"&gt; 47
+&lt;/span&gt;&lt;span class="lnt"&gt; 48
+&lt;/span&gt;&lt;span class="lnt"&gt; 49
+&lt;/span&gt;&lt;span class="lnt"&gt; 50
+&lt;/span&gt;&lt;span class="lnt"&gt; 51
+&lt;/span&gt;&lt;span class="lnt"&gt; 52
+&lt;/span&gt;&lt;span class="lnt"&gt; 53
+&lt;/span&gt;&lt;span class="lnt"&gt; 54
+&lt;/span&gt;&lt;span class="lnt"&gt; 55
+&lt;/span&gt;&lt;span class="lnt"&gt; 56
+&lt;/span&gt;&lt;span class="lnt"&gt; 57
+&lt;/span&gt;&lt;span class="lnt"&gt; 58
+&lt;/span&gt;&lt;span class="lnt"&gt; 59
+&lt;/span&gt;&lt;span class="lnt"&gt; 60
+&lt;/span&gt;&lt;span class="lnt"&gt; 61
+&lt;/span&gt;&lt;span class="lnt"&gt; 62
+&lt;/span&gt;&lt;span class="lnt"&gt; 63
+&lt;/span&gt;&lt;span class="lnt"&gt; 64
+&lt;/span&gt;&lt;span class="lnt"&gt; 65
+&lt;/span&gt;&lt;span class="lnt"&gt; 66
+&lt;/span&gt;&lt;span class="lnt"&gt; 67
+&lt;/span&gt;&lt;span class="lnt"&gt; 68
+&lt;/span&gt;&lt;span class="lnt"&gt; 69
+&lt;/span&gt;&lt;span class="lnt"&gt; 70
+&lt;/span&gt;&lt;span class="lnt"&gt; 71
+&lt;/span&gt;&lt;span class="lnt"&gt; 72
+&lt;/span&gt;&lt;span class="lnt"&gt; 73
+&lt;/span&gt;&lt;span class="lnt"&gt; 74
+&lt;/span&gt;&lt;span class="lnt"&gt; 75
+&lt;/span&gt;&lt;span class="lnt"&gt; 76
+&lt;/span&gt;&lt;span class="lnt"&gt; 77
+&lt;/span&gt;&lt;span class="lnt"&gt; 78
+&lt;/span&gt;&lt;span class="lnt"&gt; 79
+&lt;/span&gt;&lt;span class="lnt"&gt; 80
+&lt;/span&gt;&lt;span class="lnt"&gt; 81
+&lt;/span&gt;&lt;span class="lnt"&gt; 82
+&lt;/span&gt;&lt;span class="lnt"&gt; 83
+&lt;/span&gt;&lt;span class="lnt"&gt; 84
+&lt;/span&gt;&lt;span class="lnt"&gt; 85
+&lt;/span&gt;&lt;span class="lnt"&gt; 86
+&lt;/span&gt;&lt;span class="lnt"&gt; 87
+&lt;/span&gt;&lt;span class="lnt"&gt; 88
+&lt;/span&gt;&lt;span class="lnt"&gt; 89
+&lt;/span&gt;&lt;span class="lnt"&gt; 90
+&lt;/span&gt;&lt;span class="lnt"&gt; 91
+&lt;/span&gt;&lt;span class="lnt"&gt; 92
+&lt;/span&gt;&lt;span class="lnt"&gt; 93
+&lt;/span&gt;&lt;span class="lnt"&gt; 94
+&lt;/span&gt;&lt;span class="lnt"&gt; 95
+&lt;/span&gt;&lt;span class="lnt"&gt; 96
+&lt;/span&gt;&lt;span class="lnt"&gt; 97
+&lt;/span&gt;&lt;span class="lnt"&gt; 98
+&lt;/span&gt;&lt;span class="lnt"&gt; 99
+&lt;/span&gt;&lt;span class="lnt"&gt;100
+&lt;/span&gt;&lt;span class="lnt"&gt;101
+&lt;/span&gt;&lt;span class="lnt"&gt;102
+&lt;/span&gt;&lt;span class="lnt"&gt;103
+&lt;/span&gt;&lt;span class="lnt"&gt;104
+&lt;/span&gt;&lt;span class="lnt"&gt;105
+&lt;/span&gt;&lt;span class="lnt"&gt;106
+&lt;/span&gt;&lt;span class="lnt"&gt;107
+&lt;/span&gt;&lt;span class="lnt"&gt;108
+&lt;/span&gt;&lt;span class="lnt"&gt;109
+&lt;/span&gt;&lt;span class="lnt"&gt;110
+&lt;/span&gt;&lt;span class="lnt"&gt;111
+&lt;/span&gt;&lt;span class="lnt"&gt;112
+&lt;/span&gt;&lt;span class="lnt"&gt;113
+&lt;/span&gt;&lt;span class="lnt"&gt;114
+&lt;/span&gt;&lt;span class="lnt"&gt;115
+&lt;/span&gt;&lt;span class="lnt"&gt;116
+&lt;/span&gt;&lt;span class="lnt"&gt;117
+&lt;/span&gt;&lt;span class="lnt"&gt;118
+&lt;/span&gt;&lt;span class="lnt"&gt;119
+&lt;/span&gt;&lt;span class="lnt"&gt;120
+&lt;/span&gt;&lt;span class="lnt"&gt;121
+&lt;/span&gt;&lt;span class="lnt"&gt;122
+&lt;/span&gt;&lt;span class="lnt"&gt;123
+&lt;/span&gt;&lt;span class="lnt"&gt;124
+&lt;/span&gt;&lt;span class="lnt"&gt;125
+&lt;/span&gt;&lt;span class="lnt"&gt;126
+&lt;/span&gt;&lt;span class="lnt"&gt;127
+&lt;/span&gt;&lt;span class="lnt"&gt;128
+&lt;/span&gt;&lt;span class="lnt"&gt;129
+&lt;/span&gt;&lt;span class="lnt"&gt;130
+&lt;/span&gt;&lt;span class="lnt"&gt;131
+&lt;/span&gt;&lt;span class="lnt"&gt;132
+&lt;/span&gt;&lt;span class="lnt"&gt;133
+&lt;/span&gt;&lt;span class="lnt"&gt;134
+&lt;/span&gt;&lt;span class="lnt"&gt;135
+&lt;/span&gt;&lt;span class="lnt"&gt;136
+&lt;/span&gt;&lt;span class="lnt"&gt;137
+&lt;/span&gt;&lt;span class="lnt"&gt;138
+&lt;/span&gt;&lt;span class="lnt"&gt;139
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-yaml" data-lang="yaml"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;apiVersion&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;v1&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;PersistentVolume&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;stirling-pdf&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;spec&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;capacity&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;storage&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;30Gi&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;accessModes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;ReadWriteOnce&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;persistentVolumeReclaimPolicy&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Delete&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;storageClassName&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;local-storage&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;local&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;/mnt/cfs-a4nopkhh/stirling-pdf&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;nodeAffinity&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;required&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;nodeSelectorTerms&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;matchExpressions&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;key&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;kubernetes.io/hostname&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;operator&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;In&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;values&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;zj-hc1&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nn"&gt;---&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;PersistentVolumeClaim&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;apiVersion&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;v1&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;stirling-pdf&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;spec&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;accessModes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;ReadWriteOnce&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;resources&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;requests&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;storage&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;30Gi&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;storageClassName&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;local-storage&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nn"&gt;---&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;apiVersion&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;apps/v1&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Deployment&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;stirling-pdf&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;labels&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;app&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;stirling-pdf&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;spec&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;replicas&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;selector&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;matchLabels&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;app&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;stirling-pdf&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;template&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;labels&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;app&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;stirling-pdf&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;spec&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;containers&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;stirling-pdf&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;image&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;ccr.ccs.tencentyun.com/liguobao/s-pdf:ustc&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;containerPort&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;8080&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;resources&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;requests&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;memory&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;512Mi&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;cpu&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;500m&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;limits&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;memory&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;2048Mi&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;cpu&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;1000m&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;readinessProbe&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;httpGet&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;/&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;port&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;8080&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;initialDelaySeconds&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;120&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;periodSeconds&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;60&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;env&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;DOCKER_ENABLE_SECURITY&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;value&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;false&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;INSTALL_BOOK_AND_ADVANCED_HTML_OPS&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;value&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;false&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;UI_APP_NAME&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;value&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;R2049 PDF&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;ALLOW_GOOGLE_VISIBILITY&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;value&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;true&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;LANGS&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;value&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;zh_CN&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;APP_LOCALE&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;value&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;zh_CN&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;volumeMounts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;mountPath&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;/configs&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;subPath&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;configs&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;data&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;mountPath&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;/usr/share/tessdata&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;subPath&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;tessdata&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;data&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;mountPath&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;/customFiles/&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;subPath&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;customFiles&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;data&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;volumes&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;data&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;persistentVolumeClaim&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;claimName&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;stirling-pdf&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;imagePullSecrets&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;regcred&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;dnsPolicy&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;ClusterFirst&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;restartPolicy&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Always&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;terminationGracePeriodSeconds&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;30&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nn"&gt;---&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;apiVersion&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;v1&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Service&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;stirling-pdf-service&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;spec&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;selector&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;app&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;stirling-pdf&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ports&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;protocol&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;TCP&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;port&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;8080&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;targetPort&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;8080&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;type&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;ClusterIP&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nn"&gt;---&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;apiVersion&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;networking.k8s.io/v1&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;kind&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Ingress&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;metadata&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;annotations&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;cert-manager.io/cluster-issuer&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;letsencrypt-prod&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;kubernetes.io/tls-acme&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;true&amp;#34;&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;generation&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;ingress-pdf-house2048&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nt"&gt;spec&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;ingressClassName&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;traefik&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;rules&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;host&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;pdf.house2048.cn&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;paths&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;backend&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;service&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;stirling-pdf-service&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;port&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;number&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;8080&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;/&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;pathType&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;Prefix&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;tls&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="nt"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;- &lt;span class="l"&gt;pdf.house2048.cn&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nt"&gt;secretName&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l"&gt;pdf-house2048-cn-tls&lt;/span&gt;&lt;span class="w"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description></item><item><title>GPT2077 Free GPT4 Site~</title><link>https://liguobao.github.io/p/gpt2077-free-gpt4/</link><pubDate>Wed, 29 May 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/gpt2077-free-gpt4/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/gpt2077-free-gpt4/girl.png" alt="Featured image of post GPT2077 Free GPT4 Site~" /&gt;&lt;p&gt;&lt;a class="link" href="https://zzqkhoj77w.feishu.cn/docx/Oj2TdG9pHoWCJhxgq0ycYTVqnMf" target="_blank" rel="noopener"
+&gt;GPT2077 News~&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id="gpt2077-free-gpt4-site"&gt;GPT2077 Free GPT4 Site~
+&lt;/h2&gt;&lt;p&gt;Domestic high speed, no VPN, safe and efficient.&lt;/p&gt;
+&lt;p&gt;Supports GPT3.5, GPT4, paper polishing, pay per use.&lt;/p&gt;
+&lt;p&gt;Powered by GPT 2077~&lt;/p&gt;
+&lt;p&gt;Domestic network, register with email and activate immediately.&lt;/p&gt;
+&lt;p&gt;GPT4, GPT3.5, GPT-4o, Google Gemini-Pro, DALL-E3-Image text to image model all available~&lt;/p&gt;
+&lt;p&gt;Paper interpretation, SiriGPT, paper polishing, API calls and more~&lt;/p&gt;
+&lt;p&gt;Pay per use, as needed.&lt;/p&gt;
+&lt;p&gt;Daily check-in gives 100K Token, invite friends each gives 300K Token. Basically free~&lt;/p&gt;
+&lt;p&gt;Scan QR code to register&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://liguobao.github.io/qr.png"
+loading="lazy"
+alt="QR code for registration"
+&gt;&lt;/p&gt;
+&lt;p&gt;Invite code registration. Welcome to use my invite code [9NBE3XJ9] to register GPT2077, immediately get 500K Token reward (universal for GPT4, 3.5 models).&lt;/p&gt;
+&lt;p&gt;Click link to register: &lt;a class="link" href="https://chat.r2049.cn/user/login?inviteCode=9NBE3XJ9" target="_blank" rel="noopener"
+&gt;https://chat.r2049.cn/user/login?inviteCode=9NBE3XJ9&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;GPT4 classic question Q: Lu Xun hit Zhou Shuren, is this normal? Answers from three different models~&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://liguobao.github.io/luxun.png"
+loading="lazy"
+alt="Lu Xun question comparison"
+&gt;&lt;/p&gt;
+&lt;h3 id="daily-check-in"&gt;&amp;ldquo;Daily Check-in&amp;rdquo;
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Entry: Personal info page&lt;/li&gt;
+&lt;li&gt;Check-in Token reward 100K&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="invite-code-function"&gt;&amp;ldquo;Invite Code&amp;rdquo; Function
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;GPT 2077 Invite Code&lt;/li&gt;
+&lt;li&gt;Current inviter reward 300K Token, new invited user reward 500K Token.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="siri-gpt"&gt;Siri GPT
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;How to use GPT conversation in Siri~&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="gpt35-vs-gpt4"&gt;GPT3.5 vs GPT4
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;GPT3.5, GPT4 comparison&lt;/li&gt;
+&lt;/ul&gt;</description></item><item><title>Slax Reader An AI-Powered Mind Map Extension</title><link>https://liguobao.github.io/p/slax-reader-ai-mind-map/</link><pubDate>Tue, 21 May 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/slax-reader-ai-mind-map/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/slax-reader-ai-mind-map/ai.png" alt="Featured image of post Slax Reader An AI-Powered Mind Map Extension" /&gt;&lt;p&gt;Spotted an interesting browser extension recently — “Slax Reader”. Worth a quick recommendation.&lt;/p&gt;
+&lt;p&gt;An AI-powered browser extension that generates outlines and highlights key points to enhance your web reading experience.&lt;/p&gt;
+&lt;p&gt;Chrome Web Store:&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://chromewebstore.google.com/detail/slax-reader/gdnhaajlomjkhahnmiijphnodkcfikfd" target="_blank" rel="noopener"
+&gt;https://chromewebstore.google.com/detail/slax-reader/gdnhaajlomjkhahnmiijphnodkcfikfd&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Note: It’s a Chrome extension — handle installation as you see fit.
+Original post: &lt;a class="link" href="https://x.com/wulujia/status/1791680166382727541" target="_blank" rel="noopener"
+&gt;https://x.com/wulujia/status/1791680166382727541&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Some screenshots and examples below:&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://pic1.zhimg.com/80/v2-39db24d9308f4a3dfa744beb17e153bc_1440w.webp"
+loading="lazy"
+&gt;&lt;/p&gt;
+&lt;p&gt;Original article (Chinese): “Why we fall in love, and why we part”
+&lt;a class="link" href="https://mp.weixin.qq.com/s/r9wSD-Y" target="_blank" rel="noopener"
+&gt;https://mp.weixin.qq.com/s/r9wSD-Y&lt;/a&gt;‍81My7‍6J_74A5d4g&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://pic3.zhimg.com/80/v2-00da50acf969ce2c88159a2ae971a35e_1440w.webp"
+loading="lazy"
+&gt;&lt;/p&gt;
+&lt;p&gt;Another Zhihu thread (debate/argument)&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://gqj-blog.oss-cn-beijing.aliyuncs.com/img/image-20220427162459407.png"
+loading="lazy"
+alt="image-20220427162459407"
+&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://pic2.zhimg.com/80/v2-a57549425bb215496e74433134e87ce5_1440w.webp"
+loading="lazy"
+&gt;&lt;/p&gt;
+&lt;p&gt;A Python learning article I wrote earlier.&lt;/p&gt;
+&lt;p&gt;At the time of writing, the extension is free; the author mentioned typical usage isn’t heavy. It reportedly uses the OpenAI API, so it’s not exactly “cheap” behind the scenes.&lt;/p&gt;
+&lt;p&gt;For quick reads and skimming, the overall experience is solid — nice for building an overview.&lt;/p&gt;
+&lt;p&gt;Pretty neat — another way to save time while reading.&lt;/p&gt;</description></item><item><title>[k3s] Best Edge Computing Cluster Solution of the Year</title><link>https://liguobao.github.io/p/k3s-edge-computing-cluster/</link><pubDate>Wed, 01 May 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/k3s-edge-computing-cluster/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/k3s-edge-computing-cluster/k3s.png" alt="Featured image of post [k3s] Best Edge Computing Cluster Solution of the Year" /&gt;&lt;p&gt;PS: Not working on Labor Day — just kidding!&lt;/p&gt;
+&lt;p&gt;Manual dog head ~&lt;/p&gt;
+&lt;p&gt;[Disclaimer on programming technical area]&lt;/p&gt;
+&lt;p&gt;One of our servers was about to expire and the IDC quoted 2500 for renewal.
+They said the price was the same last year. Fair enough — we did pay last year.
+But this year isn’t easy.&lt;/p&gt;
+&lt;p&gt;So I looked for cloud deals and bought machines quickly. I decided to build a cluster.
+I chose k3s.&lt;/p&gt;
+&lt;p&gt;I had used other edge solutions like SuperEdge before, but those projects stalled.
+Many open-source projects from large companies in China seem to be KPI-driven and get abandoned.
+K3s has been more actively maintained by the Rancher team.&lt;/p&gt;
+&lt;p&gt;Why is it called K3s?&lt;/p&gt;
+&lt;p&gt;The joke says we want Kubernetes that uses half the memory. Kubernetes is abbreviated to K8s. Half of 10 letters is 5, so the joke abbreviates it to K3s. K3s doesn’t have an official long name or pronunciation. See the docs: &lt;a class="link" href="https://docs.k3s.io/zh/" target="_blank" rel="noopener"
+&gt;https://docs.k3s.io/zh/&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Small but powerful.&lt;/p&gt;
+&lt;p&gt;I handed the task to Haige; he spent an afternoon getting the cluster up. We migrated services that night and it took about three and a half hours.
+We accidentally lost a Redis cache (my mistake), but the cluster went online.&lt;/p&gt;
+&lt;p&gt;Two cheap nodes running:&lt;/p&gt;
+&lt;p&gt;vm-16-12-ubuntu Ready 42d v1.28.7+k3s1
+vm-28-17-ubuntu Ready 42d v1.28.7+k3s1&lt;/p&gt;
+&lt;p&gt;I’ve been busy with GPT2077 recently and left little time for the machines.
+Now that things are calm and a server renewal came up, I started tinkering again.&lt;/p&gt;
+&lt;p&gt;Installation follows the official docs: &lt;a class="link" href="https://docs.k3s.io/zh/quick-start" target="_blank" rel="noopener"
+&gt;https://docs.k3s.io/zh/quick-start&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Example (China mirror):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;curl -sfL https://rancher-mirror.rancher.cn/k3s/k3s-install.sh &lt;span class="p"&gt;|&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nv"&gt;INSTALL_K3S_MIRROR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;cn sh -
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Notes and gotchas&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;After running the script, the installer creates a k3s.service and installs the k3s CLI.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Whether a node runs as a server or an agent depends on k3s.service configuration.
+By default the system starts as a server; adjust the service arguments to run as an agent or use other options.&lt;/p&gt;
+&lt;h2 id="2-edge-networking"&gt;2) Edge networking
+&lt;/h2&gt;&lt;p&gt;My servers are two cloud hosts in the same LAN, so configuration is simple. But edge nodes may sit behind NAT or in other clouds, making direct internal networking impossible.&lt;/p&gt;
+&lt;p&gt;WireGuard is a good option for cross-location networking.&lt;/p&gt;
+&lt;p&gt;What is WireGuard?&lt;/p&gt;
+&lt;p&gt;WireGuard is a simple, fast, and secure VPN that uses modern cryptography. It aims to be easier and slimmer than traditional VPNs and runs on many platforms including Linux, Windows, macOS, BSD, iOS, and Android. Reference: &lt;a class="link" href="https://zhuanlan.zhihu.com/p/108365587" target="_blank" rel="noopener"
+&gt;https://zhuanlan.zhihu.com/p/108365587&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;I first looked at Netmaker (but it’s a paid project with conceptual complexity). Then I found Yang Bin’s article about using WireGuard to build K3s across clouds and adopted the approach.&lt;/p&gt;
+&lt;p&gt;The plan:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Use WireGuard for site-to-site networking&lt;/li&gt;
+&lt;li&gt;Configure k3s Flannel to use wireguard-native&lt;/li&gt;
+&lt;li&gt;Restart and verify the cluster&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="install-wireguard"&gt;Install WireGuard
+&lt;/h2&gt;&lt;h3 id="debian--ubuntu"&gt;Debian / Ubuntu
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;apt install wireguard resolvconf -y
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Enable IPv4 forwarding&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;net.ipv4.ip_forward = 1&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; /etc/sysctl.conf
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sysctl -p
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id="centos-7"&gt;CentOS 7
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo yum install epel-release elrepo-release -y
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo yum install yum-plugin-elrepo -y
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo yum install kmod-wireguard wireguard-tools systemd-resolved -y
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Enable IPv4 forwarding&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;net.ipv4.ip_forward = 1&amp;#34;&lt;/span&gt; &amp;gt;&amp;gt; /etc/sysctl.conf
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sysctl -p
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;CentOS may need a reboot after kernel module updates.&lt;/p&gt;
+&lt;h2 id="k3s-flannel---wireguard-native"&gt;k3s Flannel -&amp;gt; wireguard-native
+&lt;/h2&gt;&lt;p&gt;Edit the k3s systemd service and restart k3s:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo vi /etc/systemd/system/k3s.service
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo systemctl daemon-reload
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo systemctl restart k3s
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Example &lt;code&gt;ExecStart&lt;/code&gt; snippet for &lt;code&gt;/etc/systemd/system/k3s.service&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/local/bin/k3s &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; server &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-external-ip &amp;lt;PUBLIC_IP&amp;gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --flannel-backend wireguard-native &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --flannel-external-ip &amp;lt;PUBLIC_IP&amp;gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s1"&gt;&amp;#39;--tls-san&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s1"&gt;&amp;#39;&amp;lt;PUBLIC_IP&amp;gt;&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s1"&gt;&amp;#39;--node-name&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s1"&gt;&amp;#39;vm-16-12-ubuntu&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s1"&gt;&amp;#39;--server&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="s1"&gt;&amp;#39;https://&amp;lt;INTERNAL_IP&amp;gt;:6443&amp;#39;&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;If there are no errors, restart the service and check logs.&lt;/p&gt;
+&lt;p&gt;Next, configure agent nodes (edge nodes).&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;# Agent example&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;k3s agent --node-name zj-hc1 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --lb-server-port &lt;span class="m"&gt;5443&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --server https://&amp;lt;SERVER_PUBLIC_IP&amp;gt;:6443 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --token&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&amp;lt;YOUR_TOKEN&amp;gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;I used &lt;code&gt;--lb-server-port 5443&lt;/code&gt; because &lt;code&gt;6443&lt;/code&gt; was taken. This is optional.&lt;/p&gt;
+&lt;p&gt;More agent options: &lt;a class="link" href="https://docs.rancher.cn/docs/k3s/installation/install-options/agent-config/_index/" target="_blank" rel="noopener"
+&gt;https://docs.rancher.cn/docs/k3s/installation/install-options/agent-config/_index/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;After the agent joins, modify &lt;code&gt;/etc/systemd/system/k3s.service&lt;/code&gt; on the agent and restart k3s:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo systemctl daemon-reload
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;sudo systemctl restart k3s
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Example agent &lt;code&gt;ExecStart&lt;/code&gt; core options:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;span class="lnt"&gt;2
+&lt;/span&gt;&lt;span class="lnt"&gt;3
+&lt;/span&gt;&lt;span class="lnt"&gt;4
+&lt;/span&gt;&lt;span class="lnt"&gt;5
+&lt;/span&gt;&lt;span class="lnt"&gt;6
+&lt;/span&gt;&lt;span class="lnt"&gt;7
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-sh" data-lang="sh"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nv"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;/usr/local/bin/k3s &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; agent --node-name zj-hc2 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --lb-server-port &lt;span class="m"&gt;5443&lt;/span&gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-ip 10.42.5.1 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --node-external-ip &amp;lt;PUBLIC_IP&amp;gt; &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --server https://&amp;lt;YOUR_SERVER_IP&amp;gt;:6443 &lt;span class="se"&gt;\
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; --token&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;&amp;lt;YOUR_TOKEN&amp;gt;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;That’s it — the cluster should be up.&lt;/p&gt;
+&lt;p&gt;I tested basic services and the latency is acceptable for non-latency-sensitive workloads.&lt;/p&gt;
+&lt;p&gt;Written on a speeding train — still worth a thumbs up.&lt;/p&gt;
+&lt;p&gt;Manual dog head ~&lt;/p&gt;
+&lt;p&gt;Happy holidays!&lt;/p&gt;</description></item><item><title>How to Copy Some Hard-to-Copy Content on Zhihu</title><link>https://liguobao.github.io/p/how-to-copy-zhihu-content/</link><pubDate>Sat, 27 Apr 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/how-to-copy-zhihu-content/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/how-to-copy-zhihu-content/gqj.png" alt="Featured image of post How to Copy Some Hard-to-Copy Content on Zhihu" /&gt;&lt;p&gt;Instead of bothering others for help (for free), let’s solve this with a tiny bit of code.&lt;/p&gt;
+&lt;p&gt;Open the target Zhihu answer page, e.g.:&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://www.zhihu.com/question/647193565/answer/3469007201" target="_blank" rel="noopener"
+&gt;https://www.zhihu.com/question/647193565/answer/3469007201&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Open DevTools (F12), go to the console, and run:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-javascript" data-lang="javascript"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;getElementsByClassName&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;RichContent RichContent--unescapable&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;)[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;].&lt;/span&gt;&lt;span class="nx"&gt;innerText&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;You should see the text content printed.&lt;/p&gt;
+&lt;p&gt;Right‑click the text output → “Copy string contents”, then paste wherever you need.&lt;/p&gt;
+&lt;p&gt;Done.&lt;/p&gt;</description></item><item><title>How to Evaluate Miyazaki’s “The Boy and the Heron”?</title><link>https://liguobao.github.io/p/how-to-evaluate-the-new-work-of-hayao-miyazaki/</link><pubDate>Wed, 17 Apr 2024 09:19:00 +0000</pubDate><guid>https://liguobao.github.io/p/how-to-evaluate-the-new-work-of-hayao-miyazaki/</guid><description>&lt;p&gt;By Chen Yeliang — source link in the Chinese post&lt;/p&gt;
+&lt;p&gt;Recently, writing on Zhihu has felt burdensome to me due to mental health. But in the theater, Miyazaki gave me two hours free of worries. Reading answers afterward, I felt I should contribute my aesthetics and knowledge to the world, even if it isn’t pleasant.&lt;/p&gt;
+&lt;p&gt;For Miyazaki, “The Boy and the Heron” is an “unpleasant” film — you can feel it. It still has a boy, a girl, a fantastical world, and a grand adventure, like Spirited Away or Laputa — but those were largely light and joyful. Their heroes had no inner knot; eyes were firm toward the future. This one is different: the boy’s eyes are still firm, the goal clear, but he always carries a knot.&lt;/p&gt;
+&lt;p&gt;His enemy is no longer a concrete thing — not the stepmother, not the heron, not ghosts, not the castellan, not the parrot. The troubles can’t be solved by slashing or shooting anyone. He can neither leave nor fight; seeing his mother or meeting the castellan changes nothing. The world’s collapse is inevitable; he is merely a witness.&lt;/p&gt;
+&lt;p&gt;Why make an “unpleasant” film? Because the blade is pointed at himself. Dissecting oneself is never easy.&lt;/p&gt;
+&lt;p&gt;The story is actually straightforward if you grasp a few key metaphors. I pick six to form the spine:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;The Tower&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;There are two worlds: wartime Japan (reality) and the world inside the tower (fantasy). The bridge is the tower. Two explanations are offered: the stepmother says a clever great‑uncle built it; the maids say it fell from the sky and the uncle merely walled it in, and many died during construction.&lt;/p&gt;
+&lt;p&gt;To read the metaphor, recall modern Japanese history. After centuries of isolation under the Tokugawa shogunate, the “Black Ships” forced Japan to open in 1854. Reformers aligned with southern domains led the Meiji Restoration and modernization.&lt;/p&gt;
+&lt;p&gt;The tower “fell from the sky” and is black — the Black Ships; more broadly, Western modernity. The “clever great‑uncle” stands for the reformers; Meiji Restoration wrapped Western ideas in Japanese dress, yielding a hybrid tower.&lt;/p&gt;
+&lt;p&gt;But the tower as the bridge between worlds goes deeper: it symbolizes the entire post‑Meiji institutional system — politics, history, culture — a maze beneath. Inside, politics becomes visible; every creature stands for something. I view the tower as Japan’s whole system.&lt;/p&gt;
+&lt;ol start="2"&gt;
+&lt;li&gt;The Tomb Owner&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Many reviews ignore this key metaphor — the root of the tower’s decay, the source of pollution, the beginning. When the boy first arrives, he sees a tomb: walls outside, a golden door, a crude stone chamber within, inscribed “Those who emulate me shall die.” Even powerful Himi treats it warily; pelicans worship it, but only from afar.&lt;/p&gt;
+&lt;p&gt;The “tomb owner” is the archetype who brought the “law” of expansion and greed — a critique of the imported social order that rewards capital accumulation. It is the origin of the rot that pervades the tower.&lt;/p&gt;
+&lt;ol start="3"&gt;
+&lt;li&gt;Pelicans&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;They are pitiful: greedy, timid, and they learned “man‑eating” from the tomb owner. Unable to catch fish at sea, they prey on the wah‑la‑wah‑la (the little warawara souls).&lt;/p&gt;
+&lt;p&gt;Pelicans symbolize the new domestic forces after Meiji — the class of the boy’s father: private capital. They learned expansion and compounding from old imperial powers but “can’t catch most fish at sea” — they lack the capacity.&lt;/p&gt;
+&lt;p&gt;Fish never speak; they likely don’t symbolize anything concrete — think “traditional natural economy.” The pre‑imperialist cycle was: fish at sea → we eat the meat → oil goes to warawara → warawara, well‑fed, ascend to become the future. People are the warawara; only they can sustain the world.&lt;/p&gt;
+&lt;p&gt;Pelicans were jammed into the system; like Japanese capitalism, they skipped the long gestation of Western capital. They can’t run like the natural economy, and they can’t touch the tomb owner’s cake; so they turn inward and squeeze the warawara. They know eating warawara ends the future, but the rule — “expand or die” — forces blind expansion. New pelicans can no longer fly, and thus they become…&lt;/p&gt;
+&lt;ol start="4"&gt;
+&lt;li&gt;Parrots&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The clearest metaphor: militarism. Miyazaki all but draws the mustache on their faces.&lt;/p&gt;
+&lt;p&gt;How did militarism arise? Pelicans can’t fish; the tomb owner can’t be challenged. So Japan turned to direct violence and outward expansion: 1874 Taiwan expedition; 1875 Korea (Ganghwa); 1894 Sino‑Japanese War; 1900 the Eight‑Nation Alliance; 1904 Russo‑Japanese War; 1914 WWI (Qingdao, Jiaozhou, Jinan; the “Twenty‑One Demands”); 1918 Siberia; 1927 Manchuria; 1939 the Pacific War. Each victory fed the parrots until appetite and arrogance doomed the world.&lt;/p&gt;
+&lt;p&gt;The boy’s father building Zero fighter shells is the collusion of pelican (capital) and parrot (militarism).&lt;/p&gt;
+&lt;ol start="5"&gt;
+&lt;li&gt;The Castellan&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;He is Miyazaki himself. The thirteen blocks are his thirteen films. He searches for “clean stones” to stack — childhood innocence, dreams, and fantasy untainted by social rules. But he is pessimistic: clean stones grow scarce. Pollution — the law of greed and capital as success — is endless. Even the purest child must bow to it when grown. Miyazaki’s own works are not fully untainted either; they must obey commerce to fund the next film.&lt;/p&gt;
+&lt;p&gt;He wants to build a stable tower that won’t collapse — but that is doomed. To the Parrot King, it’s absurd to think your tower changes the world. The Parrot King casually piles a tower, finds it wrong, and chops it down; the world ends. Two atomic bombs fall; WWII ends; a new Japan is born. As all creatures flee the tower, parrots emerge too, instantly turning into harmless little birds that cuddle up to people — and then defecate on their faces as they fly off.&lt;/p&gt;
+&lt;p&gt;(Further sections follow the same logic in the Chinese article.)&lt;/p&gt;
+&lt;ol start="6"&gt;
+&lt;li&gt;Mahito (the Boy) · The Wound&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Back to the start: the most “unpleasant” part is the montage where Mahito fights at school and smashes his own head with a stone. There’s no production sound, no monologue, the scuffle is elided under light music — a strange treatment for an important beat.&lt;/p&gt;
+&lt;p&gt;It feels like a storyteller glossing over his wrongdoing. Is Miyazaki hiding something? No — or he wouldn’t include it at all. The bald patch remains for the entire film; his asymmetric hair is a constant reminder: Mahito did something wrong.&lt;/p&gt;
+&lt;p&gt;He injured himself, then lied to win parental concern and let his father trouble the classmate. To us it’s childish; to Miyazaki it is base.&lt;/p&gt;
+&lt;p&gt;At the end, when the Castellan offers the blocks, Mahito refuses: “I am not pure. This wound proves my baseness. If I take the stone, I will pollute it.”&lt;/p&gt;
+&lt;p&gt;Meaning: his father profited from war; he grew up in that home. He too harbors base thoughts. He is not the pure, upright hero of classic Miyazaki, but a “real person”. Building blocks is creating art; blocks are bits of life and a worldview. But if the self is base, the gaze pollutes, and the work distorts.&lt;/p&gt;
+&lt;p&gt;This is Miyazaki’s worry about Japan. Mahito is the next generation. Japanese today live with original sin, nourished — however indirectly — by violence and war. When disasters are forgotten, can they remain pure? Can they build stable towers?&lt;/p&gt;
+&lt;p&gt;As a citizen of a country once invaded by Japan, I do not presume to untie their knots. My grandparents’ generation suffered; even today, our city’s air‑raid sirens sound in September to mark the day it fell — a reminder not to forget national humiliation.&lt;/p&gt;
+&lt;p&gt;But victims of violence are not immune from violence. Polluted rules still “eat people” in many societies. Our works also worship money, status, power, and violence; kneel to consumerism.&lt;/p&gt;
+&lt;p&gt;Miyazaki’s ideals — I genuinely admire. His questions — I cannot answer.&lt;/p&gt;</description></item><item><title>How To Delete All Your Zhihu Answers and Ideas At Once?</title><link>https://liguobao.github.io/p/how-to-delete-all-answers-on-zhihu/</link><pubDate>Fri, 01 Mar 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/how-to-delete-all-answers-on-zhihu/</guid><description>&lt;p&gt;Source: &lt;a class="link" href="https://www.zhihu.com/question/265203478/answer/3415024932" target="_blank" rel="noopener"
+&gt;https://www.zhihu.com/question/265203478/answer/3415024932&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Backup. For when you need it.&lt;/p&gt;
+&lt;p&gt;JavaScript snippet to batch‑delete short answers on a page:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;span class="lnt"&gt;11
+&lt;/span&gt;&lt;span class="lnt"&gt;12
+&lt;/span&gt;&lt;span class="lnt"&gt;13
+&lt;/span&gt;&lt;span class="lnt"&gt;14
+&lt;/span&gt;&lt;span class="lnt"&gt;15
+&lt;/span&gt;&lt;span class="lnt"&gt;16
+&lt;/span&gt;&lt;span class="lnt"&gt;17
+&lt;/span&gt;&lt;span class="lnt"&gt;18
+&lt;/span&gt;&lt;span class="lnt"&gt;19
+&lt;/span&gt;&lt;span class="lnt"&gt;20
+&lt;/span&gt;&lt;span class="lnt"&gt;21
+&lt;/span&gt;&lt;span class="lnt"&gt;22
+&lt;/span&gt;&lt;span class="lnt"&gt;23
+&lt;/span&gt;&lt;span class="lnt"&gt;24
+&lt;/span&gt;&lt;span class="lnt"&gt;25
+&lt;/span&gt;&lt;span class="lnt"&gt;26
+&lt;/span&gt;&lt;span class="lnt"&gt;27
+&lt;/span&gt;&lt;span class="lnt"&gt;28
+&lt;/span&gt;&lt;span class="lnt"&gt;29
+&lt;/span&gt;&lt;span class="lnt"&gt;30
+&lt;/span&gt;&lt;span class="lnt"&gt;31
+&lt;/span&gt;&lt;span class="lnt"&gt;32
+&lt;/span&gt;&lt;span class="lnt"&gt;33
+&lt;/span&gt;&lt;span class="lnt"&gt;34
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-javascript" data-lang="javascript"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// Delete a single answer
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;deleteAnswer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;answerId&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kd"&gt;var&lt;/span&gt; &lt;span class="nx"&gt;xhr&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;new&lt;/span&gt; &lt;span class="nx"&gt;XMLHttpRequest&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;xhr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;withCredentials&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="kc"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;xhr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;addEventListener&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;readystatechange&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;readyState&lt;/span&gt; &lt;span class="o"&gt;===&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;this&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;responseText&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;});&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;xhr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;open&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;DELETE&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;https://www.zhihu.com/api/v4/answers/&amp;#34;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;answerId&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;xhr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;setRequestHeader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;authority&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;www.zhihu.com&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;xhr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;setRequestHeader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;accept&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;*/*&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;xhr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;setRequestHeader&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;#34;accept-language&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s2"&gt;&amp;#34;zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7&amp;#34;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;xhr&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;send&lt;/span&gt;&lt;span class="p"&gt;();&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;delete answer: &amp;#39;&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nx"&gt;answerId&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39; success&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="c1"&gt;// Clean all answers on the current page (shorter than N characters)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="kd"&gt;function&lt;/span&gt; &lt;span class="nx"&gt;clearAllAnswers&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;longer_than&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;answerItemList&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;document&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;querySelectorAll&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.AnswerItem&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;answerItem&lt;/span&gt; &lt;span class="k"&gt;of&lt;/span&gt; &lt;span class="nx"&gt;answerItemList&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;answerContentDev&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;answerItem&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;querySelector&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;.RichContent-inner&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;&lt;span class="nx"&gt;answerContentDev&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;continue&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;ans_id&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;answerItem&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;getAttribute&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="kd"&gt;let&lt;/span&gt; &lt;span class="nx"&gt;answerContent&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nx"&gt;answerContentDev&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;innerText&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;answerContent&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;length&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;=&lt;/span&gt; &lt;span class="nx"&gt;longer_than&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sb"&gt;`answer:&lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nx"&gt;ans_id&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="sb"&gt; is too long, skip`&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="k"&gt;continue&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;console&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="nx"&gt;log&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="sb"&gt;`delete answerContent: &lt;/span&gt;&lt;span class="si"&gt;${&lt;/span&gt;&lt;span class="nx"&gt;answerContent&lt;/span&gt;&lt;span class="si"&gt;}&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="nx"&gt;deleteAnswer&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nx"&gt;ans_id&lt;/span&gt;&lt;span class="p"&gt;);&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt; &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Steps&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Go to your answers list page, open the browser DevTools console (F12).&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Paste the code above into the Console and press Enter.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Run &lt;code&gt;clearAllAnswers(50)&lt;/code&gt; and press Enter.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Note: 50 means answers longer than 50 characters are skipped.&lt;/p&gt;
+&lt;ol start="4"&gt;
+&lt;li&gt;Keep paging through your answers and repeat:&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;code&gt;clearAllAnswers(50)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Done.&lt;/p&gt;</description></item><item><title>Why Do Programmers Turn Off Only the Monitor, Not the PC?</title><link>https://liguobao.github.io/p/why-dont-programmers-turn-off-their-computers-after-work/</link><pubDate>Thu, 29 Feb 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/why-dont-programmers-turn-off-their-computers-after-work/</guid><description>&lt;p&gt;Source (Chinese):
+&lt;a class="link" href="https://www.zhihu.com/question/640589218/answer/3414109229" target="_blank" rel="noopener"
+&gt;https://www.zhihu.com/question/640589218/answer/3414109229&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Welcome to the workplace theme park. Please follow the safety rules:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Power runs 24/7; diesel generators auto‑start during outages. Do not approach the power room if you hear loud bangs. Report any brown liquid seeping out to admin.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Power buttons are on top of cases; if yours is on the front, do not power on — leave early.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;We provide 19‑inch MacBook Pros (silver only). If you get a black one, do not turn it on; return it to IT.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Pantry stocks Pepsi Zero only. If you see Coca‑Cola on sale, don’t try it — call admin. If you drank it, go to the clinic.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Turn off your monitor when leaving — save energy.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Do not shut down your PC — improve efficiency.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If the PC is off in the morning, hold power to boot. If it won’t boot, call IT. Don’t open the case or unplug it yourself.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If you see other monitors lit in the morning, note the number and leave; report if needed.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;There are no robot dogs. If you see one, avoid and report.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Most programmers are introverts; avoid unnecessary small talk. If one initiates unusually, note their number and report.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Access control and face recognition are developed in‑house; only staff cards work. No outsiders can enter.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;…&lt;/p&gt;
+&lt;p&gt;Why leave PCs on? Builds, background jobs, remote sessions, scheduled tasks, and long‑running dev tools keep working overnight. Monitors off saves power; machines on preserves context and avoids morning setup cost.&lt;/p&gt;</description></item><item><title>What’s the Shortest Server Rental? Can I Rent for Just a Week?</title><link>https://liguobao.github.io/p/how-long-can-i-buy-a-server/</link><pubDate>Mon, 29 Jan 2024 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/how-long-can-i-buy-a-server/</guid><description>&lt;p&gt;Source: &lt;a class="link" href="https://www.zhihu.com/question/639020341" target="_blank" rel="noopener"
+&gt;https://www.zhihu.com/question/639020341&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Q: What’s the shortest I can rent a server? Can I rent for only a week?&lt;/p&gt;
+&lt;p&gt;A:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Is there such a service?&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Yes. Choose pay‑as‑you‑go/on‑demand. Most cloud products support it. In China, many providers require real‑name verification and a prepaid balance (e.g., &amp;gt;100 CNY) to enable it — a bit sneaky.&lt;/p&gt;
+&lt;ol start="2"&gt;
+&lt;li&gt;Any “cheaper” options?&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Sure: for static sites, GitHub Pages is simplest. I wrote this earlier:&lt;/p&gt;
+&lt;p&gt;How to configure a GitHub Pages site: &lt;a class="link" href="https://liguobao.github.io/p/how-to-set-github-page/" target="_blank" rel="noopener"
+&gt;https://liguobao.github.io/p/how-to-set-github-page/&lt;/a&gt;&lt;/p&gt;
+&lt;ol start="3"&gt;
+&lt;li&gt;I want to expose my local site to the internet — any simple solution?&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Yes. Easiest is FRP (intranet penetration), but you still need a public server for the FRP server side.&lt;/p&gt;
+&lt;p&gt;How to configure FRP: &lt;a class="link" href="https://liguobao.github.io/p/how-to-set-frp/" target="_blank" rel="noopener"
+&gt;https://liguobao.github.io/p/how-to-set-frp/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Alternatively, use a tunneling service. When I played with stable-diffusion-webui, it provided a temporary public URL (via &lt;a class="link" href="https://www.gradio.app/%29" target="_blank" rel="noopener"
+&gt;https://www.gradio.app/)&lt;/a&gt;. You can use similar services to expose a local service as a temporary public address.&lt;/p&gt;
+&lt;p&gt;Docs: Sharing Your App — &lt;a class="link" href="https://www.gradio.app/3.50.2/guides/sharing-your-app" target="_blank" rel="noopener"
+&gt;https://www.gradio.app/3.50.2/guides/sharing-your-app&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Have fun!&lt;/p&gt;</description></item><item><title>2nd‑Tier Public University CS Grad, 1 Year In — How To Jump From Small Company to Big Tech?</title><link>https://liguobao.github.io/p/how-to-jump-from-small-company-to-big-company/</link><pubDate>Mon, 08 Jan 2024 15:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/how-to-jump-from-small-company-to-big-company/</guid><description>&lt;p&gt;Source: &lt;a class="link" href="https://www.zhihu.com/question/638539558" target="_blank" rel="noopener"
+&gt;https://www.zhihu.com/question/638539558&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;First, a general path.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Education&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;With a standard bachelor’s, in principle you shouldn’t be auto‑screened — but lately some HRs hard‑filter by degree/school; it comes down to luck. Try anyway.&lt;/p&gt;
+&lt;ol start="2"&gt;
+&lt;li&gt;Stepwise moves&lt;/li&gt;
+&lt;/ol&gt;
+&lt;ul&gt;
+&lt;li&gt;Small company → leading small company&lt;/li&gt;
+&lt;li&gt;Leading small company → mid‑size company&lt;/li&gt;
+&lt;li&gt;Mid‑size company → big tech&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;This is the safer route, but it’s long and you might miss windows of opportunity.&lt;/p&gt;
+&lt;ol start="3"&gt;
+&lt;li&gt;Resume&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Write it well. Have friends review; tailor for each role. Otherwise you may fail the resume screen outright. Prepare a couple of projects you can speak about in depth — they should look interesting and solid at a glance, and hold up in conversation.&lt;/p&gt;
+&lt;ol start="4"&gt;
+&lt;li&gt;Referrals and advocates&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Get people to vouch for you. Hiring folks don’t mind fishing for resumes. If a friend forwards yours, I (for example) will at least look and reply honestly about fit. If it looks good, I’ll put in a good word to get you a shot.&lt;/p&gt;
+&lt;p&gt;Be thick‑skinned and meet people online; there are always ways. Avoid “referral brokers”; you’re just a transaction to them. Friends are more likely to care and follow up. Be polite widely and offend few; someone will help.&lt;/p&gt;
+&lt;ol start="5"&gt;
+&lt;li&gt;LeetCode + “eight‑legged essays” (fundamentals Q&amp;amp;A)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;No way around it — some companies like them. Practice; muscle memory helps. As for rote theory grilling, it depends on the company. Some places overdo it; be prepared.&lt;/p&gt;
+&lt;p&gt;Easter egg: so he didn’t even call me “Bao‑ge”…&lt;/p&gt;</description></item><item><title>China’s TV Turn‑On Rate Dropped from 70% (2016) to 30% — Why?</title><link>https://liguobao.github.io/p/our-tv-open-rate-fall/</link><pubDate>Sun, 07 Jan 2024 21:44:00 +0000</pubDate><guid>https://liguobao.github.io/p/our-tv-open-rate-fall/</guid><description>&lt;p&gt;Source: &lt;a class="link" href="https://www.zhihu.com/question/638134615/" target="_blank" rel="noopener"
+&gt;https://www.zhihu.com/question/638134615/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Some quick thoughts I jotted down about “scenarios”.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;A “fault line” effect&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;How many people working away from home have the conditions to watch TV? Most rental apartments don’t even have a living room; if there’s a living room, it may not have a TV; if there’s a TV, you need internet; with internet you’ll likely watch OTT/streaming; cable requires a separate subscription. After each layer of filtering, a huge population shrinks to a sliver. This doesn’t fully explain the post‑2016 cliff, but it’s indicative.&lt;/p&gt;
+&lt;ol start="2"&gt;
+&lt;li&gt;Content supply&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Let’s be honest: TV programming quality has dropped. If you switch to the channels you watched years ago, you’ll notice how weak the content is. Ads are even more homogenized. Compared to my childhood, today’s TV ads are… well, terrible. Why talk ads? Because that’s the main revenue for TV shows. Less money → can’t buy/make good content → fewer viewers → less ad revenue — a vicious cycle.&lt;/p&gt;
+&lt;p&gt;Internet TV isn’t great either. Aside from Bilibili’s TV app, most others feel like adware. Cloud TV clients aren’t “good”, they just look better by comparison. If you try Netflix’s TV client, you’ll see what a proper TV‑first experience looks like. Not targeting anyone: all the content providers here are “great” (you know what I mean).&lt;/p&gt;
+&lt;ol start="3"&gt;
+&lt;li&gt;Habits&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The younger generation didn’t inherit a TV‑watching habit. Lack of conditions is one reason; lack of content is another. Some potential “new scenarios” were also bypassed. For example, as modernization progressed, gaming could have driven a TV resurgence — big screen + gamepad = compelling. But in China, we went from web games to online games to mobile games. Console gamers are mostly a small, slow‑growing stock. It’s hard for people to experience the “better” TV+game experience. (Yes yes, you’re right.)&lt;/p&gt;
+&lt;p&gt;Genshin Impact has been popular for years, but not many know you can play it on PS4/5 with a controller. Trust me: 60” display + gamepad beats poking a phone screen.&lt;/p&gt;
+&lt;ol start="4"&gt;
+&lt;li&gt;Random aside&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Some things will likely die out. Let them. If people like what they like, that’s that.&lt;/p&gt;</description></item><item><title>Why Haven’t PCs Been Replaced by Phones?</title><link>https://liguobao.github.io/p/why-pc-not-replaced-by-mobile-test/</link><pubDate>Sun, 31 Dec 2023 08:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/why-pc-not-replaced-by-mobile-test/</guid><description>&lt;p&gt;Q: &lt;a class="link" href="https://www.zhihu.com/question/579778692" target="_blank" rel="noopener"
+&gt;https://www.zhihu.com/question/579778692&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;A:&lt;/p&gt;
+&lt;p&gt;First, it’s not entirely true they haven’t. For everyday short‑video use, most creation happens on phones now. Many mobile apps handle both shooting and editing, and you can publish directly to platforms. In that scenario, phones have “replaced” PCs.&lt;/p&gt;
+&lt;p&gt;Apple even showcases iPhone‑shot films every year, with end‑to‑end shooting and editing on iPhone — a cool flex. In that context, a phone can indeed beat a PC.&lt;/p&gt;
+&lt;p&gt;But… broadly speaking, all of “us” here are computers — phones included. If you can’t beat them, join them. Phones are computers too; they’re a form factor under the umbrella of computing devices. One form factor replacing another is normal.&lt;/p&gt;
+&lt;p&gt;What the question really means is: why haven’t personal computers been replaced by phones?&lt;/p&gt;
+&lt;p&gt;My take:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;Compute isn’t enough. For many workloads, phone SoCs still lag behind desktop/laptop CPUs/GPUs in sustained performance and thermal headroom.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Interaction isn’t enough. Touch-only UIs, small screens, limited input precision, multitasking constraints — all cap productivity for many tasks.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Ecosystem isn’t enough. Tooling, workflows, peripherals, and pro software ecosystems are still PC‑centric in many fields.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Overall, it likely takes another revolution — which might also end both as we know them. Just kidding (sort of).&lt;/p&gt;</description></item></channel></rss>

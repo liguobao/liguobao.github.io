@@ -1,0 +1,413 @@
+<!doctype html><html lang=zh dir=ltr><head><meta charset=utf-8><meta name=viewport content='width=device-width,initial-scale=1'><meta name=description content="手把手教你用.NET Core写爬虫 写在前面 自从上一个项目58HouseSearch从.NET迁移到.NET core之后，磕磕碰碰磨蹭了一个月才正式上线到新版本。 然后最近又开了个新坑，搞了个Dy2018Crawler用来爬dy2018电影天堂上面的电影资源。这里也借机简单介绍一下如何基于.NET Core写一个爬虫。 PS：如有偏错，敬请指明&mldr; PPS:该去电影院还是多去电影院，毕竟美人良时可无价。\n准备工作（.NET Core准备） 首先，肯定是先安装.NET Core咯。下载及安装教程在这里：.NET - Powerful Open Source Development。无论你是Windows、linux还是mac，统统可以玩。\n我这里的环境是：Windows10 + VS2015 community updata3 + .NET Core 1.1.0 SDK + .NET Core 1.0.1 tools Preview 2.\n理论上，只需要安装一下 .NET Core 1.1.0 SDK 即可开发.NET Core程序，至于用什么工具写代码都无关紧要了。\n安装好以上工具之后，在VS2015的新建项目就可以看到.NET Core的模板了。如下图：\n为了简单起见，我们创建的时候，直接选择VS .NET Core tools自带的模板。\n一个爬虫的自我修养 分析网页 写爬虫之前，我们首先要先去了解一下即将要爬取的网页数据组成。\n具体到网页的话，便是分析我们要抓取的数据在HTML里面是用什么标签抑或有什么样的标记，然后使用这个标记把数据从HTML中提取出来。在我这里的话，用的更多的是HTML标签的ID和CSS属性。\n以本文章想要爬取的dy2018.com为例,简单描述一下这个过程。dy2018.com主页如下图：\n在chrome里面，按F12进入开发者模式，接着如下图使用鼠标选择对应页面数据，然后去分析页面HTML组成。\n接着我们开始分析页面数据:\n经过简单分析HTML，我们得到以下结论：\nwww.dy2018.com首页的电影数据存储在一个class为co_content222的div标签里面\n电影详情链接为a标签，标签显示文本就是电影名称，URL即详情URL\n那么总结下来，我们的工作就是：找到class=&lsquo;co_content222&rsquo; 的div标签，从里面提取所有的a标签数据。\n开始写代码&mldr; 之前在写58HouseSearch项目迁移到asp.net core简单提过AngleSharp库，一个基于.NET（C#）开发的专门为解析xHTML源码的DLL组件。\n"><title>手把手教你用.NET Core写爬虫</title><link rel=canonical href=https://liguobao.github.io/zh/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E7%94%A8.net-core%E5%86%99%E7%88%AC%E8%99%AB/><link rel=stylesheet href=/scss/style.min.6a692fd055deae459f2a9767f57f3855ba80cafd5041317f24f7360f6ca47cdf.css><meta property='og:title' content="手把手教你用.NET Core写爬虫"><meta property='og:description' content="手把手教你用.NET Core写爬虫 写在前面 自从上一个项目58HouseSearch从.NET迁移到.NET core之后，磕磕碰碰磨蹭了一个月才正式上线到新版本。 然后最近又开了个新坑，搞了个Dy2018Crawler用来爬dy2018电影天堂上面的电影资源。这里也借机简单介绍一下如何基于.NET Core写一个爬虫。 PS：如有偏错，敬请指明&mldr; PPS:该去电影院还是多去电影院，毕竟美人良时可无价。\n准备工作（.NET Core准备） 首先，肯定是先安装.NET Core咯。下载及安装教程在这里：.NET - Powerful Open Source Development。无论你是Windows、linux还是mac，统统可以玩。\n我这里的环境是：Windows10 + VS2015 community updata3 + .NET Core 1.1.0 SDK + .NET Core 1.0.1 tools Preview 2.\n理论上，只需要安装一下 .NET Core 1.1.0 SDK 即可开发.NET Core程序，至于用什么工具写代码都无关紧要了。\n安装好以上工具之后，在VS2015的新建项目就可以看到.NET Core的模板了。如下图：\n为了简单起见，我们创建的时候，直接选择VS .NET Core tools自带的模板。\n一个爬虫的自我修养 分析网页 写爬虫之前，我们首先要先去了解一下即将要爬取的网页数据组成。\n具体到网页的话，便是分析我们要抓取的数据在HTML里面是用什么标签抑或有什么样的标记，然后使用这个标记把数据从HTML中提取出来。在我这里的话，用的更多的是HTML标签的ID和CSS属性。\n以本文章想要爬取的dy2018.com为例,简单描述一下这个过程。dy2018.com主页如下图：\n在chrome里面，按F12进入开发者模式，接着如下图使用鼠标选择对应页面数据，然后去分析页面HTML组成。\n接着我们开始分析页面数据:\n经过简单分析HTML，我们得到以下结论：\nwww.dy2018.com首页的电影数据存储在一个class为co_content222的div标签里面\n电影详情链接为a标签，标签显示文本就是电影名称，URL即详情URL\n那么总结下来，我们的工作就是：找到class=&lsquo;co_content222&rsquo; 的div标签，从里面提取所有的a标签数据。\n开始写代码&mldr; 之前在写58HouseSearch项目迁移到asp.net core简单提过AngleSharp库，一个基于.NET（C#）开发的专门为解析xHTML源码的DLL组件。\n"><meta property='og:url' content='https://liguobao.github.io/zh/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E7%94%A8.net-core%E5%86%99%E7%88%AC%E8%99%AB/'><meta property='og:site_name' content='人生删除指南'><meta property='og:type' content='article'><meta property='article:section' content='Post'><meta property='article:tag' content='asp.net core'><meta property='article:tag' content='crawler'><meta property='article:published_time' content='2016-12-04T00:00:00+00:00'><meta property='article:modified_time' content='2016-12-04T00:00:00+00:00'><meta name=twitter:title content="手把手教你用.NET Core写爬虫"><meta name=twitter:description content="手把手教你用.NET Core写爬虫 写在前面 自从上一个项目58HouseSearch从.NET迁移到.NET core之后，磕磕碰碰磨蹭了一个月才正式上线到新版本。 然后最近又开了个新坑，搞了个Dy2018Crawler用来爬dy2018电影天堂上面的电影资源。这里也借机简单介绍一下如何基于.NET Core写一个爬虫。 PS：如有偏错，敬请指明&mldr; PPS:该去电影院还是多去电影院，毕竟美人良时可无价。\n准备工作（.NET Core准备） 首先，肯定是先安装.NET Core咯。下载及安装教程在这里：.NET - Powerful Open Source Development。无论你是Windows、linux还是mac，统统可以玩。\n我这里的环境是：Windows10 + VS2015 community updata3 + .NET Core 1.1.0 SDK + .NET Core 1.0.1 tools Preview 2.\n理论上，只需要安装一下 .NET Core 1.1.0 SDK 即可开发.NET Core程序，至于用什么工具写代码都无关紧要了。\n安装好以上工具之后，在VS2015的新建项目就可以看到.NET Core的模板了。如下图：\n为了简单起见，我们创建的时候，直接选择VS .NET Core tools自带的模板。\n一个爬虫的自我修养 分析网页 写爬虫之前，我们首先要先去了解一下即将要爬取的网页数据组成。\n具体到网页的话，便是分析我们要抓取的数据在HTML里面是用什么标签抑或有什么样的标记，然后使用这个标记把数据从HTML中提取出来。在我这里的话，用的更多的是HTML标签的ID和CSS属性。\n以本文章想要爬取的dy2018.com为例,简单描述一下这个过程。dy2018.com主页如下图：\n在chrome里面，按F12进入开发者模式，接着如下图使用鼠标选择对应页面数据，然后去分析页面HTML组成。\n接着我们开始分析页面数据:\n经过简单分析HTML，我们得到以下结论：\nwww.dy2018.com首页的电影数据存储在一个class为co_content222的div标签里面\n电影详情链接为a标签，标签显示文本就是电影名称，URL即详情URL\n那么总结下来，我们的工作就是：找到class=&lsquo;co_content222&rsquo; 的div标签，从里面提取所有的a标签数据。\n开始写代码&mldr; 之前在写58HouseSearch项目迁移到asp.net core简单提过AngleSharp库，一个基于.NET（C#）开发的专门为解析xHTML源码的DLL组件。\n"><link rel="shortcut icon" href=/favicon.png></head><body class=article-page><script>(function(){const e="StackColorScheme";localStorage.getItem(e)||localStorage.setItem(e,"auto")})()</script><script>(function(){const t="StackColorScheme",e=localStorage.getItem(t),n=window.matchMedia("(prefers-color-scheme: dark)").matches===!0;e=="dark"||e==="auto"&&n?document.documentElement.dataset.scheme="dark":document.documentElement.dataset.scheme="light"})()</script><div class="container main-container flex on-phone--column extended"><aside class="sidebar left-sidebar sticky"><button class="hamburger hamburger--spin" type=button id=toggle-menu aria-label="Toggle Menu">
+<span class=hamburger-box><span class=hamburger-inner></span></span></button><header><figure class=site-avatar><a href=/zh/><img src=/img/zhihu-lgb_hu_2ad0a9defe137384.png width=300 height=300 class=site-logo loading=lazy alt=Avatar>
+</a><span class=emoji>🍥</span></figure><div class=site-meta><h1 class=site-name><a href=/zh>人生删除指南</a></h1><h2 class=site-description>liguobao</h2></div></header><ol class=menu-social><li><a href=https://github.com/liguobao target=_blank title=GitHub rel=me><svg class="icon icon-tabler icon-tabler-brand-github" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6.0 00-1.3-3.2 4.2 4.2.0 00-.1-3.2s-1.1-.3-3.5 1.3a12.3 12.3.0 00-6.2.0C6.5 2.8 5.4 3.1 5.4 3.1a4.2 4.2.0 00-.1 3.2A4.6 4.6.0 004 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21"/></svg></a></li><li><a href=https://x.com/Liguobao2049 target=_blank title=Twitter rel=me><svg class="icon icon-tabler icon-tabler-brand-twitter" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49-1.98.689-3 .99-1.121-1.265-2.783-1.335-4.38-.737S11.977 6.323 12 8v1c-3.245.083-6.135-1.395-8-4 0 0-4.182 7.433 4 11-1.872 1.247-3.739 2.088-6 2 3.308 1.803 6.913 2.423 10.034 1.517 3.58-1.04 6.522-3.723 7.651-7.742a13.84 13.84.0 00.497-3.753C20.18 7.773 21.692 5.25 22 4.009z"/></svg></a></li><li><a href=https://www.zhihu.com/people/codelover target=_blank title=知乎 rel=me><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg></a></li></ol><ol class=menu id=main-menu><li><a href=/zh/archives/><svg class="icon icon-tabler icon-tabler-archive" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><rect x="3" y="4" width="18" height="4" rx="2"/><path d="M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8"/><line x1="10" y1="12" x2="14" y2="12"/></svg>
+<span>Archives</span></a></li><li><a href=/zh/liguobao-resume/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>About</span></a></li><li><a href=/zh/search/><svg class="icon icon-tabler icon-tabler-search" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="10" cy="10" r="7"/><line x1="21" y1="21" x2="15" y2="15"/></svg>
+<span>Search</span></a></li><li><a href=/zh/links/><svg class="icon icon-tabler icon-tabler-link" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M10 14a3.5 3.5.0 005 0l4-4a3.5 3.5.0 00-5-5l-.5.5"/><path d="M14 10a3.5 3.5.0 00-5 0l-4 4a3.5 3.5.0 005 5l.5-.5"/></svg>
+<span>Links</span></a></li><li class=menu-bottom-section><ol class=menu><li id=i18n-switch><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg>
+<select name=language title=language onchange="window.location.href=this.selectedOptions[0].value"><option value=https://liguobao.github.io/zh/ selected>简体中文</option><option value=https://liguobao.github.io/>English</option></select></li><li id=dark-mode-toggle><svg class="icon icon-tabler icon-tabler-toggle-left" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="8" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<svg class="icon icon-tabler icon-tabler-toggle-right" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="16" cy="12" r="2"/><rect x="2" y="6" width="20" height="12" rx="6"/></svg>
+<span>Dark Mode</span></li></ol></li></ol></aside><aside class="sidebar right-sidebar sticky"><section class="widget archives"><div class=widget-icon><svg class="icon icon-tabler icon-tabler-hash" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><line x1="5" y1="9" x2="19" y2="9"/><line x1="5" y1="15" x2="19" y2="15"/><line x1="11" y1="4" x2="7" y2="20"/><line x1="17" y1="4" x2="13" y2="20"/></svg></div><h2 class="widget-title section-title">Table of contents</h2><div class=widget--toc><nav id=TableOfContents><ol><li><a href=#写在前面>写在前面</a></li><li><a href=#准备工作net-core准备>准备工作（.NET Core准备）</a></li><li><a href=#一个爬虫的自我修养>一个爬虫的自我修养</a><ol><li><a href=#分析网页>分析网页</a></li><li><a href=#开始写代码>开始写代码&mldr;</a><ol><li><a href=#获取电影列表数据>获取电影列表数据</a></li></ol></li><li><a href=#获取电影详细信息>获取电影详细信息</a></li><li><a href=#httphelper>HTTPHelper</a></li><li><a href=#定时任务的实现>定时任务的实现</a></li><li><a href=#startupcs相关代码>Startup.cs相关代码</a><ol><li><a href=#job相关代码>Job相关代码</a></li></ol></li></ol></li><li><a href=#项目发布相关>项目发布相关</a><ol><li><a href=#新增runtimes节点>新增runtimes节点</a></li><li><a href=#删除注释scripts节点>删除/注释scripts节点</a></li><li><a href=#删除注释dependencies节点里面的type>删除/注释dependencies节点里面的type</a></li><li><a href=#开发编译发布>开发编译发布</a></li></ol></li></ol></nav></div></section></aside><main class="main full-width"><article class=main-article><header class=article-header><div class=article-details><div class=article-title-wrapper><h2 class=article-title><a href=/zh/p/%E6%89%8B%E6%8A%8A%E6%89%8B%E6%95%99%E4%BD%A0%E7%94%A8.net-core%E5%86%99%E7%88%AC%E8%99%AB/>手把手教你用.NET Core写爬虫</a></h2></div><footer class=article-time><div><svg class="icon icon-tabler icon-tabler-calendar-time" width="56" height="56" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><path d="M11.795 21H5a2 2 0 01-2-2V7a2 2 0 012-2h12a2 2 0 012 2v4"/><circle cx="18" cy="18" r="4"/><path d="M15 3v4"/><path d="M7 3v4"/><path d="M3 11h16"/><path d="M18 16.496V18l1 1"/></svg>
+<time class=article-time--published>12月 04, 2016</time></div><div><svg class="icon icon-tabler icon-tabler-clock" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
+<time class=article-time--reading>4 minute read</time></div></footer><footer class=article-translations><svg class="icon icon-tabler icon-tabler-language" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 5h7"/><path d="M9 3v2c0 4.418-2.239 8-5 8"/><path d="M5 9c-.003 2.144 2.952 3.908 6.7 4"/><path d="M12 20l4-9 4 9"/><path d="M19.1 18h-6.2"/></svg><div><a href=https://liguobao.github.io/p/a-hands-on-guide-to-writing-a-crawler-with-.net-core/ class=link>English</a></div></footer></div></header><section class=article-content><h1 id=手把手教你用net-core写爬虫>手把手教你用.NET Core写爬虫</h1><h2 id=写在前面>写在前面</h2><p>自从上一个项目<a class=link href=https://github.com/liguobao/58HouseSearch target=_blank rel=noopener>58HouseSearch</a>从.NET迁移到.NET core之后，磕磕碰碰磨蹭了一个月才正式上线到新版本。
+然后最近又开了个新坑，搞了个<a class=link href=http://codelover.win/ target=_blank rel=noopener>Dy2018Crawler</a>用来爬dy2018电影天堂上面的电影资源。这里也借机简单介绍一下如何基于.NET Core写一个爬虫。
+PS：如有偏错，敬请指明&mldr;
+PPS:该去电影院还是多去电影院，毕竟美人良时可无价。</p><h2 id=准备工作net-core准备>准备工作（.NET Core准备）</h2><p>首先，肯定是先安装.NET Core咯。下载及安装教程在这里：<a class=link href=https://www.microsoft.com/net/core target=_blank rel=noopener>.NET - Powerful Open Source Development</a>。无论你是Windows、linux还是mac，统统可以玩。</p><p>我这里的环境是：Windows10 + VS2015 community updata3 + .NET Core 1.1.0 SDK + .NET Core 1.0.1 tools Preview 2.</p><p>理论上，只需要安装一下 .NET Core 1.1.0 SDK 即可开发.NET Core程序，至于用什么工具写代码都无关紧要了。</p><p>安装好以上工具之后，在VS2015的新建项目就可以看到.NET Core的模板了。如下图：</p><p><img src=https://www.microsoft.com/net/images/screenshots/FileNewProject.png loading=lazy alt=123></p><p>为了简单起见，我们创建的时候，直接选择VS .NET Core tools自带的模板。</p><h2 id=一个爬虫的自我修养>一个爬虫的自我修养</h2><h3 id=分析网页>分析网页</h3><p>写爬虫之前，我们首先要先去了解一下即将要爬取的网页数据组成。</p><p>具体到网页的话，便是分析我们要抓取的数据在HTML里面是用什么标签抑或有什么样的标记，然后使用这个标记把数据从HTML中提取出来。在我这里的话，用的更多的是HTML标签的ID和CSS属性。</p><p>以本文章想要爬取的dy2018.com为例,简单描述一下这个过程。dy2018.com主页如下图：</p><p><img src=http://qiniu.house2048.cn/123.png loading=lazy alt=123></p><p>在chrome里面，按F12进入开发者模式，接着如下图使用鼠标选择对应页面数据，然后去分析页面HTML组成。</p><p><img src=http://qiniu.house2048.cn/chromeF12_Select_HTML.png loading=lazy alt=234></p><p>接着我们开始分析页面数据:</p><p><img src=http://qiniu.house2048.cn/chrome_dy2018_lstmovie_divclass.png loading=lazy alt=123></p><p><img src=http://qiniu.house2048.cn/chrome_dy2018_a.png loading=lazy alt=123></p><p>经过简单分析HTML，我们得到以下结论：</p><ol><li><p><a class=link href=https://www.dy2018.com target=_blank rel=noopener>www.dy2018.com</a>首页的电影数据存储在一个class为co_content222的div标签里面</p></li><li><p>电影详情链接为a标签，标签显示文本就是电影名称，URL即详情URL</p></li></ol><p>那么总结下来，我们的工作就是：找到class=&lsquo;co_content222&rsquo; 的div标签，从里面提取所有的a标签数据。</p><h3 id=开始写代码>开始写代码&mldr;</h3><p>之前在写<a class=link href=https://zhuanlan.zhihu.com/p/22764927 target=_blank rel=noopener>58HouseSearch项目迁移到asp.net core</a>简单提过AngleSharp库，一个基于.NET（C#）开发的专门为解析xHTML源码的DLL组件。</p><ol><li><p>AngleSharp主页在这里：<a class=link href=https://anglesharp.github.io/ target=_blank rel=noopener>https://anglesharp.github.io/</a>，</p></li><li><p>博客园文章：<a class=link href=http://www.cnblogs.com/pandait/p/AngleSharp.html target=_blank rel=noopener>解析HTML利器AngleSharp介绍</a>，</p></li><li><p>Nuget地址:<a class=link href=https://www.nuget.org/packages/AngleSharp target=_blank rel=noopener>Nuget AngleSharp</a> 安装命令：Install-Package AngleSharp</p></li></ol><h4 id=获取电影列表数据>获取电影列表数据</h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-csharp data-lang=csharp><span class=line><span class=cl>  <span class=kd>private</span> <span class=kd>static</span> <span class=n>HtmlParser</span> <span class=n>htmlParser</span> <span class=p>=</span> <span class=k>new</span> <span class=n>HtmlParser</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>   <span class=kd>private</span>  <span class=n>ConcurrentDictionary</span><span class=p>&lt;</span><span class=kt>string</span><span class=p>,</span> <span class=n>MovieInfo</span><span class=p>&gt;</span> <span class=n>_cdMovieInfo</span> <span class=p>=</span> <span class=k>new</span> <span class=n>ConcurrentDictionary</span><span class=p>&lt;</span><span class=kt>string</span><span class=p>,</span> <span class=n>MovieInfo</span><span class=p>&gt;();</span>
+</span></span><span class=line><span class=cl>  <span class=kd>private</span> <span class=k>void</span> <span class=n>AddToHotMovieList</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=c1>//此操作不阻塞当前其他操作，所以使用Task</span>
+</span></span><span class=line><span class=cl>            <span class=c1>// _cdMovieInfo 为线程安全字典，存储了当期所有的电影数据</span>
+</span></span><span class=line><span class=cl>            <span class=n>Task</span><span class=p>.</span><span class=n>Factory</span><span class=p>.</span><span class=n>StartNew</span><span class=p>(()=&gt;</span> 
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=k>try</span>
+</span></span><span class=line><span class=cl>                <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=c1>//通过URL获取HTML</span>
+</span></span><span class=line><span class=cl>                    <span class=kt>var</span> <span class=n>htmlDoc</span> <span class=p>=</span> <span class=n>HTTPHelper</span><span class=p>.</span><span class=n>GetHTMLByURL</span><span class=p>(</span><span class=s>&#34;http://www.dy2018.com/&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                    <span class=c1>//HTML 解析成 IDocument</span>
+</span></span><span class=line><span class=cl>                    <span class=kt>var</span> <span class=n>dom</span> <span class=p>=</span> <span class=n>htmlParser</span><span class=p>.</span><span class=n>Parse</span><span class=p>(</span><span class=n>htmlDoc</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                    <span class=c1>//从dom中提取所有class=&#39;co_content222&#39;的div标签</span>
+</span></span><span class=line><span class=cl>                    <span class=c1>//QuerySelectorAll方法接受 选择器语法 </span>
+</span></span><span class=line><span class=cl>                    <span class=kt>var</span> <span class=n>lstDivInfo</span> <span class=p>=</span> <span class=n>dom</span><span class=p>.</span><span class=n>QuerySelectorAll</span><span class=p>(</span><span class=s>&#34;div.co_content222&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                    <span class=k>if</span> <span class=p>(</span><span class=n>lstDivInfo</span> <span class=p>!=</span> <span class=kc>null</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                    <span class=p>{</span>
+</span></span><span class=line><span class=cl>                        <span class=c1>//前三个DIV为新电影</span>
+</span></span><span class=line><span class=cl>                        <span class=k>foreach</span> <span class=p>(</span><span class=kt>var</span> <span class=n>divInfo</span> <span class=k>in</span> <span class=n>lstDivInfo</span><span class=p>.</span><span class=n>Take</span><span class=p>(</span><span class=m>3</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>                        <span class=p>{</span>
+</span></span><span class=line><span class=cl>                            <span class=c1>//获取div中所有的a标签且a标签中含有&#34;/i/&#34;的</span>
+</span></span><span class=line><span class=cl>                            <span class=c1>//Contains(&#34;/i/&#34;) 条件的过滤是因为在测试中发现这一块div中的a标签有可能是广告链接</span>
+</span></span><span class=line><span class=cl>                            <span class=n>divInfo</span><span class=p>.</span><span class=n>QuerySelectorAll</span><span class=p>(</span><span class=s>&#34;a&#34;</span><span class=p>).</span><span class=n>Where</span><span class=p>(</span><span class=n>a</span> <span class=p>=&gt;</span> <span class=n>a</span><span class=p>.</span><span class=n>GetAttribute</span><span class=p>(</span><span class=s>&#34;href&#34;</span><span class=p>).</span><span class=n>Contains</span><span class=p>(</span><span class=s>&#34;/i/&#34;</span><span class=p>)).</span><span class=n>ToList</span><span class=p>().</span><span class=n>ForEach</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>                            <span class=n>a</span> <span class=p>=&gt;</span>
+</span></span><span class=line><span class=cl>                            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                                <span class=c1>//拼接成完整链接</span>
+</span></span><span class=line><span class=cl>                                <span class=kt>var</span> <span class=n>onlineURL</span> <span class=p>=</span> <span class=s>&#34;http://www.dy2018.com&#34;</span> <span class=p>+</span> <span class=n>a</span><span class=p>.</span><span class=n>GetAttribute</span><span class=p>(</span><span class=s>&#34;href&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                                <span class=c1>//看一下是否已经存在于现有数据中</span>
+</span></span><span class=line><span class=cl>                                <span class=k>if</span> <span class=p>(!</span><span class=n>_cdMovieInfo</span><span class=p>.</span><span class=n>ContainsKey</span><span class=p>(</span><span class=n>onlineURL</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>                                <span class=p>{</span>
+</span></span><span class=line><span class=cl>                                    <span class=c1>//获取电影的详细信息</span>
+</span></span><span class=line><span class=cl>                                    <span class=n>MovieInfo</span> <span class=n>movieInfo</span> <span class=p>=</span> <span class=n>FillMovieInfoFormWeb</span><span class=p>(</span><span class=n>a</span><span class=p>,</span> <span class=n>onlineURL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                                    <span class=c1>//下载链接不为空才添加到现有数据</span>
+</span></span><span class=line><span class=cl>                                    <span class=k>if</span> <span class=p>(</span><span class=n>movieInfo</span><span class=p>.</span><span class=n>XunLeiDownLoadURLList</span> <span class=p>!=</span> <span class=kc>null</span> <span class=p>&amp;&amp;</span> <span class=n>movieInfo</span><span class=p>.</span><span class=n>XunLeiDownLoadURLList</span><span class=p>.</span><span class=n>Count</span> <span class=p>!=</span> <span class=m>0</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                                    <span class=p>{</span>
+</span></span><span class=line><span class=cl>                                         <span class=n>_cdMovieInfo</span><span class=p>.</span><span class=n>TryAdd</span><span class=p>(</span><span class=n>movieInfo</span><span class=p>.</span><span class=n>Dy2018OnlineUrl</span><span class=p>,</span> <span class=n>movieInfo</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                                    <span class=p>}</span>
+</span></span><span class=line><span class=cl>                                <span class=p>}</span>
+</span></span><span class=line><span class=cl>                            <span class=p>});</span>
+</span></span><span class=line><span class=cl>                        <span class=p>}</span>
+</span></span><span class=line><span class=cl>                    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>                <span class=p>}</span>
+</span></span><span class=line><span class=cl>                <span class=k>catch</span><span class=p>(</span><span class=n>Exception</span> <span class=n>ex</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=p>{</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>                <span class=p>}</span>
+</span></span><span class=line><span class=cl>            <span class=p>});</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=获取电影详细信息>获取电影详细信息</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-csharp data-lang=csharp><span class=line><span class=cl> <span class=kd>private</span> <span class=n>MovieInfo</span> <span class=n>FillMovieInfoFormWeb</span><span class=p>(</span><span class=n>AngleSharp</span><span class=p>.</span><span class=n>Dom</span><span class=p>.</span><span class=n>IElement</span> <span class=n>a</span><span class=p>,</span> <span class=kt>string</span> <span class=n>onlineURL</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=kt>var</span> <span class=n>movieHTML</span> <span class=p>=</span> <span class=n>HTTPHelper</span><span class=p>.</span><span class=n>GetHTMLByURL</span><span class=p>(</span><span class=n>onlineURL</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=kt>var</span> <span class=n>movieDoc</span> <span class=p>=</span> <span class=n>htmlParser</span><span class=p>.</span><span class=n>Parse</span><span class=p>(</span><span class=n>movieHTML</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=c1>//http://www.dy2018.com/i/97462.html 分析过程见上，不再赘述</span>
+</span></span><span class=line><span class=cl>            <span class=c1>//电影的详细介绍 在id为Zoom的标签中</span>
+</span></span><span class=line><span class=cl>            <span class=kt>var</span> <span class=n>zoom</span> <span class=p>=</span> <span class=n>movieDoc</span><span class=p>.</span><span class=n>GetElementById</span><span class=p>(</span><span class=s>&#34;Zoom&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=c1>//下载链接在 bgcolor=&#39;#fdfddf&#39;的td中，有可能有多个链接</span>
+</span></span><span class=line><span class=cl>            <span class=kt>var</span> <span class=n>lstDownLoadURL</span> <span class=p>=</span> <span class=n>movieDoc</span><span class=p>.</span><span class=n>QuerySelectorAll</span><span class=p>(</span><span class=s>&#34;[bgcolor=&#39;#fdfddf&#39;]&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=c1>//发布时间 在class=&#39;updatetime&#39;的span标签中</span>
+</span></span><span class=line><span class=cl>            <span class=kt>var</span> <span class=n>updatetime</span> <span class=p>=</span> <span class=n>movieDoc</span><span class=p>.</span><span class=n>QuerySelector</span><span class=p>(</span><span class=s>&#34;span.updatetime&#34;</span><span class=p>);</span> <span class=kt>var</span> <span class=n>pubDate</span> <span class=p>=</span> <span class=n>DateTime</span><span class=p>.</span><span class=n>Now</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span><span class=p>(</span><span class=n>updatetime</span><span class=p>!=</span><span class=kc>null</span> <span class=p>&amp;&amp;</span> <span class=p>!</span><span class=kt>string</span><span class=p>.</span><span class=n>IsNullOrEmpty</span><span class=p>(</span><span class=n>updatetime</span><span class=p>.</span><span class=n>InnerHtml</span><span class=p>))</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=c1>//内容带有“发布时间：”字样，replace成&#34;&#34;之后再去转换，转换失败不影响流程</span>
+</span></span><span class=line><span class=cl>                <span class=n>DateTime</span><span class=p>.</span><span class=n>TryParse</span><span class=p>(</span><span class=n>updatetime</span><span class=p>.</span><span class=n>InnerHtml</span><span class=p>.</span><span class=n>Replace</span><span class=p>(</span><span class=s>&#34;发布时间：&#34;</span><span class=p>,</span> <span class=s>&#34;&#34;</span><span class=p>),</span> <span class=k>out</span> <span class=n>pubDate</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=kt>var</span> <span class=n>movieInfo</span> <span class=p>=</span> <span class=k>new</span> <span class=n>MovieInfo</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=c1>//InnerHtml中可能还包含font标签，做多一个Replace</span>
+</span></span><span class=line><span class=cl>                <span class=n>MovieName</span> <span class=p>=</span> <span class=n>a</span><span class=p>.</span><span class=n>InnerHtml</span><span class=p>.</span><span class=n>Replace</span><span class=p>(</span><span class=s>&#34;&lt;font color=\&#34;#0c9000\&#34;&gt;&#34;</span><span class=p>,</span><span class=s>&#34;&#34;</span><span class=p>).</span><span class=n>Replace</span><span class=p>(</span><span class=s>&#34;&lt;font color=\&#34;	#0c9000\&#34;&gt;&#34;</span><span class=p>,</span><span class=s>&#34;&#34;</span><span class=p>).</span><span class=n>Replace</span><span class=p>(</span><span class=s>&#34;&lt;/font&gt;&#34;</span><span class=p>,</span> <span class=s>&#34;&#34;</span><span class=p>),</span>
+</span></span><span class=line><span class=cl>                <span class=n>Dy2018OnlineUrl</span> <span class=p>=</span> <span class=n>onlineURL</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                <span class=n>MovieIntro</span> <span class=p>=</span> <span class=n>zoom</span> <span class=p>!=</span> <span class=kc>null</span> <span class=p>?</span> <span class=n>WebUtility</span><span class=p>.</span><span class=n>HtmlEncode</span><span class=p>(</span><span class=n>zoom</span><span class=p>.</span><span class=n>InnerHtml</span><span class=p>)</span> <span class=p>:</span> <span class=s>&#34;暂无介绍...&#34;</span><span class=p>,</span><span class=c1>//可能没有简介，虽然好像不怎么可能</span>
+</span></span><span class=line><span class=cl>                <span class=n>XunLeiDownLoadURLList</span> <span class=p>=</span> <span class=n>lstDownLoadURL</span> <span class=p>!=</span> <span class=kc>null</span> <span class=p>?</span>
+</span></span><span class=line><span class=cl>                <span class=n>lstDownLoadURL</span><span class=p>.</span><span class=n>Select</span><span class=p>(</span><span class=n>d</span> <span class=p>=&gt;</span> <span class=n>d</span><span class=p>.</span><span class=n>FirstElementChild</span><span class=p>.</span><span class=n>InnerHtml</span><span class=p>).</span><span class=n>ToList</span><span class=p>()</span> <span class=p>:</span> <span class=kc>null</span><span class=p>,</span><span class=c1>//可能没有下载链接</span>
+</span></span><span class=line><span class=cl>                <span class=n>PubDate</span> <span class=p>=</span> <span class=n>pubDate</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>            <span class=p>};</span>
+</span></span><span class=line><span class=cl>            <span class=k>return</span> <span class=n>movieInfo</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=httphelper>HTTPHelper</h3><p>这边有个小坑，dy2018网页编码格式是GB2312,.NET Core默认不支持GB2312，使用Encoding.GetEncoding(&ldquo;GB2312&rdquo;)的时候会抛出异常。</p><p>解决方案是手动安装System.Text.Encoding.CodePages包(Install-Package System.Text.Encoding.CodePages),</p><p>然后在Starup.cs的Configure方法中加入Encoding.RegisterProvider(CodePagesEncodingProvider.Instance),接着就可以正常使用Encoding.GetEncoding(&ldquo;GB2312&rdquo;)了。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-csharp data-lang=csharp><span class=line><span class=cl><span class=k>using</span> <span class=nn>System</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>System.Net.Http</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>System.Net.Http.Headers</span><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=k>using</span> <span class=nn>System.Text</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>namespace</span> <span class=nn>Dy2018Crawler</span>
+</span></span><span class=line><span class=cl><span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=kd>public</span> <span class=k>class</span> <span class=nc>HTTPHelper</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=kd>static</span> <span class=n>HttpClient</span> <span class=n>Client</span> <span class=p>{</span> <span class=k>get</span><span class=p>;</span> <span class=p>}</span> <span class=p>=</span> <span class=k>new</span> <span class=n>HttpClient</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=kd>static</span> <span class=kt>string</span> <span class=n>GetHTMLByURL</span><span class=p>(</span><span class=kt>string</span> <span class=n>url</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=k>try</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>System</span><span class=p>.</span><span class=n>Net</span><span class=p>.</span><span class=n>WebRequest</span> <span class=n>wRequest</span> <span class=p>=</span> <span class=n>System</span><span class=p>.</span><span class=n>Net</span><span class=p>.</span><span class=n>WebRequest</span><span class=p>.</span><span class=n>Create</span><span class=p>(</span><span class=n>url</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>                <span class=n>wRequest</span><span class=p>.</span><span class=n>ContentType</span> <span class=p>=</span> <span class=s>&#34;text/html; charset=gb2312&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>                <span class=n>wRequest</span><span class=p>.</span><span class=n>Method</span> <span class=p>=</span> <span class=s>&#34;get&#34;</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=n>wRequest</span><span class=p>.</span><span class=n>UseDefaultCredentials</span> <span class=p>=</span> <span class=kc>true</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=c1>// Get the response instance.</span>
+</span></span><span class=line><span class=cl>                <span class=kt>var</span> <span class=n>task</span> <span class=p>=</span> <span class=n>wRequest</span><span class=p>.</span><span class=n>GetResponseAsync</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>                <span class=n>System</span><span class=p>.</span><span class=n>Net</span><span class=p>.</span><span class=n>WebResponse</span> <span class=n>wResp</span> <span class=p>=</span> <span class=n>task</span><span class=p>.</span><span class=n>Result</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>                <span class=n>System</span><span class=p>.</span><span class=n>IO</span><span class=p>.</span><span class=n>Stream</span> <span class=n>respStream</span> <span class=p>=</span> <span class=n>wResp</span><span class=p>.</span><span class=n>GetResponseStream</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>                <span class=c1>//dy2018这个网站编码方式是GB2312,</span>
+</span></span><span class=line><span class=cl>                <span class=k>using</span> <span class=p>(</span><span class=n>System</span><span class=p>.</span><span class=n>IO</span><span class=p>.</span><span class=n>StreamReader</span> <span class=n>reader</span> <span class=p>=</span> <span class=k>new</span> <span class=n>System</span><span class=p>.</span><span class=n>IO</span><span class=p>.</span><span class=n>StreamReader</span><span class=p>(</span><span class=n>respStream</span><span class=p>,</span> <span class=n>Encoding</span><span class=p>.</span><span class=n>GetEncoding</span><span class=p>(</span><span class=s>&#34;GB2312&#34;</span><span class=p>)))</span>
+</span></span><span class=line><span class=cl>                <span class=p>{</span>
+</span></span><span class=line><span class=cl>                    <span class=k>return</span> <span class=n>reader</span><span class=p>.</span><span class=n>ReadToEnd</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>                <span class=p>}</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>            <span class=k>catch</span> <span class=p>(</span><span class=n>Exception</span> <span class=n>ex</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>Console</span><span class=p>.</span><span class=n>WriteLine</span><span class=p>(</span><span class=n>ex</span><span class=p>.</span><span class=n>ToString</span><span class=p>());</span>
+</span></span><span class=line><span class=cl>                <span class=k>return</span> <span class=kt>string</span><span class=p>.</span><span class=n>Empty</span><span class=p>;</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>       
+</span></span><span class=line><span class=cl>    <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=定时任务的实现>定时任务的实现</h3><p>定时任务我这里使用的是<a class=link href=https://www.nuget.org/packages/Pomelo.AspNetCore.TimedJob/1.1.0-rtm-10026 target=_blank rel=noopener>Pomelo.AspNetCore.TimedJob</a>。</p><p>Pomelo.AspNetCore.TimedJob是一个.NET Core实现的定时任务job库，支持毫秒级定时任务、从数据库读取定时配置、同步异步定时任务等功能。</p><p>由.NET Core社区大神兼前微软MVP<a class=link href=https://www.nuget.org/profiles/AmamiyaYuuko target=_blank rel=noopener>AmamiyaYuuko</a>(入职微软之后就卸任MVP&mldr;)开发维护，不过好像没有开源，回头问下看看能不能开源掉。</p><p>nuget上有各种版本，按需自取。地址：https://www.nuget.org/packages/Pomelo.AspNetCore.TimedJob/1.1.0-rtm-10026</p><p>作者自己的介绍文章：<a class=link href=http://www.1234.sh/post/pomelo-extensions-timed-jobs target=_blank rel=noopener>Timed Job - Pomelo扩展包系列</a></p><h3 id=startupcs相关代码>Startup.cs相关代码</h3><p>我这边使用的话，首先肯定是先安装对应的包：Install-Package Pomelo.AspNetCore.TimedJob -Pre</p><p>然后在Startup.cs的ConfigureServices函数里面添加Service,在Configure函数里面Use一下。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-csharp data-lang=csharp><span class=line><span class=cl>        <span class=c1>// This method gets called by the runtime. Use this method to add services to the container.</span>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=k>void</span> <span class=n>ConfigureServices</span><span class=p>(</span><span class=n>IServiceCollection</span> <span class=n>services</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=c1>// Add framework services.</span>
+</span></span><span class=line><span class=cl>            <span class=n>services</span><span class=p>.</span><span class=n>AddMvc</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>            <span class=c1>//Add TimedJob services</span>
+</span></span><span class=line><span class=cl>            <span class=n>services</span><span class=p>.</span><span class=n>AddTimedJob</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>        
+</span></span><span class=line><span class=cl>         <span class=kd>public</span> <span class=k>void</span> <span class=n>Configure</span><span class=p>(</span><span class=n>IApplicationBuilder</span> <span class=n>app</span><span class=p>,</span> <span class=n>IHostingEnvironment</span> <span class=n>env</span><span class=p>,</span> <span class=n>ILoggerFactory</span> <span class=n>loggerFactory</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>            <span class=c1>//使用TimedJob</span>
+</span></span><span class=line><span class=cl>            <span class=n>app</span><span class=p>.</span><span class=n>UseTimedJob</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=p>(</span><span class=n>env</span><span class=p>.</span><span class=n>IsDevelopment</span><span class=p>())</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>app</span><span class=p>.</span><span class=n>UseDeveloperExceptionPage</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>                <span class=n>app</span><span class=p>.</span><span class=n>UseBrowserLink</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>            <span class=k>else</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>app</span><span class=p>.</span><span class=n>UseExceptionHandler</span><span class=p>(</span><span class=s>&#34;/Home/Error&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=p>}</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=n>app</span><span class=p>.</span><span class=n>UseStaticFiles</span><span class=p>();</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=n>app</span><span class=p>.</span><span class=n>UseMvc</span><span class=p>(</span><span class=n>routes</span> <span class=p>=&gt;</span>
+</span></span><span class=line><span class=cl>            <span class=p>{</span>
+</span></span><span class=line><span class=cl>                <span class=n>routes</span><span class=p>.</span><span class=n>MapRoute</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>                    <span class=n>name</span><span class=p>:</span> <span class=s>&#34;default&#34;</span><span class=p>,</span>
+</span></span><span class=line><span class=cl>                    <span class=n>template</span><span class=p>:</span> <span class=s>&#34;{controller=Home}/{action=Index}/{id?}&#34;</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>            <span class=p>});</span>
+</span></span><span class=line><span class=cl>            <span class=n>Encoding</span><span class=p>.</span><span class=n>RegisterProvider</span><span class=p>(</span><span class=n>CodePagesEncodingProvider</span><span class=p>.</span><span class=n>Instance</span><span class=p>);</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h4 id=job相关代码>Job相关代码</h4><p>接着新建一个类，明明为XXXJob.cs,引用命名空间using Pomelo.AspNetCore.TimedJob，XXXJob继承于Job，添加以下代码。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-C# data-lang=C#><span class=line><span class=cl>    <span class=kd>public</span> <span class=k>class</span> <span class=nc>AutoGetMovieListJob</span><span class=p>:</span><span class=n>Job</span>
+</span></span><span class=line><span class=cl>    <span class=p>{</span>
+</span></span><span class=line><span class=cl>        <span class=c1>// Begin 起始时间；Interval执行时间间隔，单位是毫秒，建议使用以下格式，此处为3小时；SkipWhileExecuting是否等待上一个执行完成，true为等待；</span>
+</span></span><span class=line><span class=cl><span class=na>        [Invoke(Begin = &#34;2016-11-29 22:10&#34;, Interval = 1000 * 3600*3, SkipWhileExecuting =true)]</span>
+</span></span><span class=line><span class=cl>        <span class=kd>public</span> <span class=k>void</span> <span class=n>Run</span><span class=p>()</span>
+</span></span><span class=line><span class=cl>        <span class=p>{</span>
+</span></span><span class=line><span class=cl>             <span class=c1>//Job要执行的逻辑代码</span>
+</span></span><span class=line><span class=cl>             
+</span></span><span class=line><span class=cl>            <span class=c1>//LogHelper.Info(&#34;Start crawling&#34;);</span>
+</span></span><span class=line><span class=cl>            <span class=c1>//AddToLatestMovieList(100);</span>
+</span></span><span class=line><span class=cl>            <span class=c1>//AddToHotMovieList();</span>
+</span></span><span class=line><span class=cl>            <span class=c1>//LogHelper.Info(&#34;Finish crawling&#34;);</span>
+</span></span><span class=line><span class=cl>        <span class=p>}</span>
+</span></span><span class=line><span class=cl>   <span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h2 id=项目发布相关>项目发布相关</h2><h3 id=新增runtimes节点>新增runtimes节点</h3><p>使用VS2015新建的模板工程，project.json配置默认是没有runtimes节点的.</p><p>我们想要发布到非Windows平台的时候，需要手动配置一下此节点以便生成。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;runtimes&#34;</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;win7-x64&#34;</span><span class=o>:</span> <span class=p>{},</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;win7-x86&#34;</span><span class=o>:</span> <span class=p>{},</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;osx.10.10-x64&#34;</span><span class=o>:</span> <span class=p>{},</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;osx.10.11-x64&#34;</span><span class=o>:</span> <span class=p>{},</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;ubuntu.14.04-x64&#34;</span><span class=o>:</span> <span class=p>{}</span>
+</span></span><span class=line><span class=cl>  <span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><h3 id=删除注释scripts节点>删除/注释scripts节点</h3><p>生成时会调用node.js脚本构建前端代码，这个不能确保每个环境都有bower存在&mldr;注释完事。</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>    <span class=c1>//&#34;scripts&#34;: {
+</span></span></span><span class=line><span class=cl>    <span class=c1>//  &#34;prepublish&#34;: [ &#34;bower install&#34;, &#34;dotnet bundle&#34; ],
+</span></span></span><span class=line><span class=cl>    <span class=c1>//  &#34;postpublish&#34;: [ &#34;dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%&#34; ]
+</span></span></span><span class=line><span class=cl>    <span class=c1>//},
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=删除注释dependencies节点里面的type>删除/注释dependencies节点里面的type</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-javascript data-lang=javascript><span class=line><span class=cl><span class=s2>&#34;dependencies&#34;</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;Microsoft.NETCore.App&#34;</span><span class=o>:</span> <span class=p>{</span>
+</span></span><span class=line><span class=cl>      <span class=s2>&#34;version&#34;</span><span class=o>:</span> <span class=s2>&#34;1.1.0&#34;</span>
+</span></span><span class=line><span class=cl>      <span class=c1>//&#34;type&#34;: &#34;platform&#34;
+</span></span></span><span class=line><span class=cl>    <span class=p>},</span>
+</span></span></code></pre></td></tr></table></div></div><p>project.json的相关配置说明可以看下这个官方文档：<a class=link href=https://github.com/aspnet/Home/wiki/Project.json-file target=_blank rel=noopener>Project.json-file</a>,
+或者张善友老师的文章<a class=link href=http://www.cnblogs.com/shanyou/p/5693453.html target=_blank rel=noopener>.NET Core系列 ： 2 、project.json 这葫芦里卖的什么药</a></p><h3 id=开发编译发布>开发编译发布</h3><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-sh data-lang=sh><span class=line><span class=cl>//还原各种包文件
+</span></span><span class=line><span class=cl>dotnet restore<span class=p>;</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>//发布到C:<span class=se>\c</span>ode<span class=se>\w</span>ebsite<span class=se>\D</span>y2018Crawler文件夹
+</span></span><span class=line><span class=cl>dotnet publish -r ubuntu.14.04-x64 -c Release -o <span class=s2>&#34;C:\code\website\Dy2018Crawler&#34;</span><span class=p>;</span>
+</span></span></code></pre></td></tr></table></div></div><p>最后，照旧开源&mldr;&mldr;以上代码都在下面找到：</p><p>Gayhub地址：<a class=link href=https://github.com/liguobao/Dy2018Crawler target=_blank rel=noopener>https://github.com/liguobao/Dy2018Crawler</a></p><p>在线地址：<a class=link href=http://codelover.win/ target=_blank rel=noopener>http://codelover.win/</a></p><p>PS:回头写个爬片大家滋持不啊&mldr;</p></section><footer class=article-footer><section class=article-tags><a href=/zh/tags/asp.net-core/>ASP.NET Core</a>
+<a href=/zh/tags/crawler/>Crawler</a></section><section class=article-copyright><svg class="icon icon-tabler icon-tabler-copyright" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z"/><circle cx="12" cy="12" r="9"/><path d="M14.5 9a3.5 4 0 100 6"/></svg>
+<span>Licensed under CC BY-NC-SA 4.0</span></section></footer></article><script src=https://utteranc.es/client.js repo=liguobao/liguobao.github.io issue-term=title crossorigin=anonymous async></script><style>.utterances{max-width:unset}</style><script>let utterancesLoaded=!1;function setUtterancesTheme(e){let t=document.querySelector(".utterances iframe");t&&t.contentWindow.postMessage({type:"set-theme",theme:`github-${e}`},"https://utteranc.es")}addEventListener("message",e=>{if(e.origin!=="https://utteranc.es")return;utterancesLoaded=!0,setUtterancesTheme(document.documentElement.dataset.scheme)}),window.addEventListener("onColorSchemeChange",e=>{if(!utterancesLoaded)return;setUtterancesTheme(e.detail)})</script><footer class=site-footer><section class=copyright>&copy;
+2020 -
+2026 人生删除指南</section><section class=powerby>Built with <a href=https://gohugo.io/ target=_blank rel=noopener>Hugo</a><br>Theme <b><a href=https://github.com/CaiJimmy/hugo-theme-stack target=_blank rel=noopener data-version=3.30.0>Stack</a></b> designed by <a href=https://jimmycai.com target=_blank rel=noopener>Jimmy</a></section></footer><div class=pswp tabindex=-1 role=dialog aria-hidden=true><div class=pswp__bg></div><div class=pswp__scroll-wrap><div class=pswp__container><div class=pswp__item></div><div class=pswp__item></div><div class=pswp__item></div></div><div class="pswp__ui pswp__ui--hidden"><div class=pswp__top-bar><div class=pswp__counter></div><button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
+<button class="pswp__button pswp__button--share" title=Share></button>
+<button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>
+<button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button><div class=pswp__preloader><div class=pswp__preloader__icn><div class=pswp__preloader__cut><div class=pswp__preloader__donut></div></div></div></div></div><div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap"><div class=pswp__share-tooltip></div></div><button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)">
+</button>
+<button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button><div class=pswp__caption><div class=pswp__caption__center></div></div></div></div></div><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.js integrity="sha256-ePwmChbbvXbsO02lbM3HoHbSHTHFAeChekF1xKJdleo=" crossorigin=anonymous defer></script><script src=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe-ui-default.min.js integrity="sha256-UKkzOn/w1mBxRmLLGrSeyB4e1xbrp4xylgAWb3M42pU=" crossorigin=anonymous defer></script><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/default-skin/default-skin.min.css crossorigin=anonymous><link rel=stylesheet href=https://cdn.jsdelivr.net/npm/photoswipe@4.1.3/dist/photoswipe.min.css crossorigin=anonymous></main></div><script src=https://cdn.jsdelivr.net/npm/node-vibrant@3.1.6/dist/vibrant.min.js integrity="sha256-awcR2jno4kI5X0zL8ex0vi2z+KMkF24hUW8WePSA9HM=" crossorigin=anonymous></script><script type=text/javascript src=/ts/main.1e9a3bafd846ced4c345d084b355fb8c7bae75701c338f8a1f8a82c780137826.js defer></script><script>(function(){const e=document.createElement("link");e.href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&display=swap",e.type="text/css",e.rel="stylesheet",document.head.appendChild(e)})()</script></body></html>

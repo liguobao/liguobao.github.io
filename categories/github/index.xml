@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>GitHub on Life Deletion Guide</title><link>https://liguobao.github.io/categories/github/</link><description>Recent content in GitHub on Life Deletion Guide</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Tue, 19 Dec 2023 13:34:08 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/categories/github/index.xml" rel="self" type="application/rss+xml"/><item><title>How to Configure a GitHub Pages Site</title><link>https://liguobao.github.io/p/how-to-set-github-page/</link><pubDate>Tue, 19 Dec 2023 13:34:08 +0000</pubDate><guid>https://liguobao.github.io/p/how-to-set-github-page/</guid><description>&lt;img src="https://liguobao.github.io/zh/p/how-to-set-github-page/cover.png" alt="Featured image of post How to Configure a GitHub Pages Site" /&gt;&lt;p&gt;Official guide: Configuring a publishing source for your GitHub Pages site
+&lt;a class="link" href="https://docs.github.com/zh/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site" target="_blank" rel="noopener"
+&gt;https://docs.github.com/zh/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Key point:&lt;/p&gt;
+&lt;p&gt;Set the correct repository branch for Pages.&lt;/p&gt;
+&lt;p&gt;If you use Hugo (or similar static site generators), they typically produce a &lt;code&gt;public&lt;/code&gt; folder of static files.&lt;/p&gt;
+&lt;p&gt;With GitHub Actions, you build and publish those static files, usually to a dedicated branch of the repository.&lt;/p&gt;
+&lt;h2 id="my-example"&gt;My Example
+&lt;/h2&gt;&lt;p&gt;Repository:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a class="link" href="https://github.com/liguobao/liguobao.github.io" target="_blank" rel="noopener"
+&gt;https://github.com/liguobao/liguobao.github.io&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The default branch (master) contains my site config and content.&lt;/p&gt;
+&lt;p&gt;The static output branch is:&lt;/p&gt;
+&lt;p&gt;&lt;a class="link" href="https://github.com/liguobao/liguobao.github.io/tree/gh-pages" target="_blank" rel="noopener"
+&gt;https://github.com/liguobao/liguobao.github.io/tree/gh-pages&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Now go to GitHub project Settings → Pages and set “Your GitHub Pages site” to branch &lt;code&gt;gh-pages&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img src="https://liguobao.github.io/zh/p/how-to-set-github-page/cover.png"
+width="2402"
+height="1400"
+srcset="https://liguobao.github.io/zh/p/how-to-set-github-page/cover_hu_5edf6d8284d1030a.png 480w, https://liguobao.github.io/zh/p/how-to-set-github-page/cover_hu_2772a3d9c5fa417a.png 1024w"
+loading="lazy"
+class="gallery-image"
+data-flex-grow="171"
+data-flex-basis="411px"
+&gt;&lt;/p&gt;
+&lt;p&gt;Done.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Photo by Pawel Czerwinski on Unsplash&lt;/p&gt;
+&lt;/blockquote&gt;</description></item></channel></rss>

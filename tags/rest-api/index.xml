@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>REST API on Life Deletion Guide</title><link>https://liguobao.github.io/tags/rest-api/</link><description>Recent content in REST API on Life Deletion Guide</description><generator>Hugo -- gohugo.io</generator><language>en</language><lastBuildDate>Sun, 05 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://liguobao.github.io/tags/rest-api/index.xml" rel="self" type="application/rss+xml"/><item><title>Python Flask 1 Project Initialization</title><link>https://liguobao.github.io/p/python-flask-1-project-initialization/</link><pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate><guid>https://liguobao.github.io/p/python-flask-1-project-initialization/</guid><description>&lt;h1 id="python-flask-best-practices-1-project-initialization"&gt;Python Flask Best Practices: 1) Project Initialization
+&lt;/h1&gt;&lt;h2 id="preface"&gt;Preface
+&lt;/h2&gt;&lt;p&gt;Python Flask is a simple and convenient web framework.&lt;/p&gt;
+&lt;p&gt;It’s easy to build a web site or a pure Web API with it.&lt;/p&gt;
+&lt;p&gt;I recently needed a small web + scripting project. While setting up Flask, I couldn’t find a starter that fit my taste, so I explored a bit, hit a few bumps, and then put together this tutorial on the shoulders of giants.&lt;/p&gt;
+&lt;h2 id="project-structure"&gt;Project Structure
+&lt;/h2&gt;&lt;p&gt;For a real project, I recommend a layered architecture (3-tier) + MVC separation to keep the code well organized. If you aren’t familiar with these concepts, it’s worth a quick read.&lt;/p&gt;
+&lt;p&gt;Notes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;src&lt;/code&gt;: all project source files&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;src/service&lt;/code&gt;: service/business logic&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;src/model&lt;/code&gt;: business entities&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;src/db&lt;/code&gt;: database related, including model definitions and DAO/SQL&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;src/sdk&lt;/code&gt;: external integrations/SDKs&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;src/job&lt;/code&gt;: background jobs (often triggered via API)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;src/utils&lt;/code&gt;: utilities; configs live here too&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;src/app.py&lt;/code&gt;: Flask app entrypoint&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;manage.py&lt;/code&gt;: flask.cli entry, starts API + jobs&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;Dockerfile&lt;/code&gt;: Docker build&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;debug.py&lt;/code&gt;: local debug entry&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;requirements.txt&lt;/code&gt;: all dependencies&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;.vscode/launch.json&lt;/code&gt;: VS Code debug config&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="lets-build"&gt;Let’s Build
+&lt;/h2&gt;&lt;p&gt;Personal preference: I like managing dependencies via a &lt;code&gt;requirements.txt&lt;/code&gt;. Use your preferred approach if you like.&lt;/p&gt;
+&lt;h3 id="requirementstxt"&gt;requirements.txt
+&lt;/h3&gt;&lt;div class="highlight"&gt;&lt;div class="chroma"&gt;
+&lt;table class="lntable"&gt;&lt;tr&gt;&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code&gt;&lt;span class="lnt"&gt; 1
+&lt;/span&gt;&lt;span class="lnt"&gt; 2
+&lt;/span&gt;&lt;span class="lnt"&gt; 3
+&lt;/span&gt;&lt;span class="lnt"&gt; 4
+&lt;/span&gt;&lt;span class="lnt"&gt; 5
+&lt;/span&gt;&lt;span class="lnt"&gt; 6
+&lt;/span&gt;&lt;span class="lnt"&gt; 7
+&lt;/span&gt;&lt;span class="lnt"&gt; 8
+&lt;/span&gt;&lt;span class="lnt"&gt; 9
+&lt;/span&gt;&lt;span class="lnt"&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class="lntd"&gt;
+&lt;pre tabindex="0" class="chroma"&gt;&lt;code class="language-txt" data-lang="txt"&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;flask
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;flask-swagger
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;flask-swagger-ui
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;flask-bootstrap
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;SQLAlchemy
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;pymysql
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;pydantic
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;requests
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;loguru
+&lt;/span&gt;&lt;/span&gt;&lt;span class="line"&gt;&lt;span class="cl"&gt;gunicorn
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Brief notes:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;flask&lt;/code&gt; is the core; &lt;code&gt;flask-swagger&lt;/code&gt; + &lt;code&gt;flask-swagger-ui&lt;/code&gt; provide Swagger UI; &lt;code&gt;flask-bootstrap&lt;/code&gt; helps quickly scaffold HTML pages.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;SQLAlchemy&lt;/code&gt; + &lt;code&gt;pymysql&lt;/code&gt;: ORM + MySQL driver.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;pydantic&lt;/code&gt;: works with SQLAlchemy for model conversion, easing serialization/deserialization quirks.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;requests&lt;/code&gt;: call external HTTP APIs or write crawlers.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;loguru&lt;/code&gt;: simple logging; &lt;code&gt;from loguru import logger&lt;/code&gt; and you’re set.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;gunicorn&lt;/code&gt;: multi-process deployment.&lt;/li&gt;
+&lt;/ul&gt;</description></item></channel></rss>
